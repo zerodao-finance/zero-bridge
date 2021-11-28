@@ -1,6 +1,9 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "OlympusDAO",
+  "start_url": ".",
+  "homepage": "./",
+  "name": "OlympusDAO",
+  "launch_path": "/public/index.html",
   "icons": [
     {
       "src": "favicon.ico",
@@ -18,8 +21,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
+  "display": "browser",
   "theme_color": "#000000",
   "background_color": "#ffffff"
 }
