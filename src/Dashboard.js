@@ -11,6 +11,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
+import Convert from './Convert'
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
@@ -35,7 +36,7 @@ function Copyright(props) {
   );
 }
 
-const drawerWidth = 240;
+const drawerWidth = 0;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -81,7 +82,20 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-const mdTheme = createTheme();
+const mdTheme = createTheme({
+  palette: {
+    type: 'dark',
+    primary: {
+      main: '#585858',
+    },
+    secondary: {
+      main: '#a0dcad',
+    },
+    info: {
+      main: '#ffffff',
+    },
+  }
+});
 
 function DashboardContent() {
   const [open, setOpen] = React.useState(true);
@@ -97,8 +111,8 @@ function DashboardContent() {
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
-            }}
-          >
+            }}>
+	  { /*
             <IconButton
               edge="start"
               color="inherit"
@@ -110,7 +124,8 @@ function DashboardContent() {
               }}
             >
               <MenuIcon />
-            </IconButton>
+            </IconButton> 
+	    */ }
             <Typography
               component="h1"
               variant="h6"
@@ -118,7 +133,7 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+	      zeroDAO Arbitrum
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -127,6 +142,7 @@ function DashboardContent() {
             </IconButton>
           </Toolbar>
         </AppBar>
+	  {/*
         <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{
@@ -145,6 +161,7 @@ function DashboardContent() {
           <Divider />
           <List>{secondaryListItems}</List>
         </Drawer>
+	*/ }
         <Box
           component="main"
           sx={{
@@ -160,33 +177,11 @@ function DashboardContent() {
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-              {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  <Chart />
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+	  	  <Convert />
                 </Paper>
               </Grid>
-              {/* Recent Deposits */}
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  <Deposits />
-                </Paper>
-              </Grid>
-              {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <Orders />
