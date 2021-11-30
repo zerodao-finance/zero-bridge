@@ -46,20 +46,21 @@ const theme = createTheme();
 export default function Submit() {
 
   const [user, setUser] = React.useState(null);
-
+  useEffect(async () => {
+    setUser(await initializeConnection());
+  }, []);
   const initializeConnection = async () => {
+    if (window.user) return window.user;
     const connection = await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/');
     const user = createZeroUser(connection);
+    window.user = user;
     await user.conn.start();
     await user.subscribeKeepers();
-    setUser(user);
+    return user;
   }
-
-  initializeConnection();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
 
     const transferRequest = new TransferRequest({
       to: connectedWallet,
