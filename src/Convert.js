@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import Slider from '@mui/material/Slider'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { TransferRequest, createZeroConnection, createZeroUser } from 'zero-protocol/dist/lib/zero.js';
 import { ethers } from 'ethers';
@@ -27,7 +28,7 @@ const data = ethers.utils.defaultAbiCoder.encode(['uint256'], [ ethers.utils.par
 
 //const signer = new ethers.Wallet(new ethers.providers.JsonRpcProvider('https://arb-mainnet.g.alchemy.com/v2/utMr7YLZtnhmRySXim_DuF5QMl0HBwdA'));
 
-
+let value;
 
 function Copyright(props) {
   return (
@@ -48,10 +49,18 @@ export default function Submit(props) {
 
   const [user, setUser] = React.useState(null);
   const [address, setAddress] = React.useState(null);
+  const [status, setStatus] = React.useState(false);
+
 
   React.useEffect(async () => {
     setUser(await initializeConnection());
-  }, []);
+    setStatus(user && user.keepers && user.keepers.length > 0)
+  }, [status]);
+
+  React.useEffect(async () => {
+    setStatus(user && user.keeper.length > 0)
+  }, [])
+
   const initializeConnection = async () => {
     if (window.user) return window.user;
     const connection = await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/');
@@ -64,6 +73,7 @@ export default function Submit(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log("user", user)
     console.log("wallet", connectedWallet)
     console.log("to:", connectedWallet)
     console.log("underwriter:", trivialUnderwriter)
@@ -125,10 +135,12 @@ export default function Submit(props) {
           <p>
           {address && `Deposit Address: ${address}`}
           </p><p>
-          {`Keeper Status: ${user ? "Connected" : "Disconnected"}`}
+          {`Keeper Status: ${status ? "Connected" : "Disconnected"}`}
           </p><p>
           //{`Wallet Status: ${props.wallet ? "Connected" : "Disconnected"}`}
           </p>
+          <p>ETH : renBTC ratio: {}</p>
+          <Slider aria-label="Ratio" value={value} valueLabelDisplay="on" onChange={console.log} />
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
