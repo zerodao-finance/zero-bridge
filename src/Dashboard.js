@@ -20,13 +20,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
-import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
-import Web3 from "web3";
-import Web3Modal from "web3modal";
-import Authereum from "authereum";
-import WalletConnectProvider from "@walletconnect/web3-provider";
+import {useEffect, useState} from "react";
+import wallet_model from './WalletModal';
+
+
 
 
 function Copyright(props) {
@@ -41,21 +40,6 @@ function Copyright(props) {
     </Typography>
   );
 }
-
-
-
-const providerOptions = {
-  walletconnect: {
-    package: WalletConnectProvider, // required
-    options: {
-      infuraId: "3fd4907115b84c7eb48e95514768a4e8" // required
-    }
-  },
-  authereum: {
-    package: Authereum
-  },
-};
-
 
 const drawerWidth = 0;
 
@@ -121,30 +105,21 @@ const mdTheme = createTheme({
 function DashboardContent() {
   const [open, setOpen] = React.useState(true);
 
-  const [state, setState] = React.useState({});
-  setState({modalOpen: false})
-  const web3Modal = new Web3Modal({
-    cacheProvider: true, // optional
-    disableInjectedProvider: false,
-    providerOptions // required
-  });
-
-
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
-  const connect = async () => {
-    const provider = await web3Modal.connect();
-    return provider
-  }
+  const {web3Loading, getweb3} = wallet_model ();
+  const [myWeb3, setMyWeb3] = useState ();
 
-  React.useEffect(async () => {
-    const provider = await web3Modal.connect();
-    
-    
-    //setWallet(await connect());
-  }, []);
+  async function connectWallet() {
+      await getweb3(). then ((response) => {
+        setMyWeb3(response);
+        response.eth.getAccounts().then((result) => {
+          console.log(result)
+        });
+    });
+  }
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -155,20 +130,6 @@ function DashboardContent() {
             sx={{
               pr: '24px', // keep right padding when drawer closed
             }}>
-	  { /*
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
-              sx={{
-                marginRight: '36px',
-                ...(open && { display: 'none' }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton> 
-	    */ }
             <Typography
               component="h1"
               variant="h6"
@@ -178,7 +139,7 @@ function DashboardContent() {
             >
 	      zeroDAO Arbitrum
             </Typography>
-            <Button variant="text" onSubmit={setState({modalOpen: true})}>Connect</Button>
+            <Button variant="test" onClick={connectWallet}>Connect</Button>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />
@@ -186,26 +147,6 @@ function DashboardContent() {
             </IconButton>
           </Toolbar>
         </AppBar>
-	  {/*
-        <Drawer variant="permanent" open={open}>
-          <Toolbar
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              px: [1],
-            }}
-          >
-            <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </Toolbar>
-          <Divider />
-          <List>{mainListItems}</List>
-          <Divider />
-          <List>{secondaryListItems}</List>
-        </Drawer>
-	*/ }
         <Box
           component="main"
           sx={{
