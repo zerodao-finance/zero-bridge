@@ -50,6 +50,8 @@ export default function Submit(props) {
   const [user, setUser] = React.useState(null);
   const [address, setAddress] = React.useState(null);
   const [status, setStatus] = React.useState(false);
+  const [amount, setAmount] = React.useState(0);
+  const [ratio, setRatio] = React.useState(0);
 
 
   React.useEffect(async () => {
@@ -58,7 +60,7 @@ export default function Submit(props) {
   }, [status]);
 
   React.useEffect(async () => {
-    setStatus(user && user.keeper.length > 0)
+    setStatus(user && user.keepers.length > 0)
   }, [])
 
   const initializeConnection = async () => {
@@ -111,7 +113,8 @@ export default function Submit(props) {
         >
           <Typography component="h1" variant="h5">
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          {user && console.log(user)}
+          <Box component="form" onSubmit={handleSubmit} onChange={setAmount} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -137,13 +140,18 @@ export default function Submit(props) {
           </p><p>
           {`Keeper Status: ${status ? "Connected" : "Disconnected"}`}
           </p><p>
-          //{`Wallet Status: ${props.wallet ? "Connected" : "Disconnected"}`}
+          {`Wallet Status: ${props.wallet ? "Connected" : "Disconnected"}`}
           </p>
-          <p>ETH : renBTC ratio: {}</p>
-          <Slider aria-label="Ratio" value={value} valueLabelDisplay="on" onChange={console.log} />
+          <p>ETH-renBTC ratio</p>
+          <p>{`ETH: ${(ratio / 100 * (amount || 0)).toFixed(4)}`}</p>
+          <p>{`renBTC: ${((1-ratio) / 100 * (amount || 0)).toFixed(4)}`}</p>
+          <p>value: {amount}</p>
+          <Slider aria-label="Ratio" value={ratio} valueLabelDisplay="on" onChange={(r)=>setRatio(Number(r))} />
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
 }
+
+
