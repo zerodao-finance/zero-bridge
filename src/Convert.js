@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { TransferRequest, createZeroConnection, createZeroUser } from 'zero-protocol/dist/lib/zero.js';
+import { ethers } from 'ethers';
 
 /*
 DEVELOPMENT CONSTANTS
@@ -22,9 +23,9 @@ const connectedWallet = '0xD903338baE3D5C59259E562a49E4ab177E3149a1';
 const zeroModule = '0x59741D0210Dd24FFfDBa2eEEc9E130A016B8eb3F'; // arbitrum convert module address
 const trivialUnderwriter = '0xd0D8fA764352e33F40c66C75B3BC0204DC95973e';
 const asset = '0xDBf31dF14B66535aF65AaC99C32e9eA844e14501'; // renBTC on arbitrum
-const data = '0x0';
+const data = ethers.utils.defaultAbiCoder.encode(['uint256'], [ ethers.utils.parseEther('0.01') ]);
 
-
+//const signer = new ethers.Wallet(new ethers.providers.JsonRpcProvider('https://arb-mainnet.g.alchemy.com/v2/utMr7YLZtnhmRySXim_DuF5QMl0HBwdA'));
 
 
 
@@ -43,10 +44,12 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function Submit() {
+export default function Submit(props) {
 
   const [user, setUser] = React.useState(null);
-  useEffect(async () => {
+  const [address, setAddress] = React.useState(null);
+
+  React.useEffect(async () => {
     setUser(await initializeConnection());
   }, []);
   const initializeConnection = async () => {
@@ -61,23 +64,28 @@ export default function Submit() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log("wallet", connectedWallet)
+    console.log("to:", connectedWallet)
+    console.log("underwriter:", trivialUnderwriter)
+    console.log("module:", zeroModule)
+    console.log("asset:", asset)
+    console.log("amount", event.target[0].value)
+    console.log("data:", data)
 
     const transferRequest = new TransferRequest({
       to: connectedWallet,
       underwriter: trivialUnderwriter,
       module: zeroModule,
       asset,
-      amount,
-      data
-    })
-
-    console.log({
-      amount: data.get('amount'),
-      keepers: user.keepers
+      amount: event.target[0].value,
+      data: String(data)
     });
-  };
 
-  const [address, setAddress] = React.useState(null);
+    //transferRequest.setUnderwriter(trivialUnderwriter);
+    //transferRequest.sign(signer, Controller.address).then(transferRequest.toGatewayAddress().then(setAddress(transferRequest)))
+
+    //transferRequest.toGatewayAddress().then(setAddress);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -114,10 +122,13 @@ export default function Submit() {
               Move
             </Button>
           </Box>
-          {!address && `Deposit Address: ${address}`}
-        </Box>
-        <Box>
-        {`Status: ${user ? "Connected" : "Disconnected"}`}
+          <p>
+          {address && `Deposit Address: ${address}`}
+          </p><p>
+          {`Keeper Status: ${user ? "Connected" : "Disconnected"}`}
+          </p><p>
+          //{`Wallet Status: ${props.wallet ? "Connected" : "Disconnected"}`}
+          </p>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>

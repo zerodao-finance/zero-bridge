@@ -9,6 +9,7 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button'
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Convert from './Convert'
@@ -22,6 +23,11 @@ import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
+import Web3 from "web3";
+import Web3Modal from "web3modal";
+import Authereum from "authereum";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+
 
 function Copyright(props) {
   return (
@@ -35,6 +41,21 @@ function Copyright(props) {
     </Typography>
   );
 }
+
+
+
+const providerOptions = {
+  walletconnect: {
+    package: WalletConnectProvider, // required
+    options: {
+      infuraId: "3fd4907115b84c7eb48e95514768a4e8" // required
+    }
+  },
+  authereum: {
+    package: Authereum
+  },
+};
+
 
 const drawerWidth = 0;
 
@@ -99,9 +120,31 @@ const mdTheme = createTheme({
 
 function DashboardContent() {
   const [open, setOpen] = React.useState(true);
+
+  const [state, setState] = React.useState({});
+  setState({modalOpen: false})
+  const web3Modal = new Web3Modal({
+    cacheProvider: true, // optional
+    disableInjectedProvider: false,
+    providerOptions // required
+  });
+
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const connect = async () => {
+    const provider = await web3Modal.connect();
+    return provider
+  }
+
+  React.useEffect(async () => {
+    const provider = await web3Modal.connect();
+    
+    
+    //setWallet(await connect());
+  }, []);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -135,6 +178,7 @@ function DashboardContent() {
             >
 	      zeroDAO Arbitrum
             </Typography>
+            <Button variant="text" onSubmit={setState({modalOpen: true})}>Connect</Button>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />
@@ -179,7 +223,7 @@ function DashboardContent() {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-	  	  <Convert />
+	  	  <Convert/>
                 </Paper>
               </Grid>
               <Grid item xs={12}>
@@ -197,5 +241,5 @@ function DashboardContent() {
 }
 
 export default function Dashboard() {
-  return <DashboardContent />;
+  return <DashboardContent/>;
 }
