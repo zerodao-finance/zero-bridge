@@ -103,43 +103,35 @@ const mdTheme = createTheme({
 });
 
 function DashboardContent() {
+
   const [open, setOpen] = React.useState(true);
   const [keepers, setKeepers] = React.useState([]);
+  const [user, setUser] = React.useState(null);
   const [provider, setProvider] = React.useState(null);
   const [status, setStatus] = React.useState(false);
   const [renBTC, setRenBTC] = React.useState(0);
-  const [eth, setETH] = React.useState(0);
-
-
-
-
-
-
-
-
-  
+  const [eth, setETH] = React.useState(0);  
 
   const initializeConnection = async () => {
-    if (window.user) return window.user;
     const connection = await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/');
-    const user = createZeroUser(connection);
-    window.user = user;
-    await window.user.conn.start();
-    await window.user.subscribeKeepers();
-    return user;
+    const zUser = createZeroUser(connection);
+    await zUser.conn.start();
+    await zUser.subscribeKeepers();
+    setUser(zUser);
+    return zUser;
   }
 
   React.useEffect(async () => {
     await initializeConnection();
-  }, []);
+  }, [user]);
 
   React.useEffect(async () => {
     const listener = (keeper) => {
-      setKeepers(window.user.keepers.slice());
+      setKeepers(user.keepers.slice());
     };
-    if (window.user) window.user.on('keeper', listener)
-    return () => window.user && window.user.removeListener('keeper', listener);
-  }, [window.user])
+    if (user) user.on('keeper', listener)
+    return () => user && user.removeListener('keeper', listener);
+  }, [user])
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -203,7 +195,7 @@ function DashboardContent() {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-	  	  <Convert user={window.user}/>
+	  	  <Convert user={user}/>
                 </Paper>
               </Grid>
               <Grid item xs={12}>
