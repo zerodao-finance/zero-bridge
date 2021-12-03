@@ -51,8 +51,30 @@ export default function Submit(props) {
   const [address, setAddress] = React.useState(null);
   const [amount, setAmount] = React.useState(0);
   const [ratio, setRatio] = React.useState(0);
+  const [eth, setETH] = React.useState(0);
+  const [renBTC, setrenBTC] = React.useState(0);
 
  
+  
+  const rawCalculateETH = async (amount) => {
+    console.log('PROPS.CONTRACT', props.contract)
+    if (!props.contract) {
+      return 0;
+    }
+    const res = await props.contract.methods.get_dy(1, 2, amount).call();
+    return res
+  }
+
+  var calculateEth = _.debounce(rawCalculateETH, wait=100);
+
+  const updateSlider = async (event) => {
+    setAmount(event.target.value);
+    calculateEth.cancel();
+    const ethOut = calculateEth(event.target.value)
+    setETH(ethOut);
+  };
+
+  window.calculateETH = calculateETH;
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -86,7 +108,7 @@ export default function Submit(props) {
         >
           <Typography component="h1" variant="h5">
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} onChange={setAmount} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit} onChange={evt=>setAmount(evt.target.value)} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -114,7 +136,7 @@ export default function Submit(props) {
           <p>{`ETH: ${(ratio / 100 * (amount || 0)).toFixed(4)}`}</p>
           <p>{`renBTC: ${((1-ratio) / 100 * (amount || 0)).toFixed(4)}`}</p>
           <p>value: {amount}</p>
-          <Slider aria-label="Ratio" value={ratio} valueLabelDisplay="on" onChange={(r)=>setRatio(Number(r))} />
+          <Slider aria-label="Ratio" value={ratio} valueLabelDisplay="on" onChange={(evt)=>setRatio(evt.target.value)} />
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>

@@ -22,10 +22,17 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import Deposits from './Deposits';
 import Orders from './Orders';
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import wallet_model from './WalletModal';
 import { TransferRequest, createZeroConnection, createZeroUser } from 'zero-protocol/dist/lib/zero.js';
 import CircleIcon from '@mui/icons-material/Circle';
+import Web3 from 'web3';
+import Contract from 'web3-eth-contract'; 
+
+
+const targetChain = '42161';
+const curveArbitrum = '0x960ea3e3C7FB317332d990873d354E18d7645590';  // Swap wBTC for wETH (indeces to swap are 1 -> 2 in pool.coins)
+const curveABI = [{"stateMutability":"view","type":"function","name":"get_dy","inputs":[{"name":"i","type":"uint256"},{"name":"j","type":"uint256"},{"name":"dx","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}],"gas":3122},]
 
 
 function Copyright(props) {
@@ -110,7 +117,8 @@ function DashboardContent() {
   const [provider, setProvider] = React.useState(null);
   const [status, setStatus] = React.useState(false);
   const [renBTC, setRenBTC] = React.useState(0);
-  const [eth, setETH] = React.useState(0);  
+  const [eth, setETH] = React.useState(0);
+  const [contract, setContract] = React.useState(null);
 
   const initializeConnection = async () => {
     const connection = await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/');
@@ -123,7 +131,7 @@ function DashboardContent() {
 
   React.useEffect(async () => {
     await initializeConnection();
-  }, [user]);
+  }, []);
 
   React.useEffect(async () => {
     const listener = (keeper) => {
@@ -137,15 +145,19 @@ function DashboardContent() {
     setOpen(!open);
   };
 
-  const {web3Loading, getweb3} = wallet_model ();
-  const [web3, setWeb3] = useState ();
+  const { web3Loading, getweb3 } = wallet_model();
+  const [web3, setWeb3] = useState();
 
   async function connectWallet() {
-      await getweb3(). then ((response) => {
-        setWeb3(response);
-        response.eth.getAccounts().then((result) => {
-          console.log(result)
-        });
+    await getweb3().then((response) => {
+      setWeb3(response);
+      Contract.setProvider(response);
+      const curveContract = new Contract(curveABI, curveArbitrum)
+      setContract(curveContract);
+      console.log("CONTRACT", curveContract)
+      response.eth.getAccounts().then((result) => {
+        console.log(result)
+      });
     });
   }
 
@@ -165,10 +177,10 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-	      zeroDAO Arbitrum
+              zeroDAO Arbitrum
             </Typography>
             Keeper Status
-            <CircleIcon sx={{fill: `${keepers ? 'green' : 'red'}`, margin: '0 50px 0 10px'}}/>
+            <CircleIcon sx={{ fill: `${keepers ? 'green' : 'red'}`, margin: '0 50px 0 10px' }} />
             {web3 ? 'Wallet Connected' : (<Button variant="test" onClick={connectWallet}>Connect Wallet</Button>)}
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -195,7 +207,7 @@ function DashboardContent() {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-	  	  <Convert user={user}/>
+                  <Convert user={user} contract={contract} />
                 </Paper>
               </Grid>
               <Grid item xs={12}>
@@ -213,5 +225,5 @@ function DashboardContent() {
 }
 
 export default function Dashboard() {
-  return <DashboardContent/>;
+  return <DashboardContent />;
 }
