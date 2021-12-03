@@ -24,8 +24,8 @@ import Deposits from './Deposits';
 import Orders from './Orders';
 import {useEffect, useState} from "react";
 import wallet_model from './WalletModal';
-
-
+import { TransferRequest, createZeroConnection, createZeroUser } from 'zero-protocol/dist/lib/zero.js';
+import CircleIcon from '@mui/icons-material/Circle';
 
 
 function Copyright(props) {
@@ -104,17 +104,53 @@ const mdTheme = createTheme({
 
 function DashboardContent() {
   const [open, setOpen] = React.useState(true);
+  const [keepers, setKeepers] = React.useState([]);
+  const [provider, setProvider] = React.useState(null);
+  const [status, setStatus] = React.useState(false);
+  const [renBTC, setRenBTC] = React.useState(0);
+  const [eth, setETH] = React.useState(0);
+
+
+
+
+
+
+
+
+  
+
+  const initializeConnection = async () => {
+    if (window.user) return window.user;
+    const connection = await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/');
+    const user = createZeroUser(connection);
+    window.user = user;
+    await window.user.conn.start();
+    await window.user.subscribeKeepers();
+    return user;
+  }
+
+  React.useEffect(async () => {
+    await initializeConnection();
+  }, []);
+
+  React.useEffect(async () => {
+    const listener = (keeper) => {
+      setKeepers(window.user.keepers.slice());
+    };
+    if (window.user) window.user.on('keeper', listener)
+    return () => window.user && window.user.removeListener('keeper', listener);
+  }, [window.user])
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
   const {web3Loading, getweb3} = wallet_model ();
-  const [myWeb3, setMyWeb3] = useState ();
+  const [web3, setWeb3] = useState ();
 
   async function connectWallet() {
       await getweb3(). then ((response) => {
-        setMyWeb3(response);
+        setWeb3(response);
         response.eth.getAccounts().then((result) => {
           console.log(result)
         });
@@ -139,7 +175,9 @@ function DashboardContent() {
             >
 	      zeroDAO Arbitrum
             </Typography>
-            <Button variant="test" onClick={connectWallet}>Connect</Button>
+            Keeper Status
+            <CircleIcon sx={{fill: `${keepers ? 'green' : 'red'}`, margin: '0 50px 0 10px'}}/>
+            {web3 ? 'Wallet Connected' : (<Button variant="test" onClick={connectWallet}>Connect Wallet</Button>)}
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />
@@ -147,6 +185,7 @@ function DashboardContent() {
             </IconButton>
           </Toolbar>
         </AppBar>
+        {console.log('WEB3', web3)}
         <Box
           component="main"
           sx={{
@@ -164,7 +203,7 @@ function DashboardContent() {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-	  	  <Convert/>
+	  	  <Convert user={window.user}/>
                 </Paper>
               </Grid>
               <Grid item xs={12}>

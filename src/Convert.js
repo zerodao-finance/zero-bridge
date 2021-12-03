@@ -15,6 +15,7 @@ import Slider from '@mui/material/Slider'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { TransferRequest, createZeroConnection, createZeroUser } from 'zero-protocol/dist/lib/zero.js';
 import { ethers } from 'ethers';
+import { userSetter } from 'core-js/fn/symbol';
 
 /*
 DEVELOPMENT CONSTANTS
@@ -47,42 +48,14 @@ const theme = createTheme();
 
 export default function Submit(props) {
 
-  const [user, setUser] = React.useState(null);
   const [address, setAddress] = React.useState(null);
-  const [status, setStatus] = React.useState(false);
   const [amount, setAmount] = React.useState(0);
   const [ratio, setRatio] = React.useState(0);
 
-
-  React.useEffect(async () => {
-    setUser(await initializeConnection());
-    setStatus(user && user.keepers && user.keepers.length > 0)
-  }, [status]);
-
-  React.useEffect(async () => {
-    setStatus(user && user.keepers.length > 0)
-  }, [])
-
-  const initializeConnection = async () => {
-    if (window.user) return window.user;
-    const connection = await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/');
-    const user = createZeroUser(connection);
-    window.user = user;
-    await user.conn.start();
-    await user.subscribeKeepers();
-    return user;
-  }
+ 
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("user", user)
-    console.log("wallet", connectedWallet)
-    console.log("to:", connectedWallet)
-    console.log("underwriter:", trivialUnderwriter)
-    console.log("module:", zeroModule)
-    console.log("asset:", asset)
-    console.log("amount", event.target[0].value)
-    console.log("data:", data)
 
     const transferRequest = new TransferRequest({
       to: connectedWallet,
@@ -113,7 +86,6 @@ export default function Submit(props) {
         >
           <Typography component="h1" variant="h5">
           </Typography>
-          {user && console.log(user)}
           <Box component="form" onSubmit={handleSubmit} onChange={setAmount} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
@@ -137,10 +109,6 @@ export default function Submit(props) {
           </Box>
           <p>
           {address && `Deposit Address: ${address}`}
-          </p><p>
-          {`Keeper Status: ${status ? "Connected" : "Disconnected"}`}
-          </p><p>
-          {`Wallet Status: ${props.wallet ? "Connected" : "Disconnected"}`}
           </p>
           <p>ETH-renBTC ratio</p>
           <p>{`ETH: ${(ratio / 100 * (amount || 0)).toFixed(4)}`}</p>
