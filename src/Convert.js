@@ -1,31 +1,38 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Slider from '@mui/material/Slider'
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { TransferRequest, createZeroConnection, createZeroUser } from 'zero-protocol/dist/lib/zero.js';
-import { ethers } from 'ethers';
-import { userSetter } from 'core-js/fn/symbol';
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import Slider from "@mui/material/Slider";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import {
+  TransferRequest,
+  createZeroConnection,
+  createZeroUser,
+} from "zero-protocol/dist/lib/zero.js";
+import { ethers } from "ethers";
+import { userSetter } from "core-js/fn/symbol";
 
 /*
 DEVELOPMENT CONSTANTS
 */
 
-const connectedWallet = '0xD903338baE3D5C59259E562a49E4ab177E3149a1';
-const zeroModule = '0x59741D0210Dd24FFfDBa2eEEc9E130A016B8eb3F'; // arbitrum convert module address
-const trivialUnderwriter = '0xd0D8fA764352e33F40c66C75B3BC0204DC95973e';
-const asset = '0xDBf31dF14B66535aF65AaC99C32e9eA844e14501'; // renBTC on arbitrum
-const data = ethers.utils.defaultAbiCoder.encode(['uint256'], [ ethers.utils.parseEther('0.01') ]);
+const connectedWallet = "0xD903338baE3D5C59259E562a49E4ab177E3149a1";
+const zeroModule = "0x59741D0210Dd24FFfDBa2eEEc9E130A016B8eb3F"; // arbitrum convert module address
+const trivialUnderwriter = "0xd0D8fA764352e33F40c66C75B3BC0204DC95973e";
+const asset = "0xDBf31dF14B66535aF65AaC99C32e9eA844e14501"; // renBTC on arbitrum
+const data = ethers.utils.defaultAbiCoder.encode(
+  ["uint256"],
+  [ethers.utils.parseEther("0.01")]
+);
 
 //const signer = new ethers.Wallet(new ethers.providers.JsonRpcProvider('https://arb-mainnet.g.alchemy.com/v2/utMr7YLZtnhmRySXim_DuF5QMl0HBwdA'));
 
@@ -33,48 +40,51 @@ let value;
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
       <Link color="inherit" href="https://zerodao.com/">
-	  zeroDAO
-      </Link>{' '}
+        zeroDAO
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
 
 const theme = createTheme();
 
+const rawCalculateETH = async (props, amount) => {
+  console.log("PROPS.CONTRACT", props.contract);
+  if (!props.contract) {
+    return 0;
+  }
+  const res = await props.contract.methods.get_dy(1, 2, amount).call();
+  return res;
+};
+window.submitProps = null;
+var calculateEth = _.debounce(
+  (amount) => rawCalculateETH(window.submitProps, amount),
+  { wait: 100 }
+);
 export default function Submit(props) {
-
   const [address, setAddress] = React.useState(null);
   const [amount, setAmount] = React.useState(0);
   const [ratio, setRatio] = React.useState(0);
   const [eth, setETH] = React.useState(0);
   const [renBTC, setrenBTC] = React.useState(0);
-
- 
-  
-  const rawCalculateETH = async (amount) => {
-    console.log('PROPS.CONTRACT', props.contract)
-    if (!props.contract) {
-      return 0;
-    }
-    const res = await props.contract.methods.get_dy(1, 2, amount).call();
-    return res
-  }
-
-  var calculateEth = _.debounce(rawCalculateETH, wait=100);
+  window.submitProps = props;
 
   const updateSlider = async (event) => {
     setAmount(event.target.value);
     calculateEth.cancel();
-    const ethOut = calculateEth(event.target.value)
+    const ethOut = calculateEth(event.target.value);
     setETH(ethOut);
   };
-
-  window.calculateETH = calculateETH;
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -85,7 +95,7 @@ export default function Submit(props) {
       module: zeroModule,
       asset,
       amount: event.target[0].value,
-      data: String(data)
+      data: String(data),
     });
 
     //transferRequest.setUnderwriter(trivialUnderwriter);
@@ -101,14 +111,20 @@ export default function Submit(props) {
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <Typography component="h1" variant="h5">
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} onChange={evt=>setAmount(evt.target.value)} noValidate sx={{ mt: 1 }}>
+          <Typography component="h1" variant="h5"></Typography>
+          <p>{address && `Deposit Address: ${address}`}</p>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            onChange={(evt) => setAmount(evt.target.value)}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               required
@@ -116,32 +132,33 @@ export default function Submit(props) {
               id="amount"
               label="BTC Amount"
               name="amount"
-	      color="success"
+              color="success"
               autoFocus
+            />
+            <p>ETH-renBTC ratio</p>
+            <p>{`ETH: ${((ratio / 100) * (amount || 0)).toFixed(4)}`}</p>
+            <p>{`renBTC: ${(((1 - ratio) / 100) * (amount || 0)).toFixed(
+              4
+            )}`}</p>
+            <p>value: {amount}</p>
+            <Slider
+              aria-label="Ratio"
+              value={ratio}
+              valueLabelDisplay="on"
+              onChange={(evt) => setRatio(evt.target.value)}
             />
             <Button
               type="submit"
               fullWidth
-	            color="success"
+              color="success"
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
               Move
             </Button>
           </Box>
-          <p>
-          {address && `Deposit Address: ${address}`}
-          </p>
-          <p>ETH-renBTC ratio</p>
-          <p>{`ETH: ${(ratio / 100 * (amount || 0)).toFixed(4)}`}</p>
-          <p>{`renBTC: ${((1-ratio) / 100 * (amount || 0)).toFixed(4)}`}</p>
-          <p>value: {amount}</p>
-          <Slider aria-label="Ratio" value={ratio} valueLabelDisplay="on" onChange={(evt)=>setRatio(evt.target.value)} />
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
 }
-
-

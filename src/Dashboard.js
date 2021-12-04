@@ -125,6 +125,7 @@ function DashboardContent() {
     const zUser = createZeroUser(connection);
     await zUser.conn.start();
     await zUser.subscribeKeepers();
+    window.user = window.user || zUser;
     setUser(zUser);
     return zUser;
   }
