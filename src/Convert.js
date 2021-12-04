@@ -74,7 +74,7 @@ var calculateEth = _.debounce(
   (amount) => rawCalculateETH(window.submitProps, amount),
   { wait: 100 }
 );
-const contract = new ethers.Contract('0x80466c64868E1ab14a1Ddf27A676C3fcBE638Fe5', [ 'function get_dy(uint256, uint256, uint256) view returns (uint256)' ], getContract('ZeroController').provider);
+const contract = new ethers.Contract('0x960ea3e3C7FB317332d990873d354E18d7645590', [ 'function get_dy(uint256, uint256, uint256) view returns (uint256)' ], getContract('ZeroController').provider);
 export default function Submit(props) {
   const [address, setAddress] = React.useState(null);
   const [amount, setAmount] = React.useState(0);
@@ -85,7 +85,7 @@ export default function Submit(props) {
   React.useEffect(async () => {
     const listener = async () => {
       try {
-        setETHPrice((await contract.get_dy(2, 1, ethers.utils.parseUnits('1', 8))).toString());
+        setETHPrice((await contract.get_dy(1, 2, ethers.utils.parseUnits('1', 8))).toString());
       } catch (e) {
         console.error(e);
       }
@@ -97,7 +97,7 @@ export default function Submit(props) {
 	const ln = (v) => ((console.log(ethers.utils.formatEther(v))), v);
   const updateAmounts = async () => {
     setrenBTC(ethers.utils.formatUnits(ln(ethers.utils.parseEther('1').sub(ethers.BigNumber.from(String(ratio)).mul(ethers.utils.parseEther('0.01')))).mul(ethers.utils.parseUnits(String(amount), 8)).div(ethers.utils.parseEther('1')), 8));
-    setETH(ethers.utils.formatEther(ethers.BigNumber.from(String(ratio)).mul(ethers.utils.parseEther('0.01')).mul(ethers.utils.parseUnits(String(amount), 8).mul(ethPrice).div(ethers.utils.parseEther('1'))).div(ethers.utils.parseEther('1'))));
+    setETH(ethers.utils.formatEther(ethers.BigNumber.from(String(ratio)).mul(ethers.utils.parseEther('0.01')).mul(ethers.utils.parseUnits(String(amount), 8).mul(ethPrice)).div(ethers.utils.parseEther('1', 18)).div(ethers.utils.parseUnits('1', 8))));
   };
   React.useEffect(updateAmounts, [ amount, ethPrice, ratio ]);
   const updateSlider = async (event) => {
