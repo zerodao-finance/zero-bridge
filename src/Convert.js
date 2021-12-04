@@ -30,6 +30,8 @@ const connectedWallet = "0xD903338baE3D5C59259E562a49E4ab177E3149a1";
 const zeroModule = "0x59741D0210Dd24FFfDBa2eEEc9E130A016B8eb3F"; // arbitrum convert module address
 const trivialUnderwriter = "0xd0D8fA764352e33F40c66C75B3BC0204DC95973e";
 const asset = "0xDBf31dF14B66535aF65AaC99C32e9eA844e14501"; // renBTC on arbitrum
+const controller = getContract('ZeroController')
+console.log("CONTROLLER", controller)
 const data = ethers.utils.defaultAbiCoder.encode(
   ["uint256"],
   [ethers.utils.parseEther("0.01")]
@@ -102,10 +104,31 @@ export default function Submit(props) {
     setAmount(event.target.value);
   };
 
+  const getSigner = async () => {
+    const ethProvider = new ethers.providers.Web3Provider(web3.currentProvider);
+    await ethProvider.send("eth_requestAccounts", []);
+    const signer = await ethProvider.getSigner();
+    return signer
+  }
+
+  const signRequest = async (signer, transferRequest) => {
+    await transferRequest.sign(signer, controller.address);
+    const gateway = await transferRequest.toGatewayAddress();
+    setAddress(gateway);
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const transferRequest = new TransferRequest({
+    const data = ethers.utils.defaultAbiCoder.encode(
+      ["uint256"],
+      [ethers.utils.parseEther(String(Number(event.target[0].value) / 100 * ratio))]
+    );
+
+    console.log("AMT", event.target[0].value)
+    console.log("ETH AMT", event.target[0].value / 100 * ratio)
+
+    const transferRequest = new TransferRequest({ 
       to: connectedWallet,
       underwriter: trivialUnderwriter,
       module: zeroModule,
@@ -114,10 +137,10 @@ export default function Submit(props) {
       data: String(data),
     });
 
-    //transferRequest.setUnderwriter(trivialUnderwriter);
-    //transferRequest.sign(signer, Controller.address).then(transferRequest.toGatewayAddress().then(setAddress(transferRequest)))
 
-    //transferRequest.toGatewayAddress().then(setAddress);
+    transferRequest.setUnderwriter(trivialUnderwriter);
+    getSigner().then(signer => signRequest(signer, transferRequest));
+    
   };
 
   return (
