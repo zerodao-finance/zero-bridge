@@ -117,7 +117,7 @@ export default function Submit(props) {
     setAddress(gateway);
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const data = ethers.utils.defaultAbiCoder.encode(
@@ -130,6 +130,7 @@ export default function Submit(props) {
 
     const transferRequest = new TransferRequest({ 
       to: connectedWallet,
+      contractAddress: controller.address,
       underwriter: trivialUnderwriter,
       module: zeroModule,
       asset,
@@ -141,14 +142,17 @@ export default function Submit(props) {
     console.log('TRANSFER REQUEST:', { 
       to: connectedWallet,
       underwriter: trivialUnderwriter,
+      contractAddress: controller.address,
       module: zeroModule,
       asset,
       amount: ethers.utils.parseUnits(event.target[0].value, 8),
       data: String(data),
     })
-
-    transferRequest.setUnderwriter(trivialUnderwriter);
-    getSigner().then(signer => signRequest(signer, transferRequest)).then(props.user.publishTransferRequest(transferRequest));
+    const signer = await getSigner();
+    await transferRequest.sign(signer);
+    setAddress(await transferRequest.toGatewayAddress());
+    console.log({ ...transferRequest });
+    await window.user.publishTransferRequest(transferRequest);
     
   };
 
