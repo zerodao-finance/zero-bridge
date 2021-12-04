@@ -136,7 +136,7 @@ function DashboardContent() {
 
   const initializeConnection = async () => {
     const connection = await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/');
-    const zUser = createZeroUser(connection, new LocalStoragePersistenceAdapter());
+    const zUser = createZeroUser(connection)// new LocalStoragePersistenceAdapter());
     await zUser.conn.start();
     await zUser.subscribeKeepers();
     window.user = window.user || zUser;

@@ -127,7 +127,7 @@ export default function Submit(props) {
 
     console.log("AMT", event.target[0].value)
     console.log("ETH AMT", event.target[0].value / 100 * ratio)
-
+    console.log("CHAIN IS", process.env.CHAIN || process.env.REACT_APP_CHAIN || 'MATIC')
     const transferRequest = new TransferRequest({ 
       to: connectedWallet,
       contractAddress: controller.address,

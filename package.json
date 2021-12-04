@@ -117,7 +117,7 @@
     "web3modal": "^1.9.4",
     "webfontloader": "^1.6.28",
     "webpack-bundle-analyzer": "^4.5.0",
-    "zero-protocol": "https://github.com/zerodao-finance/zero-protocol"
+    "zero-protocol": "https://github.com/zerodao-finance/zero-protocol.git"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-constant-elements": "^7.16.0",
