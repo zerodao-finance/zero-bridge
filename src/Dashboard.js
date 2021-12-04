@@ -25,6 +25,7 @@ import Orders from './Orders';
 import { useEffect, useState } from "react";
 import wallet_model from './WalletModal';
 import { TransferRequest, createZeroConnection, createZeroUser } from 'zero-protocol/dist/lib/zero.js';
+import { LocalStoragePersistenceAdapter } from 'zero-protocol/dist/lib/persistence';
 import CircleIcon from '@mui/icons-material/Circle';
 import Web3 from 'web3';
 import Contract from 'web3-eth-contract'; 
@@ -135,7 +136,7 @@ function DashboardContent() {
 
   const initializeConnection = async () => {
     const connection = await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/');
-    const zUser = createZeroUser(connection);
+    const zUser = createZeroUser(connection, new LocalStoragePersistenceAdapter());
     await zUser.conn.start();
     await zUser.subscribeKeepers();
     window.user = window.user || zUser;
