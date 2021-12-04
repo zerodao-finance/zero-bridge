@@ -133,13 +133,22 @@ export default function Submit(props) {
       underwriter: trivialUnderwriter,
       module: zeroModule,
       asset,
-      amount: event.target[0].value,
+      amount: ethers.utils.parseUnits(event.target[0].value, 8),
       data: String(data),
     });
 
 
+    console.log('TRANSFER REQUEST:', { 
+      to: connectedWallet,
+      underwriter: trivialUnderwriter,
+      module: zeroModule,
+      asset,
+      amount: ethers.utils.parseUnits(event.target[0].value, 8),
+      data: String(data),
+    })
+
     transferRequest.setUnderwriter(trivialUnderwriter);
-    getSigner().then(signer => signRequest(signer, transferRequest));
+    getSigner().then(signer => signRequest(signer, transferRequest)).then(props.user.publishTransferRequest(transferRequest));
     
   };
 
@@ -184,7 +193,6 @@ export default function Submit(props) {
             />
             <p>{`ETH: ${eth}`}</p>
             <p>{`renBTC: ${renBTC}`}</p>
-            <p>value: {amount}</p>
             <Button
               type="submit"
               fullWidth
