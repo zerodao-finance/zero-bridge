@@ -181,7 +181,7 @@ function DashboardContent() {
               zeroDAO Arbitrum
             </Typography>
             Keeper Status
-            <CircleIcon sx={{ fill: `${keepers ? 'green' : 'red'}`, margin: '0 50px 0 10px' }} />
+            <CircleIcon sx={{ fill: `${keepers.length ? 'green' : 'red'}`, margin: '0 50px 0 10px' }} />
             {web3 ? 'Wallet Connected' : (<Button variant="test" onClick={connectWallet}>Connect Wallet</Button>)}
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
