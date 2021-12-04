@@ -30,9 +30,22 @@ import Web3 from 'web3';
 import Contract from 'web3-eth-contract'; 
 
 
-const targetChain = '42161';
 const curveArbitrum = '0x960ea3e3C7FB317332d990873d354E18d7645590';  // Swap wBTC for wETH (indeces to swap are 1 -> 2 in pool.coins)
 const curveABI = [{"stateMutability":"view","type":"function","name":"get_dy","inputs":[{"name":"i","type":"uint256"},{"name":"j","type":"uint256"},{"name":"dx","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}],"gas":3122},]
+
+
+const chainData = [{
+  chainId: '0xA4B1',
+  chainName: 'Arbitrum',
+  nativeCurrency:
+      {
+          name: 'ETH',
+          symbol: 'ETH',
+          decimals: 18
+      },
+  rpcUrls: ['https://arb1.arbitrum.io/rpc'],
+  blockExplorerUrls: ['https://arbiscan.io/'],
+}]
 
 
 function Copyright(props) {
@@ -130,6 +143,8 @@ function DashboardContent() {
     return zUser;
   }
 
+
+
   React.useEffect(async () => {
     await initializeConnection();
   }, []);
@@ -150,15 +165,16 @@ function DashboardContent() {
   const [web3, setWeb3] = useState();
 
   async function connectWallet() {
-    await getweb3().then((response) => {
+    await getweb3().then(async (response) => {
       setWeb3(response);
+      const chainId = await response.eth.getChainId();
+      if (chainId !== chainData.chainId) {
+        await response.currentProvider.sendAsync({method: 'wallet_addEthereumChain', params: chainData});
+      }
+
       Contract.setProvider(response);
       const curveContract = new Contract(curveABI, curveArbitrum)
       setContract(curveContract);
-      console.log("CONTRACT", curveContract)
-      response.eth.getAccounts().then((result) => {
-        console.log(result)
-      });
     });
   }
 
