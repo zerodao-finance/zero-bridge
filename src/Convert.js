@@ -20,6 +20,7 @@ import {
 } from "zero-protocol/dist/lib/zero.js";
 import { ethers } from "ethers";
 import { userSetter } from "core-js/fn/symbol";
+import { getContract } from './contracts'
 
 /*
 DEVELOPMENT CONSTANTS
@@ -71,19 +72,34 @@ var calculateEth = _.debounce(
   (amount) => rawCalculateETH(window.submitProps, amount),
   { wait: 100 }
 );
+const contract = new ethers.Contract('0x80466c64868E1ab14a1Ddf27A676C3fcBE638Fe5', [ 'function get_dy(uint256, uint256, uint256) view returns (uint256)' ], getContract('ZeroController').provider);
 export default function Submit(props) {
   const [address, setAddress] = React.useState(null);
   const [amount, setAmount] = React.useState(0);
   const [ratio, setRatio] = React.useState(0);
+  const [ ethPrice, setETHPrice ] = React.useState('0');
   const [eth, setETH] = React.useState(0);
   const [renBTC, setrenBTC] = React.useState(0);
-  window.submitProps = props;
-
+  React.useEffect(async () => {
+    const listener = async () => {
+      try {
+        setETHPrice((await contract.get_dy(2, 1, ethers.utils.parseUnits('1', 8))).toString());
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    listener().catch((err) => console.error(err));
+    contract.provider.on('block', listener);
+    return () => contract.provder.removeListener('block', listener);
+  });
+	const ln = (v) => ((console.log(ethers.utils.formatEther(v))), v);
+  const updateAmounts = async () => {
+    setrenBTC(ethers.utils.formatUnits(ln(ethers.utils.parseEther('1').sub(ethers.BigNumber.from(String(ratio)).mul(ethers.utils.parseEther('0.01')))).mul(ethers.utils.parseUnits(String(amount), 8)).div(ethers.utils.parseEther('1')), 8));
+    setETH(ethers.utils.formatEther(ethers.BigNumber.from(String(ratio)).mul(ethers.utils.parseEther('0.01')).mul(ethers.utils.parseUnits(String(amount), 8).mul(ethPrice).div(ethers.utils.parseEther('1'))).div(ethers.utils.parseEther('1'))));
+  };
+  React.useEffect(updateAmounts, [ amount, ethPrice, ratio ]);
   const updateSlider = async (event) => {
     setAmount(event.target.value);
-    calculateEth.cancel();
-    const ethOut = calculateEth(event.target.value);
-    setETH(ethOut);
   };
 
   const handleSubmit = (event) => {
@@ -131,22 +147,21 @@ export default function Submit(props) {
               fullWidth
               id="amount"
               label="BTC Amount"
+	      onChange={ (evt) => setAmount(evt.target.value) }
               name="amount"
               color="success"
               autoFocus
             />
             <p>ETH-renBTC ratio</p>
-            <p>{`ETH: ${((ratio / 100) * (amount || 0)).toFixed(4)}`}</p>
-            <p>{`renBTC: ${(((1 - ratio) / 100) * (amount || 0)).toFixed(
-              4
-            )}`}</p>
-            <p>value: {amount}</p>
             <Slider
               aria-label="Ratio"
               value={ratio}
               valueLabelDisplay="on"
               onChange={(evt) => setRatio(evt.target.value)}
             />
+            <p>{`ETH: ${eth}`}</p>
+            <p>{`renBTC: ${renBTC}`}</p>
+            <p>value: {amount}</p>
             <Button
               type="submit"
               fullWidth
