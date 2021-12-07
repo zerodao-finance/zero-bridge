@@ -7,7 +7,8 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production NODE_OPTIONS=--max_old_space_size=4096 next build --profile",
     "start": "react-scripts start",
-    "start:dev": "REACT_APP_JSONRPC=http://localhost:8545 npm-run-all start"
+    "start:dev": "REACT_APP_JSONRPC=http://localhost:8545 npm-run-all start",
+    "start:arbitrum": "REACT_APP_JSONRPC=https://arb-mainnet.g.alchemy.com/v2/utMr7YLZtnhmRySXim_DuF5QMl0HBwdA REACT_APP_CHAIN=ARBITRUM npm-run-all start"
   },
   "dependencies": {
     "@babel/core": "^7.16.0",
