@@ -113,6 +113,7 @@ export default function Submit(props) {
 
   const signRequest = async (signer, transferRequest) => {
     await transferRequest.sign(signer, controller.address);
+    transferRequest.setProvider((await getSigner()).provider);
     const gateway = await transferRequest.toGatewayAddress();
     setAddress(gateway);
   }
@@ -129,7 +130,7 @@ export default function Submit(props) {
     console.log("ETH AMT", event.target[0].value / 100 * ratio)
     console.log("CHAIN IS", process.env.CHAIN || process.env.REACT_APP_CHAIN || 'MATIC')
     const transferRequest = new TransferRequest({ 
-      to: connectedWallet,
+      to: await (await getSigner()).getAddress(),
       contractAddress: controller.address,
       underwriter: trivialUnderwriter,
       module: zeroModule,
@@ -149,6 +150,7 @@ export default function Submit(props) {
       data: String(data),
     })
     const signer = await getSigner();
+    transferRequest.setProvider(signer.provider);
     await transferRequest.sign(signer);
     setAddress(await transferRequest.toGatewayAddress());
     console.log({ ...transferRequest });
