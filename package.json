@@ -8,7 +8,7 @@
     "build": "cross-env NODE_ENV=production NODE_OPTIONS=--max_old_space_size=4096 next build --profile",
     "start": "react-scripts start",
     "start:dev": "REACT_APP_JSONRPC=http://localhost:8545 npm-run-all start",
-    "start:arbitrum": "REACT_APP_JSONRPC=https://arb-mainnet.g.alchemy.com/v2/utMr7YLZtnhmRySXim_DuF5QMl0HBwdA REACT_APP_CHAIN=ARBITRUM npm-run-all start"
+    "start:arbitrum": "REACT_APP_JSONRPC=https://arbitrum-mainnet.infura.io/v3/816df2901a454b18b7df259e61f92cd2 REACT_APP_CHAIN=ARBITRUM npm-run-all start"
   },
   "dependencies": {
     "@babel/core": "^7.16.0",
@@ -24,6 +24,8 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
+    "@headlessui/react": "^1.4.2",
+    "@heroicons/react": "^1.0.5",
     "@mui/base": "5.0.0-alpha.57",
     "@mui/docs": "^5.2.1",
     "@mui/icons-material": "^5.2.0",
@@ -40,6 +42,7 @@
     "@mui/x-data-grid-pro": "^5.0.1",
     "@portis/web3": "^4.0.6",
     "@renproject/ren": "^2.5.10-1",
+    "@tailwindcss/forms": "^0.4.0",
     "@trendmicro/react-interpolate": "^0.5.5",
     "@types/autosuggest-highlight": "^3.2.0",
     "@types/css-mediaquery": "^0.1.1",
@@ -90,12 +93,14 @@
     "notistack": "2.0.3",
     "nprogress": "^0.2.0",
     "postcss": "^8.4.4",
+    "process": "^0.11.10",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-docgen": "^5.4.0",
     "react-dom": "^17.0.2",
     "react-draggable": "^4.4.4",
     "react-final-form": "^6.5.7",
+    "react-icons": "^4.3.1",
     "react-imask": "^6.2.2",
     "react-intersection-observer": "^8.32.5",
     "react-is": "^17.0.2",
@@ -131,6 +136,7 @@
     "moment": "^2.29.1",
     "npm-run-all": "^4.1.5",
     "react-scripts": "^4.0.3",
+    "tailwindcss": "^3.0.1",
     "typescript": "^4.5.2",
     "web-vitals": "^2.1.2"
   },

@@ -87,6 +87,7 @@ export default function Submit(props) {
       try {
         setETHPrice((await contract.get_dy(1, 2, ethers.utils.parseUnits('1', 8))).toString());
       } catch (e) {
+        console.log(contract)
         console.error(e);
       }
     };

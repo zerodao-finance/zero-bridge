@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Dashboard from './Dashboard';
 import reportWebVitals from './reportWebVitals';
+import './app.css'
+import Dashboard from './components/pages/Dashboard'
+// import Dashboard from './Dashboard'
+
 
 Object.keys(process.env).forEach((key) => {
   const match = key.match(/REACT_APP_(.*$)/);
@@ -11,8 +14,8 @@ Object.keys(process.env).forEach((key) => {
 });
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Dashboard />
+  <React.StrictMode className="">
+      <Dashboard />
   </React.StrictMode>,
   document.getElementById('root')
 );

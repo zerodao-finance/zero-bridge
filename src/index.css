@@ -1,4 +1,22 @@
-body {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+     
+  input[type="range"]::-webkit-slider-thumb {
+      width: 1px;
+      -webkit-appearance: none;
+      /* appearance: none; */
+      /* height: 15px; */
+      /* cursor: ew-resize; */
+      /* background: #FFF; */
+      box-shadow: -405px 0 0 400px #6EE7B7;
+      border-radius: 50%;  
+      
+  }
+}
+/* body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -9,5 +27,5 @@ body {
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+    monospace; */
+/* } */
