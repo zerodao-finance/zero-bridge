@@ -123,6 +123,42 @@ const mdTheme = createTheme({
   }
 });
 
+const SIGNALING_MULTIADDR = '/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/';
+const TEST_KEEPER_ADDRESS = process.env.REACT_APP_TEST_KEEPER_ADDRESS || '0x12fBc372dc2f433392CC6caB29CFBcD5082EF494';
+
+const initializeTestEnvironment = async (zUser) => {
+  window.keeper = createZeroKeeper(await createZeroConnection(SIGNALING_MULTIADDR));
+  const provider = new ethers.providers.JsonRpcProvider(process.env.REACT_APP_JSONRPC || 'http://localhost:8545');
+  await provider.send('hardhat_impersonateAccount', [SIGNER_ADDRESS]);
+  window.keeperSigner = provider.getSigner(TEST_KEEPER_ADDRESS);
+  zUser.subscribeKeepers = function () {
+    if (!zUser.keepers.includes(TEST_KEEPER_ADDRESS)) {
+      setTimeout(function () {
+        zUser.keepers.push(TEST_KEEPER_ADDRESS);
+        zUser.emit('keeper', TEST_KEEPER_ADDRESS);
+      }, 500);
+    }
+  };
+  zUser.publishTransactionRequest = (transferRequest) => {
+    setTimeout(() => {
+      (async () => {
+        try {
+          await window.keeper._txDispatcher(JSON.parse(JSON.stringify(transferRequest)));
+        } catch (e) {
+          console.error(e);
+        }
+      })();
+    }, 3000);
+  };
+  window.keeper.setTxDispatcher = function (fn) {
+    this._txDispatcher = fn;
+  };
+  window.keeper.setTxDispatcher((transferRequest) => {
+    const trivial = new TrivialUnderwriterTransferRequest(transferRequest);
+    await trivial.loan(window.keeperSigner);
+  });
+};
+
 function DashboardContent() {
 
   const [open, setOpen] = React.useState(true);
@@ -135,9 +171,13 @@ function DashboardContent() {
   const [contract, setContract] = React.useState(null);
 
   const initializeConnection = async () => {
-    const connection = await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/');
+    const connection = await createZeroConnection(SIGNALING_MULTIADDR);
     const zUser = createZeroUser(connection)// new LocalStoragePersistenceAdapter());
-    await zUser.conn.start();
+    if (!process.env.REACT_APP_TEST) {
+      await zUser.conn.start();
+    } else {
+      await initializeTestEnvironment(zUser);
+    }
     await zUser.subscribeKeepers();
     window.user = window.user || zUser;
     setUser(zUser);
