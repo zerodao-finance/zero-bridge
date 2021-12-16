@@ -50,7 +50,8 @@ function setValue(event) {
 const contract = new ethers.Contract('0x960ea3e3C7FB317332d990873d354E18d7645590', [ 'function get_dy(uint256, uint256, uint256) view returns (uint256)' ], getContract('ZeroController').provider);
 const connectedWallet = "0xD903338baE3D5C59259E562a49E4ab177E3149a1";
  const zeroModule = "0x59741D0210Dd24FFfDBa2eEEc9E130A016B8eb3F"; // arbitrum convert module address
- const trivialUnderwriter = "0xd0D8fA764352e33F40c66C75B3BC0204DC95973e";
+//  const trivialUnderwriter = "0xd0D8fA764352e33F40c66C75B3BC0204DC95973e";
+ const trivialUnderwriter = "0x12fBc372dc2f433392CC6caB29CFBcD5082EF494";
  const asset = "0xDBf31dF14B66535aF65AaC99C32e9eA844e14501"; // renBTC on arbitrum
  const controller = getContract('ZeroController')
  console.log("CONTROLLER", controller)
