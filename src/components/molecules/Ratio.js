@@ -5,16 +5,6 @@ import { ConversionToolContext } from '../../context/Context'
 
 
 const Ratio = () => {
-    const [ratio, setRatio] = useState(0)
-    const adjust = (event) => {
-        setRatio(event.target.value)
-    }
-
-    const inputChange = (event) => {
-        isNaN(event.target.value) || event.target.value > 100 ? "" : setRatio(event.target.value)
-    }
-
-
     return (
         <ConversionToolContext.Consumer>
             { value =>

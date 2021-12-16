@@ -2,7 +2,6 @@ import Table from '../molecules/Table'
 import { ethers } from 'ethers';
 import moment from 'moment';
 
-const address = '0xD903338baE3D5C59259E562a49E4ab177E3149a1'
 
 const rows = ['0.001', '0.002', '0.003', '0.003', '0.004', '0.005', '0.006'].map((v) => ({
     amount: v,
@@ -13,9 +12,6 @@ const rows = ['0.001', '0.002', '0.003', '0.003', '0.004', '0.005', '0.006'].map
     actualArbEth: v * 0.05
   }));
 
-function preventDefault(event) {
-event.preventDefault();
-}
   
 
 const Transactions = () => {
