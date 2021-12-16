@@ -14,7 +14,7 @@ const ConvertBox = () => {
                         <Ratio />
                     </div>
                     <Result />
-                    <button className="w-fit" onClick={value.functions.handleSubmit}>
+                    <button className="w-fit" onClick={(...args) => value.functions.handleSubmit(...args)}>
                             <RiExchangeFundsFill className="scale-[5] hover:scale-[5.5] translate-x-1 fill-emerald-300 text-emerald-300"/>
                     </button>
                 </div>
