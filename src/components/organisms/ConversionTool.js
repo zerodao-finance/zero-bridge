@@ -1,6 +1,6 @@
 import ConvertBox from '../molecules/Box'
 import { useState, createContext, useEffect } from 'react'
-import { ConversionToolContext } from '../../context/WalletContext'
+// import { ConversionToolContext } from '../../context/WalletContext'
 import { getContract } from '../../contracts'
 import { ethers } from 'ethers';
 import {
@@ -14,8 +14,10 @@ import {
  * TODO: REMOVE
  */
  const connectedWallet = "0xD903338baE3D5C59259E562a49E4ab177E3149a1";
+//  const connectedWallet = "0x12fBc372dc2f433392CC6caB29CFBcD5082EF494";
  const zeroModule = "0x59741D0210Dd24FFfDBa2eEEc9E130A016B8eb3F"; // arbitrum convert module address
  const trivialUnderwriter = "0xd0D8fA764352e33F40c66C75B3BC0204DC95973e";
+//  const trivialUnderwriter = "0x12fBc372dc2f433392CC6caB29CFBcD5082EF494";
  const asset = "0xDBf31dF14B66535aF65AaC99C32e9eA844e14501"; // renBTC on arbitrum
  const controller = getContract('ZeroController')
  console.log("CONTROLLER", controller)
@@ -60,24 +62,6 @@ const ConversionTool = () => {
     /**
      * Declare user input functions
      */
-    function setValue(event) {
-        console.log("typing")
-        if (!isNaN(event.nativeEvent.data) || '.'){
-            event.target.value == '' ? setAmount(0) :
-            setAmount(event.target.value)
-            return
-        } else {
-            return
-        }
-    }
-
-    const adjust = (event) => {
-        setRatio(event.target.value)
-    }
-
-    const inputChange = (event) => {
-        isNaN(event.target.value) || event.target.value > 100 ? "" : setRatio(event.target.value)
-    }
     /**
      * End declaration
      */
@@ -97,13 +81,6 @@ const ConversionTool = () => {
         contract.provider.on('block', listener);
         return () => contract.provder.removeListener('block', listener);
     });
-
-    const ln = (v) => ((console.log(ethers.utils.formatEther(v))), v);
-    const updateAmounts = async () => {
-        setrenBTC(ethers.utils.formatUnits(ln(ethers.utils.parseEther('1').sub(ethers.BigNumber.from(String(ratio)).mul(ethers.utils.parseEther('0.01')))).mul(ethers.utils.parseUnits(String(amount), 8)).div(ethers.utils.parseEther('1')), 8));
-        setEth(ethers.utils.formatEther(ethers.BigNumber.from(String(ratio)).mul(ethers.utils.parseEther('0.01')).mul(ethers.utils.parseUnits(String(amount), 8).mul(ethPrice)).div(ethers.utils.parseEther('1', 18)).div(ethers.utils.parseUnits('1', 8))));
-    };
-    useEffect(updateAmounts, [ amount, ethPrice, ratio ]);
 
     const getSigner = async () => {
         const ethProvider = new ethers.providers.Web3Provider(web3.currentProvider);
@@ -162,9 +139,7 @@ const ConversionTool = () => {
     
     return (
         <div className="grow">
-            <ConversionToolContext.Provider value={{data: {amount: amount, ratio: ratio, eth: eth, renBTC: renBTC, ethPrice: ethPrice}, functions: {setAmount: setValue, setRatio: adjust, setETH: setEth, setrenBTC: setrenBTC, setEthPrice: setEthPrice, typeRatio: inputChange, handleSubmit: handleSubmit}}}>
                 <ConvertBox />
-            </ConversionToolContext.Provider>
         </div>
     )
 }

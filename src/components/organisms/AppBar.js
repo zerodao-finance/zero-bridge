@@ -3,6 +3,7 @@ import Badge from '@mui/material/Badge';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Button from '../atoms/Buttons'
 import {WalletProviderContext, KeeperContext} from '../../context/WalletContext';
+import {ContractContext, Web3Context, ConversionToolContext} from '../../context/Context';
 import { GrBeacon } from 'react-icons/gr'
 
 
@@ -26,11 +27,11 @@ export default function AppBar() {
                     </span>
                     }
                 </KeeperContext.Consumer>
-                <WalletProviderContext.Consumer>
-                    {   value =>
-                        <Button text={value.connected ? "Conntected" : "Connect Wallet"} variant={value.connected ? "valid" : "outlined"} action={value.connected ? null : value.connect}/>
-                    }
-                </WalletProviderContext.Consumer>
+                <Web3Context.Consumer>
+                { value =>
+                        <Button text={value.get.connection ? "Conntected" : "Connect Wallet"} variant={value.get.connection ? "valid" : "outlined"} action={value.get.connection ? null : value.set.connectWallet}/>
+                }
+                </Web3Context.Consumer>
                 <IconButton className="fill-emerald-400 self-center" color="primary">
                     <Badge badgeContent={4} color="secondary">
                         <NotificationsIcon />

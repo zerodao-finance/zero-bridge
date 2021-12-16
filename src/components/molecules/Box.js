@@ -2,7 +2,7 @@ import Convert from './Convert'
 import Ratio from './Ratio'
 import Result from './Result'
 import {RiExchangeFundsFill} from 'react-icons/ri'
-import { ConversionToolContext } from '../../context/WalletContext'
+import { ConversionToolContext } from '../../context/Context'
 
 const ConvertBox = () => {
     return (
@@ -14,7 +14,7 @@ const ConvertBox = () => {
                         <Ratio />
                     </div>
                     <Result />
-                    <button className="w-fit" onClick={value.functions.handleSubmit}>
+                    <button className="w-fit" onClick={value.set.handleSubmit}>
                             <RiExchangeFundsFill className="scale-[5] hover:scale-[5.5] translate-x-1 fill-emerald-300 text-emerald-300"/>
                     </button>
                 </div>

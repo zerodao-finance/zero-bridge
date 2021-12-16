@@ -1,6 +1,7 @@
 import ConvertInput from '../atoms/Input'
 import { useState } from 'react'
-import { ConversionToolContext } from '../../context/WalletContext'
+// import { ConversionToolContext } from '../../context/WalletContext'
+import { ContractContext, Web3Context, ConversionToolContext } from '../../context/Context'
 
 const Convert = () => {
     const [input, setInput] = useState(0.0)
@@ -31,11 +32,11 @@ const Convert = () => {
         { value =>
             <div className="w-fit">
                 <div className="w-fit">
-                    <ConvertInput value={value.data.amount} onChange={value.functions.setAmount} onClick={clear}/>
+                    <ConvertInput value={value.get.value} onChange={value.set.valueInput} onClick={clear}/>
                     <span className="text-gray-400 font-bold lg:text-3xl text-xl">{unit}</span>
                 </div>
                 <div className="text-right mr-5 italic font-medium tracking-wider">
-                    ~ {formatter.format(value.data.amount * 48014.83)}
+                    ~ {formatter.format(value.get.value * 48014.83)}
                 </div>
             </div>
         }

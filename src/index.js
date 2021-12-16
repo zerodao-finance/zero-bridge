@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import './app.css'
 import Dashboard from './components/pages/Dashboard'
-// import Dashboard from './Dashboard'
+import StateWrapper from './utils/StateWrapper'
+import GlobalEffectWrapper from './utils/GlobalEffects'
+
 
 
 Object.keys(process.env).forEach((key) => {
@@ -15,7 +17,11 @@ Object.keys(process.env).forEach((key) => {
 
 ReactDOM.render(
   <React.StrictMode className="">
-      <Dashboard />
+    <StateWrapper>
+      <GlobalEffectWrapper>
+        <Dashboard />
+      </GlobalEffectWrapper>
+    </StateWrapper>
   </React.StrictMode>,
   document.getElementById('root')
 );

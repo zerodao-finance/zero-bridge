@@ -1,10 +1,11 @@
 import { WalletProviderContext, KeeperContext } from '../../context/WalletContext'
 import wallet_model from '../../WalletModal';
 import Contract from 'web3-eth-contract'; 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
+import { ContractContext, Web3Context, ConversionToolContext } from '../../context/Context'
 import ConversionTool from '../organisms/ConversionTool'
 import Transactions from '../organisms/Transactions'
-import { TransferRequest, createZeroConnection, createZeroUser } from 'zero-protocol/dist/lib/zero.js';
+import { TransferRequest, createZeroConnection, createZeroUser, createZeroKeeper } from 'zero-protocol/dist/lib/zero.js';
 
 import Button from '../atoms/Buttons'
 import AppBar from '../organisms/AppBar'
@@ -29,40 +30,50 @@ const curveABI = [{"stateMutability":"view","type":"function","name":"get_dy","i
 
 
 const Dashboard = () => {
-    var [connected, setConnection] = useState(false)
+    const [connected, setConnection] = useState(false)
     const [web3, setWeb3] = useState(null);
     const [contract, setContract] = useState(null);
     const [user, setUser] = useState(null);
-    // TODO - Create keeper context
     const [keepers, setKeepers] = useState([]);
 
-    const { web3Loading, getweb3 } = wallet_model();
 
-    async function connectWallet() {
-        await getweb3().then(async (response) => {
-          setWeb3(response);
-          const chainId = await response.eth.getChainId();
-          if (chainId !== chainData.chainId) {
-            await response.currentProvider.sendAsync({method: 'wallet_addEthereumChain', params: chainData});
-          }
-    
-          Contract.setProvider(response);
-          const curveContract = new Contract(curveABI, curveArbitrum)
-          setContract(curveContract);
-          setConnection(true)
-        });
-    }
+    // - sets ZeroDao User Connection
+    // const initializeConnection = async () => {
+    //     const connection = await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/');
+    //     const zUser = createZeroUser(connection)// new LocalStoragePersistenceAdapter());
+    //     await zUser.conn.start();
+    //     await zUser.subscribeKeepers();
+    //     window.user = window.user || zUser;
+    //     setUser(zUser);
+    //     return zUser;
+    //   }
 
     // - sets ZeroDao User Connection
     const initializeConnection = async () => {
-        const connection = await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/');
-        const zUser = createZeroUser(connection)// new LocalStoragePersistenceAdapter());
-        await zUser.conn.start();
-        await zUser.subscribeKeepers();
-        window.user = window.user || zUser;
-        setUser(zUser);
-        return zUser;
-      }
+      let keeper
+      if (process.env.REACT_APP_TEST === 'test') (async () => {
+        keeper = await createZeroKeeper(await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/'));
+        keeper.setTxDispatcher = function (fn) {
+          this._txDispatcher = fn;
+        };
+        keeper.setTxDispatcher(async (transferRequest) => {
+          const trivialRequest = new TrivialUnderwriterTransferRequest(
+            transferRequest
+          );
+          await trivialRequest.loan(await ethers.provider.getSigner('0x12fBc372dc2f433392CC6caB29CFBcD5082EF494'));
+        });
+      })();
+      const connection = await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/');
+      const zUser = createZeroUser(connection)// new LocalStoragePersistenceAdapter());
+      if (process.env.REACT_APP_TEST === 'test') zUser.publishTransferRequest = (transferRequest) => setTimeout(() => keeper._txDispatcher(transferRequest), 0)
+      if  (process.env.REACT_APP_TEST !== 'test') await zUser.subscribeKeepers()
+      await zUser.conn.start();
+      zUser.keepers.push(keeper)
+
+      window.user = window.user || zUser;
+      setUser(zUser);
+      return zUser;
+    }
     
     
     // use effect for initializing zero user connection  
@@ -79,35 +90,13 @@ const Dashboard = () => {
         return () => user && user.removeListener('keeper', listener);
       }, [user])
 
-    function checkConnected() {
-        console.log(user)
-        const { ethereum } = window
 
-        if (!ethereum) {
-            console.log("Install A Wallet Provider")
-            setConnection(false)
-            return
-        }
-
-        ethereum.request({method: 'eth_accounts'}).then(account => {
-            if (account.length == 0) setConnection(false)
-            else setConnection(true)
-        })
-        
-        
-        setConnection(ethereum.isConnected())
-    }
-
-    useEffect(() => {
-        checkConnected()
-    }, [])
 
    
 
     return (
+      
         <KeeperContext.Provider value={keepers}>
-        <WalletProviderContext.Provider value={{connect: connectWallet, connected: connected}}>
-            {/* <Button action={wallet.account ? null : connectWallet} text={wallet.account ? "Connected" : "Connect Wallet"} variant={wallet.account ? "valid" : "outlined"}/> */}
             <div className="h-screen fixed bg-gradient-to-tl from-white via-slate-50 to-neutral-50">
                 <AppBar />
                 <div className="flex flex-col h-full items-center justify-center">
@@ -116,7 +105,6 @@ const Dashboard = () => {
                     <Transactions />
                 </div>
             </div>
-        </WalletProviderContext.Provider>
         </KeeperContext.Provider>
     )
 }
