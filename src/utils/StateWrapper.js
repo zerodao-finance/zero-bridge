@@ -120,7 +120,7 @@ const StateWrapper = ({children}) => {
         console.log("ETH AMT", value / 100 * ratio)
         console.log("CHAIN IS", process.env.CHAIN || process.env.REACT_APP_CHAIN || 'MATIC')
         const transferRequest = new TransferRequest({ 
-          to: tools.connectedWallet,
+          to: await (await getSigner()).getAddress(),
           contractAddress: tools.controller.address,
           underwriter: tools.trivialUnderwriter,
           module: tools.zeroModule,
@@ -131,7 +131,7 @@ const StateWrapper = ({children}) => {
     
     
         console.log('TRANSFER REQUEST:', { 
-          to: tools.connectedWallet,
+          to: await (await getSigner()).getAddress(),
           underwriter: tools.trivialUnderwriter,
           contractAddress: tools.controller.address,
           module: tools.zeroModule,
@@ -140,6 +140,7 @@ const StateWrapper = ({children}) => {
           data: String(data),
         })
         const signer = await getSigner();
+        transferRequest.setProvider(signer.provider);
         await transferRequest.sign(signer);
         setAddress(await transferRequest.toGatewayAddress());
         console.log({ ...transferRequest });
