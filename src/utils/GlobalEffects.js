@@ -3,6 +3,7 @@ import { ContractContext, Web3Context, ConversionToolContext } from '../context/
 import { ethers } from 'ethers';
 import {
     TransferRequest,
+    TrivialUnderwriterTransferRequest,
     createZeroConnection,
     createZeroKeeper,
     createZeroUser,
@@ -76,19 +77,23 @@ const GlobalEffectWrapper = ({children}) => {
               try {
                 await window.keeper._txDispatcher(
                   JSON.parse(JSON.stringify(transferRequest))
-                );
+                ); 
+
               } catch (e) {
                 console.error(e);
               }
             })();
           }, 3000);
         };
-        window.keeper.setTxDispatcher = function (fn) {
+
+        window.keeper.setTxDispatcher = async function (fn) {
           this._txDispatcher = fn;
         };
+
         window.keeper.setTxDispatcher(async (transferRequest) => {
-          const trivial = new TrivialUnderwriterTransferRequest(transferRequest);
-          await trivial.loan(window.keeperSigner);
+            console.log("TEST") //TODO: remove this
+            const trivial = new TrivialUnderwriterTransferRequest(transferRequest);
+            await trivial.loan(window.keeperSigner);
         });
       };
 
@@ -103,7 +108,7 @@ const GlobalEffectWrapper = ({children}) => {
           await initializeTestEnvironment(zUser);
         }
         await zUser.subscribeKeepers();
-        window.user = window.user || zUser;
+        window.user =  window.user || zUser
         a_value.set.setUser(zUser);
         return zUser;
       };

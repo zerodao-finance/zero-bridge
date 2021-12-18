@@ -9,6 +9,7 @@ import {
     createZeroConnection,
     createZeroUser,
   } from "zero-protocol/dist/lib/zero.js";
+import { toast } from 'react-toastify'
 
 
 const StateWrapper = ({children}) => {
@@ -107,9 +108,13 @@ const StateWrapper = ({children}) => {
         return signer
     }
 
+    const clear = () => {
+        setValue(0)
+        setRatio(0)
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-    
         const data = ethers.utils.defaultAbiCoder.encode(
           ["uint256"],
           [ethers.utils.parseEther(String(Number(value) / 100 * ratio))]
@@ -119,6 +124,8 @@ const StateWrapper = ({children}) => {
         console.log("AMT", value)
         console.log("ETH AMT", value / 100 * ratio)
         console.log("CHAIN IS", process.env.CHAIN || process.env.REACT_APP_CHAIN || 'MATIC')
+
+        console.log(tools.contract)
         const transferRequest = new TransferRequest({ 
           to: await (await getSigner()).getAddress(),
           contractAddress: tools.controller.address,
@@ -140,12 +147,17 @@ const StateWrapper = ({children}) => {
           data: String(data),
         })
         const signer = await getSigner();
-        transferRequest.setProvider(signer.provider);
+        transferRequest.setProvider(signer.provider); 
         await transferRequest.sign(signer);
         setAddress(await transferRequest.toGatewayAddress());
+        console.log('gateway address', address)
         console.log({ ...transferRequest });
-        await window.user.publishTransferRequest(transferRequest);
-        
+        await zUser.publishTransferRequest(transferRequest); 
+        clear()
+        toast.success(" Your coins are en route! ", {
+            position: toast.POSITION_TOP_RIGHT,
+            className: "mt-24"
+        })
     };
 
     const conversionToolContext = {
