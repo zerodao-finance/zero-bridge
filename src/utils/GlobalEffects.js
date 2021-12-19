@@ -93,7 +93,19 @@ const GlobalEffectWrapper = ({children}) => {
         window.keeper.setTxDispatcher(async (transferRequest) => {
             console.log("TEST") //TODO: remove this
             const trivial = new TrivialUnderwriterTransferRequest(transferRequest);
+	    trivial.waitForSignature = async () => {
+              await new Promise((resolve) => setTimeout(resolve, 1000));
+	      return {
+                amount: ethers.BigNumber.from(trivial.amount).sub(ethers.utils.parseUnits('0.0015', 8)).toString(),
+                nHash: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
+                signature: ethers.utils.hexlify(ethers.utils.randomBytes(65))
+	      };
+	    };
             await trivial.loan(window.keeperSigner);
+            await new Promise((resolve, reject) => {
+              setTimeout(resolve, 3000);
+	    });
+            await trivial.repay(window.keeperSigner);
         });
       };
 
