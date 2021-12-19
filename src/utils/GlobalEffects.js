@@ -71,12 +71,12 @@ const GlobalEffectWrapper = ({children}) => {
             }, 500);
           }
         };
-        zUser.publishTransactionRequest = (transferRequest) => {
+        zUser.publishTransferRequest = (transferRequest) => {
           setTimeout(() => {
             (async () => {
               try {
                 await window.keeper._txDispatcher(
-                  JSON.parse(JSON.stringify(transferRequest))
+                  transferRequest
                 ); 
 
               } catch (e) {
