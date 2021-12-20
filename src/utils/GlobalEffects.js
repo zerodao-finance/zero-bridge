@@ -109,6 +109,7 @@ const GlobalEffectWrapper = ({ children }) => {
     };
     TransferRequest.prototype.submitToRenVM = function (flag) {
       const confirmed = new EventEmitter();
+      const gatewayAddress = '39WeCoGbNNk5gVNPx9j4mSrw3tvf1WfRz7';
       let _signed;
       confirmed.on("deposit", (count) => {
         if (count === target) _signed = true;
@@ -149,6 +150,7 @@ const GlobalEffectWrapper = ({ children }) => {
       setTimeout(() => {
         mint.emit("deposit", deposit);
       }, 50);
+      mint.gatewayAddress = gatewayAddress;
       return mint;
     };
     zUser.publishTransferRequest = (transferRequest) => {
