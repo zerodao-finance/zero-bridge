@@ -81,6 +81,7 @@ const StateWrapper = ({children}) => {
     const [ ETH, setETH ] = useState(0)
     const [ renBTC, setrenBTC ] = useState(0)
     const [ ETHPrice, setETHPrice] = useState('0')
+    const [ depositTx, addTx ] = useState([])
     
 /**
  * Conversion Tool functions
@@ -116,10 +117,10 @@ const StateWrapper = ({children}) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(ethers.utils.parseEther(String( Number(value) / 100 * ratio )))
+        console.log(ethers.utils.parseEther(parseFloat(String(Number(value) / 100 * ratio )).toFixed(8)))
         const data = ethers.utils.defaultAbiCoder.encode(
           ["uint256"],
-          [ethers.utils.parseEther(String(Number(value) / 100 * ratio))]
+          [ethers.utils.parseEther(parseFloat(String(Number(value) / 100 * ratio)).toFixed(8))]
         );
         
         let asset = tools.asset
@@ -172,7 +173,8 @@ const StateWrapper = ({children}) => {
             ETH: ETH,
             renBTC: renBTC,
             ETHPrice: ETHPrice,
-            address: address
+            address: address,
+            depositTx: depositTx
         },
         set: {
             setValue: setValue, 
@@ -184,7 +186,8 @@ const StateWrapper = ({children}) => {
             ratioRange: ratioRange,
             valueInput: valueInput,
             handleSubmit: handleSubmit,
-            setAddress: setAddress
+            setAddress: setAddress,
+            addTx: addTx
         }
     }
 
