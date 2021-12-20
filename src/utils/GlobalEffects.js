@@ -1,156 +1,231 @@
-import { useContext, useEffect } from 'react';
-import { ContractContext, Web3Context, ConversionToolContext } from '../context/Context'
-import { ethers } from 'ethers';
+import { useContext, useEffect } from "react";
 import {
-    TransferRequest,
-    TrivialUnderwriterTransferRequest,
-    createZeroConnection,
-    createZeroKeeper,
-    createZeroUser,
-  } from "zero-protocol/dist/lib/zero.js";
+  ContractContext,
+  Web3Context,
+  ConversionToolContext,
+} from "../context/Context";
+import { ethers } from "ethers";
+import {
+  TransferRequest,
+  TrivialUnderwriterTransferRequest,
+  createZeroConnection,
+  createZeroKeeper,
+  createZeroUser,
+} from "zero-protocol/dist/lib/zero.js";
 
-import tools from './_utils'
+import { EventEmitter } from "events";
+import { Buffer } from "buffer";
+import tools from "./_utils";
 
-const GlobalEffectWrapper = ({children}) => {
-    /**
-     * Context Declerations
-     */
-    let value = useContext(Web3Context) // web3 context
-    let c_value = useContext( ConversionToolContext ) // conversion tool context
-    let a_value = useContext( ContractContext ) //arbitrum context
-    
-    
-    /**
-     * Effect Functions
-     */
-    function checkConnected() {
+const GlobalEffectWrapper = ({ children }) => {
+  /**
+   * Context Declerations
+   */
+  let value = useContext(Web3Context); // web3 context
+  let c_value = useContext(ConversionToolContext); // conversion tool context
+  let a_value = useContext(ContractContext); //arbitrum context
 
-        if (value.web3) {
-            value.set.setConnection(true)
-        } else {
-            value.set.setConnection(false)
-        }
-        
+  /**
+   * Effect Functions
+   */
+  function checkConnected() {
+    if (value.web3) {
+      value.set.setConnection(true);
+    } else {
+      value.set.setConnection(false);
     }
-    const ln = (v) => ((console.log(ethers.utils.formatEther(v))), v);
-    const updateAmounts = async () => {
-        c_value.set.setrenBTC(ethers.utils.formatUnits(ln(ethers.utils.parseEther('1').sub(ethers.BigNumber.from(String(c_value.get.ratio)).mul(ethers.utils.parseEther('0.01')))).mul(ethers.utils.parseUnits(String(c_value.get.value), 8)).div(ethers.utils.parseEther('1')), 8));
-        c_value.set.setETH(ethers.utils.formatEther(ethers.BigNumber.from(String(c_value.get.ratio)).mul(ethers.utils.parseEther('0.01')).mul(ethers.utils.parseUnits(String(c_value.get.value), 8).mul(c_value.get.ETHPrice)).div(ethers.utils.parseEther('1', 18)).div(ethers.utils.parseUnits('1', 8))));
+  }
+  const ln = (v) => (console.log(ethers.utils.formatEther(v)), v);
+  const updateAmounts = async () => {
+    c_value.set.setrenBTC(
+      ethers.utils.formatUnits(
+        ln(
+          ethers.utils
+            .parseEther("1")
+            .sub(
+              ethers.BigNumber.from(String(c_value.get.ratio)).mul(
+                ethers.utils.parseEther("0.01")
+              )
+            )
+        )
+          .mul(ethers.utils.parseUnits(String(c_value.get.value), 8))
+          .div(ethers.utils.parseEther("1")),
+        8
+      )
+    );
+    c_value.set.setETH(
+      ethers.utils.formatEther(
+        ethers.BigNumber.from(String(c_value.get.ratio))
+          .mul(ethers.utils.parseEther("0.01"))
+          .mul(
+            ethers.utils
+              .parseUnits(String(c_value.get.value), 8)
+              .mul(c_value.get.ETHPrice)
+          )
+          .div(ethers.utils.parseEther("1", 18))
+          .div(ethers.utils.parseUnits("1", 8))
+      )
+    );
+  };
+
+  /**
+   * FIXME: change to web3 contract?
+   */
+  useEffect(async () => {
+    const listener = async () => {
+      try {
+        c_value.set.setETHPrice(
+          (
+            await tools.contract.get_dy(1, 2, ethers.utils.parseUnits("1", 8))
+          ).toString()
+        );
+      } catch (e) {
+        console.error(e, "Error setting ETH price");
+      }
+    };
+    listener().catch((err) => console.error(err));
+    tools.contract.provider.on("block", listener);
+    return () => tools.contract.provder.removeListener("block", listener);
+  });
+
+  const initializeTestEnvironment = async (zUser) => {
+    window.keeper = createZeroKeeper(
+      await createZeroConnection(tools.SIGNALING_MULTIADDR)
+    );
+    const provider = new ethers.providers.JsonRpcProvider(
+      process.env.REACT_APP_JSONRPC || "http://localhost:8545"
+    );
+    await provider.send("hardhat_impersonateAccount", [
+      tools.TEST_KEEPER_ADDRESS,
+    ]);
+    window.keeperSigner = provider.getSigner(tools.TEST_KEEPER_ADDRESS);
+    zUser.subscribeKeepers = function () {
+      if (!zUser.keepers.includes(tools.TEST_KEEPER_ADDRESS)) {
+        setTimeout(function () {
+          zUser.keepers.push(tools.TEST_KEEPER_ADDRESS);
+          zUser.emit("keeper", tools.TEST_KEEPER_ADDRESS);
+        }, 500);
+      }
+    };
+    TransferRequest.prototype.submitToRenVM = function (flag) {
+      const confirmed = new EventEmitter();
+      let _signed;
+      confirmed.on("deposit", (count) => {
+        if (count === target) _signed = true;
+      });
+      const target = 6;
+      setTimeout(() => {
+        confirmed.emit("target", target);
+        confirmed.emit("deposit", 0);
+      }, 100);
+      const txHash = ethers.utils.randomBytes(32).toString("base64");
+      const mint = new EventEmitter();
+      const deposit = {
+        async txHash() {
+          return txHash;
+        },
+        async confirmed() {
+          return confirmed;
+        },
+        async signed() {
+          const ee = new EventEmitter();
+          setTimeout(async () => {
+            const result = await new Promise((resolve) => {
+              if (_signed) return resolve("signed");
+              confirmed.on("deposit", (count) => {
+                if (count === target) resolve("signed");
+              });
+            });
+            ee.emit("status", result);
+          }, 100);
+          return ee;
+        },
+      };
+      setTimeout(() => {
+        mint.emit("deposit", deposit);
+      }, 50);
+      return mint;
+    };
+    zUser.publishTransferRequest = (transferRequest) => {
+      setTimeout(() => {
+        (async () => {
+          try {
+            await window.keeper._txDispatcher(transferRequest);
+          } catch (e) {
+            console.error(e);
+          }
+        })();
+      }, 3000);
     };
 
-    /**
-     * FIXME: change to web3 contract?
-     */
-    useEffect(async () => {
-        const listener = async () => {
-            try {
-            c_value.set.setETHPrice((await tools.contract.get_dy(1, 2, ethers.utils.parseUnits('1', 8))).toString());
-            } catch (e) {
-            console.error(e, "Error setting ETH price");
-            }
+    window.keeper.setTxDispatcher = async function (fn) {
+      this._txDispatcher = fn;
+    };
+
+    window.keeper.setTxDispatcher(async (transferRequest) => {
+      console.log("TEST"); //TODO: remove this
+      const trivial = new TrivialUnderwriterTransferRequest(transferRequest);
+      trivial.waitForSignature = async () => {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        return {
+          amount: ethers.BigNumber.from(trivial.amount)
+            .sub(ethers.utils.parseUnits("0.0015", 8))
+            .toString(),
+          nHash: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
+          signature: ethers.utils.hexlify(ethers.utils.randomBytes(65)),
         };
-        listener().catch((err) => console.error(err));
-        tools.contract.provider.on('block', listener);
-        return () => tools.contract.provder.removeListener('block', listener);
+      };
+      await trivial.loan(window.keeperSigner);
+      await new Promise((resolve, reject) => {
+        setTimeout(resolve, 3000);
+      });
+      await trivial.repay(window.keeperSigner);
     });
+  };
 
-    const initializeTestEnvironment = async (zUser) => {
-        window.keeper = createZeroKeeper(
-          await createZeroConnection(tools.SIGNALING_MULTIADDR)
-        );
-        const provider = new ethers.providers.JsonRpcProvider(
-          process.env.REACT_APP_JSONRPC || "http://localhost:8545"
-        );
-        await provider.send("hardhat_impersonateAccount", [tools.TEST_KEEPER_ADDRESS]);
-        window.keeperSigner = provider.getSigner(tools.TEST_KEEPER_ADDRESS);
-        zUser.subscribeKeepers = function () {
-          if (!zUser.keepers.includes(tools.TEST_KEEPER_ADDRESS)) {
-            setTimeout(function () {
-              zUser.keepers.push(tools.TEST_KEEPER_ADDRESS);
-              zUser.emit("keeper", tools.TEST_KEEPER_ADDRESS);
-            }, 500);
-          }
-        };
-        zUser.publishTransferRequest = (transferRequest) => {
-          setTimeout(() => {
-            (async () => {
-              try {
-                await window.keeper._txDispatcher(
-                  transferRequest
-                ); 
+  const initializeConnection = async () => {
+    const connection = await createZeroConnection(
+      "/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/"
+    );
+    const zUser = createZeroUser(connection); // new LocalStoragePersistenceAdapter());
+    if (!process.env.REACT_APP_TEST) {
+      await zUser.conn.start();
+    } else {
+      await initializeTestEnvironment(zUser);
+    }
+    await zUser.subscribeKeepers();
+    window.user = window.user || zUser;
+    a_value.set.setUser(zUser);
+    return zUser;
+  };
 
-              } catch (e) {
-                console.error(e);
-              }
-            })();
-          }, 3000);
-        };
+  /**
+   * Effects
+   */
+  useEffect(() => {
+    checkConnected();
+  }, [window]);
 
-        window.keeper.setTxDispatcher = async function (fn) {
-          this._txDispatcher = fn;
-        };
+  useEffect(updateAmounts, [
+    c_value.get.value,
+    c_value.get.ETHPrice,
+    c_value.get.ratio,
+  ]);
 
-        window.keeper.setTxDispatcher(async (transferRequest) => {
-            console.log("TEST") //TODO: remove this
-            const trivial = new TrivialUnderwriterTransferRequest(transferRequest);
-	    trivial.waitForSignature = async () => {
-              await new Promise((resolve) => setTimeout(resolve, 1000));
-	      return {
-                amount: ethers.BigNumber.from(trivial.amount).sub(ethers.utils.parseUnits('0.0015', 8)).toString(),
-                nHash: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
-                signature: ethers.utils.hexlify(ethers.utils.randomBytes(65))
-	      };
-	    };
-            await trivial.loan(window.keeperSigner);
-            await new Promise((resolve, reject) => {
-              setTimeout(resolve, 3000);
-	    });
-            await trivial.repay(window.keeperSigner);
-        });
-      };
+  useEffect(async () => {
+    await initializeConnection();
+  }, []);
 
-      const initializeConnection = async () => {
-        const connection = await createZeroConnection(
-          "/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/"
-        );
-        const zUser = createZeroUser(connection); // new LocalStoragePersistenceAdapter());
-        if (!process.env.REACT_APP_TEST) {
-          await zUser.conn.start();
-        } else {
-          await initializeTestEnvironment(zUser);
-        }
-        await zUser.subscribeKeepers();
-        window.user =  window.user || zUser
-        a_value.set.setUser(zUser);
-        return zUser;
-      };
-    
-    /**
-     * Effects
-     */
-    useEffect(() => {
-        checkConnected()
-    }, [window])
-    
-    useEffect(updateAmounts, [ c_value.get.value, c_value.get.ETHPrice, c_value.get.ratio ]);
+  useEffect(async () => {
+    const listener = (keeper) => {
+      a_value.set.setKeepers(a_value.get.zUser.keepers.slice());
+    };
+    if (a_value.get.zUser) a_value.get.zUser.on("keeper", listener);
+    return () =>
+      a_value.get.zUser && a_value.get.zUser.removeListener("keeper", listener);
+  }, [a_value.get.zUser]);
 
-    useEffect(async () => {
-        await initializeConnection();
-      }, []);
+  return <>{children}</>;
+};
 
-    useEffect(async () => {
-        const listener = (keeper) => {
-            a_value.set.setKeepers(a_value.get.zUser.keepers.slice());
-        };
-        if (a_value.get.zUser) a_value.get.zUser.on("keeper", listener);
-        return () => a_value.get.zUser && a_value.get.zUser.removeListener("keeper", listener);
-    }, [a_value.get.zUser]);
-
-    return (
-        <>
-        {children}
-        </>
-    )
-}
-
-export default GlobalEffectWrapper
+export default GlobalEffectWrapper;
