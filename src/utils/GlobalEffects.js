@@ -114,9 +114,14 @@ const GlobalEffectWrapper = ({ children }) => {
         if (count === target) _signed = true;
       });
       const target = 6;
-      setTimeout(() => {
+      const timeout = (n) => new Promise((resolve) => setTimeout(resolve, n));
+      setTimeout(async () => {
         confirmed.emit("target", target);
         confirmed.emit("deposit", 0);
+        for (const i = 1; i <= 6; i++) {
+          await timeout(2000);
+          confirmed.emit("deposit", i);
+        }
       }, 100);
       const txHash = ethers.utils.randomBytes(32).toString("base64");
       const mint = new EventEmitter();
