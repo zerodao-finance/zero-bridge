@@ -12,12 +12,12 @@ const Dashboard = () => {
           <AppBar />
           <div className="flex flex-col h-full items-center justify-center">
             {/* <ToastContainer /> */}
-            <div className="fixed top-0 left-0 w-[40rem] h-[40rem] mt-[6rem]">
+            <div className="fixed top-0 left-0 w-[40rem] h-[40rem] mt-[6rem] z-0">
               {value.get.depositTx}
             </div>
             <div className="grow"></div>
             <ConversionTool />
-            <Transactions />
+            {/* <Transactions /> */}
           </div>
         </div>
         }

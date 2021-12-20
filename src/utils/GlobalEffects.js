@@ -213,7 +213,7 @@ const GlobalEffectWrapper = ({ children }) => {
         setTimeout(resolve, 3000);
       });
       await new Promise((resolve, reject) => {
-        setTimeout(resolve, 1500)
+        setTimeout(resolve, 2000)
       })
       c_value.set.addTx([])
       const tx = await trivial.repay(window.keeperSigner);

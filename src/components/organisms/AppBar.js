@@ -22,7 +22,7 @@ export default function AppBar() {
                     { value =>
                     <span className="flex gap-4 self-center text-lg ml-8">
 
-                        {value.get.keepers.length > 0 && <p className="font-medium text-emerald-300">Keeper Status</p>}
+                        {value.get.keepers.length > 0 && <p className="font-medium text-emerald-300 hidden md:block">Keeper Status</p>}
                         {value.get.keepers.length === 0 && <p className="font-medium text-red-500">Keeper Status</p>}
                         {value.get.keepers.length > 0 ?
                         <GrBeacon className="fill-emerald-100 scale-150 self-center animate hover:animate-ping"/> :
