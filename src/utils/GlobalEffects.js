@@ -8,8 +8,10 @@ import {
     createZeroKeeper,
     createZeroUser,
   } from "zero-protocol/dist/lib/zero.js";
-
+import EventEmitter from 'events'
 import tools from './_utils'
+
+
 
 const GlobalEffectWrapper = ({children}) => {
     /**
@@ -63,6 +65,9 @@ const GlobalEffectWrapper = ({children}) => {
         );
         await provider.send("hardhat_impersonateAccount", [tools.TEST_KEEPER_ADDRESS]);
         window.keeperSigner = provider.getSigner(tools.TEST_KEEPER_ADDRESS);
+
+
+
         zUser.subscribeKeepers = function () {
           if (!zUser.keepers.includes(tools.TEST_KEEPER_ADDRESS)) {
             setTimeout(function () {
@@ -71,6 +76,8 @@ const GlobalEffectWrapper = ({children}) => {
             }, 500);
           }
         };
+
+
         zUser.publishTransferRequest = (transferRequest) => {
           setTimeout(() => {
             (async () => {
@@ -91,21 +98,32 @@ const GlobalEffectWrapper = ({children}) => {
         };
 
         window.keeper.setTxDispatcher(async (transferRequest) => {
-            console.log("TEST") //TODO: remove this
             const trivial = new TrivialUnderwriterTransferRequest(transferRequest);
-	    trivial.waitForSignature = async () => {
+            
+            trivial.waitForSignature = async () => {
+              console.log("called wait For Signature")
               await new Promise((resolve) => setTimeout(resolve, 1000));
-	      return {
+              return {
                 amount: ethers.BigNumber.from(trivial.amount).sub(ethers.utils.parseUnits('0.0015', 8)).toString(),
                 nHash: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
+                pHash: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
                 signature: ethers.utils.hexlify(ethers.utils.randomBytes(65))
-	      };
-	    };
-            await trivial.loan(window.keeperSigner);
+              };
+            };
+
+            /**
+             * submitToRenVM() get deposit object from mint callback
+             */
+            
+            const loanTx = await trivial.loan(window.keeperSigner);
+            console.log("loaned", loanTx, "waiting for receipt... ")
             await new Promise((resolve, reject) => {
               setTimeout(resolve, 3000);
-	    });
-            await trivial.repay(window.keeperSigner);
+            });
+            const tx = await trivial.repay(window.keeperSigner);
+            console.log('tx submitted', tx)
+
+            console.log.log(await tx.wait())
         });
       };
 

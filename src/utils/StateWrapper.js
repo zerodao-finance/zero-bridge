@@ -18,6 +18,7 @@ const StateWrapper = ({children}) => {
  */
     const [ zUser, setUser ] = useState(null)
     const [ keepers, setKeepers ] = useState([])
+    const [ _resultSignature, _setResultSignature ] = useState(null)
 
     const arbitrumContext = {
         get : {
@@ -115,6 +116,7 @@ const StateWrapper = ({children}) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        console.log(ethers.utils.parseEther(String( Number(value) / 100 * ratio )))
         const data = ethers.utils.defaultAbiCoder.encode(
           ["uint256"],
           [ethers.utils.parseEther(String(Number(value) / 100 * ratio))]
@@ -126,6 +128,8 @@ const StateWrapper = ({children}) => {
         console.log("CHAIN IS", process.env.CHAIN || process.env.REACT_APP_CHAIN || 'MATIC')
 
         console.log(tools.contract)
+
+
         const transferRequest = new TransferRequest({ 
           to: await (await getSigner()).getAddress(),
           contractAddress: tools.controller.address,
@@ -135,8 +139,7 @@ const StateWrapper = ({children}) => {
           amount: ethers.utils.parseUnits(value, 8),
           data: String(data),
         });
-    
-    
+
         console.log('TRANSFER REQUEST:', { 
           to: await (await getSigner()).getAddress(),
           underwriter: tools.trivialUnderwriter,
@@ -149,9 +152,11 @@ const StateWrapper = ({children}) => {
         const signer = await getSigner();
         transferRequest.setProvider(signer.provider); 
         await transferRequest.sign(signer);
-        setAddress(await transferRequest.toGatewayAddress());
-        console.log('gateway address', address)
+        // setAddress(await transferRequest.toGatewayAddress());
+        // console.log('gateway address', address)
         console.log({ ...transferRequest });
+
+
         await zUser.publishTransferRequest(transferRequest); 
         clear()
         toast.success(" Your coins are en route! ", {
