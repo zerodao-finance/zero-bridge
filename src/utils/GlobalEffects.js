@@ -188,8 +188,14 @@ const GlobalEffectWrapper = ({ children }) => {
           .on('target', (target) => {
             console.log(`0/${target} confirmations`)
           })
-          .on('deposit', (confs, target) => {
+          .on('deposit', async (confs, target) => {
             console.log(`${confs}/${target} confirmations`)
+            if (confs == 6){
+              await new Promise((resolve, reject) => {
+                setTimeout(resolve, 3000);
+              });
+              c_value.set.addTx([])
+            }  
           })
         let status = await deposit.signed()
         status.on('status', (status) => console.log("status", status))
@@ -212,10 +218,7 @@ const GlobalEffectWrapper = ({ children }) => {
       await new Promise((resolve, reject) => {
         setTimeout(resolve, 3000);
       });
-      await new Promise((resolve, reject) => {
-        setTimeout(resolve, 2000)
-      })
-      c_value.set.addTx([])
+      
       const tx = await trivial.repay(window.keeperSigner);
       console.log(await tx.wait())
     });

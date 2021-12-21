@@ -18,23 +18,24 @@ export const Title = () => {
 }
 
 
-export const ProgressBar = (props) => {
-    let step = props.step
+export const ProgressBar = ({ step }) => {
+    const thisStep = step
     return (
         <div className="w-[25rem] h-[.5rem] rounded-full flex justify-between relative bg-slate-400">
-            <ProgressFiller step={step}/>
-            <CheckIcon step={step}/>
-            <div className={`w-[.5rem] h-[.5rem] rounded-full ${step >= 1 ? "bg-emerald-300" : "bg-slate-400"} scale-[2]`}></div> 
-            <div className={`w-[.5rem] h-[.5rem] rounded-full ${step >= 2 ? "bg-emerald-300" : "bg-slate-400"} scale-[2]`}></div> 
-            <div className={`w-[.5rem] h-[.5rem] rounded-full ${step >= 3 ? "bg-emerald-300" : "bg-slate-400"} scale-[2]`}></div> 
-            <div className={`w-[.5rem] h-[.5rem] rounded-full ${step >= 4 ? "bg-emerald-300" : "bg-slate-400"} scale-[2]`}></div> 
-            <div className={`w-[.5rem] h-[.5rem] rounded-full ${step >= 5 ? "bg-emerald-300" : "bg-slate-400"} scale-[2]`}></div> 
-            <div className={`w-[.5rem] h-[.5rem] rounded-full ${step >= 6 ? "bg-emerald-300" : "bg-slate-400"} scale-[2]`}></div> 
+            <ProgressFiller step={thisStep}/>
+            <CheckIcon step={thisStep}/>
+            <div className={`w-[.5rem] h-[.5rem] rounded-full ${thisStep >= 1 ? "bg-emerald-300" : "bg-slate-400"} scale-[2]`}></div> 
+            <div className={`w-[.5rem] h-[.5rem] rounded-full ${thisStep >= 2 ? "bg-emerald-300" : "bg-slate-400"} scale-[2]`}></div> 
+            <div className={`w-[.5rem] h-[.5rem] rounded-full ${thisStep >= 3 ? "bg-emerald-300" : "bg-slate-400"} scale-[2]`}></div> 
+            <div className={`w-[.5rem] h-[.5rem] rounded-full ${thisStep >= 4 ? "bg-emerald-300" : "bg-slate-400"} scale-[2]`}></div> 
+            <div className={`w-[.5rem] h-[.5rem] rounded-full ${thisStep >= 5 ? "bg-emerald-300" : "bg-slate-400"} scale-[2]`}></div> 
+            <div className={`w-[.5rem] h-[.5rem] rounded-full ${thisStep >= 6 ? "bg-emerald-300" : "bg-slate-400"} scale-[2]`}></div> 
         </div>
     )
 }
 
 const ProgressFiller = ({ step }) => {
+    console.log("progress filler with", step-1)
     return (
         <div className={step < 6 ? `w-${step-1}/5 h-full bg-emerald-300 absolute` : `w-full h-full bg-emerald-300 absolute`}>
 
@@ -43,9 +44,10 @@ const ProgressFiller = ({ step }) => {
 }
 
 const CheckIcon = ({ step }) => {
-
+    console.log("check distance", step-1)
+    console.log("loading distance", step)
     return (
-        <div className="w-full h-full flex justify-start absolute mt-4">
+        <div className="w-full h-full flex justify-start absolute mt-4 ">
             <div className={step < 5 ? `w-${step}/5 flex flex-row justify-end` : `w-full flex flex-row justify-end ` }>
                 { step < 6 && <AiOutlineLoading className="animate animate-spin relative"/>}
             </div>

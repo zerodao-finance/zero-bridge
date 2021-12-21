@@ -11,11 +11,11 @@ import { GrBeacon } from 'react-icons/gr'
 export default function AppBar() {
   return (
       <div className="w-screen px-12 py-3 sticky top-0 flex flex-row justify-between shadow-xl bg-neutral-50 z-40">
-            <img src="/ArbitrumLogo@1x.png" alt="image" className="scale-125"/>
+            <img src="/ArbitrumLogo@2x.png" alt="image" className="h-[70px]"/>
             <div className="self-center flex justify-between gap-3">
                 <Web3Context.Consumer>
                 { value =>
-                        <Button text={value.get.connection ? "Conntected" : "Connect Wallet"} variant={value.get.connection ? "valid" : "outlined"} action={value.get.connection ? null : value.set.connectWallet}/>
+                        <Button text={value.get.connection ? "Connected" : "Connect Wallet"} variant={value.get.connection ? "valid" : "outlined"} action={value.get.connection ? null : value.set.connectWallet}/>
                 }
                 </Web3Context.Consumer>
                 <ContractContext.Consumer>
