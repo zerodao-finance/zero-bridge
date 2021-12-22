@@ -1,7 +1,15 @@
 import { Title, ProgressBar } from '../atoms/pt_atoms'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import {
+    ContractContext,
+    Web3Context,
+    ConversionToolContext,
+    TransactionTableContext
+  } from "../../context/Context";
 
 const TransactionCard = ({depositTx}) => {
+
+    let t_value = useContext(TransactionTableContext);
     const [step, setStep] = useState(0)
     useEffect(() => {
         depositTx   
@@ -12,6 +20,10 @@ const TransactionCard = ({depositTx}) => {
             .on('deposit', (confs, target) => {
                 console.log(`${confs}/${target} confirmations`)
                 stepSetter(Number(confs))
+                if (confs === 6){
+                    t_value.set.updateLastTxStatus(t_value.get.lastTx, "success")
+                    t_value.get.refreshTable()
+                }
             })
     }, [depositTx, step, setStep])
 

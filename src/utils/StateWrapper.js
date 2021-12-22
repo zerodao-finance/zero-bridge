@@ -9,7 +9,7 @@ import {
     createZeroConnection,
     createZeroUser,
   } from "zero-protocol/dist/lib/zero.js";
-
+import moment from 'moment';
 
 // TODO: implement overide fro LocalStorageMethods
 // LocalStoragePersistenceAdapter.prototype.getAllTransferRequests = () => {
@@ -94,7 +94,7 @@ const StateWrapper = ({children}) => {
  * 
  */
 
-    const [ lastTx, setLastTx ] = useState(null)
+    const [ lastTx, setLastTx ] = useState()
     const [ txTable, updateTxTable ] = useState([])
 
     const purgeTx = () => {
@@ -108,9 +108,20 @@ const StateWrapper = ({children}) => {
         updateTxTable(tools.storage.getAllTransferRequests())
     }
 
+    const getTxRequests = () => {
+        return tools.storage.getAllTransferRequests()
+    }   
+
+    const updateLastTxStatus = async () => {
+        console.log(lastTx)
+        tools.storage.setStatus(lastTx, "success")
+        updateLastTx(null)
+    }
+
     const refreshAndUpdate = (tsfrRequest) => {
-        tools.storage.set(tsfrRequest)
+        const key = tools.storage.set(tsfrRequest)
         refreshTable()
+        return key
     }
 
 
@@ -124,7 +135,9 @@ const StateWrapper = ({children}) => {
         set : {
             purgeTx : purgeTx,
             updateLastTx: updateLastTx,
-            refreshTable: refreshTable
+            refreshTable: refreshTable,
+            getTxRequests: getTxRequests,
+            updateLastTxStatus: updateLastTxStatus,
         }
     }
 
@@ -197,8 +210,8 @@ const StateWrapper = ({children}) => {
           data: String(data),
         });
 
-        refreshAndUpdate(transferRequest)
-
+        const key = await refreshAndUpdate({...transferRequest, ETH: ETH, renBTC: renBTC, date: moment(new Date()).format('MM-DD-YYYY HH:mm') })
+        setLastTx(key)
 
 
         console.log('TRANSFER REQUEST:', { 

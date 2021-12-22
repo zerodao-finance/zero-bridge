@@ -13,13 +13,14 @@ const Dashboard = () => {
           <div className="flex flex-col h-full items-center justify-center">
             {/* <ToastContainer /> */}
             <div className="fixed top-0 left-0 w-fit h-fit mt-[6rem]">
+              {/* <TransactionCard /> */}
               {value.get.depositTx}
             </div>
             <div className="grow"></div>
             <ConversionTool />
           <TransactionTableContext.Consumer>
             { value => 
-              <Transactions txTable={value.get.txTable} refreshTable={value.set.refreshTable}/>
+              <Transactions txTable={value.get.txTable} refreshTable={value.set.refreshTable} getTxRequests={value.set.getTxRequests}/>
             }
           </TransactionTableContext.Consumer>
           </div>

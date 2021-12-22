@@ -74,7 +74,17 @@ LocalStoragePersistenceAdapter.prototype.getAllTransferRequests = () => {
   for (const [key, value] of entries){
     returnArr.push(JSON.parse(value))
   }
-  return(returnArr)
+  return(returnArr.reverse())
+}
+
+LocalStoragePersistenceAdapter.prototype.setStatus = (key, value) => {
+  console.log(key, typeof key)
+  const item = Object.entries(window.localStorage).find(([k, v]) => k.startsWith('request:' + key))
+  console.log(item)
+  const parsed = JSON.parse(item[1])
+  parsed.status = "success"
+  const unparsed = JSON.stringify(parsed)
+  window.localStorage.setItem(`request:${key}`, unparsed)
 }
 
 

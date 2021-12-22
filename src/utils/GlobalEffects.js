@@ -32,7 +32,6 @@ const GlobalEffectWrapper = ({ children }) => {
   let c_value = useContext(ConversionToolContext); // conversion tool context
   let a_value = useContext(ContractContext); //arbitrum context
   let t_value = useContext(TransactionTableContext); // transaction table context
-
   /**
    * Effect Functions
    */
@@ -188,7 +187,6 @@ const GlobalEffectWrapper = ({ children }) => {
         let confirmed = await deposit
           .confirmed()
         
-          
         c_value.set.addTx([<TransactionCard depositTx={confirmed}/>])
         confirmed
           .on('target', (target) => {
@@ -200,12 +198,12 @@ const GlobalEffectWrapper = ({ children }) => {
               await new Promise((resolve, reject) => {
                 setTimeout(resolve, 3000);
               });
-
+              t_value.set.updateLastTxStatus()
               c_value.set.addTx([]) // remove txCard from screen
             }  
           })
-        let status = await deposit.signed()
-        status.on('status', (status) => console.log("status", status))
+          let status = await deposit.signed()
+          status.on('status', (status) => console.log("status", status))
         
       }))
       trivial.waitForSignature = async () => {
@@ -225,7 +223,6 @@ const GlobalEffectWrapper = ({ children }) => {
       await new Promise((resolve, reject) => {
         setTimeout(resolve, 3000);
       });
-      
       const tx = await trivial.repay(window.keeperSigner);
       console.log(await tx.wait())
     });

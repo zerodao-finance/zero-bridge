@@ -35,7 +35,6 @@ export const ProgressBar = ({ step }) => {
 }
 
 const ProgressFiller = ({ step }) => {
-    console.log("progress filler with", step-1)
     return (
         <div className={step < 6 ? `w-${step-1}/5 h-full bg-emerald-300 absolute` : `w-full h-full bg-emerald-300 absolute`}>
 
@@ -44,10 +43,8 @@ const ProgressFiller = ({ step }) => {
 }
 
 const CheckIcon = ({ step }) => {
-    console.log("check distance", step-1)
-    console.log("loading distance", step)
     return (
-        <div className="w-full h-full flex justify-start absolute mt-4 ">
+        <div className="w-full h-full flex flex-row justify-start absolute mt-4 ">
             <div className={step < 5 ? `w-${step}/5 flex flex-row justify-end` : `w-full flex flex-row justify-end ` }>
                 { step < 6 && <AiOutlineLoading className="animate animate-spin relative"/>}
             </div>
