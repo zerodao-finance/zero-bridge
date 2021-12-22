@@ -10,7 +10,7 @@ const Dashboard = () => {
       { value =>
         <div className="h-screen fixed bg-gradient-to-tr from-sky-50 via-gray-100 to-gray-50">
           <AppBar />
-          <div className="flex flex-col h-full items-center justify-center">
+          <div className="flex flex-col h-full items-center justify-center w-screen" >
             {/* <ToastContainer /> */}
             <div className="fixed top-0 left-0 w-fit h-fit mt-[6rem]">
               {/* <TransactionCard /> */}
