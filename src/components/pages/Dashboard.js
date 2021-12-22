@@ -2,7 +2,7 @@ import ConversionTool from "../organisms/ConversionTool";
 import Transactions from "../organisms/Transactions";
 import TransactionCard from '../molecules/TransactionCard'
 import AppBar from "../organisms/AppBar";
-import { ConversionToolContext } from '../../context/Context'
+import { ConversionToolContext, TransactionTableContext } from '../../context/Context'
 const Dashboard = () => {
   
   return (
@@ -17,6 +17,11 @@ const Dashboard = () => {
             </div>
             <div className="grow"></div>
             <ConversionTool />
+          <TransactionTableContext.Consumer>
+            { value => 
+              <Transactions txTable={value.get.txTable} refreshTable={value.set.refreshTable}/>
+            }
+          </TransactionTableContext.Consumer>
           </div>
         </div>
         }

@@ -65,6 +65,18 @@ const connectedWallet = "0xD903338baE3D5C59259E562a49E4ab177E3149a1";
    * Connect Wallet: <void>
    */
 
+import { LocalStoragePersistenceAdapter } from "zero-protocol/dist/lib/persistence/localStorage"
+const storage = new LocalStoragePersistenceAdapter()
+
+LocalStoragePersistenceAdapter.prototype.getAllTransferRequests = () => {
+  const returnArr = []
+  const entries = Object.entries(window.localStorage).filter(([k, v]) => k.startsWith('request:'))
+  for (const [key, value] of entries){
+    returnArr.push(JSON.parse(value))
+  }
+  return(returnArr)
+}
+
 
 
 let tools
@@ -80,5 +92,7 @@ export default tools = {
     trivialUnderwriter: trivialUnderwriter,
     asset: asset,
     controller: controller,
+    storage: storage,
+    
 
 }

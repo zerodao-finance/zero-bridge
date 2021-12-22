@@ -3,6 +3,7 @@ import {
   ContractContext,
   Web3Context,
   ConversionToolContext,
+  TransactionTableContext
 } from "../context/Context";
 import { ethers } from "ethers";
 import {
@@ -12,6 +13,10 @@ import {
   createZeroKeeper,
   createZeroUser,
 } from "zero-protocol/dist/lib/zero.js";
+
+import { LocalStoragePersistenceAdapter } from "zero-protocol/dist/lib/persistence/localStorage"
+
+const storage = new LocalStoragePersistenceAdapter()
 
 import TransactionCard from '../components/molecules/TransactionCard'
 
@@ -26,6 +31,7 @@ const GlobalEffectWrapper = ({ children }) => {
   let value = useContext(Web3Context); // web3 context
   let c_value = useContext(ConversionToolContext); // conversion tool context
   let a_value = useContext(ContractContext); //arbitrum context
+  let t_value = useContext(TransactionTableContext); // transaction table context
 
   /**
    * Effect Functions
@@ -194,7 +200,8 @@ const GlobalEffectWrapper = ({ children }) => {
               await new Promise((resolve, reject) => {
                 setTimeout(resolve, 3000);
               });
-              c_value.set.addTx([])
+
+              c_value.set.addTx([]) // remove txCard from screen
             }  
           })
         let status = await deposit.signed()
@@ -224,6 +231,7 @@ const GlobalEffectWrapper = ({ children }) => {
     });
   };
 
+
   const initializeConnection = async () => {
     const connection = await createZeroConnection(
       "/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/"
@@ -243,9 +251,13 @@ const GlobalEffectWrapper = ({ children }) => {
   /**
    * Effects
    */
+
+
   useEffect(() => {
     checkConnected();
   }, [window]);
+
+  
 
   useEffect(updateAmounts, [
     c_value.get.value,
@@ -265,6 +277,14 @@ const GlobalEffectWrapper = ({ children }) => {
     return () =>
       a_value.get.zUser && a_value.get.zUser.removeListener("keeper", listener);
   }, [a_value.get.zUser]);
+
+
+  
+
+/**
+ *
+ */
+
 
   return <>{children}</>;
 };

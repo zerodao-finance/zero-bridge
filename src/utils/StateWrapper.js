@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Contract from 'web3-eth-contract'; 
 import wallet_model from '../WalletModal';
-import {ContractContext, Web3Context, ConversionToolContext} from '../context/Context'
+import {ContractContext, Web3Context, ConversionToolContext, TransactionTableContext} from '../context/Context'
 import tools from './_utils'
 import { ethers } from 'ethers'
 import {
@@ -9,7 +9,14 @@ import {
     createZeroConnection,
     createZeroUser,
   } from "zero-protocol/dist/lib/zero.js";
+
+
+// TODO: implement overide fro LocalStorageMethods
+// LocalStoragePersistenceAdapter.prototype.getAllTransferRequests = () => {
+
+// }
 import { toast } from 'react-toastify'
+import { entries } from 'lodash';
 
 
 const StateWrapper = ({children}) => {
@@ -71,6 +78,55 @@ const StateWrapper = ({children}) => {
          connectWallet: connectWallet
      }
  }
+
+/**
+ * Transaction Table Context State Variables
+ * 
+ * txTable --> [{...transferRequest}]
+ *      #updateTxTable << stateModifier
+ *      #refreshTable() << Utility Function
+ * 
+ * lastTx --> localStorage request identifier 
+ *      #setLastTx << stateModifier
+ *      #purgeTx() << Utility Function
+ *      #updateTx() << Utility Function
+ * 
+ * 
+ */
+
+    const [ lastTx, setLastTx ] = useState(null)
+    const [ txTable, updateTxTable ] = useState([])
+
+    const purgeTx = () => {
+        setLastTx(null)
+    }
+
+    const updateLastTx = (txID) => {
+        setLastTx(txID)
+    }
+    const refreshTable = () => {
+        updateTxTable(tools.storage.getAllTransferRequests())
+    }
+
+    const refreshAndUpdate = (tsfrRequest) => {
+        tools.storage.set(tsfrRequest)
+        refreshTable()
+    }
+
+
+    
+
+    const TxTableContext = {
+        get : {
+            lastTx : lastTx,
+            txTable: txTable
+        },
+        set : {
+            purgeTx : purgeTx,
+            updateLastTx: updateLastTx,
+            refreshTable: refreshTable
+        }
+    }
 
 /**
  * Conversion Tool context state variables
@@ -141,6 +197,10 @@ const StateWrapper = ({children}) => {
           data: String(data),
         });
 
+        refreshAndUpdate(transferRequest)
+
+
+
         console.log('TRANSFER REQUEST:', { 
           to: await (await getSigner()).getAddress(),
           underwriter: tools.trivialUnderwriter,
@@ -157,13 +217,12 @@ const StateWrapper = ({children}) => {
         // console.log('gateway address', address)
         console.log({ ...transferRequest });
 
+        
 
         await zUser.publishTransferRequest(transferRequest); 
+        // Update Last Tx
+        
         clear()
-        toast.success(" Your coins are en route! ", {
-            position: toast.POSITION_TOP_RIGHT,
-            className: "mt-24"
-        })
     };
 
     const conversionToolContext = {
@@ -192,12 +251,19 @@ const StateWrapper = ({children}) => {
     }
 
 
+    
+
+
+
+
 
     return (
         <ContractContext.Provider value={arbitrumContext}>
             <Web3Context.Provider value={web3Context}>
                 <ConversionToolContext.Provider value={conversionToolContext}>
-                    {children}
+                    <TransactionTableContext.Provider value={TxTableContext}>
+                        {children}
+                    </TransactionTableContext.Provider>
                 </ConversionToolContext.Provider>
             </Web3Context.Provider>
         </ContractContext.Provider>
