@@ -8,7 +8,7 @@ const ConvertBox = () => {
     return (
             <ConversionToolContext.Consumer>
                 {value =>
-                <div className="rounded-[100px] xl:rounded-full container flex flex-col xl:flex-row  mx-auto py-2 h-max shadow-2xl gap-10 justify-between bg-neutral-100 transition-all duration-100 min-w-full">
+                <div className="rounded-[100px] xl:rounded-full container flex flex-col xl:flex-row  mx-auto py-2 h-max shadow-2xl gap-10 justify-between bg-neutral-100 dark:bg-gray-700 dark:text-white transition-all duration-100 min-w-full">
                     <div className="flex flex-col xl:flex-row divide-y xl:divide-x xl:divide-y-0 xl:gap-10 justify-start py-2 grow">
                         <Convert />
                         <Ratio />

@@ -1,15 +1,8 @@
 import { Title, ProgressBar } from '../atoms/pt_atoms'
 import { useState, useEffect, useContext } from 'react'
-import {
-    ContractContext,
-    Web3Context,
-    ConversionToolContext,
-    TransactionTableContext
-  } from "../../context/Context";
 
 const TransactionCard = ({depositTx}) => {
 
-    let t_value = useContext(TransactionTableContext);
     const [step, setStep] = useState(0)
     useEffect(() => {
         depositTx   
@@ -20,10 +13,6 @@ const TransactionCard = ({depositTx}) => {
             .on('deposit', (confs, target) => {
                 console.log(`${confs}/${target} confirmations`)
                 stepSetter(Number(confs))
-                if (confs === 6){
-                    t_value.set.updateLastTxStatus(t_value.get.lastTx, "success")
-                    t_value.get.refreshTable()
-                }
             })
     }, [depositTx, step, setStep])
 
@@ -35,7 +24,7 @@ const TransactionCard = ({depositTx}) => {
 
 
     return (
-        <div className="shadow-2xl rounded-xl w-fit m-4 bg-gradient-to-r from-gray-200 to-gray-50">
+        <div className="shadow-2xl rounded-xl w-fit m-4 bg-gradient-to-r from-gray-200 to-gray-50 dark:bg-none dark:bg-gray-600 dark:text-white">
             <div className=" w-fit p-10 flex flex-col gap-4">
                 <div className="flex flex-row justify-between">
                     <Title></Title>

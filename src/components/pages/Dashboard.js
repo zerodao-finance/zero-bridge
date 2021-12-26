@@ -3,12 +3,16 @@ import Transactions from "../organisms/Transactions";
 import TransactionCard from '../molecules/TransactionCard'
 import AppBar from "../organisms/AppBar";
 import { ConversionToolContext, TransactionTableContext } from '../../context/Context'
+import { useEffect } from 'react'
 const Dashboard = () => {
+
+  
+  // On page load or when changing themes, best to add inline in `head` to avoid FOUC
   
   return (
     <ConversionToolContext.Consumer>
       { value =>
-        <div className="h-screen fixed bg-gradient-to-tr from-sky-50 via-gray-100 to-gray-50">
+        <div className="h-screen fixed bg-gradient-to-tr from-sky-50 via-gray-100 to-gray-50 dark:bg-none dark:bg-gray-800">
           <AppBar />
           <div className="flex flex-col h-full items-center justify-center w-screen" >
             {/* <ToastContainer /> */}
@@ -20,7 +24,7 @@ const Dashboard = () => {
             <ConversionTool />
           <TransactionTableContext.Consumer>
             { value => 
-              <Transactions txTable={value.get.txTable} refreshTable={value.set.refreshTable} getTxRequests={value.set.getTxRequests}/>
+              <Transactions txTable={value.get.txTable}/>
             }
           </TransactionTableContext.Consumer>
           </div>

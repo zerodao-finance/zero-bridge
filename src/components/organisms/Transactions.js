@@ -15,7 +15,7 @@ const rows = ['0.001', '0.002', '0.003', '0.003', '0.004', '0.005', '0.006'].map
 
   
 
-const Transactions = ({txTable, refreshTable, getTxRequests}) => {
+const Transactions = ({txTable}) => {
 
     const max = txTable.length
     const [page, changePage] = useState(0)
@@ -32,24 +32,21 @@ const Transactions = ({txTable, refreshTable, getTxRequests}) => {
         console.log("previous page from", page)
     }
 
-    useEffect(async () => {
-        if (txTable.length != getTxRequests().length) refreshTable()
-
-      })
+   
 
       
     return (
-        <div className="shrink p-10 bg-neutral-100 shadow-xl rounded-xl bottom-0 mx-28">
+        <div className="shrink p-10 bg-neutral-100 shadow-xl rounded-xl bottom-0 mx-28 dark:bg-gray-700 dark:text-white">
             <Table className="flex">
               {txTable[0] && txTable.slice(page*5, ((page*5)+6 > max ? max : (page*5)+6)).map((tx) => (
                   <tr >
-                    <td className="lg:px-6 lg:py-4 whitespace-nowrap"><p className="flex">{tx['date']}</p></td>
+                    <td className="lg:px-6 lg:py-4 whitespace-nowrap"><p className="flex">{moment(tx['date']).format('YYYY-MM-DD HH:mm:ss a')}</p></td>
                     <td className="lg:px-6 lg:py-4 whitespace-nowrap"><p className="flex">{tx.underwriter}</p></td>
                     <td className="lg:px-6 lg:py-4 whitespace-nowrap"><p className="flex">{ethers.FixedNumber.fromBytes(tx["amount"])._value}</p></td>
                     <td className={`lg:px-6 lg:py-4 whitespace-nowrap ${tx['status'] == "success" ? "text-green-300" : "text-orange-300"}`}><p className="flex">{tx["status"]}</p></td>
                     <td className="lg:px-6 lg:py-4 whitespace-nowrap"><p className="flex">{tx["ETH"]}</p></td>
                     <td className="lg:px-6 lg:py-4 whitespace-nowrap"><p className="flex">{tx["renBTC"]}</p></td>
-                    <td className="lg:px-6 lg:py-4 whitespace-nowrap"><a style={ { color: 'black', textDecoration: 'none' } } href={'https://arbiscan.io/tx/' + tx.contractAddress}><p className="flex">{ tx.contractAddress }</p></a></td>
+                    <td className="lg:px-6 lg:py-4 whitespace-nowrap"><a  href={'https://arbiscan.io/tx/' + tx.contractAddress}><p className="flex">{ tx.contractAddress }</p></a></td>
                     </tr>
                 ))}
             </Table>

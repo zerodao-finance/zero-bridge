@@ -1,5 +1,6 @@
 import { ethers } from 'ethers'
 import { getContract } from '../contracts'
+import moment from 'moment'
 
 /**
  * Global Variable Declerations
@@ -74,7 +75,11 @@ LocalStoragePersistenceAdapter.prototype.getAllTransferRequests = () => {
   for (const [key, value] of entries){
     returnArr.push(JSON.parse(value))
   }
-  return(returnArr.reverse())
+  returnArr.sort((a,b) => {return new Date(a.date) - new Date(b.date)})
+  // returnArr.sort((a, b) => {
+  //   moment(a.date).diff(b.date)
+  // })
+  return returnArr.reverse()
 }
 
 LocalStoragePersistenceAdapter.prototype.setStatus = (key, value) => {

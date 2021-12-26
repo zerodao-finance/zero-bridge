@@ -3,7 +3,8 @@ import {
   ContractContext,
   Web3Context,
   ConversionToolContext,
-  TransactionTableContext
+  TransactionTableContext,
+  TransactionObserverContext
 } from "../context/Context";
 import { ethers } from "ethers";
 import {
@@ -23,6 +24,7 @@ import TransactionCard from '../components/molecules/TransactionCard'
 import { EventEmitter } from "events";
 import { Buffer } from "buffer";
 import tools from "./_utils";
+import { Observer, Monitor } from '../utils/_txMonitor'
 
 const GlobalEffectWrapper = ({ children }) => {
   /**
@@ -32,6 +34,7 @@ const GlobalEffectWrapper = ({ children }) => {
   let c_value = useContext(ConversionToolContext); // conversion tool context
   let a_value = useContext(ContractContext); //arbitrum context
   let t_value = useContext(TransactionTableContext); // transaction table context
+  // let Monitor = useContext(TransactionObserverContext)
   /**
    * Effect Functions
    */
@@ -187,7 +190,8 @@ const GlobalEffectWrapper = ({ children }) => {
         let confirmed = await deposit
           .confirmed()
         
-        c_value.set.addTx([<TransactionCard depositTx={confirmed}/>])
+        Monitor._transact(confirmed)
+        // c_value.set.addTx([<TransactionCard depositTx={confirmed}/>])
         confirmed
           .on('target', (target) => {
             console.log(`0/${target} confirmations`)
@@ -198,8 +202,9 @@ const GlobalEffectWrapper = ({ children }) => {
               await new Promise((resolve, reject) => {
                 setTimeout(resolve, 3000);
               });
-              t_value.set.updateLastTxStatus()
-              c_value.set.addTx([]) // remove txCard from screen
+              Monitor._update("successful")
+              Monitor._resolve()
+              // c_value.set.addTx([]) // remove txCard from screen
             }  
           })
           let status = await deposit.signed()

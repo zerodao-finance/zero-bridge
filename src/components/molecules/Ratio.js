@@ -8,7 +8,7 @@ const Ratio = () => {
     return (
         <ConversionToolContext.Consumer>
             { value =>
-                <div className="flex flex-col gap-2 xl:w-2/12 pl-4 self-center xl:self-end">
+                <div className="flex flex-col gap-2 xl:w-2/12 pl-4 self-center xl:self-end text-black">
                 <p className="font-medium tracking-wider text-xl w-max capitalize text-slate-400">Adjust Ratio</p>
                 <div className="flex flex-row">
                     <input type="number" step="1" className="z-30 form-input appearance-none rounded-md ring-1 ring-emerald-300 text-center focus:ring-0 border-0 w-16 min-w-16 mr-10 py-1 font-medium text-lg tracking-wide" value={value.get.ratio} onChange={value.set.ratioInput}/>

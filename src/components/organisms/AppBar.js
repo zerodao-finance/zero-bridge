@@ -2,16 +2,17 @@ import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Button from '../atoms/Buttons'
+import { DarkLight } from '../atoms/DarkLight'
 import {ContractContext, Web3Context} from '../../context/Context';
-import { GrBeacon } from 'react-icons/gr'
+import { BsAppIndicator } from 'react-icons/bs'
 
 
 
 
 export default function AppBar() {
   return (
-      <div className="w-screen px-12 py-3 sticky top-0 flex flex-row justify-between shadow-xl bg-neutral-50 z-40">
-            <img src="/ArbitrumLogo@2x.png" alt="image" className="h-[70px]"/>
+      <div className="w-screen px-12 py-3 sticky top-0 flex flex-row justify-between shadow-xl bg-neutral-50 dark:bg-slate-900 z-40">
+            <img src="/ArbitrumLogo@2x.png" alt="image" className="h-[70px] dark:invert" />
             <div className="self-center flex justify-between gap-3">
                 <Web3Context.Consumer>
                 { value =>
@@ -25,8 +26,8 @@ export default function AppBar() {
                         {value.get.keepers.length > 0 && <p className="font-medium text-emerald-300 hidden md:block">Keeper Status</p>}
                         {value.get.keepers.length === 0 && <p className="font-medium text-red-500">Keeper Status</p>}
                         {value.get.keepers.length > 0 ?
-                        <GrBeacon className="fill-emerald-100 scale-150 self-center animate hover:animate-ping"/> :
-                        <GrBeacon className="fill-red-500 scale-150 self-center animate animate-ping"/> 
+                        <BsAppIndicator className="fill-emerald-400 scale-150 self-center animate hover:animate-ping"/> :
+                        <BsAppIndicator className="fill-red-500 scale-150 self-center animate animate-ping"/> 
                         }
                     </span>
                     }
@@ -36,6 +37,7 @@ export default function AppBar() {
                         <NotificationsIcon />
                     </Badge>
                 </IconButton> */}
+                <DarkLight />
             </div>
       </div> 
   )

@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Contract from 'web3-eth-contract'; 
 import wallet_model from '../WalletModal';
-import {ContractContext, Web3Context, ConversionToolContext, TransactionTableContext} from '../context/Context'
+import {ContractContext, Web3Context, ConversionToolContext, TransactionTableContext, TransactionObserverContext} from '../context/Context'
 import tools from './_utils'
 import { ethers } from 'ethers'
 import {
@@ -10,16 +10,21 @@ import {
     createZeroUser,
   } from "zero-protocol/dist/lib/zero.js";
 import moment from 'moment';
+import { Observer, Monitor } from '../utils/_txMonitor'
+import TransactionCard from '../components/molecules/TransactionCard'
 
 // TODO: implement overide fro LocalStorageMethods
 // LocalStoragePersistenceAdapter.prototype.getAllTransferRequests = () => {
 
 // }
-import { toast } from 'react-toastify'
-import { entries } from 'lodash';
+
 
 
 const StateWrapper = ({children}) => {
+
+
+   
+
 /**
  * Arbitrum context state variables
  */
@@ -82,62 +87,17 @@ const StateWrapper = ({children}) => {
 /**
  * Transaction Table Context State Variables
  * 
- * txTable --> [{...transferRequest}]
- *      #updateTxTable << stateModifier
- *      #refreshTable() << Utility Function
- * 
- * lastTx --> localStorage request identifier 
- *      #setLastTx << stateModifier
- *      #purgeTx() << Utility Function
- *      #updateTx() << Utility Function
- * 
- * 
  */
 
-    const [ lastTx, setLastTx ] = useState()
-    const [ txTable, updateTxTable ] = useState([])
+    const [ txTable, updateTxTable ] = useState(tools.storage.getAllTransferRequests())
 
-    const purgeTx = () => {
-        setLastTx(null)
-    }
-
-    const updateLastTx = (txID) => {
-        setLastTx(txID)
-    }
-    const refreshTable = () => {
-        updateTxTable(tools.storage.getAllTransferRequests())
-    }
-
-    const getTxRequests = () => {
-        return tools.storage.getAllTransferRequests()
-    }   
-
-    const updateLastTxStatus = async () => {
-        console.log(lastTx)
-        tools.storage.setStatus(lastTx, "success")
-        updateLastTx(null)
-    }
-
-    const refreshAndUpdate = (tsfrRequest) => {
-        const key = tools.storage.set(tsfrRequest)
-        refreshTable()
-        return key
-    }
 
 
     
 
     const TxTableContext = {
         get : {
-            lastTx : lastTx,
             txTable: txTable
-        },
-        set : {
-            purgeTx : purgeTx,
-            updateLastTx: updateLastTx,
-            refreshTable: refreshTable,
-            getTxRequests: getTxRequests,
-            updateLastTxStatus: updateLastTxStatus,
         }
     }
 
@@ -210,8 +170,8 @@ const StateWrapper = ({children}) => {
           data: String(data),
         });
 
-        const key = await refreshAndUpdate({...transferRequest, ETH: ETH, renBTC: renBTC, date: moment(new Date()).format('MM-DD-YYYY HH:mm') })
-        setLastTx(key)
+        
+        await Monitor._create({...transferRequest, ETH: ETH, renBTC: renBTC, date: new Date(Date.now())})
 
 
         console.log('TRANSFER REQUEST:', { 
@@ -264,22 +224,52 @@ const StateWrapper = ({children}) => {
     }
 
 
-    
+    const tableRefresh = () => {
+        /**
+         * Refresh Transaction Table State 
+         */
+        updateTxTable(tools.storage.getAllTransferRequests())
+    }
 
+    const dispatch = (conf) => {
+        /**
+         * Append Table To Table Card State
+         */
+        addTx([<TransactionCard depositTx={conf}></TransactionCard>])
+    }
+
+    const resolve = () => {
+        addTx([])
+    }
+
+    Observer.refresh = tableRefresh
+    Observer.dispatch = dispatch
+    Observer.resolve = resolve
+
+    
+    useEffect(() => {
+        Monitor.attach(Observer)
+        
+        return function cleanup(){
+            Monitor.detach(Observer)
+        }
+    }, [])
 
 
 
 
     return (
-        <ContractContext.Provider value={arbitrumContext}>
-            <Web3Context.Provider value={web3Context}>
-                <ConversionToolContext.Provider value={conversionToolContext}>
-                    <TransactionTableContext.Provider value={TxTableContext}>
-                        {children}
-                    </TransactionTableContext.Provider>
-                </ConversionToolContext.Provider>
-            </Web3Context.Provider>
-        </ContractContext.Provider>
+        <TransactionObserverContext.Provider value={Monitor}>
+            <ContractContext.Provider value={arbitrumContext}>
+                <Web3Context.Provider value={web3Context}>
+                    <ConversionToolContext.Provider value={conversionToolContext}>
+                        <TransactionTableContext.Provider value={TxTableContext}>
+                            {children}
+                        </TransactionTableContext.Provider>
+                    </ConversionToolContext.Provider>
+                </Web3Context.Provider>
+            </ContractContext.Provider>
+        </TransactionObserverContext.Provider>
     )
 }
 
