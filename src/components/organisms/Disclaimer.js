@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
 export const Disclaimer = (props) => {
     const [read, done] = useState(false)
+    const [show, toggle] = useState(false)
+    useEffect(() => {
+        setTimeout(()=> toggle(true), 3000)
+    })
     useEffect(()=> {
         const scroll_box = document.getElementById("disclaimer")
         scroll_box.addEventListener("scroll", (e) => {
@@ -19,7 +23,7 @@ export const Disclaimer = (props) => {
     }
 
     return (
-        <div className="fixed w-screen h-screen z-50 backdrop-blur-lg mt-5">
+        <div className={`fixed w-screen h-screen z-50 backdrop-blur-lg mt-5 ${show ? '' : 'hidden'}`}>
             <div className="w-2/5 h-5/6 mx-auto my-auto bg-white shadow-2xl grid grid-flow-cols justify-items-center px-10 py-5 gap-4 rounded-lg">
                 <img src="/ArbitrumLogo@2x.png" alt="image" className="h-[70px] dark:invert" />
                 <h7 className="text-2xl font-medium underline">Terms and Conditions</h7>
