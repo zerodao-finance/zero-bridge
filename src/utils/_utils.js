@@ -3,7 +3,7 @@ import { getContract } from '../contracts'
 import moment from 'moment'
 
 /**
- * Global Variable Declerations
+ * Arbitrum Chain Data
  */
 const chainData = [{
     chainId: '0xA4B1',
@@ -17,7 +17,12 @@ const chainData = [{
     rpcUrls: ['https://arb1.arbitrum.io/rpc'],
     blockExplorerUrls: ['https://arbiscan.io/'],
 }]
+
+/**
+ * Curve Arbitrum Address & ABI
+ */
 const curveArbitrum = '0x960ea3e3C7FB317332d990873d354E18d7645590';  // Swap wBTC for wETH (indeces to swap are 1 -> 2 in pool.coins)
+
 const curveABI = [
     {
       stateMutability: "view",
@@ -32,12 +37,20 @@ const curveABI = [
       gas: 3122,
     },
 ];
+
+/**
+ * Keeper Connection Settings (TESTING)
+ */
 const SIGNALING_MULTIADDR =
   "/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/";
 const TEST_KEEPER_ADDRESS = 
   process.env.REACT_APP_TEST_KEEPER_ADDRESS ||
   "0x12fBc372dc2f433392CC6caB29CFBcD5082EF494";
 
+
+  /**
+   * Set Value Function, (WIP)
+   */
 function setValue(event) {
     console.log("typing")
     if (!isNaN(event.nativeEvent.data) || '.'){
@@ -48,6 +61,8 @@ function setValue(event) {
         return
     }
 }
+
+
 const contract = new ethers.Contract('0x960ea3e3C7FB317332d990873d354E18d7645590', [ 'function get_dy(uint256, uint256, uint256) view returns (uint256)' ], getContract('ZeroController').provider);
 const connectedWallet = "0xD903338baE3D5C59259E562a49E4ab177E3149a1";
  const zeroModule = "0x59741D0210Dd24FFfDBa2eEEc9E130A016B8eb3F"; // arbitrum convert module address
@@ -62,9 +77,7 @@ const connectedWallet = "0xD903338baE3D5C59259E562a49E4ab177E3149a1";
    [ethers.utils.parseEther("0.01")]
  );
   
-  /** 
-   * Connect Wallet: <void>
-   */
+
 
 import { LocalStoragePersistenceAdapter } from "zero-protocol/dist/lib/persistence/localStorage"
 const storage = new LocalStoragePersistenceAdapter()
@@ -91,6 +104,9 @@ LocalStoragePersistenceAdapter.prototype.setStatus = (key, value) => {
   const unparsed = JSON.stringify(parsed)
   window.localStorage.setItem(`request:${key}`, unparsed)
 }
+
+
+
 
 
 

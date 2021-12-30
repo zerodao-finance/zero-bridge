@@ -13,10 +13,7 @@ import moment from 'moment';
 import { Observer, Monitor } from '../utils/_txMonitor'
 import TransactionCard from '../components/molecules/TransactionCard'
 
-// TODO: implement overide fro LocalStorageMethods
-// LocalStoragePersistenceAdapter.prototype.getAllTransferRequests = () => {
 
-// }
 
 
 
@@ -84,10 +81,6 @@ const StateWrapper = ({children}) => {
      }
  }
 
-/**
- * Transaction Table Context State Variables
- * 
- */
 
     const [ txTable, updateTxTable ] = useState(tools.storage.getAllTransferRequests())
 

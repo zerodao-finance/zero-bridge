@@ -3,8 +3,6 @@ import {
   ContractContext,
   Web3Context,
   ConversionToolContext,
-  TransactionTableContext,
-  TransactionObserverContext
 } from "../context/Context";
 import { ethers } from "ethers";
 import {
@@ -15,16 +13,9 @@ import {
   createZeroUser,
 } from "zero-protocol/dist/lib/zero.js";
 
-import { LocalStoragePersistenceAdapter } from "zero-protocol/dist/lib/persistence/localStorage"
-
-const storage = new LocalStoragePersistenceAdapter()
-
-import TransactionCard from '../components/molecules/TransactionCard'
-
 import { EventEmitter } from "events";
-import { Buffer } from "buffer";
 import tools from "./_utils";
-import { Observer, Monitor } from '../utils/_txMonitor'
+import { Monitor } from '../utils/_txMonitor'
 
 const GlobalEffectWrapper = ({ children }) => {
   /**
@@ -33,8 +24,8 @@ const GlobalEffectWrapper = ({ children }) => {
   let value = useContext(Web3Context); // web3 context
   let c_value = useContext(ConversionToolContext); // conversion tool context
   let a_value = useContext(ContractContext); //arbitrum context
-  let t_value = useContext(TransactionTableContext); // transaction table context
-  // let Monitor = useContext(TransactionObserverContext)
+
+
   /**
    * Effect Functions
    */
@@ -45,6 +36,7 @@ const GlobalEffectWrapper = ({ children }) => {
       value.set.setConnection(false);
     }
   }
+
   const ln = (v) => (console.log(ethers.utils.formatEther(v)), v);
   const updateAmounts = async () => {
     c_value.set.setrenBTC(
@@ -78,25 +70,8 @@ const GlobalEffectWrapper = ({ children }) => {
     );
   };
 
-  /**
-   * FIXME: change to web3 contract?
-   */
-  useEffect(async () => {
-    const listener = async () => {
-      try {
-        c_value.set.setETHPrice(
-          (
-            await tools.contract.get_dy(1, 2, ethers.utils.parseUnits("1", 8))
-          ).toString()
-        );
-      } catch (e) {
-        console.error(e, "Error setting ETH price");
-      }
-    };
-    listener().catch((err) => console.error(err));
-    tools.contract.provider.on("block", listener);
-    return () => tools.contract.provder.removeListener("block", listener);
-  });
+
+
 
   const initializeTestEnvironment = async (zUser) => {
     window.keeper = createZeroKeeper(
@@ -117,6 +92,7 @@ const GlobalEffectWrapper = ({ children }) => {
         }, 500);
       }
     };
+
     TransferRequest.prototype.submitToRenVM = function (flag) {
       const confirmed = new EventEmitter();
       const gatewayAddress = '39WeCoGbNNk5gVNPx9j4mSrw3tvf1WfRz7';
@@ -163,6 +139,8 @@ const GlobalEffectWrapper = ({ children }) => {
       mint.gatewayAddress = gatewayAddress;
       return mint;
     };
+
+
     zUser.publishTransferRequest = (transferRequest) => {
       setTimeout(() => {
         (async () => {
@@ -181,7 +159,15 @@ const GlobalEffectWrapper = ({ children }) => {
 
     window.keeper.setTxDispatcher(async (transferRequest) => {
       const trivial = new TrivialUnderwriterTransferRequest(transferRequest);
+      try {
+        const loan_result = await trivial.dry(window.keeperSigner)
+        console.log("Loan Result", loan_result)
+
+      } catch (err) {
+        console.log("ERROR", err)
+      }
       const mint = trivial.submitToRenVM(true)
+
       await new Promise((resolve, reject) => mint.on('deposit', async deposit => {
         await resolve()
         const hash = await deposit.txHash()
@@ -191,7 +177,7 @@ const GlobalEffectWrapper = ({ children }) => {
           .confirmed()
         
         Monitor._transact(confirmed)
-        // c_value.set.addTx([<TransactionCard depositTx={confirmed}/>])
+
         confirmed
           .on('target', (target) => {
             console.log(`0/${target} confirmations`)
@@ -204,13 +190,13 @@ const GlobalEffectWrapper = ({ children }) => {
               });
               Monitor._update("successful")
               Monitor._resolve()
-              // c_value.set.addTx([]) // remove txCard from screen
             }  
           })
           let status = await deposit.signed()
           status.on('status', (status) => console.log("status", status))
         
       }))
+
       trivial.waitForSignature = async () => {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         return {
@@ -234,6 +220,10 @@ const GlobalEffectWrapper = ({ children }) => {
   };
 
 
+  /**
+   * Initialize Connection to Arbitrum Backend
+   * @returns Zero UserObject
+   */
   const initializeConnection = async () => {
     const connection = await createZeroConnection(
       "/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/"
@@ -279,6 +269,23 @@ const GlobalEffectWrapper = ({ children }) => {
     return () =>
       a_value.get.zUser && a_value.get.zUser.removeListener("keeper", listener);
   }, [a_value.get.zUser]);
+
+  useEffect(async () => {
+    const listener = async () => {
+      try {
+        c_value.set.setETHPrice(
+          (
+            await tools.contract.get_dy(1, 2, ethers.utils.parseUnits("1", 8))
+          ).toString()
+        );
+      } catch (e) {
+        console.error(e, "Error setting ETH price");
+      }
+    };
+    listener().catch((err) => console.error(err));
+    tools.contract.provider.on("block", listener);
+    return () => tools.contract.provder.removeListener("block", listener);
+  });
 
 
   
