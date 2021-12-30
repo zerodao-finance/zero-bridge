@@ -36,7 +36,7 @@ const Transactions = ({txTable}) => {
 
       
     return (
-        <div className="shrink p-10 bg-neutral-100 shadow-xl rounded-xl bottom-0 mx-28 dark:bg-gray-700 dark:text-white">
+        <div className="hidden xl:block shrink p-10 bg-neutral-100 shadow-xl rounded-xl bottom-0 mx-28 dark:bg-gray-700 dark:text-white">
             <Table className="flex">
               {txTable[0] && txTable.slice(page*5, ((page*5)+6 > max ? max : (page*5)+6)).map((tx) => (
                   <tr >
