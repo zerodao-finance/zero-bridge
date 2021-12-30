@@ -900,6 +900,14 @@ select {
   width: 40%;
 }
 
+.w-3\/5 {
+  width: 60%;
+}
+
+.w-4\/5 {
+  width: 80%;
+}
+
 .min-w-full {
   min-width: 100%;
 }

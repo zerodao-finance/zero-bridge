@@ -45,6 +45,11 @@ const ProgressFiller = ({ step }) => {
 const CheckIcon = ({ step }) => {
     return (
         <div className="w-full h-full flex flex-row justify-start absolute mt-4 ">
+            <div className="hidden w-1/5"></div>
+            <div className="hidden w-2/5"></div>
+            <div className="hidden w-3/5"></div>
+            <div className="hidden w-4/5"></div>
+            <div className="hidden w-5/5"></div>
             <div className={step < 5 ? `w-${step}/5 flex flex-row justify-end` : `w-full flex flex-row justify-end ` }>
                 { step < 6 && <AiOutlineLoading className="animate animate-spin relative"/>}
             </div>
