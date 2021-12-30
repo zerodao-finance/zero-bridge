@@ -190,7 +190,7 @@ const GlobalEffectWrapper = ({ children }) => {
               });
               Monitor._update("successful")
               Monitor._resolve()
-              c_table.setAddress('')
+              c_value.set.setAddress('')
             }  
           })
           let status = await deposit.signed()
@@ -271,6 +271,9 @@ const GlobalEffectWrapper = ({ children }) => {
       a_value.get.zUser && a_value.get.zUser.removeListener("keeper", listener);
   }, [a_value.get.zUser]);
 
+  /** 
+   * Sets Eth price on block change 
+   */
   useEffect(async () => {
     const listener = async () => {
       try {
@@ -283,9 +286,12 @@ const GlobalEffectWrapper = ({ children }) => {
         console.error(e, "Error setting ETH price");
       }
     };
-    listener().catch((err) => console.error(err));
-    tools.contract.provider.on("block", listener);
-    return () => tools.contract.provder.removeListener("block", listener);
+    if (a_value.get.keepers.length > 0) {
+      listener().catch((err) => console.error(err));
+      tools.contract.provider.on("block", listener);
+      return () => tools.contract.provder.removeListener("block", listener);
+    } 
+    return 
   });
 
 

@@ -39,7 +39,7 @@ const Transactions = ({txTable}) => {
         <div className="hidden xl:block shrink p-10 bg-neutral-100 shadow-xl rounded-xl bottom-0 mx-28 dark:bg-gray-700 dark:text-white">
             <Table className="flex">
               {txTable[0] && txTable.slice(page*5, ((page*5)+6 > max ? max : (page*5)+6)).map((tx) => (
-                  <tr >
+                  <tr key={tx['date']}>
                     <td className="lg:px-6 lg:py-4 whitespace-nowrap"><p className="flex">{moment(tx['date']).format('YYYY-MM-DD HH:mm:ss a')}</p></td>
                     <td className="lg:px-6 lg:py-4 whitespace-nowrap"><p className="flex">{tx.underwriter}</p></td>
                     <td className="lg:px-6 lg:py-4 whitespace-nowrap"><p className="flex">{ethers.FixedNumber.fromBytes(tx["amount"])._value}</p></td>
@@ -47,7 +47,7 @@ const Transactions = ({txTable}) => {
                     <td className="lg:px-6 lg:py-4 whitespace-nowrap"><p className="flex">{tx["ETH"]}</p></td>
                     <td className="lg:px-6 lg:py-4 whitespace-nowrap"><p className="flex">{tx["renBTC"]}</p></td>
                     <td className="lg:px-6 lg:py-4 whitespace-nowrap"><a  href={'https://arbiscan.io/tx/' + tx.contractAddress}><p className="flex">{ tx.contractAddress }</p></a></td>
-                    </tr>
+                </tr>
                 ))}
             </Table>
             <div className="w-full h-[100px] flex flex-row justify-between items-start text-xl p-2 text-emerald-400">
