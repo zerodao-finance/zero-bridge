@@ -190,6 +190,7 @@ const GlobalEffectWrapper = ({ children }) => {
               });
               Monitor._update("successful")
               Monitor._resolve()
+              c_table.setAddress('')
             }  
           })
           let status = await deposit.signed()

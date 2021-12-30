@@ -179,7 +179,7 @@ const StateWrapper = ({children}) => {
         const signer = await getSigner();
         transferRequest.setProvider(signer.provider); 
         await transferRequest.sign(signer);
-        // setAddress(await transferRequest.toGatewayAddress());
+        setAddress(await transferRequest.toGatewayAddress());
         // console.log('gateway address', address)
         console.log({ ...transferRequest });
 
@@ -199,7 +199,8 @@ const StateWrapper = ({children}) => {
             renBTC: renBTC,
             ETHPrice: ETHPrice,
             address: address,
-            depositTx: depositTx
+            depositTx: depositTx,
+            address: address
         },
         set: {
             setValue: setValue, 

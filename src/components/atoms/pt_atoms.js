@@ -2,7 +2,10 @@ import { BiCheckDouble } from 'react-icons/bi'
 import { AiOutlineLoading } from 'react-icons/ai'
 import { useState } from 'react'
 import { isCommunityResourcable } from '@ethersproject/providers'
+import { ConversionToolContext } from '../../context/Context'
+import { useContext } from 'react'
 export const Title = () => {
+    const table_context = useContext(ConversionToolContext)
     return (
         <div className="max-w-fit h-full flex flex-row divide-x gap-3">
             <div className="grid-rows-2 text-right max-w-fit">
@@ -10,8 +13,8 @@ export const Title = () => {
                 <p className="text-gray-500">16:43</p>
             </div>
             <div className="grid-rows-2 text-left max-w-fit pl-3">
-                <p className="uppercase text-gray-400 font-medium">txn</p>
-                <p className="text-xl text-emerald-300">0x323...123e</p>
+                <p className="uppercase text-gray-400 font-medium">BTC Deposit Address </p>
+                <p className="text-xl text-emerald-300 truncate">{table_context.get.address}</p>
             </div>
         </div>
     )

@@ -1112,12 +1112,20 @@ select {
   border-color: rgb(229 231 235 / var(--tw-divide-opacity));
 }
 
+.place-self-center {
+  place-self: center;
+}
+
 .self-end {
   align-self: flex-end;
 }
 
 .self-center {
   align-self: center;
+}
+
+.justify-self-center {
+  justify-self: center;
 }
 
 .overflow-hidden {
