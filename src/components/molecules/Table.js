@@ -5,7 +5,7 @@
   
 const Table = ({children}) => {
     return (
-        <table className="table-auto divide-y divide-gray-200 hidden xl:block dark:text-white text-gray-500">
+        <table className="table-auto divide-y divide-gray-200 hidden xl:block dark:text-white text-gray-500 w-2/3">
             <thead>
                 <tr className="uppercase">
                     <th className="font-medium lg:px-6 lg:py-3 text-center text-xs font-medium uppercase tracking-wider" scope="col">Date</th>

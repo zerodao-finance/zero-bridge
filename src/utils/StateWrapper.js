@@ -4,14 +4,8 @@ import wallet_model from '../WalletModal';
 import {ContractContext, Web3Context, ConversionToolContext, TransactionTableContext, TransactionObserverContext} from '../context/Context'
 import tools from './_utils'
 import { ethers } from 'ethers'
-import {
-    TransferRequest,
-    createZeroConnection,
-    createZeroUser,
-  } from "zero-protocol/dist/lib/zero.js";
-import moment from 'moment';
-import { Observer, Monitor } from '../utils/_txMonitor'
-import TransactionCard from '../components/molecules/TransactionCard'
+import { Monitor, CardObserver, TableObserver, ConvertObserver } from "../utils/TransactionMonitor"
+
 
 
 
@@ -137,59 +131,27 @@ const StateWrapper = ({children}) => {
         setRatio(0)
     }
 
-    const handleSubmit = async (event) => {
+    const signTxn = async (event) => {
         event.preventDefault();
         console.log(ethers.utils.parseEther(parseFloat(String(Number(value) / 100 * ratio )).toFixed(8)))
-        const data = ethers.utils.defaultAbiCoder.encode(
-          ["uint256"],
-          [ethers.utils.parseEther(parseFloat(String(Number(value) / 100 * ratio)).toFixed(8))]
-        );
-        
-        let asset = tools.asset
-        console.log("AMT", value)
-        console.log("ETH AMT", value / 100 * ratio)
-        console.log("CHAIN IS", process.env.CHAIN || process.env.REACT_APP_CHAIN || 'MATIC')
 
-        console.log(tools.contract)
-
-
-        const transferRequest = new TransferRequest({ 
-          to: await (await getSigner()).getAddress(),
-          contractAddress: tools.controller.address,
-          underwriter: tools.trivialUnderwriter,
-          module: tools.zeroModule,
-          asset,
-          amount: ethers.utils.parseUnits(value, 8),
-          data: String(data),
-        });
-
-        
-        await Monitor._create({...transferRequest, ETH: ETH, renBTC: renBTC, date: new Date(Date.now())})
-
-
-        console.log('TRANSFER REQUEST:', { 
-          to: await (await getSigner()).getAddress(),
-          underwriter: tools.trivialUnderwriter,
-          contractAddress: tools.controller.address,
-          module: tools.zeroModule,
-          asset,
-          amount: ethers.utils.parseUnits(value, 8),
-          data: String(data),
-        })
-        const signer = await getSigner();
-        transferRequest.setProvider(signer.provider); 
-        await transferRequest.sign(signer);
-        setAddress(await transferRequest.toGatewayAddress());
-        // console.log('gateway address', address)
-        console.log({ ...transferRequest });
-
-        
-
-        await zUser.publishTransferRequest(transferRequest); 
-        // Update Last Tx
+        Monitor._createTxn(await (await getSigner()).getAddress(), value, ratio)
+        if (process.env.REACT_APP_TEST) {
+            Monitor._mockSignTxn(await getSigner())
+            // Monitor._mockTransfer()
+        } else {
+            // Monitor._signTransferRequest(await getSigner())
+        }
         
         clear()
     };
+
+    const submitTransfer = async (event) => {
+        event.preventDefault()
+        if (process.env.REACT_APP_TEST) {
+            Monitor._mockTransfer()
+        }
+    }
 
     const conversionToolContext = {
         get : {
@@ -211,41 +173,57 @@ const StateWrapper = ({children}) => {
             ratioInput: ratioInput,
             ratioRange: ratioRange,
             valueInput: valueInput,
-            handleSubmit: handleSubmit,
+            signTxn: signTxn,
+            submitTxn: submitTransfer,
             setAddress: setAddress,
             addTx: addTx
         }
     }
 
 
-    const tableRefresh = () => {
-        /**
-         * Refresh Transaction Table State 
-         */
-        updateTxTable(tools.storage.getAllTransferRequests())
-    }
+    // const tableRefresh = () => {
+    //     /**
+    //      * Refresh Transaction Table State 
+    //      */
+    //     updateTxTable(tools.storage.getAllTransferRequests())
+    // }
 
-    const dispatch = (conf) => {
-        /**
-         * Append Table To Table Card State
-         */
-        addTx([<TransactionCard depositTx={conf}></TransactionCard>])
-    }
+    // const dispatch = (conf) => {
+    //     /**
+    //      * Append Table To Table Card State
+    //      */
+    //     addTx([<TransactionCard depositTx={conf}></TransactionCard>])
+    // }
 
-    const resolve = () => {
+    // const resolve = () => {
+    //     addTx([])
+    // }
+
+    // Observer.refresh = tableRefresh
+    // Observer.dispatch = dispatch
+    // Observer.resolve = resolve
+
+    CardObserver.append = (item) => {
+        console.log(`\nObserver: client adding transaction card to the dom`)
+        addTx([item])
+        ConvertObserver._prevScreen()
+    }
+    
+    CardObserver.clear = (item) => {
+        console.log(`\nObserver: client clearing transaction card from the dom`)
         addTx([])
     }
 
-    Observer.refresh = tableRefresh
-    Observer.dispatch = dispatch
-    Observer.resolve = resolve
-
     
     useEffect(() => {
-        Monitor.attach(Observer)
+        Monitor.attach(TableObserver)
+        Monitor.attach(CardObserver)
+        Monitor.attach(ConvertObserver)
         
         return function cleanup(){
-            Monitor.detach(Observer)
+            Monitor.detach(TableObserver)
+            Monitor.detach(CardObserver)
+            Monitor.detach(ConvertObserver)
         }
     }, [])
 

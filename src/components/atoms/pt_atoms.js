@@ -4,17 +4,17 @@ import { useState } from 'react'
 import { isCommunityResourcable } from '@ethersproject/providers'
 import { ConversionToolContext } from '../../context/Context'
 import { useContext } from 'react'
-export const Title = () => {
-    const table_context = useContext(ConversionToolContext)
+export const Title = ({btc_address}) => {
+    // const table_context = useContext(ConversionToolContext)
     return (
         <div className="max-w-fit h-full flex flex-row divide-x gap-3">
-            <div className="grid-rows-2 text-right max-w-fit">
+            <div className="grid-rows-2 text-right max-w-fit text-xs">
                 <p className="text-gray-500">11/23/2021</p>
                 <p className="text-gray-500">16:43</p>
             </div>
             <div className="grid-rows-2 text-left max-w-fit pl-3">
-                <p className="uppercase text-gray-400 font-medium">BTC Deposit Address </p>
-                <p className="text-xl text-emerald-300 truncate">{table_context.get.address}</p>
+                <p className="uppercase text-gray-400 font-medium text-xs">BTC Deposit Address </p>
+                <p className="text-sm text-emerald-300 truncate">{btc_address}</p>
             </div>
         </div>
     )

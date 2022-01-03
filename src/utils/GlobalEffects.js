@@ -13,9 +13,11 @@ import {
   createZeroUser,
 } from "zero-protocol/dist/lib/zero.js";
 
+import {enableGlobalMockRuntime, createMockKeeper} from "zero-protocol/dist/lib/mock.js"
+
 import { EventEmitter } from "events";
 import tools from "./_utils";
-import { Monitor } from '../utils/_txMonitor'
+import { Monitor } from '../utils/TransactionMonitor'
 
 const GlobalEffectWrapper = ({ children }) => {
   /**
@@ -220,25 +222,26 @@ const GlobalEffectWrapper = ({ children }) => {
     });
   };
 
+  
+
 
   /**
    * Initialize Connection to Arbitrum Backend
    * @returns Zero UserObject
    */
   const initializeConnection = async () => {
-    const connection = await createZeroConnection(
-      "/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/"
-    );
-    const zUser = createZeroUser(connection); // new LocalStoragePersistenceAdapter());
-    if (!process.env.REACT_APP_TEST) {
-      await zUser.conn.start();
-    } else {
-      await initializeTestEnvironment(zUser);
+    const zeroUser = createZeroUser(await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/'));
+    if (process.env.REACT_APP_TEST) {
+      await enableGlobalMockRuntime()
+      await createMockKeeper()
     }
-    await zUser.subscribeKeepers();
-    window.user = window.user || zUser;
-    a_value.set.setUser(zUser);
-    return zUser;
+    await zeroUser.conn.start();
+    await zeroUser.subscribeKeepers();
+    console.log(zeroUser)
+    window.user = window.user || zeroUser;
+    a_value.set.setUser(zeroUser);
+    Monitor._zeroUser = zeroUser
+    return zeroUser;
   };
 
   /**
@@ -262,14 +265,15 @@ const GlobalEffectWrapper = ({ children }) => {
     await initializeConnection();
   }, []);
 
-  useEffect(async () => {
-    const listener = (keeper) => {
-      a_value.set.setKeepers(a_value.get.zUser.keepers.slice());
-    };
-    if (a_value.get.zUser) a_value.get.zUser.on("keeper", listener);
-    return () =>
-      a_value.get.zUser && a_value.get.zUser.removeListener("keeper", listener);
-  }, [a_value.get.zUser]);
+  // useEffect(async () => {
+  //   const listener = (keeper) => {
+  //     console.log(keeper)
+  //     a_value.set.setKeepers([...a_value.get.keepers, keeper]);
+  //   };
+  //   if (a_value.get.zUser) a_value.get.zUser.on("keeper", listener);
+  //   return () =>
+  //     a_value.get.zUser && a_value.get.zUser.removeListener("keeper", listener);
+  // }, [a_value.get.zUser]);
 
   /** 
    * Sets Eth price on block change 
@@ -286,12 +290,10 @@ const GlobalEffectWrapper = ({ children }) => {
         console.error(e, "Error setting ETH price");
       }
     };
-    if (a_value.get.keepers.length > 0) {
-      listener().catch((err) => console.error(err));
-      tools.contract.provider.on("block", listener);
-      return () => tools.contract.provder.removeListener("block", listener);
-    } 
-    return 
+    console.log(a_value.get.keepers)
+    listener().catch((err) => console.error(err));
+    tools.contract.provider.on("block", listener);
+    return () => tools.contract.provder.removeListener("block", listener);
   });
 
 

@@ -1,5 +1,7 @@
 import { times } from "lodash";
 import tools from './_utils'
+import { TransferRequest } from "zero-protocol/dist/lib/zero.js"
+import { ethers } from 'ethers'
 
 
 /**
@@ -22,7 +24,9 @@ class TransactionMonitor {
     transferRequest
     key
     confirmations
-    observers = []
+    observers = { 
+
+    }
 
     constructor(){
     }
@@ -32,31 +36,33 @@ class TransactionMonitor {
      * #attach(observer: Observer): void
      */
     attach(observer){
-        const isExist = this.observers.includes(observer);
-        if (isExist) {
-            return console.log('Subject: Observer has been attached already.');
-        }
-
-        console.log('Subject: Attached an observer.');
-        this.observers.push(observer);
+        const type = observer._type
+        const typeExist = this.observers.keys().includes(type)
+        if (!typeExist) this.observers[type] = [observer]
+        if (typeExist && this.observers[type].includes(observer)) return console.log(`\n Subject: Observer has been attached already`)
+        else if (typeExist) this.observers[type].push(observer)
     }
 
     detach(observer) {
-        const observerIndex = this.observers.indexOf(observer);
+        const type = observer._type
+        const typeExist = this.observers.keys().includes(type)
+        if (!typeExist) return console.log(`Subject: Observer type is invalid`)
+        
+        const observerIndex = this.observers[type].indexOf(observer)
         if (observerIndex === -1) {
             return console.log('Subject: Nonexistent observer.');
         }
-
-        this.observers.splice(observerIndex, 1);
+        this.observers[type].splice(observerIndex, 1);
         console.log('Subject: Detached an observer.');
     }
 
     /**
      * Trigger an update in each subscriber.
      */
-    notify() {
-        console.log('Subject: Notifying observers...');
-        for (const observer of this.observers) {
+    notify(type) {
+        console.log(`Subject: Notifying observers of type ${type}`);
+        if (!this.observer.keys().includes(type)) return console.log(`\n Subject: found 0 observers of type ${type}`)
+        for (const observer of this.observers[type]) {
             observer.update(this);
         }
     }
@@ -86,17 +92,76 @@ class TransactionMonitor {
         console.log("No new status to update")
     }
 
+    async _refresh() {
+       /**
+         * TODO: search and load pending last pending transaction
+         */
+    }
+
     _transact(_confirmations){
         this.event = "DISPATCH"
         this.confirmations = _confirmations
         this.notify()
     }
-
+    
     _resolve(){
         this.event = "RESOLVE"
         this.confirmations = null
         this.notify()
     }
+
+    /**
+     * TransferRequest Methods
+     */
+    async _createTxn(to, value, ratio) {
+        console.log(`\nSubject: Creating a new TransferRequest with to ${to}`)
+        console.log(`\nSubject: ...data: \n { \n value: ${value} \n eth amount: ${value / 100 * ratio} \n chain is : ${process.env.CHAIN || process.env.REACT_APP_CHAIN} \n ratio: ${ratio} \n }`)
+
+        const data = ethers.utils.defaultAbiCoder.encode(
+            ["uint256"],
+            [ethers.utils.parseEther(parseFloat(String(Number(value) / 100 * ratio)).toFixed(8))]
+        )
+        const asset = tools.asset
+        const transferRequest = new TransferRequest({
+            to: to,
+            contractAddress: tools.controller.address,
+            underwriter: tools.trivialUnderwriter,
+            module: tools.zeroModule,
+            asset,
+            amount: ethers.utils.parseUnits(value, 8),
+            data: String(data)
+        })
+        this.transferRequest = transferRequest
+        return transferRequest
+    }
+
+    async _setProvider(provider) {
+        if (!this.transferRequest || !provider) return new Error(`Subject: error setting provider no transferRequest or provider`)
+        this.transferRequest.setProvider(provider)
+    }
+
+    /**
+     * 
+     * @param {*} signer 
+     * @returns gateway address
+     */
+    async _signTransferRequest(signer) {
+        if (!this.transferRequest || !signer) return new Error(`Subject: error signing no transferRequest or signer`) 
+        this.transferRequest.sign(signer)
+        this._gatewayAddress = await transferRequest.toGatewayAddress()
+        this.event = "SIGNED"
+        this.notify() 
+    }
+
+    async _toRenVM(){
+        if (!this.transferRequest) return new Error(`Subject: error transfering to renVM no transferRequest`)
+
+        this._mint = this.transferRequest.transferToRenVM()
+        this.event = "MINTING"
+        // add minting confirmations here
+        this.notify()
+    }
+
 
 
 }

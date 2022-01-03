@@ -36,17 +36,18 @@ const Transactions = ({txTable}) => {
 
       
     return (
-        <div className="hidden xl:block shrink p-10 bg-neutral-100 shadow-xl rounded-xl bottom-0 mx-28 dark:bg-gray-700 dark:text-white">
+        <div className="hidden xl:block shrink p-10 bg-neutral-100 shadow-xl rounded-xl bottom-0 mx-28 dark:bg-gray-700 dark:text-white w-2/3">
+            <div className="font-medium text-xl tracking-widest capitalize">Past Transactions</div>
             <Table className="flex">
               {txTable[0] && txTable.slice(page*5, ((page*5)+6 > max ? max : (page*5)+6)).map((tx) => (
                   <tr key={tx['date']}>
-                    <td className="lg:px-6 lg:py-4 whitespace-nowrap"><p className="flex">{moment(tx['date']).format('YYYY-MM-DD HH:mm:ss a')}</p></td>
-                    <td className="lg:px-6 lg:py-4 whitespace-nowrap"><p className="flex">{tx.underwriter}</p></td>
-                    <td className="lg:px-6 lg:py-4 whitespace-nowrap"><p className="flex">{ethers.FixedNumber.fromBytes(tx["amount"])._value}</p></td>
-                    <td className={`lg:px-6 lg:py-4 whitespace-nowrap ${tx['status'] == "success" ? "text-green-300" : "text-orange-300"}`}><p className="flex">{tx["status"]}</p></td>
-                    <td className="lg:px-6 lg:py-4 whitespace-nowrap"><p className="flex">{tx["ETH"]}</p></td>
-                    <td className="lg:px-6 lg:py-4 whitespace-nowrap"><p className="flex">{tx["renBTC"]}</p></td>
-                    <td className="lg:px-6 lg:py-4 whitespace-nowrap"><a  href={'https://arbiscan.io/tx/' + tx.contractAddress}><p className="flex">{ tx.contractAddress }</p></a></td>
+                    <td className="px-2 lg:px-6 lg:py-4 whitespace-nowrap text-xs"><p className="flex truncate">{moment(tx['date']).format('YYYY-MM-DD HH:mm:ss a')}</p></td>
+                    <td className="px-2 lg:px-6 lg:py-4 whitespace-nowrap text-xs"><p className="flex truncate">{tx.underwriter}</p></td>
+                    <td className="px-2 lg:px-6 lg:py-4 whitespace-nowrap text-xs"><p className="flex truncate">{ethers.utils.formatUnits(ethers.BigNumber.from(tx["amount"]), 8)}</p></td>
+                    <td className={`px-2 lg:px-6 lg:py-4 whitespace-nowrap text-xs ${tx['status'] == "success" ? "text-green-300" : "text-orange-300"}`}><p className="flex truncate">{tx["status"]}</p></td>
+                    <td className="px-2 lg:px-6 lg:py-4 whitespace-nowrap text-xs"><p className="flex truncate">{tx["ETH"]}</p></td>
+                    <td className="px-2 lg:px-6 lg:py-4 whitespace-nowrap text-xs"><p className="flex truncate">{tx["renBTC"]}</p></td>
+                    <td className="px-2 lg:px-6 lg:py-4 whitespace-nowrap text-xs"><a  href={'https://arbiscan.io/tx/' + tx.contractAddress}><p className="flex truncate">{ tx.contractAddress }</p></a></td>
                 </tr>
                 ))}
             </Table>

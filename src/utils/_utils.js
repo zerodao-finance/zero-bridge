@@ -1,6 +1,7 @@
 import { ethers } from 'ethers'
 import { getContract } from '../contracts'
 import moment from 'moment'
+// import {enableGlobalMockRuntime, createMockKeeper} from "zero-protocol/dist/lib/mock.js"
 
 /**
  * Arbitrum Chain Data
@@ -17,6 +18,9 @@ const chainData = [{
     rpcUrls: ['https://arb1.arbitrum.io/rpc'],
     blockExplorerUrls: ['https://arbiscan.io/'],
 }]
+
+// createMockKeeper()
+// enableGlobalMockRuntime()
 
 /**
  * Curve Arbitrum Address & ABI
@@ -61,9 +65,10 @@ function setValue(event) {
         return
     }
 }
-
-
-const contract = new ethers.Contract('0x960ea3e3C7FB317332d990873d354E18d7645590', [ 'function get_dy(uint256, uint256, uint256) view returns (uint256)' ], getContract('ZeroController').provider);
+// 0x960ea3e3C7FB317332d990873d354E18d7645590 -- old contract address
+// 0x53f38bEA30fE6919e0475Fe57C2629f3D3754d1E
+const contract = new ethers.Contract('0x960ea3e3C7FB317332d990873d354E18d7645590', [ 'function get_dy(uint256, uint256, uint256) view returns (uint256)' ], getContract("ZeroController").provider);
+console.log(contract)
 const connectedWallet = "0xD903338baE3D5C59259E562a49E4ab177E3149a1";
  const zeroModule = "0x6b9F827D9e0607098d5DdA6D84D2c2164e1B90A9"; // arbitrum convert module address
  const trivialUnderwriter = "0xd0D8fA764352e33F40c66C75B3BC0204DC95973e";

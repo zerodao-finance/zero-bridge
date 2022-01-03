@@ -7,7 +7,7 @@ import StateWrapper from './utils/StateWrapper'
 import GlobalEffectWrapper from './utils/GlobalEffects'
 import 'react-toastify/dist/ReactToastify.min.css';
 import Design from './Design'
-import Disclaimer from './components/organisms/Disclaimer'
+import { Confirm } from './components/organisms/Confirm'
 
 
 
@@ -25,8 +25,6 @@ ReactDOM.render(
     <StateWrapper>
       <GlobalEffectWrapper>
         <Dashboard />
-        {/* <Disclaimer /> */}
-        {/* <Design /> */}
       </GlobalEffectWrapper>
     </StateWrapper>
   </React.StrictMode>,

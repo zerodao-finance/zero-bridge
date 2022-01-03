@@ -19,24 +19,19 @@ export default function AppBar() {
                         <Button text={value.get.connection ? "Connected" : "Connect Wallet"} variant={value.get.connection ? "valid" : "outlined"} action={value.get.connection ? null : value.set.connectWallet}/>
                 }
                 </Web3Context.Consumer>
-                <ContractContext.Consumer>
+                {/* <ContractContext.Consumer>
                     { value =>
                     <span className="flex gap-4 self-center text-lg ml-8">
 
-                        {value.get.keepers.length > 0 && <p className="font-medium text-emerald-300 hidden md:block">Keeper Status</p>}
-                        {value.get.keepers.length === 0 && <p className="font-medium text-red-500">Keeper Status</p>}
+                        {value.get.keepers.length > 0 && <p className="font-medium text-emerald-300 hidden md:block text-sm">Keeper Status</p>}
+                        {value.get.keepers.length === 0 && <p className="font-medium text-red-500 text-sm">Keeper Status</p>}
                         {value.get.keepers.length > 0 ?
                         <BsAppIndicator className="fill-emerald-400 scale-150 self-center animate hover:animate-ping"/> :
                         <BsAppIndicator className="fill-red-500 scale-150 self-center animate animate-ping"/> 
                         }
                     </span>
                     }
-                </ContractContext.Consumer>
-                {/* <IconButton className="fill-emerald-400 self-center" color="primary">
-                    <Badge badgeContent={4} color="secondary">
-                        <NotificationsIcon />
-                    </Badge>
-                </IconButton> */}
+                </ContractContext.Consumer> */}
                 <DarkLight />
             </div>
       </div> 

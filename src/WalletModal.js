@@ -45,7 +45,7 @@ export default function wallet_model() {
         },
       };
       web3Modal = new Web3Modal({
-        network: "rinkeby",
+        // network: "rinkeby",
         cacheProvider: true,
         providerOptions,
       });

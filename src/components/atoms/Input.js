@@ -6,8 +6,17 @@ export function USDConversion(input) {
 }
 
 const ConvertInput = ({ unitConversion, value, onChange, onClick }) => {
+
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: "currency",
+        currency: "USD"
+    })
     
-    return <input className="form-input text-right border-0 focus:ring-0 text-5xl font-medium text-gray-400 px-auto caret-green-500 bg-transparent z-40 w-full max-w-[13rem]" type="number" value={value} onChange={onChange} onClick={onClick}/>
+    return ( 
+    <div className="w-fit p-2">
+        <input id="transfer-amount" className="dark:bg-gray-600 dark:text-white form-input text-center border-0 focus:ring-0 text-2xl font-medium text-gray-600 bg-transparent caret-green-500 z-40 w-fit max-w-[5rem] rounded-xl bg-gray-100" type="number" value={value} onChange={onChange} onClick={onClick}/>
+    </div>
+    )
 }
 
 
