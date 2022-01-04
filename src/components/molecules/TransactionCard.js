@@ -25,7 +25,7 @@ const TransactionCard = ({confs, btc}) => {
 
 
     return (
-        <div className="shadow-2xl rounded-xl w-fit m-4 bg-gradient-to-r from-gray-200 to-gray-50 dark:bg-none dark:bg-gray-600 dark:text-white">
+        <div className="shadow-2xl rounded-xl w-fit m-4 bg-white dark:bg-gray-600 dark:text-white animate-swing-in-top-fwd z-40">
             <div className=" w-fit p-10 flex flex-col gap-4">
                 <div className="flex flex-row justify-between">
                     <Title btc_address={btc}></Title>

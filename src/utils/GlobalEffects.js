@@ -232,8 +232,8 @@ const GlobalEffectWrapper = ({ children }) => {
   const initializeConnection = async () => {
     const zeroUser = createZeroUser(await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/'));
     if (process.env.REACT_APP_TEST) {
-      await enableGlobalMockRuntime()
       await createMockKeeper()
+      await enableGlobalMockRuntime()
     }
     await zeroUser.conn.start();
     await zeroUser.subscribeKeepers();
@@ -265,15 +265,15 @@ const GlobalEffectWrapper = ({ children }) => {
     await initializeConnection();
   }, []);
 
-  // useEffect(async () => {
-  //   const listener = (keeper) => {
-  //     console.log(keeper)
-  //     a_value.set.setKeepers([...a_value.get.keepers, keeper]);
-  //   };
-  //   if (a_value.get.zUser) a_value.get.zUser.on("keeper", listener);
-  //   return () =>
-  //     a_value.get.zUser && a_value.get.zUser.removeListener("keeper", listener);
-  // }, [a_value.get.zUser]);
+  useEffect(async () => {
+    const listener = (keeper) => {
+      console.log(keeper)
+      a_value.set.setKeepers([...a_value.get.keepers, keeper]);
+    };
+    if (a_value.get.zUser) a_value.get.zUser.on("keeper", listener);
+    return () =>
+      a_value.get.zUser && a_value.get.zUser.removeListener("keeper", listener);
+  }, [a_value.get.zUser]);
 
   /** 
    * Sets Eth price on block change 

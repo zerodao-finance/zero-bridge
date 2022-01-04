@@ -45,6 +45,12 @@ export class ConvertTableObserver {
                 data.gatewayAddress = subject._gatewayAddress
                 this._screen(data)
                 break;
+            case "MINTING":
+                console.log(`Observer: showing confirm animation`)
+                this.hide(true)
+                setTimeout(() => {
+                    this.hide(false)
+                }, 5000)
         }
 
     }

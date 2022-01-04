@@ -161,6 +161,7 @@ class TransactionMonitor {
         this._mint = await this.transferRequest.submitToRenVM(true)
         this._gatewayAddress = this._mint.gatewayAddress
         this.event = "MINTING"
+        this.notify("ConvertTableObserver")
         this.notify("TXCardObserver")
     }
 

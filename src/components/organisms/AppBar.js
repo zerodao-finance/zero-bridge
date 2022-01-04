@@ -11,7 +11,7 @@ import { BsAppIndicator } from 'react-icons/bs'
 
 export default function AppBar() {
   return (
-      <div className="w-screen px-12 py-3 sticky top-0 flex flex-row justify-between shadow-xl bg-neutral-50 dark:bg-slate-900 z-40">
+      <div className="w-screen px-12 py-3 sticky top-0 flex flex-row justify-between bg-neutral-50 dark:bg-slate-900 z-40 bg-opacity-0 backdrop-blur-md">
             <img src="/ArbitrumLogo@2x.png" alt="image" className="h-[70px] dark:invert" />
             <div className="self-center flex justify-between gap-3">
                 <Web3Context.Consumer>
@@ -19,7 +19,7 @@ export default function AppBar() {
                         <Button text={value.get.connection ? "Connected" : "Connect Wallet"} variant={value.get.connection ? "valid" : "outlined"} action={value.get.connection ? null : value.set.connectWallet}/>
                 }
                 </Web3Context.Consumer>
-                {/* <ContractContext.Consumer>
+                <ContractContext.Consumer>
                     { value =>
                     <span className="flex gap-4 self-center text-lg ml-8">
 
@@ -31,8 +31,8 @@ export default function AppBar() {
                         }
                     </span>
                     }
-                </ContractContext.Consumer> */}
-                <DarkLight />
+                </ContractContext.Consumer>
+                {/* <DarkLight /> */}
             </div>
       </div> 
   )

@@ -26,7 +26,7 @@ const ConversionTool = () => {
     ConvertObserver._prevScreen = prevScreen
 
     return (
-        <div className="grow">
+        <div className="animate-swing-in-top-fwd">
             { screens[screen] == 'convert' ? <ConvertBox/> : screens[screen] == 'fee' ? <></> : <ConfirmBox transferRequest={renderData} back={prevScreen}/>}
         </div>
     )

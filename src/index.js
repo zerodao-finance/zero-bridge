@@ -6,8 +6,6 @@ import Dashboard from './components/pages/Dashboard'
 import StateWrapper from './utils/StateWrapper'
 import GlobalEffectWrapper from './utils/GlobalEffects'
 import 'react-toastify/dist/ReactToastify.min.css';
-import Design from './Design'
-import { Confirm } from './components/organisms/Confirm'
 
 
 

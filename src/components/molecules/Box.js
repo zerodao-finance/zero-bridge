@@ -5,14 +5,15 @@ import {RiExchangeFundsFill} from 'react-icons/ri'
 import { AiOutlineArrowDown, AiOutlineClose } from 'react-icons/ai' 
 import { ConversionToolContext } from '../../context/Context'
 import { ethers } from 'ethers'
+import { Confirm } from '../organisms/Confirm'
 
 const ConvertBox = () => {
     return (
             <ConversionToolContext.Consumer>
                 {value =>
 
-                <div className='flex flex-col container h-max bg-white shadow-xl rounded-[30px] justify-center place-items-center gap-3 w-fit pb-4 dark:bg-gray-700 text-white'>
-                    <p className="my-4 text-lg font-thin text-gray-500 dark:text-gray-50 tracking-wider">Bridge Funds</p>
+                <div className='flex flex-col container h-fit bg-white shadow-xl rounded-[30px] justify-center place-items-center gap-3 w-fit pb-4 dark:bg-gray-700 text-white '>
+                    <p className=" text-lg font-light text-black dark:text-gray-50 tracking-wider w-full bg-emerald-300 text-center shadow-md rounded-t-md">Bridge Funds</p>
                     <div className=" container h-max flex flex-row place-content-center w-[25rem] gap-5 justify-around pr-[4.5rem] items-center px-8">
                         <p className="text-[10px] text-gray-300 whitespace-nowrap">transfer amount</p>
                         <div className="flex flex-col">
@@ -49,8 +50,9 @@ export const ConfirmBox = ({transferRequest, back}) => {
             <ConversionToolContext.Consumer>
                 {value =>
                         <div className="flex flex-col container h-max bg-white shadow-xl rounded-[30px] justify-center place-items-center gap-3 w-fit pb-4 relative dark:bg-gray-700 dark:text-white">
-                            <AiOutlineClose className="absolute top-5 left-5 hover:scale-150 dark:stroke-white" onClick={back}/>
-                            <p className="my-4 text-lg font-thin text-gray-500 tracking-wider dark:text-white">Confirm Transaction</p>
+                            <Confirm />
+                            <AiOutlineClose className="absolute top-1 left-1 hover:scale-150 dark:stroke-white" onClick={back}/>
+                            <p className=" text-lg font-light text-black dark:text-gray-50 tracking-wider w-full bg-emerald-300 text-center shadow-md rounded-t-md">Confirm Transaction</p>
                             <div className="grid grid-flow-rows grid-cols-2 justify-items-end items-center auto-rows-min min-w-[20rem] max-w-fit mx-10 gap-4">
                                     <p className="text-sm w-fit">asset:</p>
                                     <p className="text-xs w-fit truncate w-2/3 hover:w-full transition-all duration-150">{transferRequest.asset}</p>

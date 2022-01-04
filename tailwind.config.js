@@ -6,7 +6,8 @@ module.exports = {
       animation: {
           "jello-horizontal": "jello-horizontal 0.8s ease   both",
           "trace-path": "trace-path 4s",
-          "fade": "fade 6s"
+          "fade": "fade 6s",
+          "swing-in-top-fwd": "swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275)   both"
       },
       keyframes: {
           "jello-horizontal": {
@@ -31,6 +32,18 @@ module.exports = {
                   opacity: 0
               }
           },
+          "swing-in-top-fwd": {
+            "0%": {
+                transform: "rotateX(-100deg)",
+                "transform-origin": "top",
+                opacity: "0"
+            },
+            to: {
+                transform: "rotateX(0deg)",
+                "transform-origin": "top",
+                opacity: "1"
+            }
+        },
           "trace-path" : {
             '0%, to': {
               strokeDashoffset: '130',

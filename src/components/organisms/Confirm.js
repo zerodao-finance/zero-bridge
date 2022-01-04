@@ -9,7 +9,7 @@ export const Confirm = () => {
     }
 
        return ( 
-           show && <div className="fixed w-screen h-screen z-50 backdrop-blur-sm flex justify-center items-center">
+           show && <div className="absolute w-full h-full z-30 backdrop-blur-sm flex justify-center items-center">
             <div>
                 <svg viewBox="0 0 50 50" className="w-[10rem] h-[10rem]">
                         <circle cx={25} cy={25} r={20} fill="none" strokeWidth="3"   className="animate-trace-path stroke-emerald-300 opacity-0" strokeDasharray="130" />

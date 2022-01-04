@@ -206,7 +206,9 @@ const StateWrapper = ({children}) => {
     CardObserver.append = (item) => {
         console.log(`\nObserver: client adding transaction card to the dom`)
         addTx([item])
-        ConvertObserver._prevScreen()
+        setTimeout(() => {
+            ConvertObserver._prevScreen()
+        }, 4500)
     }
     
     CardObserver.clear = (item) => {
