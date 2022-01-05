@@ -52,35 +52,19 @@ const TEST_KEEPER_ADDRESS =
   "0x12fBc372dc2f433392CC6caB29CFBcD5082EF494";
 
 
-  /**
-   * Set Value Function, (WIP)
-   */
-function setValue(event) {
-    console.log("typing")
-    if (!isNaN(event.nativeEvent.data) || '.'){
-        event.target.value == '' ? setAmount(0) :
-        setAmount(event.target.value)
-        return
-    } else {
-        return
-    }
-}
+
 // 0x960ea3e3C7FB317332d990873d354E18d7645590 -- old contract address
 // 0x53f38bEA30fE6919e0475Fe57C2629f3D3754d1E
-const contract = new ethers.Contract('0x960ea3e3C7FB317332d990873d354E18d7645590', [ 'function get_dy(uint256, uint256, uint256) view returns (uint256)' ], getContract("ZeroController").provider);
-console.log(contract)
+
+const controller = getContract('ZeroController')
+const contract = new ethers.Contract('0x960ea3e3C7FB317332d990873d354E18d7645590', [ 'function get_dy(uint256, uint256, uint256) view returns (uint256)' ], controller.provider);
+console.log('CONTRACT', contract)
+console.log("CONTROLLER", controller)
 const connectedWallet = "0xD903338baE3D5C59259E562a49E4ab177E3149a1";
  const zeroModule = "0x6b9F827D9e0607098d5DdA6D84D2c2164e1B90A9"; // arbitrum convert module address
  const trivialUnderwriter = "0xd0D8fA764352e33F40c66C75B3BC0204DC95973e";
-//  const trivialUnderwriter = "0x12fBc372dc2f433392CC6caB29CFBcD5082EF494";
  const asset = "0xDBf31dF14B66535aF65AaC99C32e9eA844e14501"; // renBTC on arbitrum
- const controller = getContract('ZeroController')
- console.log('CONTRACT', contract)
- console.log("CONTROLLER", controller)
- const data = ethers.utils.defaultAbiCoder.encode(
-   ["uint256"],
-   [ethers.utils.parseEther("0.01")]
- );
+ 
   
 
 

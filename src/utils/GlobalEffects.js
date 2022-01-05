@@ -13,6 +13,8 @@ import {
   createZeroUser,
 } from "zero-protocol/dist/lib/zero.js";
 
+import _ from "lodash"
+
 import {enableGlobalMockRuntime, createMockKeeper} from "zero-protocol/dist/lib/mock.js"
 
 import { EventEmitter } from "events";
@@ -230,6 +232,7 @@ const GlobalEffectWrapper = ({ children }) => {
    * @returns Zero UserObject
    */
   const initializeConnection = async () => {
+    if (a_value.get.zUser) return
     const zeroUser = createZeroUser(await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/'));
     if (process.env.REACT_APP_TEST) {
       await createMockKeeper()
@@ -290,11 +293,13 @@ const GlobalEffectWrapper = ({ children }) => {
         console.error(e, "Error setting ETH price");
       }
     };
-    console.log(a_value.get.keepers)
-    listener().catch((err) => console.error(err));
-    tools.contract.provider.on("block", listener);
-    return () => tools.contract.provder.removeListener("block", listener);
-  });
+    var invoke = _.throttle(listener, 2000)
+    tools.contract.provider.on("block", invoke);
+    return () => {
+      tools.contract.provder.removeListener("block", invoke)
+      invoke.cancel()
+    }
+  }, []);
 
 
   
