@@ -154,6 +154,28 @@ class TransactionMonitor {
         this.notify()
     }
 
+    async _transfer(){
+        console.log(`\nSubject: initiating a real transfer to RenVM`)
+        if (!this.transferRequest) return new Error(`Subject: error initiating transfer to RenVM`)
+    }
+
+    async _signTxn(signer) {
+        if (!this.transferRequest || !signer) return new Error(`Subject: error signing no transferRequest or signer`)
+        this._signature = await this.transferRequest.sign(signer)
+        this.event = "SIGNED"
+        this.notify("ConvertTableObserver")
+    }
+
+    async _transfer(){
+        console.log(`\nSubject: initiating transfer to RenVM`)
+        this._zeroUser.publishTransferRequest(this.transferRequest)
+        this._mint = await this.transferRequest.submitToRenVM()
+        this._gatewayAddress = this._mint.toGatewayAddress()
+        this.event = "MINTING"
+        this.notify("ConvertTableObserver")
+        this.notify("TXCardObserver")
+    }
+
     async _mockTransfer(){
         console.log(`\nSubject: mocking transfer to RenVM`)
         if (!this.transferRequest) return new Error(`Subject: error mocking transfer to RenVM`)

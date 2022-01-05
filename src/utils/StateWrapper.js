@@ -138,9 +138,8 @@ const StateWrapper = ({children}) => {
         Monitor._createTxn(await (await getSigner()).getAddress(), value, ratio)
         if (process.env.REACT_APP_TEST) {
             Monitor._mockSignTxn(await getSigner())
-            // Monitor._mockTransfer()
         } else {
-            // Monitor._signTransferRequest(await getSigner())
+            Monitor._signTxn(await getSigner())
         }
         
         clear()
@@ -150,6 +149,8 @@ const StateWrapper = ({children}) => {
         event.preventDefault()
         if (process.env.REACT_APP_TEST) {
             Monitor._mockTransfer()
+        } else {
+            Monitor._transfer()
         }
     }
 
