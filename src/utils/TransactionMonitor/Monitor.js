@@ -162,6 +162,7 @@ class TransactionMonitor {
     async _signTxn(signer) {
         if (!this.transferRequest || !signer) return new Error(`Subject: error signing no transferRequest or signer`)
         this._signature = await this.transferRequest.sign(signer)
+        this._gatewayAddress = await this.transferRequest.toGatewayAddress()
         this.event = "SIGNED"
         this.notify("ConvertTableObserver")
     }
@@ -170,7 +171,6 @@ class TransactionMonitor {
         console.log(`\nSubject: initiating transfer to RenVM`)
         this._zeroUser.publishTransferRequest(this.transferRequest)
         this._mint = await this.transferRequest.submitToRenVM()
-        this._gatewayAddress = this._mint.toGatewayAddress()
         this.event = "MINTING"
         this.notify("ConvertTableObserver")
         this.notify("TXCardObserver")
@@ -190,9 +190,18 @@ class TransactionMonitor {
     async _mockSignTxn(signer) {
         if (!this.transferRequest || !signer) return new Error(`Subject: error signing no transferRequest or signer`) 
         this._signature = await this.transferRequest.sign(signer)
+        /**
+         * Mocking toGatewayAddress(true)
+         */
+
+        var mint = await this.transferRequest.submitToRenVM(true)
+        this._gatewayAddress = mint.gatewayAddress
+        console.log(`Subject: gateway address on sign ${this._gatewayAddress}`)
         this.event = "SIGNED"
         this.notify("ConvertTableObserver") 
     }
+
+    
 
 
 

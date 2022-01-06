@@ -77,6 +77,8 @@ const GlobalEffectWrapper = ({ children }) => {
 
 
 
+
+
   const initializeTestEnvironment = async (zUser) => {
     window.keeper = createZeroKeeper(
       await createZeroConnection(tools.SIGNALING_MULTIADDR)
@@ -300,6 +302,14 @@ const GlobalEffectWrapper = ({ children }) => {
       invoke.cancel()
     }
   }, []);
+
+
+  useEffect(() => {
+    if (localStorage.getItem("screenMode") === "dark") {
+      document.documentElement.classList.add("dark")
+
+    }
+  }, [])
 
 
   

@@ -3,16 +3,23 @@ import Badge from '@mui/material/Badge';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Button from '../atoms/Buttons'
 import { DarkLight } from '../atoms/DarkLight'
-import {ContractContext, Web3Context} from '../../context/Context';
+import {ContractContext, Web3Context, UIContext} from '../../context/Context';
 import { BsAppIndicator } from 'react-icons/bs'
 
 
 
 
 export default function AppBar() {
+
   return (
       <div className="w-screen px-12 py-3 sticky top-0 flex flex-row justify-between bg-neutral-50 dark:bg-slate-900 z-40 bg-opacity-0 backdrop-blur-md">
-            <img src="/ArbitrumLogo@2x.png" alt="image" className="h-[70px] dark:invert" />
+          <UIContext.Consumer>
+          { value => 
+              value.get ? 
+              <img src="/ArbitrumLogo@2x.png" alt="image" className="h-[70px]" /> :
+              <img src="/ArbitrumLogoDark@2x.png" alt="image" className="h-[70px]" /> 
+          }
+          </UIContext.Consumer>
             <div className="self-center flex justify-between gap-3">
                 <Web3Context.Consumer>
                 { value =>

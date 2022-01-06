@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Contract from 'web3-eth-contract'; 
 import wallet_model from '../WalletModal';
-import {ContractContext, Web3Context, ConversionToolContext, TransactionTableContext, TransactionObserverContext} from '../context/Context'
+import {ContractContext, Web3Context, ConversionToolContext, TransactionTableContext, TransactionObserverContext, UIContext} from '../context/Context'
 import tools from './_utils'
 import { ethers } from 'ethers'
 import { Monitor, CardObserver, TableObserver, ConvertObserver } from "../utils/TransactionMonitor"
@@ -12,6 +12,20 @@ import { Monitor, CardObserver, TableObserver, ConvertObserver } from "../utils/
 
 
 const StateWrapper = ({children}) => {
+
+    var mode = localStorage.getItem("screenMode") === "dark" ? true: false
+    const [ screenMode, toggle ] = useState(mode)
+    
+    const toggleScreenMode = () => {
+        var dark = document.documentElement.classList.toggle("dark")
+        localStorage.setItem("screenMode", dark ? "dark" : "light")
+        toggle(dark ? true : false)
+    }
+
+    const _uiContext = {
+        get : screenMode,
+        set : toggleScreenMode
+    }
 
 
    
@@ -239,7 +253,9 @@ const StateWrapper = ({children}) => {
                 <Web3Context.Provider value={web3Context}>
                     <ConversionToolContext.Provider value={conversionToolContext}>
                         <TransactionTableContext.Provider value={TxTableContext}>
+                            <UIContext.Provider value={_uiContext}>
                             {children}
+                            </UIContext.Provider>
                         </TransactionTableContext.Provider>
                     </ConversionToolContext.Provider>
                 </Web3Context.Provider>

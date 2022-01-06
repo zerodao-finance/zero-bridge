@@ -43,6 +43,7 @@ export class ConvertTableObserver {
                 console.log(`Observer: Showing Confirmation Screen`)
                 const data = subject.transferRequest
                 data.gatewayAddress = subject._gatewayAddress
+                console.log(data)
                 this._screen(data)
                 break;
             case "MINTING":
