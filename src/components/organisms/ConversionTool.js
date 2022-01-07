@@ -1,9 +1,11 @@
 import ConvertBox, { ConfirmBox } from '../molecules/Box'
-import {ConvertObserver} from '../../utils/TransactionMonitor'
-import {useState} from 'react'
+import {ConvertObserver, Monitor} from '../../utils/TransactionMonitor'
+import {useState, useEffect, useContext} from 'react'
+import {Web3Context} from "../../context/Context"
 
 
 const ConversionTool = () => {
+    let context = useContext(Web3Context)
     const [screen, switchScreen] = useState(1)
     const [renderData, addData] = useState(null)
     const screens = {
@@ -11,6 +13,10 @@ const ConversionTool = () => {
         3: 'fee',
         2: 'confirm'
     }
+
+    useEffect(() => {
+        setTimeout(() => Monitor._checkIfLast(), 4000)
+    }, [])
 
     
     const nextScreen = (data) => {

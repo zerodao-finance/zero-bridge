@@ -1,8 +1,48 @@
 import { times } from "lodash";
 import tools from '../_utils'
-import { TransferRequest } from "zero-protocol/dist/lib/zero.js"
+import { TransferRequest, TrivialUnderwriterTransferRequest } from "zero-protocol/dist/lib/zero.js"
 import { ethers } from 'ethers'
 
+
+class BaseMonitor {
+
+    
+
+    constructor(){
+        this.observers = new Map()
+        this.data = new Map()
+        this.state = new Map()
+        this.error = null
+    }
+
+    attach(_observer){
+        console.log(`Subject: attaching new ${ _observer.type} observer`)
+        const type = _observer.type
+        if (!this.observers.has(type)) this.observers.set(type, new Set())
+        if ((this.observers.get(type)).has(_observer)) return console.log(`\n Subject: Observer has been attached already`)
+        else (this.observers.get(type)).add(_observer)
+    }
+
+    detach(_observer){
+        const type = _observer.type
+        if ( !this.observers.has(type)) return console.log(`Subject: Observer type is invalid`)
+        if ( (this.observers.get(type)).has(_observer) ) (this.observers.get(type)).delete(_observer)
+        else return console.log("Subject: Nonexistent observer")
+        return console.log('Subject: Detached an observer.');
+    }
+
+    notify(_type){
+        console.log(`Subject: Notifying observers of type ${_type}`);
+        if (!this.observers.has(_type)) return console.log(`\n Subject: found 0 observers of type ${_type}`)
+        for (const observer of this.observers.get(_type)) {
+            observer.update(this);
+        }
+    }
+
+    /**
+     * METHODS
+     */
+}
 
 /**
  * The Subject owns some important state and notifies observers when the state
@@ -103,6 +143,26 @@ class TransactionMonitor {
         this.notify()
     }
 
+    async _checkIfLast(signer) {
+        console.log(`Subject: checking for last or pending TX`)
+        let requests = tools.storage.getLastTransferRequest()
+        const isRequest = _.filter(requests, function(rq) { return rq.data.status == "pending" }
+        )
+
+        
+        if (isRequest.length != 0) {
+            this._gatewayAddress = isRequest[0].data.gatewayAddress
+            this._dry = isRequest[0].data.dry
+            this.transferRequest = new TransferRequest(_.omit(isRequest[0].data, ['date', 'status', 'gatewayAddress', 'dry']))
+            let key = _.split(isRequest[0].key, ":")[1]
+            this._key  = key
+            console.log("Subject: the passed key is", this._key)
+            }
+        this._gatewayAddress = await this.transferRequest.toGatewayAddress()
+        this.event = "SIGNED"
+        this.notify("ConvertTableObserver")
+    }
+
     /**
      * TransferRequest Methods
      */
@@ -127,52 +187,50 @@ class TransactionMonitor {
         this.transferRequest = transferRequest
         return transferRequest
     }
-
+    
     async _setProvider(provider) {
         if (!this.transferRequest || !provider) return new Error(`Subject: error setting provider no transferRequest or provider`)
         this.transferRequest.setProvider(provider)
     }
-
+    
     /**
      * 
      * @param {*} signer 
      * @returns gateway address
      */
-    async _signTransferRequest(signer) {
-        if (!this.transferRequest || !signer) return new Error(`Subject: error signing no transferRequest or signer`) 
-        this._signature = await this.transferRequest.sign(signer)
-        this.event = "SIGNED"
-        this.notify("ConvertTableObserver") 
+    
+    async _checkPending() {
+        const requests = getAllTransferRequests()
     }
-
-    async _toRenVM(){
-        if (!this.transferRequest) return new Error(`Subject: error transfering to renVM no transferRequest`)
-
-        this._mint = this.transferRequest.transferToRenVM()
-        this.event = "MINTING"
-        // add minting confirmations here
-        this.notify()
-    }
-
-    async _transfer(){
-        console.log(`\nSubject: initiating a real transfer to RenVM`)
-        if (!this.transferRequest) return new Error(`Subject: error initiating transfer to RenVM`)
-    }
-
+    
+    
+    
     async _signTxn(signer) {
         if (!this.transferRequest || !signer) return new Error(`Subject: error signing no transferRequest or signer`)
         this._signature = await this.transferRequest.sign(signer)
         this._gatewayAddress = await this.transferRequest.toGatewayAddress()
+        this._dry = await new TrivialUnderwriterTransferRequest(this.transferRequest).dry(signer.provider, { from: '0x12fBc372dc2f433392CC6caB29CFBcD5082EF494' })
+        this._key = await tools.storage.set({...this.transferRequest, date: Date.now(), dry: this._dry})
+        console.log(this._dry)
         this.event = "SIGNED"
         this.notify("ConvertTableObserver")
     }
 
     async _transfer(){
         console.log(`\nSubject: initiating transfer to RenVM`)
-        this._zeroUser.publishTransferRequest(this.transferRequest)
-        this._mint = await this.transferRequest.submitToRenVM()
+        if (typeof this._dry == typeof Error) return console.log(`Subject: Loan will fail`) 
+        await this._zeroUser.publishTransferRequest(this.transferRequest)
+        this.mint = await this.transferRequest.submitToRenVM()
         this.event = "MINTING"
         this.notify("ConvertTableObserver")
+        this.notify("TXCardObserver")
+    }
+
+    async _pollForTX(){
+        console.log(`\nSubject: polling for transferRequest data`)
+        if (!this.transferRequest) return
+        this._mint = await this.transferRequest.submitToRenVM()
+        this.event = "MINTING"
         this.notify("TXCardObserver")
     }
 
@@ -210,4 +268,4 @@ class TransactionMonitor {
 
 
 
-export {TransactionMonitor}
+export {TransactionMonitor, BaseMonitor}

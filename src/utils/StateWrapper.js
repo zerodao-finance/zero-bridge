@@ -66,7 +66,7 @@ const StateWrapper = ({children}) => {
          const chainId = await response.eth.getChainId();
          if (chainId !== tools.chainData.chainId){
          await response.currentProvider.sendAsync({method: 'wallet_addEthereumChain', params: tools.chainData})
-         }        
+         }       
 
          Contract.setProvider(response);
          const curveContract = new Contract(tools.curveABI, tools.curveArbitrum)
@@ -231,6 +231,8 @@ const StateWrapper = ({children}) => {
         addTx([])
     }
 
+    
+    
     
     useEffect(() => {
         Monitor.attach(TableObserver)

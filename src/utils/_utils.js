@@ -84,6 +84,19 @@ LocalStoragePersistenceAdapter.prototype.getAllTransferRequests = () => {
   return returnArr.reverse()
 }
 
+LocalStoragePersistenceAdapter.prototype.getLastTransferRequest = () => {
+  const returnArr = []
+  const entries = Object.entries(window.localStorage).filter(([k, v]) => k.startsWith('request:'))
+  for (const [key, value] of entries){
+    returnArr.push({key: key, data: JSON.parse(value)})
+  }
+  returnArr.sort((a,b) => {return new Date(a[1].date) - new Date(b[1].date)})
+  // returnArr.sort((a, b) => {
+  //   moment(a.date).diff(b.date)
+  // })
+  return returnArr.reverse()
+}
+
 LocalStoragePersistenceAdapter.prototype.setStatus = (key, value) => {
   console.log(key, typeof key)
   const item = Object.entries(window.localStorage).find(([k, v]) => k.startsWith('request:' + key))
