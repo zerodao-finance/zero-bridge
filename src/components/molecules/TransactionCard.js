@@ -1,26 +1,24 @@
 import { Title, ProgressBar } from '../atoms/pt_atoms'
 import { useState, useEffect, useContext } from 'react'
 
-const TransactionCard = ({confs, btc}) => {
+const TransactionCard = ({confs, btc, hash}) => {
 
     const [step, setStep] = useState(0)
-    useEffect(() => {
+    const stepSetter = (num) => {
+        setStep(num)
+    }
+    useEffect(async () => {
+        console.log("test")
         console.log(confs)
-        confs   
-            .on('target', (target) => {
-                console.log(`${target}`)
-                setStep(0)
-            })
-            .on('deposit', async (confs, target) => {
+        await confs   
+            .confirmed()
+            .on('confirmation', async (confs, target) => {
                 console.log(`${confs}/${target} confirmations`)
                 stepSetter(Number(confs))
             })
     }, [confs, step, setStep])
 
 
-    const stepSetter = (num) => {
-        setStep(num)
-    }
 
 
 
@@ -28,6 +26,7 @@ const TransactionCard = ({confs, btc}) => {
         <div className="shadow-2xl rounded-xl w-fit m-4 bg-white dark:bg-gray-600 dark:text-white animate-swing-in-top-fwd z-40">
             <div className=" w-fit p-10 flex flex-col gap-4">
                 <div className="flex flex-row justify-between">
+                    <p>{hash}</p>
                     <Title btc_address={btc}></Title>
                     { step === 6 ? 
                     <h1 className="text-emerald-300">completed</h1>

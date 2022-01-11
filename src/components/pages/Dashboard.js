@@ -35,10 +35,10 @@ const Dashboard = () => {
               <div className="h-full flex flex-col w-screen place-content-center items-center" >
                 { signed ? '': <Disclaimer setSigned={setSigned}/>}
                 <Confirm></Confirm>
-                <div className="fixed top-0 left-0 w-fit h-fit mt-[6rem] z-50">
-                  {value.get.depositTx}
-                </div>
                 <ConversionTool />
+                {/* <div className="fixed top-0 left-0 w-fit h-fit mt-[6rem] z-50">
+                  {value.get.depositTx}
+                </div> */}
               </div>
             }
         </ConversionToolContext.Consumer>
@@ -60,6 +60,13 @@ const Dashboard = () => {
       <div className="fixed top-0 right-0 w-fit h-fit mt-[6rem] mr-[6rem]">
         <ErrorCard />
       </div>
+      <ConversionToolContext.Consumer>
+        { value => 
+          <div className="fixed top-0 left-0 w-fit h-fit mt-[6rem] z-50">
+            {value.get.depositTx}
+          </div>
+        }
+      </ConversionToolContext.Consumer>
       </main>
 
       <footer className="absolute bottom-0 h-[2rem] w-screen text-xs px-4 flex flex-row justify-between">

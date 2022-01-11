@@ -5,7 +5,7 @@ import {ContractContext, Web3Context, ConversionToolContext, TransactionTableCon
 import tools from './_utils'
 import { ethers } from 'ethers'
 import { Monitor, CardObserver, TableObserver, ConvertObserver } from "../utils/TransactionMonitor"
-import { _BridgeMonitor, _BridgeObserver, _ErrorObserver } from '../core/instance'
+import { _BridgeMonitor, _BridgeObserver, _ErrorObserver, _TransactionCardObserver } from '../core/instance'
 
 
 
@@ -229,25 +229,28 @@ const StateWrapper = ({children}) => {
     // Observer.dispatch = dispatch
     // Observer.resolve = resolve
 
-    CardObserver.append = (item) => {
-        console.log(`\nObserver: client adding transaction card to the dom`)
-        addTx([item])
-        setTimeout(() => {
-            ConvertObserver._prevScreen()
-        }, 4500)
-    }
     
-    CardObserver.clear = (item) => {
+    _TransactionCardObserver.clear = (item) => {
         console.log(`\nObserver: client clearing transaction card from the dom`)
         addTx([])
     }
-
+    
+    _TransactionCardObserver.append = async (item) => {
+        console.log(`\nObserver: client adding transaction card to the dom`)
+        addTx([item])
+        // setTimeout(() => {
+        //     ConvertObserver._prevScreen()
+        // }, 4500)
+    }
+    
+    
     
     
     
     useEffect(() => {
         _BridgeMonitor.attach(_BridgeObserver)
         _BridgeMonitor.attach(_ErrorObserver)
+        _BridgeMonitor.attach(_TransactionCardObserver)
         // Monitor.attach(TableObserver)
         // Monitor.attach(CardObserver)
         // Monitor.attach(ConvertObserver)
@@ -255,6 +258,7 @@ const StateWrapper = ({children}) => {
         return function cleanup(){
             _BridgeMonitor.detach(_BridgeObserver)
             _BridgeMonitor.detach(_ErrorObserver)
+            _BridgeMonitor.detach(_TransactionCardObserver)
             // Monitor.detach(TableObserver)
             // Monitor.detach(CardObserver)
             // Monitor.detach(ConvertObserver)
