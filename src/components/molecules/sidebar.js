@@ -1,4 +1,5 @@
 import { RiFileListLine, RiExchangeFundsLine } from 'react-icons/ri'
+import { MdOutlinePending } from 'react-icons/md'
 import { BiTransfer } from 'react-icons/bi'
 import { BsBug } from 'react-icons/bs'
 import { DarkLight } from '../atoms/DarkLight'
@@ -18,22 +19,23 @@ export const Sidebar = ({switcher}) => {
                         </button>
                     </div>
                     <div className="flex flex-row gap-3 hover:scale-125">
+                        <MdOutlinePending className="h-[1.2rem] w-[1.2rem] dark:fill-black"/>
+
+                        <button className="hidden group-hover:block opacity-0 group-hover:opacity-100 transition-all delay-75 hover:text-emerald-300 dark:hover:text-white" onClick={() => switcher("manage")}>
+                            Manage Transactions
+                        </button>
+                    </div>
+                    <div className="flex flex-row gap-3 hover:scale-125">
                         <BiTransfer className="h-[1.2rem] w-[1.2rem] dark:fill-black"/>
 
                         <button className="hidden group-hover:block opacity-0 group-hover:opacity-100 transition-all delay-75 hover:text-emerald-300 dark:hover:text-white" onClick={() => switcher("transactions")}>
-                            Past Transactions
+                            History
                         </button>
                     </div>
                     <div className="flex flex-row gap-3 hover:scale-125">
                         <RiFileListLine className="h-[1.2rem] w-[1.2rem] dark:fill-black"/>
                         <button className="hidden group-hover:block group-hover:opacity-100 opacity-0 transition-all delay-75 hover:text-emerald-300 dark:hover:text-white">
                             Documentation
-                        </button>
-                    </div>
-                    <div className="flex flex-row gap-3 hover:scale-125">
-                        <BsBug className="h-[1.2rem] w-[1.2rem] dark:fill-black"/>
-                        <button className="hidden group-hover:block group-hover:opacity-100 opacity-0 transition-all delay-75 hover:text-emerald-300 dark:hover:text-white">
-                            Report Issues
                         </button>
                     </div>
                 </div>

@@ -19,6 +19,7 @@ import {enableGlobalMockRuntime, createMockKeeper} from "zero-protocol/dist/lib/
 
 import { EventEmitter } from "events";
 import tools from "./_utils";
+import { _BridgeMonitor } from '../core/instance'
 import { Monitor } from '../utils/TransactionMonitor'
 
 const GlobalEffectWrapper = ({ children }) => {
@@ -237,15 +238,15 @@ const GlobalEffectWrapper = ({ children }) => {
     if (a_value.get.zUser) return
     const zeroUser = createZeroUser(await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/'));
     if (process.env.REACT_APP_TEST) {
-      await createMockKeeper()
-      await enableGlobalMockRuntime()
+      // await createMockKeeper()
+      // await enableGlobalMockRuntime()
     }
     await zeroUser.conn.start();
     await zeroUser.subscribeKeepers();
     console.log(zeroUser)
     window.user = window.user || zeroUser;
     a_value.set.setUser(zeroUser);
-    Monitor._zeroUser = zeroUser
+    _BridgeMonitor.zeroUser = zeroUser
     return zeroUser;
   };
 

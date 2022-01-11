@@ -84,6 +84,8 @@ LocalStoragePersistenceAdapter.prototype.getAllTransferRequests = () => {
   return returnArr.reverse()
 }
 
+
+
 LocalStoragePersistenceAdapter.prototype.getLastTransferRequest = () => {
   const returnArr = []
   const entries = Object.entries(window.localStorage).filter(([k, v]) => k.startsWith('request:'))

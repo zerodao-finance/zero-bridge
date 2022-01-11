@@ -208,9 +208,16 @@ class TransactionMonitor {
     async _signTxn(signer) {
         if (!this.transferRequest || !signer) return new Error(`Subject: error signing no transferRequest or signer`)
         this._signature = await this.transferRequest.sign(signer)
-        this._gatewayAddress = await this.transferRequest.toGatewayAddress()
-        this._dry = await new TrivialUnderwriterTransferRequest(this.transferRequest).dry(signer.provider, { from: '0x12fBc372dc2f433392CC6caB29CFBcD5082EF494' })
+        try {
+            this._dry = await new TrivialUnderwriterTransferRequest(this.transferRequest).dry(signer.provider, { from: '0x12fBc372dc2f433392CC6caB29CFBcD5082EF494' })
+        } catch (error ){
+            /**
+             * Error Handler
+             */
+            console.log("error, ", error.data.message)
+        }
         this._key = await tools.storage.set({...this.transferRequest, date: Date.now(), dry: this._dry})
+        this._gatewayAddress = await this.transferRequest.toGatewayAddress()
         console.log(this._dry)
         this.event = "SIGNED"
         this.notify("ConvertTableObserver")

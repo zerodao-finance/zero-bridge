@@ -5,7 +5,7 @@ import {ContractContext, Web3Context, ConversionToolContext, TransactionTableCon
 import tools from './_utils'
 import { ethers } from 'ethers'
 import { Monitor, CardObserver, TableObserver, ConvertObserver } from "../utils/TransactionMonitor"
-
+import { _BridgeMonitor, _BridgeObserver, _ErrorObserver } from '../core/instance'
 
 
 
@@ -69,8 +69,8 @@ const StateWrapper = ({children}) => {
          }       
 
          Contract.setProvider(response);
-         const curveContract = new Contract(tools.curveABI, tools.curveArbitrum)
-         setContract(curveContract);
+        //  const curveContract = new Contract(tools.curveABI, tools.curveArbitrum)
+        //  setContract(curveContract);
          setConnection(true)
      })
  }
@@ -87,7 +87,7 @@ const StateWrapper = ({children}) => {
          setConnection: setConnection,
          connectWallet: connectWallet
      }
- }
+    }
 
 
     const [ txTable, updateTxTable ] = useState(tools.storage.getAllTransferRequests())
@@ -134,11 +134,17 @@ const StateWrapper = ({children}) => {
         }
     }
     const getSigner = async () => {
-        const ethProvider = new ethers.providers.Web3Provider(web3.currentProvider);
-        await ethProvider.send("eth_requestAccounts", []);
-        const signer = await ethProvider.getSigner();
-        return signer
+        try {
+            const ethProvider = new ethers.providers.Web3Provider(web3.currentProvider);
+            await ethProvider.send("eth_requestAccounts", []);
+            const signer = await ethProvider.getSigner();
+            return signer
+        } catch ( error ) {
+            return new Error("Cannot get Provider, |Connect Wallet")
+        }
     }
+
+    const retrieveSigner = _.once(getSigner)
 
     const clear = () => {
         setValue(0)
@@ -148,12 +154,16 @@ const StateWrapper = ({children}) => {
     const signTxn = async (event) => {
         event.preventDefault();
         console.log(ethers.utils.parseEther(parseFloat(String(Number(value) / 100 * ratio )).toFixed(8)))
-
-        Monitor._createTxn(await (await getSigner()).getAddress(), value, ratio)
+        await _BridgeMonitor._create(await retrieveSigner(), value, ratio)
+        // Monitor._createTxn(await (await getSigner()).getAddress(), value, ratio)
         if (process.env.REACT_APP_TEST) {
-            Monitor._mockSignTxn(await getSigner())
+            _BridgeMonitor.mockSign(await retrieveSigner())
+            // Monitor._mockSignTxn(await getSigner())
         } else {
-            Monitor._signTxn(await getSigner())
+            await _BridgeMonitor.sign(await retrieveSigner())
+            await _BridgeMonitor.dry(await retrieveSigner())
+            await _BridgeMonitor.gatewayAddress()
+            // Monitor._signTxn(await getSigner())
         }
         
         clear()
@@ -164,7 +174,8 @@ const StateWrapper = ({children}) => {
         if (process.env.REACT_APP_TEST) {
             Monitor._mockTransfer()
         } else {
-            Monitor._transfer()
+            // Monitor._transfer()
+            _BridgeMonitor.transfer()
         }
     }
 
@@ -235,14 +246,18 @@ const StateWrapper = ({children}) => {
     
     
     useEffect(() => {
-        Monitor.attach(TableObserver)
-        Monitor.attach(CardObserver)
-        Monitor.attach(ConvertObserver)
+        _BridgeMonitor.attach(_BridgeObserver)
+        _BridgeMonitor.attach(_ErrorObserver)
+        // Monitor.attach(TableObserver)
+        // Monitor.attach(CardObserver)
+        // Monitor.attach(ConvertObserver)
         
         return function cleanup(){
-            Monitor.detach(TableObserver)
-            Monitor.detach(CardObserver)
-            Monitor.detach(ConvertObserver)
+            _BridgeMonitor.detach(_BridgeObserver)
+            _BridgeMonitor.detach(_ErrorObserver)
+            // Monitor.detach(TableObserver)
+            // Monitor.detach(CardObserver)
+            // Monitor.detach(ConvertObserver)
         }
     }, [])
 

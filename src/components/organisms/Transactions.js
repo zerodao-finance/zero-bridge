@@ -38,7 +38,7 @@ const Transactions = ({txTable}) => {
       
     return (
         <div className="dark:bg-gray-700 dark:text-white bg-white rounded-xl shadow-xl flex flex-col items-center animate-swing-in-top-fwd">
-            <p className="font-light text-xl tracking-widest capitalize relative-top mb-2 place-self-start pt-2 pl-2 w-full bg-emerald-300 shadow-lg rounded-t-md">Past Transactions</p>
+            <p className="font-light text-xl tracking-widest capitalize relative-top mb-2 dark:text-black place-self-start pt-2 pl-2 w-full bg-emerald-300 shadow-lg rounded-t-md">Past Transactions</p>
             <Table>
               {txTable[0] && txTable.slice(page*3, ((page*3)+4 > max ? max : (page*3)+4)).map((tx) => (
                   <tr key={tx['date']} className="w-full text-center gap-2 items-center w-full group hover:bg-white hover:shadow-xl transition-all duration-200 delay-200 py-2 mt-3">
