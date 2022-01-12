@@ -20,7 +20,6 @@ import {enableGlobalMockRuntime, createMockKeeper} from "zero-protocol/dist/lib/
 import { EventEmitter } from "events";
 import tools from "./_utils";
 import { _BridgeMonitor } from '../core/instance'
-import { Monitor } from '../utils/TransactionMonitor'
 
 const GlobalEffectWrapper = ({ children }) => {
   /**
@@ -183,7 +182,7 @@ const GlobalEffectWrapper = ({ children }) => {
         let confirmed = await deposit
           .confirmed()
         
-        Monitor._transact(confirmed)
+        // Monitor._transact(confirmed)
 
         confirmed
           .on('target', (target) => {
@@ -195,8 +194,8 @@ const GlobalEffectWrapper = ({ children }) => {
               await new Promise((resolve, reject) => {
                 setTimeout(resolve, 3000);
               });
-              Monitor._update("successful")
-              Monitor._resolve()
+              // Monitor._update("successful")
+              // Monitor._resolve()
               c_value.set.setAddress('')
             }  
           })

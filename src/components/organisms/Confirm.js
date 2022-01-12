@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { AiOutlineCheck } from 'react-icons/ai'
-import { ConvertObserver } from '../../utils/TransactionMonitor'
+
 
 export const Confirm = () => {
     const [show, hide] = useState(false)
-    ConvertObserver.hide = (state) => {
-        hide(state)
-    }
+    // ConvertObserver.hide = (state) => {
+    //     hide(state)
+    // }
 
        return ( 
            show && <div className="absolute w-full h-full z-30 backdrop-blur-sm flex justify-center items-center">

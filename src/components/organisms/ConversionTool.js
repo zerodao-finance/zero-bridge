@@ -1,5 +1,4 @@
 import ConvertBox, { ConfirmBox } from '../molecules/Box'
-import {ConvertObserver, Monitor} from '../../utils/TransactionMonitor'
 import { _BridgeObserver } from '../../core/instance'
 import {useState, useEffect, useContext} from 'react'
 import {Web3Context} from "../../context/Context"

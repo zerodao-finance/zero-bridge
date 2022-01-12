@@ -4,7 +4,6 @@ import wallet_model from '../WalletModal';
 import {ContractContext, Web3Context, ConversionToolContext, TransactionTableContext, TransactionObserverContext, UIContext} from '../context/Context'
 import tools from './_utils'
 import { ethers } from 'ethers'
-import { Monitor, CardObserver, TableObserver, ConvertObserver } from "../utils/TransactionMonitor"
 import { _BridgeMonitor, _BridgeObserver, _ErrorObserver, _TransactionCardObserver } from '../core/instance'
 
 
@@ -172,7 +171,7 @@ const StateWrapper = ({children}) => {
     const submitTransfer = async (event) => {
         event.preventDefault()
         if (process.env.REACT_APP_TEST) {
-            Monitor._mockTransfer()
+            _BridgeMonitor._mockTransfer()
         } else {
             // Monitor._transfer()
             _BridgeMonitor.transfer()
@@ -251,17 +250,11 @@ const StateWrapper = ({children}) => {
         _BridgeMonitor.attach(_BridgeObserver)
         _BridgeMonitor.attach(_ErrorObserver)
         _BridgeMonitor.attach(_TransactionCardObserver)
-        // Monitor.attach(TableObserver)
-        // Monitor.attach(CardObserver)
-        // Monitor.attach(ConvertObserver)
         
         return function cleanup(){
             _BridgeMonitor.detach(_BridgeObserver)
             _BridgeMonitor.detach(_ErrorObserver)
             _BridgeMonitor.detach(_TransactionCardObserver)
-            // Monitor.detach(TableObserver)
-            // Monitor.detach(CardObserver)
-            // Monitor.detach(ConvertObserver)
         }
     }, [])
 
@@ -269,7 +262,8 @@ const StateWrapper = ({children}) => {
 
 
     return (
-        <TransactionObserverContext.Provider value={Monitor}>
+        // <TransactionObserverContext.Provider value={Monitor}>
+        // </TransactionObserverContext.Provider>
             <ContractContext.Provider value={arbitrumContext}>
                 <Web3Context.Provider value={web3Context}>
                     <ConversionToolContext.Provider value={conversionToolContext}>
@@ -281,7 +275,6 @@ const StateWrapper = ({children}) => {
                     </ConversionToolContext.Provider>
                 </Web3Context.Provider>
             </ContractContext.Provider>
-        </TransactionObserverContext.Provider>
     )
 }
 
