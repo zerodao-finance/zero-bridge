@@ -156,7 +156,7 @@ const StateWrapper = ({children}) => {
         console.log(ethers.utils.parseEther(parseFloat(String(Number(value) / 100 * ratio )).toFixed(8)))
         await _BridgeMonitor._create(await retrieveSigner(), value, ratio)
         // Monitor._createTxn(await (await getSigner()).getAddress(), value, ratio)
-        if (process.env.REACT_APP_TEST) {
+        if (false && process.env.REACT_APP_TEST) {
             _BridgeMonitor.mockSign(await retrieveSigner())
             // Monitor._mockSignTxn(await getSigner())
         } else {
@@ -171,7 +171,7 @@ const StateWrapper = ({children}) => {
 
     const submitTransfer = async (event) => {
         event.preventDefault()
-        if (process.env.REACT_APP_TEST) {
+        if (false && process.env.REACT_APP_TEST) {
             _BridgeMonitor._mockTransfer()
         } else {
             // Monitor._transfer()

@@ -72,8 +72,7 @@ export function useLocalStorageRefresh(props){
             _BridgeMonitor.listener.emit("background", value.value)
             _BridgeMonitor.listener.on("cleared", () => {
                 value.value.status = "success"
-                JSON.stringify(value.value)
-                window.localStorage.setItem(value.key, value.value)
+                window.localStorage.setItem(value.key, JSON.stringify(value.value))
             })
 
             console.log(value.key, value.value)
