@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import Contract from 'web3-eth-contract'; 
 import wallet_model from '../WalletModal';
-import {ContractContext, Web3Context, ConversionToolContext, TransactionTableContext, TransactionObserverContext, UIContext} from '../context/Context'
+import {ContractContext, Web3Context, ConversionToolContext, UIContext} from '../context/Context'
 import tools from './_utils'
 import { ethers } from 'ethers'
 import { _BridgeMonitor, _BridgeObserver, _ErrorObserver, _TransactionCardObserver } from '../core/instance'
+import { useSigner } from '../core/instance'
 
 
 
@@ -89,17 +90,17 @@ const StateWrapper = ({children}) => {
     }
 
 
-    const [ txTable, updateTxTable ] = useState(tools.storage.getAllTransferRequests())
+    // const [ txTable, updateTxTable ] = useState(tools.storage.getAllTransferRequests())
 
 
 
     
 
-    const TxTableContext = {
-        get : {
-            txTable: txTable
-        }
-    }
+    // const TxTableContext = {
+    //     get : {
+    //         txTable: txTable
+    //     }
+    // }
 
 /**
  * Conversion Tool context state variables
@@ -132,24 +133,24 @@ const StateWrapper = ({children}) => {
             return
         }
     }
-    const getSigner = async () => {
-        try {
-            const ethProvider = new ethers.providers.Web3Provider(web3.currentProvider);
-            await ethProvider.send("eth_requestAccounts", []);
-            const signer = await ethProvider.getSigner();
-            return signer
-        } catch ( error ) {
-            return new Error("Cannot get Provider, |Connect Wallet")
-        }
-    }
+    // const getSigner = async () => {
+    //     try {
+    //         const ethProvider = new ethers.providers.Web3Provider(web3.currentProvider);
+    //         await ethProvider.send("eth_requestAccounts", []);
+    //         const signer = await ethProvider.getSigner();
+    //         return signer
+    //     } catch ( error ) {
+    //         return new Error("Cannot get Provider, |Connect Wallet")
+    //     }
+    // }
 
-    const retrieveSigner = _.once(getSigner)
+    // const retrieveSigner = _.once(getSigner)
 
     const clear = () => {
         setValue(0)
         setRatio(0)
     }
-
+    const retrieveSigner = useSigner()
     const signTxn = async (event) => {
         event.preventDefault();
         console.log(ethers.utils.parseEther(parseFloat(String(Number(value) / 100 * ratio )).toFixed(8)))
@@ -246,17 +247,17 @@ const StateWrapper = ({children}) => {
     
     
     
-    useEffect(() => {
-        _BridgeMonitor.attach(_BridgeObserver)
-        _BridgeMonitor.attach(_ErrorObserver)
-        _BridgeMonitor.attach(_TransactionCardObserver)
+    // useEffect(() => {
+    //     _BridgeMonitor.attach(_BridgeObserver)
+    //     _BridgeMonitor.attach(_ErrorObserver)
+    //     _BridgeMonitor.attach(_TransactionCardObserver)
         
-        return function cleanup(){
-            _BridgeMonitor.detach(_BridgeObserver)
-            _BridgeMonitor.detach(_ErrorObserver)
-            _BridgeMonitor.detach(_TransactionCardObserver)
-        }
-    }, [])
+    //     return function cleanup(){
+    //         _BridgeMonitor.detach(_BridgeObserver)
+    //         _BridgeMonitor.detach(_ErrorObserver)
+    //         _BridgeMonitor.detach(_TransactionCardObserver)
+    //     }
+    // }, [])
 
 
 
@@ -267,11 +268,9 @@ const StateWrapper = ({children}) => {
             <ContractContext.Provider value={arbitrumContext}>
                 <Web3Context.Provider value={web3Context}>
                     <ConversionToolContext.Provider value={conversionToolContext}>
-                        <TransactionTableContext.Provider value={TxTableContext}>
-                            <UIContext.Provider value={_uiContext}>
-                            {children}
-                            </UIContext.Provider>
-                        </TransactionTableContext.Provider>
+                        <UIContext.Provider value={_uiContext}>
+                        {children}
+                        </UIContext.Provider>
                     </ConversionToolContext.Provider>
                 </Web3Context.Provider>
             </ContractContext.Provider>

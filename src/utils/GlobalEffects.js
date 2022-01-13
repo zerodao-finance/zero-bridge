@@ -266,19 +266,19 @@ const GlobalEffectWrapper = ({ children }) => {
     c_value.get.ratio,
   ]);
 
-  useEffect(async () => {
-    await initializeConnection();
-  }, []);
+  // useEffect(async () => {
+  //   await initializeConnection();
+  // }, []);
 
-  useEffect(async () => {
-    const listener = (keeper) => {
-      console.log(keeper)
-      a_value.set.setKeepers([...a_value.get.keepers, keeper]);
-    };
-    if (a_value.get.zUser) a_value.get.zUser.on("keeper", listener);
-    return () =>
-      a_value.get.zUser && a_value.get.zUser.removeListener("keeper", listener);
-  }, [a_value.get.zUser]);
+  // useEffect(async () => {
+  //   const listener = (keeper) => {
+  //     console.log(keeper)
+  //     a_value.set.setKeepers([...a_value.get.keepers, keeper]);
+  //   };
+  //   if (a_value.get.zUser) a_value.get.zUser.on("keeper", listener);
+  //   return () =>
+  //     a_value.get.zUser && a_value.get.zUser.removeListener("keeper", listener);
+  // }, [a_value.get.zUser]);
 
   /** 
    * Sets Eth price on block change 
