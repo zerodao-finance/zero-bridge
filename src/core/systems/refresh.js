@@ -43,7 +43,6 @@ export function useLocalStorageRefresh(props){
             .chain(Object.entries(window.localStorage))
             .filter(function(k, v) {return _.startsWith(k, "request:")})
             .transform(function(result, [k, v]){
-                console.log(v)
                 result.push({key: k, value: (JSON.parse(v))})
             }, [])
             .filter({ value: { status: "pending"}})
@@ -73,6 +72,7 @@ export function useLocalStorageRefresh(props){
             _BridgeMonitor.listener.emit("background", value.value)
             _BridgeMonitor.listener.on("cleared", () => {
                 value.value.status = "success"
+                JSON.stringify(value.value)
                 window.localStorage.setItem(value.key, value.value)
             })
 
