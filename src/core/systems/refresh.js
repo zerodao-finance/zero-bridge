@@ -23,7 +23,8 @@ export const createTransferRequest = (_object) => {
 }
 
 export const updateTransferRequest = (key, status) => {
-    const item = Object.entries(window.localStorage).find(([k, v]) => k.startsWith(String(key)))
+	console.log(key);
+    const item = Object.entries(window.localStorage).find(([k, v]) => k.startsWith('request:' + String(key)))
     console.log(item)
     const parsed = JSON.parse(item[1])
     parsed.status = status
