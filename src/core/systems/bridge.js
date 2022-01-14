@@ -160,8 +160,8 @@ export class TransactionCardObserver extends Observer {
             const hash = deposit.txHash()
             if (deposit.depositDetails.transaction.confirmations >= 6) return storage.updateTransferRequest(monitor._key, "success")
             await this.append(<TransactionCard btc={monitor._gatewayAddress} confs={deposit}/>)
-            await deposit
-                .confirmed()
+            (await deposit
+                .confirmed())
                 .on("target", target => console.log(`0/${target} confirmations`))
                 .on("confirmation", (confs, target) => {
                     console.log(`${confs}/${target} confirmations`)
