@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import './app.css'
 import Dashboard from './components/pages/Dashboard'
-import StateWrapper from './utils/StateWrapper'
-import GlobalEffectWrapper from './utils/GlobalEffects'
 import 'react-toastify/dist/ReactToastify.min.css';
 
 
@@ -20,11 +18,7 @@ Object.keys(process.env).forEach((key) => {
 
 ReactDOM.render(
   <React.StrictMode className="">
-    <StateWrapper>
-      <GlobalEffectWrapper>
         <Dashboard />
-      </GlobalEffectWrapper>
-    </StateWrapper>
   </React.StrictMode>,
   document.getElementById('root')
 );

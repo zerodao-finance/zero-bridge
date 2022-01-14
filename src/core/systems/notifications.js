@@ -16,24 +16,52 @@ import { Observer } from "../tools"
 import { EventEmitter } from "events";
 
 
+// export function useNotification(props){
+//     const [ data, action ] = useState(null)
+
+//     useEffect(() => {
+//         props.event.on("add", (data, time = null) => {
+//             console.log(props.group)
+//             action(data)
+//             if (time) setTimeout(() => action(null), time)
+//         })
+//         props.event.on("delete", () => {
+//             action(null)
+//         })
+
+//         return () => props.event.removeAllListeners()
+//     }, [])
+
+
+//     return data;
+// }
+
+
+
 export function useNotification(props){
-    const [ data, action ] = useState(null)
+    const [data, action] = useState([])
+    const next = () => {
+        action(_.tail(data))
+    }
+    const updater = (value) => {
+        console.log(data)
+        let new_val = [...data, value]
+        console.log(new_val)
+        action(new_val)
+    }
 
     useEffect(() => {
-        props.event.on("add", (data, time = null) => {
-            console.log(props.group)
-            action(data)
-            if (time) setTimeout(() => action(null), time)
-        })
-        props.event.on("delete", () => {
-            action(null)
+        props.event.on(props.type,  (_data, time = null) => {
+            // let stuff = data.push({data: _data, time: time, next: next})
+            updater({data: _data, time: time, next: next})
         })
 
-        return () => props.event.removeAllListeners()
+        return () => props.event.off(props.type, (data, time = null) => {
+            updater({data: _data, time: time, next: next})
+        })
     }, [])
-
-
-    return data;
+    
+    return [data]
 }
 
 export class NotificationObserver extends Observer {

@@ -1,24 +1,31 @@
 import { Title, ProgressBar } from '../atoms/pt_atoms'
 import { useState, useEffect, useContext } from 'react'
 
-const TransactionCard = ({deposit}) => {
+const TransactionCard = ({data}) => {
 
     const [step, setStep] = useState(0)
     const stepSetter = (num) => {
         setStep(num)
     }
+    
     useEffect(async () => {
         if (process.env.REACT_APP_TEST){
-            deposit.on('confirmation', (confs, target) => {
-                stepSetter(Number(confs))
-            })
+            console.log(data)
+            data.data
+                .on('confirmation', (confs, target) => {
+                    stepSetter(Number(confs))
+
+                    if (confs === target){
+                        data.next()
+                    }
+                })
         } else {
-            await deposit
+            await data.data
                 .on('confirmation', async (confs, target) => {
                     stepSetter(Number(confs))
                 })
         }
-    }, [deposit, step, setStep])
+    }, [])
 
 
 

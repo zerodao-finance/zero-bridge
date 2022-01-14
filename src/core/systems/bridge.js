@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import _ from 'lodash'
 import { TrivialUnderwriterTransferRequest, TransferRequest } from 'zero-protocol/dist/lib/zero'
-import { updateTransferRequest } from './refresh'
+import { storage } from '../instance'
 import { Monitor, Observer } from '../tools'
 import tools from '../../utils/_utils'
 import { EventEmitter } from 'events'
@@ -29,7 +29,6 @@ export class BridgeMonitor extends Monitor {
             ["uint256"],
             [ethers.utils.parseEther(parseFloat(String(Number(_value) / 100 * _ratio)).toFixed(8))]
         )
-
         const asset = tools.asset
         const transferRequest = new TransferRequest({
             to: _to,
@@ -37,7 +36,7 @@ export class BridgeMonitor extends Monitor {
             underwriter: tools.trivialUnderwriter,
             module: tools.zeroModule,
             asset,
-            amount: ethers.utils.parseUnits(_value, 8),
+            amount: ethers.utils.parseUnits(String(_value), 8),
             data: String(data)
         })
         this.transferRequest = transferRequest
@@ -159,7 +158,7 @@ export class TransactionCardObserver extends Observer {
     async update (monitor) {
         monitor._mint.on('deposit', async (deposit) => {
             const hash = deposit.txHash()
-            if (deposit.depositDetails.transaction.confirmations >= 6) return updateTransferRequest(monitor._key, "success")
+            if (deposit.depositDetails.transaction.confirmations >= 6) return storage.updateTransferRequest(monitor._key, "success")
             await this.append(<TransactionCard btc={monitor._gatewayAddress} confs={deposit}/>)
             await deposit
                 .confirmed()
@@ -167,7 +166,7 @@ export class TransactionCardObserver extends Observer {
                 .on("confirmation", (confs, target) => {
                     console.log(`${confs}/${target} confirmations`)
                     if (Number(confs) === 6){
-                        updateTransferRequest(monitor._key, "success")
+                        storage.updateTransferRequest(monitor._key, "success")
                     }
                 })
 

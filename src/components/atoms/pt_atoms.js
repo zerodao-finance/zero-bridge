@@ -1,9 +1,6 @@
 import { BiCheckDouble } from 'react-icons/bi'
 import { AiOutlineLoading } from 'react-icons/ai'
-import { useState } from 'react'
-import { isCommunityResourcable } from '@ethersproject/providers'
-import { ConversionToolContext } from '../../context/Context'
-import { useContext } from 'react'
+
 export const Title = ({btc_address}) => {
     // const table_context = useContext(ConversionToolContext)
     return (

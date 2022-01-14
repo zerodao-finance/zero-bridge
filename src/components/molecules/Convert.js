@@ -1,5 +1,4 @@
 import ConvertInput from '../atoms/Input'
-import { ConversionToolContext } from '../../context/Context'
 import { FaBitcoin } from 'react-icons/fa'
 import {useBridgeContext} from '../../core/instance'
 const Convert = () => {

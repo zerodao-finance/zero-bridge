@@ -1,7 +1,6 @@
 import ConvertBox, { ConfirmBox } from '../molecules/Box'
 import { _BridgeObserver, useBridge } from '../../core/instance'
 import {useState, useEffect, useContext} from 'react'
-import {Web3Context} from "../../context/Context"
 
 
 

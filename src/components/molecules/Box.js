@@ -4,7 +4,6 @@ import Result from './Result'
 import {RiExchangeFundsFill} from 'react-icons/ri'
 import { AiOutlineArrowDown, AiOutlineClose } from 'react-icons/ai' 
 import {CgSpinnerTwoAlt} from 'react-icons/cg'
-import { ConversionToolContext } from '../../context/Context'
 import { ethers } from 'ethers'
 import { Confirm } from '../organisms/Confirm'
 
@@ -53,8 +52,6 @@ export const ConfirmBox = ({transferRequest, back, status}) => {
     return (
         <>
         {transferRequest &&
-            <ConversionToolContext.Consumer>
-                {value =>
                         <div className="flex flex-col container h-max bg-white shadow-xl rounded-[30px] justify-center place-items-center gap-3 w-fit pb-4 relative dark:bg-gray-700 dark:text-white">
                             <Confirm />
                             <AiOutlineClose className="absolute top-1 left-1 hover:scale-150 dark:stroke-white" onClick={back}/>
@@ -87,12 +84,7 @@ export const ConfirmBox = ({transferRequest, back, status}) => {
                                 <p className="text-black dark:text-white">Deposit the exact amount of BTC to the Deposit Address</p>
                                 
                             </div>
-                            <button className="rounded-full bg-emerald-300 dark:bg-emerald-500 text-white px-3 py-2 mt-4 hover:scale-90 transition-all font-fine duration-150 hover:ring-2 ring-emerald-700 tracking-wider" onClick={value.set.submitTxn}>
-                                Confirm Transaction
-                            </button>
                         </div>
-                    }
-            </ConversionToolContext.Consumer>
         }
         </>
     )

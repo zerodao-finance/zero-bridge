@@ -1,4 +1,4 @@
-import {_BridgeMonitor, _ErrorNotifications, _TransactionNotifications, _BridgeObserver} from '../instance'
+import {_BridgeMonitor, _ErrorNotifications, _TransactionNotifications, _BridgeObserver, _events} from '../instance'
 import { useEffect, useState, useReducer } from 'react'
 
 const initialState = { page: 1, min: 1, max: 2, data: {}, status: null }
@@ -14,7 +14,22 @@ function pageReducer(state, action){
 }
 export function useBridge(){
     const [ state, dispatch ] = useReducer(pageReducer, initialState)
-    _BridgeObserver.dispatch = dispatch
+    
+    useEffect(() => {
+        _events.dispatch.on("new_transaction_submited", (transferRequest, gatewayAddress) => {
+            dispatch({type: "next", data: { transferRequest: {...transferRequest, gatewayAddress}, back: () => {dispatch({type: "prev"})}}})
+        })
+
+        _events.dispatch.on("new_transaction_confirmed", () => { dispatch({type: "prev"})})
+
+        return () => {
+            _events.dispatch.off("new_transaction_submited", (transferRequest, gatewayAddress) => {
+                dispatch({type: "next", data: { transferRequest: {...transferRequest, gatewayAddress}, back: () => {dispatch("prev")}}})
+            })
+    
+            _events.dispatch.off("new_transaction_confirmed", () => { dispatch({type: "prev"})})
+        }
+    }, [])
 
 
     useEffect(() => {

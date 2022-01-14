@@ -2,6 +2,7 @@ import {useState, createContext, useContext, useEffect, useReducer} from "react"
 import _ from 'lodash'
 import tools from '../../utils/_utils'
 import {ethers} from 'ethers'
+import {_events} from "../instance"
 
 
 
@@ -99,6 +100,13 @@ export function BridgeProvider({children}) {
     };
 
     useEffect(updateAmounts, [state.amount, state.ratio, ETH])
+    useEffect(() => {
+        _events.dispatch.on("new_transaction_confirmed", () => { dispatch({type: "reset"})})
+
+        return () => {
+            _events.dispatch.off("new_transaction_confirmed", () => { dispatch({type: "reset"})})
+        }
+    })
 
 
     return <Provider value={{state, dispatch}}>{children}</Provider>

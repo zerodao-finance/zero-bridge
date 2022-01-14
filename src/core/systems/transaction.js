@@ -4,10 +4,17 @@
  * interacts with localStorage Persistance adapter
  */
 import { useState, useEffect } from 'react'
-import { useBridgeContext, useSigner, _ErrorNotifications, _BridgeMonitor, _TransactionNotifications, } from '../instance'
+import { useBridgeContext, useSigner, _ErrorNotifications, _BridgeMonitor, _TransactionNotifications, sdk } from '../instance'
 import { ethers } from 'ethers'
 import _ from "lodash"
 
+
+/**
+ * Hook
+ * 
+ * checks if wallet is connected and calls BridgeMonitor functions to send transaction
+ * @catagory [Convert]
+ */
 export function useTransactionSender(props){
     const retrieveSigner = useSigner()
     const {connection, connectWallet} = global.wallet
@@ -15,18 +22,7 @@ export function useTransactionSender(props){
     const [ isLoading, toggle ] = useState(false)
 
     const sign = async () => {
-        if (!connection) return _ErrorNotifications.update({error: "Please Connect Wallet", timeout: 5000})
-        try {ethers.utils.parseUnits(state.value, 8)}catch(e){return _ErrorNotifications.update({error: "Oops! Invalid Transfer Amount, Try Again", timeout: 5000})}
-
-        await _BridgeMonitor._create(await retrieveSigner(), state.value, state.ratio)
-        await _BridgeMonitor.sign(await retrieveSigner())
-        let dry = _BridgeMonitor.dry(await retrieveSigner())
-        if (_.isError(await dry)){
-            dispatch({type: "reset"})
-        } else {
-            dispatch({type: "reset"})
-            await _BridgeMonitor.transfer()
-        }
+        sdk.submitNewTX(await retrieveSigner(), state.value, state.ratio)
     }
     
     return [isLoading, sign]

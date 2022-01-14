@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext } from 'react'
 import { createZeroUser, createZeroConnection } from "zero-protocol/dist/lib/zero.js";
 import _ from 'lodash'
-import { _BridgeMonitor } from '../instance'
+import { _BridgeMonitor, sdk } from '../instance'
 import {enableGlobalMockRuntime, createMockKeeper} from "zero-protocol/dist/lib/mock.js"
 
 
 
-const initializeZeroUser = _.once(async () => {
+const initializeZeroUser = async () => {
     const zeroUser = createZeroUser(await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/'));
     if (process.env.REACT_APP_TEST) {
         await createMockKeeper()
@@ -15,9 +15,9 @@ const initializeZeroUser = _.once(async () => {
     await zeroUser.conn.start();
     await zeroUser.subscribeKeepers();
     window.user = zeroUser
-    _BridgeMonitor.zeroUser = zeroUser
+    sdk.zeroUser = zeroUser
     return zeroUser
-})
+}
 
 export function useKeeper(props) {
 

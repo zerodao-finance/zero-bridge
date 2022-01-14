@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { getTransferRequests, createTransferRequest } from "../../core/systems/refresh"
+
 import moment from 'moment'
 import { ethers } from 'ethers'
-import { _BridgeMonitor } from "../../core/instance"
+import { _BridgeMonitor, storage } from "../../core/instance"
 export const ManageTool = () => {
-    const [requests, getRequests ] = useState((getTransferRequests())[1])
+    const [requests, getRequests ] = useState((storage.getTransferRequests())[1])
     return (
         <div className="w-2/4 h-2/5 bg-neutral-100 dark:bg-gray-700 flex flex-col rounded-b-xl shadow-lg relative animate-swing-in-top-fwd">
             <div className="w-full h-fit bg-emerald-300 rounded-t-lg shadow-lg text-center text-lg tracking-wider font-light ">Manage Transactions</div>
