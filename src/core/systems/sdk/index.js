@@ -38,6 +38,8 @@ class SDK {
             contractAddress: tools.controller.address,
             underwriter: tools.trivialUnderwriter,
             module: tools.zeroModule,
+            nonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
+            pNonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)), // nonce and pNonce must be unique every time, there is no special meaning to them,
             asset,
             amount: ethers.utils.parseUnits(String(_value), 8),
             data: String(data)
@@ -105,7 +107,7 @@ class SDK {
                     let signed = deposit.signed()
                     _events.dispatch.emit("confirmed", confirmed)
                     signed.on("status", (status) => { 
-                        if (status === 'signed') storage.updateTransferRequest(_key, "success");
+                        if (status === 'done') storage.updateTransferRequest(_key, "success");
                     })
                 })
                 /**
@@ -143,7 +145,12 @@ class SDK {
             }
             else {
                 //prod
-                var _gatewayAddress = await transferRequest.toGatewayAddress()
+                let _deposit = await _mint.on("deposit", async (deposit) => {
+                    let signed = deposit.signed()
+                    signed.on("status", (status) => { 
+                        if (status === 'signed') storage.updateTransferRequest(_key, "success");
+                    })
+                })
                 
                 
                 // _events.dispatch.emit("new_transaction_submited", _mint, _gatewayAddress)
