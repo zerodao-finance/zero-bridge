@@ -29,7 +29,7 @@ class SDK {
         }
         const data = ethers.utils.defaultAbiCoder.encode(
             ["uint256"],
-            [ethers.utils.parseEther(parseFloat(String(Number(_value) / 100 * _ratio)).toFixed(8))]
+            [ethers.utils.parseEther(_ratio).div(ethers.BigNumber.from('100'))]
         )
 
         const asset = tools.asset
