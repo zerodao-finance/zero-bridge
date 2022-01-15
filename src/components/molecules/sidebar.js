@@ -34,9 +34,9 @@ export const Sidebar = ({switcher}) => {
                     </div>
                     <div className="flex flex-row gap-3 hover:scale-125">
                         <RiFileListLine className="h-[1.2rem] w-[1.2rem] dark:fill-black"/>
-                        <button className="hidden group-hover:block group-hover:opacity-100 opacity-0 transition-all delay-75 hover:text-emerald-300 dark:hover:text-white">
+                        <a href="https://docs.zerodao.com" target="_blank"><button className="hidden group-hover:block group-hover:opacity-100 opacity-0 transition-all delay-75 hover:text-emerald-300 dark:hover:text-white">
                             Documentation
-                        </button>
+                        </button></a>
                     </div>
                 </div>
                 <div className="flex flex-row justify-center items-center group-hover:w-2/3 group-hover:rounded-full group-hover:ring-2 group-hover:ring-black">
