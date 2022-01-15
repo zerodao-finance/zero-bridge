@@ -14,9 +14,15 @@ const rows = ['0.001', '0.002', '0.003', '0.003', '0.004', '0.005', '0.006'].map
     actualArbEth: v * 0.05
   }));
 
-  
+import tools from '../../utils/_utils'
 
-const Transactions = ({txTable}) => {
+const Transactions = () => {
+     const [ txTable, updateTxTable ] = useState([]);
+     useEffect(() => {
+       (async () => {
+         updateTxTable(await tools.storage.getAllTransferRequests());
+       })().catch((err) => console.error(err));
+     }, []);
 
     const max = txTable.length
     const [page, changePage] = useState(0)
@@ -43,12 +49,12 @@ const Transactions = ({txTable}) => {
               {txTable[0] && txTable.slice(page*3, ((page*3)+4 > max ? max : (page*3)+4)).map((tx) => (
                   <tr key={tx['date']} className="w-full text-center gap-2 items-center w-full group hover:bg-white hover:shadow-xl transition-all duration-200 delay-200 py-2 mt-3">
                     <th className="text-[10px] w-[14.28%]">{moment(tx['date']).format('YYYY-MM-DD HH:mm:ss a')}</th>
-                    <td className="text-xs col w-[14.28%] group-hover:w-max"><p className="truncate">{tx.underwriter}</p></td>
-                    <td className="text-xs w-[14.28%]"><p className="truncate">{ethers.utils.formatUnits(ethers.BigNumber.from(tx["amount"]), 8)}</p></td>
+                    <td className="text-xs col w-[14.28%] group-hover:w-max"><p className="truncate">{tx.data.underwriter}</p></td>
+                    <td className="text-xs w-[14.28%]"><p className="truncate">{ethers.utils.formatUnits(ethers.BigNumber.from(tx.data["amount"]), 8)}</p></td>
                     <td className={`text-xs w-[14.28%] ${tx['status'] == "success" ? "text-green-300" : "text-orange-300"}`}><p className="truncate">{tx["status"]}</p></td>
                     <td className="text-xs w-[14.28%m]"><p className="truncate">{tx["ETH"]}</p></td>
                     <td className="text-xs w-[14.28%]"><p className="truncate">{tx["renBTC"]}</p></td>
-                    <td className="text-xs w-[14.28%] group-hover:w-fit"><p className="truncate">{ tx.contractAddress }</p></td>
+                    <td className="text-xs w-[14.28%] group-hover:w-fit"><p className="truncate">{ tx.data.contractAddress }</p></td>
                 </tr>
                 ))}
             </Table>

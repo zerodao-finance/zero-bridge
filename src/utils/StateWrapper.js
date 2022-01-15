@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import Contract from 'web3-eth-contract'; 
 import wallet_model from '../WalletModal';
 import {ContractContext, Web3Context, ConversionToolContext, UIContext} from '../context/Context'
-import tools from './_utils'
 import { ethers } from 'ethers'
 import { _BridgeMonitor, _BridgeObserver, _ErrorObserver, _TransactionCardObserver } from '../core/instance'
 import { useSigner } from '../core/instance'
@@ -90,17 +89,6 @@ const StateWrapper = ({children}) => {
     }
 
 
-    // const [ txTable, updateTxTable ] = useState(tools.storage.getAllTransferRequests())
-
-
-
-    
-
-    // const TxTableContext = {
-    //     get : {
-    //         txTable: txTable
-    //     }
-    // }
 
 /**
  * Conversion Tool context state variables
@@ -263,8 +251,6 @@ const StateWrapper = ({children}) => {
 
 
     return (
-        // <TransactionObserverContext.Provider value={Monitor}>
-        // </TransactionObserverContext.Provider>
             <ContractContext.Provider value={arbitrumContext}>
                 <Web3Context.Provider value={web3Context}>
                     <ConversionToolContext.Provider value={conversionToolContext}>

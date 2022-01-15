@@ -1,5 +1,6 @@
-import hash from 'object-hash'
-import _ from "lodash"
+import hash from 'object-hash';
+import _ from "lodash";
+import { ethers } from "ethers";
 
 class Storage {
     backend = window.localStorage
@@ -9,7 +10,7 @@ class Storage {
         const data = {data: {...transferRequest}, date: Date.now(), status: "pending", key: key}
         const serialized = JSON.stringify(data)
         try {
-            await this.backend.setItem(`request:${key}`, serialized)
+            await this.backend.setItem(this.toStorageKey(key), serialized)
             return key
         } catch (e) {
             return new Error("Error setting transfer request")
@@ -25,14 +26,24 @@ class Storage {
 
         return _.partition(returnArr, ['status', 'pending'])
     }
-
+    toStorageKey(txKey) {
+      return 'request:' + txKey;
+    }
+    storeSplit(_key, renBTC, ETH) {
+      const storageKey = this.toStorageKey(_key);
+      const parsed = JSON.parse(this.backend.getItem(storageKey) || '{}');
+      parsed.ETH = ETH;
+      parsed.renBTC = renBTC;
+      this.backend.setItem(storageKey, JSON.stringify(parsed));
+    }
     async updateTransferRequest(_key, _status){
         try {
-            const data = this.backend.getItem(`request:${_key}`)
+	    const storageKey = this.toStorageKey(_key);
+            const data = this.backend.getItem(storageKey);
             const parsed = JSON.parse(data)
             const updated = _.set(parsed, 'status', _status)
             const serialized = JSON.stringify(updated)
-            this.backend.setItem(`request:${_key}`, serialized)
+            this.backend.setItem(storageKey, serialized)
         } catch ( error ) {
             return new Error("Error updating transfer request")
         }
@@ -40,7 +51,7 @@ class Storage {
 
     async deleteTransferRequest(_key){
         try {
-            this.backend.removeItem(`request:${_key}`)
+            this.backend.removeItem(this.toStorageKey(_key));
         } catch (error) {
             return new Error("Error removing transfer request")
         }

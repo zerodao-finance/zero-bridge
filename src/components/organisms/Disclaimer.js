@@ -3,15 +3,21 @@ export const Disclaimer = (props) => {
     const [read, done] = useState(false)
     const [show, toggle] = useState(false)
     useEffect(() => {
-        setTimeout(()=> toggle(true), 3000)
+        let timer = setTimeout(()=> {
+           toggle(true)
+           timer = null;
+	}, 3000)
+        return () => timer && clearTimeout(timer);
     })
     useEffect(()=> {
         const scroll_box = document.getElementById("disclaimer")
-        scroll_box.addEventListener("scroll", (e) => {
-            console.log(scroll_box.scrollTop)
-            if (scroll_box.scrollTop > 7000) {done(true)}
-        })
-    }, [])
+        const listener = (e) => {
+          console.log(scroll_box.scrollTop)
+          if (scroll_box.scrollTop > 7000) {done(true)}
+        };
+        scroll_box.addEventListener("scroll", listener);
+        return () => scroll_box.removeEventListener('scroll', listener);
+    })
 
     const sign = () => {
         if (read){

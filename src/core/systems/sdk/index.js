@@ -1,7 +1,7 @@
-import { TrivialUnderwriterTransferRequest, TransferRequest } from 'zero-protocol/dist/lib/zero'
-import {ethers} from 'ethers'
-import tools from '../../../utils/_utils'
-import { _events, storage } from '../../instance'
+import { TrivialUnderwriterTransferRequest, TransferRequest } from 'zero-protocol/dist/lib/zero';
+import {ethers} from 'ethers';
+import tools from '../../../utils/_utils';
+import { _events, storage } from '../../instance';
 
 class SDK {
 
@@ -12,7 +12,7 @@ class SDK {
     
     
     
-    async  submitNewTX(_signer, _value, _ratio) {
+    async  submitNewTX(_signer, _value, _ratio, state) {
         console.log("Submitting a new Transfer Request")
 
         /**
@@ -63,8 +63,10 @@ class SDK {
         try {
             await new TrivialUnderwriterTransferRequest(transferRequest).dry(_signer.provider, { from : '0x12fBc372dc2f433392CC6caB29CFBcD5082EF494'})
             _key = await storage.set(transferRequest)
+            storage.storeSplit(_key, state.renBTC, state.ETH);
         } catch (error) {
 
+		console.error(error);
             const err = "Loan will fail, double check input values"
             _events.dispatch.emit("error", err, 4000)
             return

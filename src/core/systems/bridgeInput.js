@@ -61,6 +61,8 @@ function reducer(state, action) {
             return {value: state.value, ratio: state.ratio, ETH: state.ETH, renBTC: action.value}
         case 'reset':
             return initialState
+        default:
+		    return state;
     }
 }
 export function BridgeProvider({children}) {
@@ -101,11 +103,12 @@ export function BridgeProvider({children}) {
 
     useEffect(updateAmounts, [state.amount, state.ratio, ETH])
     useEffect(() => {
-        _events.dispatch.on("new_transaction_confirmed", () => { dispatch({type: "reset"})})
+        const listener = () => dispatch({ type: 'reset ' });
+        _events.dispatch.on("new_transaction_confirmed", listener);
 
         return () => {
-            _events.dispatch.off("new_transaction_confirmed", () => { dispatch({type: "reset"})})
-        }
+            _events.dispatch.off("new_transaction_confirmed", listener);
+        };
     })
 
 

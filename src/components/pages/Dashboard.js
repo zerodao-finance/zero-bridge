@@ -46,15 +46,11 @@ const Dashboard = () => {
                 </BridgeProvider> 
               </div>
         }
-        {/* {tool == "transactions" &&
-        <TransactionTableContext.Consumer>
-          { value => 
+        {tool == "transactions" &&
             <div className="h-full flex flex-col w-screen place-content-center items-center">
-              <Transactions txTable={value.get.txTable}/>
+              <Transactions />
             </div>
-          }
-        </TransactionTableContext.Consumer>
-        } */}
+        }
         {tool == "manage" &&
           <div className="h-full flex flex-col w-screen place-content-center items-center">
             <ManageTool />
