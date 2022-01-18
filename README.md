@@ -6,7 +6,7 @@ Should serve as a reference implementation for building zeroDAO applications, fo
 
 # Installation
 
-````shell
+```shell
 yarn
 ```
 
