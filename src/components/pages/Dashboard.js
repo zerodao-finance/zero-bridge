@@ -1,16 +1,24 @@
 import ConversionTool from "../organisms/ConversionTool";
 import Transactions from "../organisms/Transactions";
-import TransactionCard from '../molecules/TransactionCard'
 import AppBar from "../organisms/AppBar";
-import { ConversionToolContext, TransactionTableContext } from '../../context/Context'
 import { useEffect, useState } from 'react'
 import Disclaimer from '../organisms/Disclaimer'
 import {Confirm} from '../organisms/Confirm'
 import { Sidebar } from '../molecules/sidebar'
 import { ManageTool } from '../organisms/ManageTool'
-import { ErrorCard } from '../organisms/ErrorCard'
+import { ErrorNotifications, TransactionNotifications } from '../organisms/Notifications'
+import {useKeeper, useWallet, BridgeProvider, _TransactionNotifications, useTransactionListener, useLocalStorageRefresh, useScreenMode } from '../../core/instance'
+
+
+
 
 const Dashboard = () => {
+  useTransactionListener()
+  useLocalStorageRefresh()
+  global.keeper = useKeeper()
+  global.wallet = useWallet()
+  global.screenMode = useScreenMode()
+  
   const [signed, setSigned] = useState(false)
   const [tool, switchTool] = useState("convert")
   useEffect(() => {
@@ -30,48 +38,33 @@ const Dashboard = () => {
       </header> */}
       <main className="fixed h-screen top-0">
       {tool == "convert" &&
-        <ConversionToolContext.Consumer>
-          { value =>
               <div className="h-full flex flex-col w-screen place-content-center items-center" >
                 { signed ? '': <Disclaimer setSigned={setSigned}/>}
                 <Confirm></Confirm>
-                <ConversionTool />
-                {/* <div className="fixed top-0 left-0 w-fit h-fit mt-[6rem] z-50">
-                  {value.get.depositTx}
-                </div> */}
+                <BridgeProvider>
+                  <ConversionTool />
+                </BridgeProvider> 
               </div>
-            }
-        </ConversionToolContext.Consumer>
         }
         {tool == "transactions" &&
-        <TransactionTableContext.Consumer>
-          { value => 
             <div className="h-full flex flex-col w-screen place-content-center items-center">
-              <Transactions txTable={value.get.txTable}/>
+              <Transactions />
             </div>
-          }
-        </TransactionTableContext.Consumer>
         }
         {tool == "manage" &&
           <div className="h-full flex flex-col w-screen place-content-center items-center">
             <ManageTool />
           </div>
         }
-      <div className="fixed top-0 right-0 w-fit h-fit mt-[6rem] mr-[6rem]">
-        <ErrorCard />
-      </div>
-      <ConversionToolContext.Consumer>
-        { value => 
-          <div className="fixed top-0 left-0 w-fit h-fit mt-[6rem] z-50">
-            {value.get.depositTx}
-          </div>
-        }
-      </ConversionToolContext.Consumer>
+      <ErrorNotifications />
+      <TransactionNotifications />
+        
       </main>
 
       <footer className="absolute bottom-0 h-[2rem] w-screen text-xs px-4 flex flex-row justify-between">
         <p className="text-gray-400">
           Copyright (the "zeroDAO Site"). Z DAO, LLC ("ZD") <a href="ZeroDao.com" >ZeroDao.com</a>
+          
         </p>
       </footer>
     </div>

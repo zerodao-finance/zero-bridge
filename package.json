@@ -92,6 +92,7 @@
     "next": "^12.0.4",
     "notistack": "2.0.3",
     "nprogress": "^0.2.0",
+    "object-hash": "^2.2.0",
     "postcss": "^8.4.4",
     "process": "^0.11.10",
     "prop-types": "^15.7.2",

@@ -20,7 +20,7 @@ class Monitor {
     async attach(_observer){
         console.log(`\n ${this.type} Subject: attaching an observer to ${_observer.group} group`)
         if (!this.observers.has(_observer.group)) this.observers.set(_observer.group, new Set([_observer]))
-        else (this.observer.get(_observer.group)).add(_observer)
+        else (this.observers.get(_observer.group)).add(_observer)
         return
         
     }

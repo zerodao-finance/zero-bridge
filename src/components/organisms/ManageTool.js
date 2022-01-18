@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react'
-import { getTransferRequests, createTransferRequest } from "../../core/systems/refresh"
+
 import moment from 'moment'
 import { ethers } from 'ethers'
-import { _BridgeMonitor } from "../../core/instance"
+import { _BridgeMonitor, storage } from "../../core/instance"
 export const ManageTool = () => {
-    const [requests, getRequests ] = useState((getTransferRequests())[1])
-    
+    const [requests, setRequests ] = useState([]);
+    useEffect(() => {
+      (async () => {
+        setRequests((await storage.getTransferRequests())[1]);
+      })().catch((err) => console.error(err));
+    }, []);
     return (
         <div className="w-2/4 h-2/5 bg-neutral-100 dark:bg-gray-700 flex flex-col rounded-b-xl shadow-lg relative animate-swing-in-top-fwd">
             <div className="w-full h-fit bg-emerald-300 rounded-t-lg shadow-lg text-center text-lg tracking-wider font-light ">Manage Transactions</div>
             <div className="grid grid-col-row grid-cols-2 lg:grid-cols-3 overflow-scroll p-3">
                 {
-                requests.map((i) => {if (!i.data.status == "success") return <Transaction date={i.data.date} status={i.data.status} data={i.data} item_key={i}/>})
+                requests.map((i, index) => <Transaction key={index} date={i.data.date} status={i.data.status} data={i.data} item_key={i}/>)
                 }
             </div>
         </div>

@@ -1,6 +1,6 @@
 import ConvertInput from '../atoms/Input'
-import { ConversionToolContext } from '../../context/Context'
 import { FaBitcoin } from 'react-icons/fa'
+import {useBridgeContext} from '../../core/instance'
 const Convert = () => {
     
     var formatter = new Intl.NumberFormat('en-US', {
@@ -8,13 +8,14 @@ const Convert = () => {
         currency: "USD"
     })
     
+    const {state, dispatch} = useBridgeContext()
 
 
 
     
     return (
-        <ConversionToolContext.Consumer>
-        { value =>
+
+        
             <div className="w-fit self-center px-0 py-0">
                 <div className="w-fit flex items-center justify-between gap-10 dark:bg-gray-600 bg-gray-50 px-2 rounded-2xl">
                     <div>
@@ -24,14 +25,12 @@ const Convert = () => {
                             <p className="dark:text-white text-gray-500">BTC</p>
                         </span>
                     </div>
-                    <ConvertInput value={value.get.value} onChange={value.set.valueInput} />
+                    <ConvertInput value={state.value} onChange={(e) => dispatch({type: 'changeValue', event: e})} />
                 </div>
                 <div className=" xl:mr-5 italic font-medium tracking-wider w-full text-right text-xs text-emerald-300">
-                    ~ {formatter.format(value.get.value * 48014.83)}
+                    ~ {formatter.format(state.value * 48014.83)}
                 </div>
             </div>
-        }
-        </ConversionToolContext.Consumer>
     )
 }
 

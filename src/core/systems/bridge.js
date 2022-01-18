@@ -1,10 +1,10 @@
 import { ethers } from 'ethers'
 import _ from 'lodash'
 import { TrivialUnderwriterTransferRequest, TransferRequest } from 'zero-protocol/dist/lib/zero'
-import { updateTransferRequest } from './refresh'
+import { storage } from '../instance'
 import { Monitor, Observer } from '../tools'
 import tools from '../../utils/_utils'
-import { getTableHeadUtilityClass } from '@mui/material'
+import { EventEmitter } from 'events'
 import TransactionCard from '../../components/molecules/TransactionCard'
 
 export class BridgeMonitor extends Monitor {
@@ -14,6 +14,8 @@ export class BridgeMonitor extends Monitor {
      * @notify : (_group): String
      * 
      */
+
+    listener = new EventEmitter()
     constructor(_type){
         super(_type)
     }
@@ -21,24 +23,12 @@ export class BridgeMonitor extends Monitor {
     async _create(_to, _value, _ratio){
         this.error = null
         console.log(`\n ${this.type} Subject: creating a Transfer Request `)
-        try {
-            _to = await _to.getAddress()
-        } catch ( error ) {
-            this.error = new Error("Please Connect Wallet")
-            return this.notify("error_group")
-        }
-
-        try {
-            ethers.utils.parseUnits(_value, 8)
-        } catch {
-            this.error = new Error("Invalid Input Value")
-            return this.notify("error_group")
-        }
+        _to = await _to.getAddress()
+        
         const data = ethers.utils.defaultAbiCoder.encode(
             ["uint256"],
             [ethers.utils.parseEther(parseFloat(String(Number(_value) / 100 * _ratio)).toFixed(8))]
         )
-
         const asset = tools.asset
         const transferRequest = new TransferRequest({
             to: _to,
@@ -46,7 +36,7 @@ export class BridgeMonitor extends Monitor {
             underwriter: tools.trivialUnderwriter,
             module: tools.zeroModule,
             asset,
-            amount: ethers.utils.parseUnits(_value, 8),
+            amount: ethers.utils.parseUnits(String(_value), 8),
             data: String(data)
         })
         this.transferRequest = transferRequest
@@ -55,8 +45,7 @@ export class BridgeMonitor extends Monitor {
 
     async load(_transferRequest){
         this.transferRequest = new TransferRequest(_.omit(_transferRequest, ['date']))
-        return this._gatewayAddress = await this.transferRequest.toGatewayAddress()
-        this.notify("refresh_group")
+        return await this.transferRequest.submitToRenVM()
     }
 
     async pollTX(_transferRequest){
@@ -81,28 +70,33 @@ export class BridgeMonitor extends Monitor {
         if (this.error) return
         try {
             this._dry = await new TrivialUnderwriterTransferRequest(this.transferRequest).dry(signer.provider, { from : '0x12fBc372dc2f433392CC6caB29CFBcD5082EF494'})
+            this._key = await tools.storage.set({...this.transferRequest, date: Date.now()})
         } catch (error) {
-            this.error = new Error("Loan will fail, double check input values")
-            return this.notify("error_group")
+            console.log(error)
+            this.error = "Loan will fail, double check input values"
+            this.timeout = 7000
+            this.notify("ERROR")
+            return new Error("Loan will fail")
         }
-        this._key = await tools.storage.set({...this.transferRequest, date: Date.now(), dry: this._dry})
-        this._event = "transaction_signed"
+        
     }
     
-    async gatewayAddress(mock){
+    async transfer(mock){
         if (this.error) return
-        if (mock) return this.gatewayAddress = this._mint.gatewayAddress
-        this._gatewayAddress = await this.transferRequest.toGatewayAddress()
-        return this.notify("bridge_group")
-    }
-
-    async transfer(){
-        if ( _.isError(this._dry) ) return this.error = new Error(` ${this.type} Subject: Loan will return Error ...${this._dry}`)
-        await this.zeroUser.publishTransferRequest(this.transferRequest)
-        updateTransferRequest(this._key, "waiting")
-        this._mint = await this.transferRequest.submitToRenVM()
-        this.notify("card_group")
-
+        if (mock) return this._gatewayAddress = this._mint.gatewayAddress
+        else this._gatewayAddress = await this.transferRequest.toGatewayAddress()
+        try {
+            await this.zeroUser.publishTransferRequest(this.transferRequest)
+            this._mint = await this.transferRequest.submitToRenVM()
+            this.notify("CONFIRM")
+            this.listener.emit("transaction", this._mint)
+        } catch(e) {
+            console.log("Error", e)
+            if(_.startsWith(this._key, "request:")) window.localStorage.removeItem(`request:${this._key}`)
+            else window.localStorage.removeItem(this._key)
+            this.error = "Oops, experiencing issues with RenVM"
+            this.notify("ERROR")
+        }
     }
 
 
@@ -122,18 +116,19 @@ export class BridgeMonitor extends Monitor {
  *      [ pass signed transferRequest to second conversionTool screen ]
  */
 export class BridgeObserver extends Observer {
+    dispatch
     constructor(_group){
         super(_group)
-        this.nextScreen
-        this.prevScreen
     }
 
     async update (monitor) {
-        switch (monitor._event){
-            case "transaction_signed":
+        switch (this.group){
+            case "CONFIRM":
                 let data = monitor.transferRequest
                 data.gatewayAddress = monitor._gatewayAddress
-                this.nextScreen(monitor.transferRequest)
+                this.dispatch({type: "next", data: { transferRequest: data, back: () => this.dispatch({type: "prev"}) }})
+                this.dispatch({type: 'waiting'})
+                monitor.listener.on("clear", () => {this.dispatch({type: "prev"})})
                 break;
         }
     }
@@ -163,41 +158,20 @@ export class TransactionCardObserver extends Observer {
     async update (monitor) {
         monitor._mint.on('deposit', async (deposit) => {
             const hash = deposit.txHash()
-            if (deposit.depositDetails.transaction.confirmations >= 6) return updateTransferRequest(monitor._key, "success")
+            if (deposit.depositDetails.transaction.confirmations >= 6) return storage.updateTransferRequest(monitor._key, "success")
             await this.append(<TransactionCard btc={monitor._gatewayAddress} confs={deposit}/>)
-            await deposit
-                .confirmed()
+            (await deposit
+                .confirmed())
                 .on("target", target => console.log(`0/${target} confirmations`))
                 .on("confirmation", (confs, target) => {
                     console.log(`${confs}/${target} confirmations`)
                     if (Number(confs) === 6){
-                        updateTransferRequest(monitor._key, "success")
+                        storage.updateTransferRequest(monitor._key, "success")
                     }
                 })
 
         })
 
-
-        // const deposit = new Promise(async (resolve) => await monitor._mint.on('deposit', resolve)).then(
-        //     async (deposit) => 
-        //     {
-        //         console.log(deposit)
-        //         let confirmed = await deposit.confirmed()
-        //         console.log(confirmed)
-        //         confirmed.on('deposit', async (confs, target) => {
-        //             console.log(confs, target)
-        //             if (confs == 6){
-        //                 console.log(`\nObserver: transaction successful, removing TxnCard from DOM`)
-        //                 tools.storage.setStatus(this._key, "success")
-        //                 this.clear()
-        //             }
-        //         })
-        //         const signed = deposit.signed();
-        //         signed.on("status", async (status) => {
-        //             if (status === 'signed') await tools.storage.setStatus(this._key)
-        //         })
-        //     }
-        // )
-        // const confirmed = await deposit.confirmed()
     }
 }
+
