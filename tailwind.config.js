@@ -10,9 +10,33 @@ module.exports = {
           "swing-in-top-fwd": "swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275)   both",
           "scale-in-hor-center": "scale-in-hor-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
           "swing-out-top-bck": "swing-out-top-bck 0.55s cubic-bezier(0.600, -0.280, 0.735, 0.045)   both",
-          "jello-vertical": "jello-vertical 0.8s ease   both"
+          "jello-vertical": "jello-vertical 0.8s ease   both",
+          "flip-in-hor-top": "flip-in-hor-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
+          "scale-in-bottom": "scale-in-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both"
       },
       keyframes: {
+        "scale-in-bottom": {
+          "0%": {
+              transform: "scale(0)",
+              "transform-origin": "50% 100%",
+              opacity: "1"
+          },
+          to: {
+              transform: "scale(1)",
+              "transform-origin": "50% 100%",
+              opacity: "1"
+          }
+      },
+        "flip-in-hor-top": {
+          "0%": {
+              transform: "rotateX(-80deg)",
+              opacity: "0"
+          },
+          to: {
+              transform: "rotateX(0)",
+              opacity: "1"
+          }
+      },
         "jello-vertical": {
           "0%,to": {
               transform: "scale3d(1, 1, 1)"

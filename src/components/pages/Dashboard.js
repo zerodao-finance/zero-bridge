@@ -1,6 +1,6 @@
 import ConversionTool from "../organisms/ConversionTool";
 import Transactions from "../organisms/Transactions";
-import AppBar from "../organisms/AppBar";
+import { Appbar }  from "../organisms/navigation";
 import { useEffect, useState } from 'react'
 import Disclaimer from '../organisms/Disclaimer'
 import {Confirm} from '../organisms/Confirm'
@@ -32,7 +32,7 @@ const Dashboard = () => {
   
   return (
     <div className="bg-gradient-to-tl from-rose-50 to-teal-50 via-Fuchsia-50 dark:bg-none dark:bg-gradient-to-br dark:from-gray-700 dark:via-gray-900 dark:to-black h-screen">
-        <AppBar />
+        <Appbar />
         <Sidebar switcher={switchTool}/>
       {/* <header>
       </header> */}

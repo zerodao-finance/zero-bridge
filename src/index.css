@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .animate-delay-xs {
+    animation-delay: 150ms;
+  }
+  .animate-delay-sm {
+    animation-delay: 500ms;
+  }
+  .animate-delay-sm2 {
+    animation-delay: 600ms;
+  }
+  .animate-delay-sm3 {
+    animation-delay: 700ms;
+  }
+  .animate-delay-md {
+    animation-delay: 1s;
+  }
+  .animate-delay-lg {
+    animation-delay: 2s;
+  }
+  .animate-delay-xl {
+    animation-delay: 3s;
+  }
+}
+
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
      
   input[type="range"]::-webkit-slider-thumb {

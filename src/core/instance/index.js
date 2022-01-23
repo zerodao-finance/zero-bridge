@@ -1,7 +1,7 @@
 import {BridgeMonitor, RefreshObserver, BridgeObserver, TransactionCardObserver} from '../systems/bridge'
 import { ErrorObserver } from '../error/declare'
 import { useKeeper } from '../systems/keeper'
-import { useWallet, useSigner } from '../systems/wallet'
+import { useWallet, useSigner, chainFromHexString, useNetwork } from '../systems/wallet'
 import { useBridgeContext, BridgeProvider } from '../systems/bridgeInput'
 import { useNotification, NotificationObserver } from '../systems/notifications'
 import { useBridge } from '../systems/bridgeEffect'
@@ -48,5 +48,7 @@ export { _BridgeMonitor,
     Boundry,
     _events,
     sdk,
-    storage
+    storage,
+    chainFromHexString,
+    useNetwork
 } 
