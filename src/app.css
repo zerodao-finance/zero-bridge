@@ -1177,6 +1177,16 @@ select {
   animation: spin 5s linear infinite;
 }
 
+@keyframes pulse {
+  50% {
+    opacity: .5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 @keyframes fade {
   0%, to {
     -webkit-backdrop-filter: blur(24px);
@@ -1573,18 +1583,6 @@ select {
   fill: #ef4444;
 }
 
-.fill-emerald-300 {
-  fill: #6ee7b7;
-}
-
-.fill-white {
-  fill: #fff;
-}
-
-.fill-gray-700 {
-  fill: #374151;
-}
-
 .fill-emerald-600 {
   fill: #059669;
 }
@@ -1595,10 +1593,6 @@ select {
 
 .stroke-emerald-300 {
   stroke: #6ee7b7;
-}
-
-.stroke-gray-700 {
-  stroke: #374151;
 }
 
 .p-3 {
@@ -2124,10 +2118,6 @@ code {
   animation: scale-in-hor-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both;
 }
 
-.hover\:flex:hover {
-  display: flex;
-}
-
 .hover\:w-full:hover {
   width: 100%;
 }
@@ -2232,10 +2222,6 @@ code {
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 
-.focus\:flex:focus {
-  display: flex;
-}
-
 .focus\:border-emerald-300:focus {
   --tw-border-opacity: 1;
   border-color: rgb(110 231 183 / var(--tw-border-opacity));
@@ -2318,10 +2304,6 @@ code {
 .group:hover .group-hover\:ring-black {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(0 0 0 / var(--tw-ring-opacity));
-}
-
-.group:focus .group-focus\:flex {
-  display: flex;
 }
 
 .dark .dark\:border-red-600 {
