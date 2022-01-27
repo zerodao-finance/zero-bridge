@@ -1,4 +1,10 @@
-
+const AppearOnHover = ({_icon}) => {
+    return ( 
+        <div className="flex flex-row gap-3 hover:scale-125">
+             
+        </div>
+    )
+}
 const OutlinedInput = () => {
     return (
         <>
