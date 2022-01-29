@@ -1,34 +1,12 @@
-import {useState, createContext, useContext, useEffect, useReducer} from "react"
+import {createContext, useContext, useEffect, useReducer} from "react"
 import _ from 'lodash'
-import tools from '../../utils/_utils'
 import {ethers} from 'ethers'
-import {_events} from "../instance"
+import {_events} from "../event"
+import { useETH } from  '../chainData'
 
 
 
-function useETH(props){
-    const [ETH, setETH] = useState('0')
-    useEffect(async () => {
-        const listener = async () => {
-          try {
-            setETH(
-              (
-                await tools.contract.get_dy(1, 2, ethers.utils.parseUnits("1", 8))
-              ).toString()
-            );
-          } catch (e) {
-            console.error(e, "Error setting ETH price");
-          }
-        };
-        var invoke = _.throttle(listener, 2000)
-        tools.contract.provider.on("block", invoke);
-        return () => {
-          tools.contract.provder.removeListener("block", invoke)
-          invoke.cancel()
-        }
-      }, []);
-    return ETH
-}
+
 
 
 let BridgeContext

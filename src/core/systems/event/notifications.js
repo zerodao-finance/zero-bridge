@@ -12,7 +12,7 @@
  */
 
 import React, { useState, useEffect } from 'react'
-import { Observer } from "../tools"
+import { Observer } from "../../tools"
 import { EventEmitter } from "events";
 
 

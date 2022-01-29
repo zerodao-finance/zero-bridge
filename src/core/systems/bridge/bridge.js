@@ -1,11 +1,14 @@
 import { ethers } from 'ethers'
 import _ from 'lodash'
 import { TrivialUnderwriterTransferRequest, TransferRequest } from 'zero-protocol/dist/lib/zero'
-import { storage } from '../instance'
-import { Monitor, Observer } from '../tools'
+import { storage } from '../storage'
 import tools from '../../utils/_utils'
 import { EventEmitter } from 'events'
-import TransactionCard from '../../components/molecules/TransactionCard'
+import TransactionCard from '../../../components/molecules/TransactionCard'
+
+
+import { DataStructures } from '../../tools'
+let { Monitor, Observer } = DataStructures
 
 export class BridgeMonitor extends Monitor {
     /**
@@ -70,7 +73,7 @@ export class BridgeMonitor extends Monitor {
         if (this.error) return
         try {
             this._dry = await new TrivialUnderwriterTransferRequest(this.transferRequest).dry(signer.provider, { from : '0x12fBc372dc2f433392CC6caB29CFBcD5082EF494'})
-            this._key = await tools.storage.set({...this.transferRequest, date: Date.now()})
+            this._key = await storage.set({...this.transferRequest, date: Date.now()})
         } catch (error) {
             console.log(error)
             this.error = "Loan will fail, double check input values"

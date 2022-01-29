@@ -4,7 +4,7 @@
  * interacts with localStorage Persistance adapter
  */
 import { useState, useEffect } from 'react'
-import { useBridgeContext, useSigner, _ErrorNotifications, _BridgeMonitor, _TransactionNotifications, sdk } from '../instance'
+import { useBridgeContext, useSigner, _ErrorNotifications, _BridgeMonitor, _TransactionNotifications, sdk } from '../bridge'
 import { ethers } from 'ethers'
 import _ from "lodash"
 
