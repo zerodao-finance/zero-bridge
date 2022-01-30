@@ -1,7 +1,8 @@
 import { useState, useEffect, useContext } from 'react'
 import { createZeroUser, createZeroConnection } from "zero-protocol/dist/lib/zero.js";
 import _ from 'lodash'
-import { _BridgeMonitor, sdk } from '../instance'
+import { _BridgeMonitor } from '../../instance'
+import { sdk } from './sdk'
 import {enableGlobalMockRuntime, createMockKeeper} from "zero-protocol/dist/lib/mock.js"
 
 

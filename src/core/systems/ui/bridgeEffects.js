@@ -1,10 +1,10 @@
 import {useEffect, useState} from 'react'
-import _events from '../../instance'
+import { _events } from '../event'
 
 
 export function useBridgeDisplay(){
     const [page, update] = useState(1)
-    const [data, setData]
+    const [data, setData] = useState()
     const togglePage = (data = null) => {
         update(page == 1 ? 2 : 1)
         setData(data)

@@ -1,4 +1,4 @@
-import {IBridgeMonitor, IErrorNotifications, ITransactionNotifications, IBridgeObserver} from '../instance'
+import {IBridgeMonitor, IErrorNotifications, ITransactionNotifications, IBridgeObserver} from '../../instance'
 import { useEffect, useState, useReducer } from 'react'
 
 const initialState = { page: 1, min: 1, max: 2, data: {}, status: null }

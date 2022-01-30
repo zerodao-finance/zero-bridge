@@ -1,4 +1,6 @@
-import { useNotification, _ErrorNotifications, _TransactionNotifications, _events } from '../../core/instance'
+// import { useNotification, _ErrorNotifications, _TransactionNotifications, _events } from '../../core/instance'
+import { Events } from '../../core/systems'
+const { _events } = Events
 import {ErrorCard} from './ErrorCard'
 import TransactionCard  from '../molecules/TransactionCard'
 import _ from 'lodash'

@@ -7,9 +7,9 @@ import {Confirm} from '../organisms/Confirm'
 import { Sidebar } from '../molecules/sidebar'
 import { ManageTool } from '../organisms/ManageTool'
 import { ErrorNotifications, TransactionNotifications } from '../organisms/Notifications'
-import {useKeeper, useWallet, BridgeProvider, _TransactionNotifications, useTransactionListener, useLocalStorageRefresh, useScreenMode } from '../../core/instance'
-
-
+// import {useKeeper, useWallet, BridgeProvider, _TransactionNotifications, useTransactionListener, useLocalStorageRefresh, useScreenMode } from '../../core/instance'
+import { Bridge, Wallet } from '../../core/systems'
+const { BridgeProvider } = Bridge
 
 
 const Dashboard = () => {

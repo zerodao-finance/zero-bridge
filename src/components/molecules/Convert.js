@@ -1,6 +1,6 @@
 import ConvertInput from '../atoms/Input'
 import { FaBitcoin } from 'react-icons/fa'
-import {useBridgeContext} from '../../core/instance'
+import { useBridgeContext } from '../../core/systems/bridge'
 const Convert = () => {
     
     var formatter = new Intl.NumberFormat('en-US', {

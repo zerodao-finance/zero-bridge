@@ -2,7 +2,7 @@ import Convert from './Convert'
 import RequestInput from '../atoms/_inputAtoms'
 import Ratio from './Ratio'
 import Result from './Result'
-import { useBridgeContext } from '../../core/instance'
+import { useBridgeContext } from '../../core/systems/bridge'
 import { AiOutlineArrowDown, AiOutlineClose } from 'react-icons/ai'
 
 const TransferTool = ({ _action, _isLoading }) => {

@@ -1,7 +1,7 @@
 import {createContext, useContext, useEffect, useReducer} from "react"
 import _ from 'lodash'
 import {ethers} from 'ethers'
-import {_events} from "../event"
+import { _events }  from "../event"
 import { useETH } from  '../chainData'
 
 

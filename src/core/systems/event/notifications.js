@@ -12,8 +12,11 @@
  */
 
 import React, { useState, useEffect } from 'react'
-import { Observer } from "../../tools"
+// import { Observer } from "../../tools"
+import { DataStructures } from '../../tools'
+const { Observer } = DataStructures
 import { EventEmitter } from "events";
+
 
 
 // export function useNotification(props){

@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { useState, useEffect } from 'react'
-import { storage, sdk } from '../instance'
+import { storage } from '../storage'
+import { sdk } from './sdk'
 
 
 

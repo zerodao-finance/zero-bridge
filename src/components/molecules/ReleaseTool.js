@@ -3,7 +3,7 @@
  */
 import Convert from './Convert'
 import RequestInput from '../atoms/_inputAtoms'
-import { useBridgeContext } from '../../core/instance'
+import { useBridgeContext } from '../../core/systems/bridge'
 import { OutlinedInput } from '../atoms/inputs'
 import { DefaultFullWidth } from '../atoms/button'
 import { AiOutlineArrowDown } from 'react-icons/ai'

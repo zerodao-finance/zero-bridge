@@ -1,5 +1,5 @@
 import { BsWallet2 } from 'react-icons/bs'
-import { useNetwork } from '../../../core/instance'
+import { useNetwork } from '../../../core/systems/wallet'
 export const WalletStatus = () => {
     const {connection, connectWallet} = global.wallet
     const [ network, networks, switchNetwork ] = useNetwork()

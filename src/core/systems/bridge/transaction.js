@@ -4,7 +4,9 @@
  * interacts with localStorage Persistance adapter
  */
 import { useState, useEffect } from 'react'
-import { useBridgeContext, useSigner, _ErrorNotifications, _BridgeMonitor, _TransactionNotifications, sdk } from '../bridge'
+// import { useBridgeContext, useSigner, _ErrorNotifications, IBridgeMonitor, _TransactionNotifications, sdk } from '../bridge'
+import { IBridgeMonitor } from '../../instance'
+import { _events } from '../event'
 import { ethers } from 'ethers'
 import _ from "lodash"
 
@@ -34,7 +36,7 @@ export function useTransactionListener(props){
     const [ mint, setMint ] = useState(null)
 
     useEffect(() => {
-        _BridgeMonitor.listener.on("transaction", async (mint) => {
+        IBridgeMonitor.listener.on("transaction", async (mint) => {
             if (process.env.REACT_APP_TEST){
                 let _deposit = await new Promise((resolve) => mint.on("deposit", resolve))
                 setMint(mint)
@@ -51,16 +53,16 @@ export function useTransactionListener(props){
                 
         })
 
-        return () => _BridgeMonitor.listener.removeAllListeners()
+        return () => IBridgeMonitor.listener.removeAllListeners()
     }, [])
 
     useEffect(async () => {
-        _BridgeMonitor.listener.on("background", async (_transferRequest) => {
+        IBridgeMonitor.listener.on("background", async (_transferRequest) => {
             console.log("Background Process: processing past TX")
-            let _mint = await _BridgeMonitor.load(_transferRequest)
+            let _mint = await IBridgeMonitor.load(_transferRequest)
             let _deposit = await _mint.processDeposit
             console.log(_deposit)
-            _BridgeMonitor.listener.emit("cleared")
+            IBridgeMonitor.listener.emit("cleared")
 
         })
     }, [])
@@ -70,7 +72,7 @@ export function useTransactionListener(props){
     useEffect(async () => {
         if (deposit && (!process.env.REACT_APP_TEST && deposit.status !== "reverted") && signed) {
             console.log(`Transaction Listener: Found TX \n`, deposit.depositDetails)
-            _BridgeMonitor.listener.emit("clear")
+            IBridgeMonitor.listener.emit("clear")
             _TransactionNotifications.emitter.emit("add", deposit)
             signed.on("status", (status) => { if (status === "done") _TransactionNotifications.emitter.emit("delete")})
             setDeposit(null)
@@ -78,7 +80,7 @@ export function useTransactionListener(props){
             setSigned(null)
         } else if (deposit && process.env.REACT_APP_TEST && signed) {
             console.log(`Transaction Listener: Found TX \n`)
-            _BridgeMonitor.listener.emit("clear")
+            IBridgeMonitor.listener.emit("clear")
             _TransactionNotifications.emitter.emit("add", deposit)
             signed.on("status", (status) => {if (status === "signed") _TransactionNotifications.emitter.emit("delete")})
             setDeposit(null)

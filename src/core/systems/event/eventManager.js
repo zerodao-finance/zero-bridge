@@ -15,8 +15,8 @@ class EventManager {
     }
 }
 
-const _events = new EventManager()
+export const _events = new EventManager()
 Object.freeze(_events)
 
-export default _events
+// export default _events
 

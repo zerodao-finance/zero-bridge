@@ -1,7 +1,8 @@
 import { TrivialUnderwriterTransferRequest, TransferRequest } from 'zero-protocol/dist/lib/zero';
 import {ethers} from 'ethers';
 import tools from '../../../utils/_utils';
-import { _events, storage } from '../../instance';
+// import { _events, storage } from '../../instance';
+import { _events } from '../event'
 
 class SDK {
 
@@ -165,6 +166,4 @@ class SDK {
 
 }
 
-const sdk = new SDK
-
-export default sdk
+export const sdk = new SDK

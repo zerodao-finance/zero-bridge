@@ -10,7 +10,8 @@ import TransferTool from './TransferTool'
 import ReleaseTool from './ReleaseTool'
 
 import {useState, Fragment} from 'react'
-import { useTransactionSender, _BridgeMonitor, _ErrorNotifications } from '../../core/instance'
+import { IBridgeMonitor, IErrorNotifications } from '../../core/instance'
+import { useTransactionSender } from '../../core/systems/bridge'
 
 
 const buttonConfig = {

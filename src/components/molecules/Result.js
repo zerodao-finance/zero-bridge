@@ -1,4 +1,4 @@
-import { useBridgeContext } from '../../core/instance'
+import { useBridgeContext } from '../../core/systems/bridge'
 const Result = () => {
 
     const {state, dispatch} = useBridgeContext()

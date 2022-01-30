@@ -2,7 +2,7 @@ import { ethers } from 'ethers'
 import _ from 'lodash'
 import { TrivialUnderwriterTransferRequest, TransferRequest } from 'zero-protocol/dist/lib/zero'
 import { storage } from '../storage'
-import tools from '../../utils/_utils'
+import tools from '../../../utils/_utils'
 import { EventEmitter } from 'events'
 import TransactionCard from '../../../components/molecules/TransactionCard'
 
