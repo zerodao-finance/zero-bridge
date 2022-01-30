@@ -28,7 +28,7 @@ zeroDAO community
 ## Core Documentation
 
 
-** _file structure_ **
+**_file structure_**
 
 - instance
 - tools
@@ -39,7 +39,7 @@ zeroDAO community
 
 ## Component Documenation
 
-** _ file structure _ ** 
+**_file structure_** 
 
 - atoms
 - molecules
@@ -48,5 +48,5 @@ zeroDAO community
 
 
 
-** _usage_ **
+**_usage_**
 
