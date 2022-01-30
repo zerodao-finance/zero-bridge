@@ -25,8 +25,9 @@ yarn start:dev
 
 zeroDAO community
 
-** Core Documentation **
+#### Core Documentation
 
+```
 ** _file structure_ **
 
 - instance
@@ -34,7 +35,8 @@ zeroDAO community
 - systems 
 - error ~~ work in progress ~~
 - validator ~~ work in progress ~~
+```
 
-
+```
 ** _usage_ **
-
+```
