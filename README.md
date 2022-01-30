@@ -24,3 +24,17 @@ yarn start:dev
 ## Author
 
 zeroDAO community
+
+** Core Documentation **
+
+** _file structure_ **
+
+- instance
+- tools
+- systems 
+- error ~~ work in progress ~~
+- validator ~~ work in progress ~~
+
+
+** _usage_ **
+

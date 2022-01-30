@@ -2,11 +2,9 @@ import { ethers } from 'ethers'
 import _ from 'lodash'
 import { TrivialUnderwriterTransferRequest, TransferRequest } from 'zero-protocol/dist/lib/zero'
 import { storage } from '../storage'
-import tools from '../../../utils/_utils'
+import { MOCK_TF_RQ } from '../../tools/utilities'
 import { EventEmitter } from 'events'
 import TransactionCard from '../../../components/molecules/TransactionCard'
-
-
 import { DataStructures } from '../../tools'
 let { Monitor, Observer } = DataStructures
 
@@ -32,12 +30,12 @@ export class BridgeMonitor extends Monitor {
             ["uint256"],
             [ethers.utils.parseEther(parseFloat(String(Number(_value) / 100 * _ratio)).toFixed(8))]
         )
-        const asset = tools.asset
+        const asset = MOCK_TF_RQ[process.env.REACT_APP_CHAIN].asset
         const transferRequest = new TransferRequest({
             to: _to,
-            contractAddress: tools.controller.address,
-            underwriter: tools.trivialUnderwriter,
-            module: tools.zeroModule,
+            contractAddress: MOCK_TF_RQ[process.env.REACT_APP_CHAIN].controller.address,
+            underwriter: MOCK_TF_RQ[process.env.REACT_APP_CHAIN].trivialUnderwriter,
+            module: MOCK_TF_RQ[process.env.REACT_APP_CHAIN].zeroModule,
             asset,
             amount: ethers.utils.parseUnits(String(_value), 8),
             data: String(data)

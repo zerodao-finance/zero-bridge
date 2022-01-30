@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Contract from 'web3-eth-contract'
-import tools from '../../../utils/_utils'
 import wallet_model from './walletModal';
 import {ethers} from 'ethers'
 import { CHAINS, chainFromHexString } from './chains'
@@ -17,7 +16,7 @@ export function useWallet(props) {
         await getweb3().then(async (response) => {
             setConnection(response)
             const chainId = await response.eth.getChainId();
-            if (chainId !== tools.chainData.chainId) {
+            if (chainId) {
                 await response.currentProvider.sendAsync({method: "wallet_addEthereumChain", params: (Object.values(CHAINS).reverse())})
             }
             Contract.setProvider(response)
