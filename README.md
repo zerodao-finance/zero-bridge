@@ -25,7 +25,7 @@ yarn start:dev
 
 zeroDAO community
 
-#### Core Documentation
+# Core Documentation
 
 ```
 ** _file structure_ **
