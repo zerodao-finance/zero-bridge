@@ -25,9 +25,9 @@ yarn start:dev
 
 zeroDAO community
 
-# Core Documentation
+## Core Documentation
 
-```
+
 ** _file structure_ **
 
 - instance
@@ -35,8 +35,18 @@ zeroDAO community
 - systems 
 - error ~~ work in progress ~~
 - validator ~~ work in progress ~~
-```
 
-```
+
+## Component Documenation
+
+** _ file structure _ ** 
+
+- atoms
+- molecules
+- organisms
+
+
+
+
 ** _usage_ **
-```
+
