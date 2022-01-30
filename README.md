@@ -33,8 +33,8 @@ zeroDAO community
 - instance
 - tools
 - systems 
-- error ~~work in progress~~
-- validator ~~work in progress~~
+- ~~error~~ work in progress
+- ~~validator~~ work in progress
 
 
 ## Component Documenation
