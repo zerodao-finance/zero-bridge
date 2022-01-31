@@ -1,22 +1,11 @@
-/**
- * handles injesting minting event listener, 
- * alerts ui elements when to appear
- * interacts with localStorage Persistance adapter
- */
-import { useState, useEffect } from 'react'
-// import { useBridgeContext, useSigner, _ErrorNotifications, IBridgeMonitor, _TransactionNotifications, sdk } from '../bridge'
-import { IBridgeMonitor } from '../../instance'
-import { _events } from '../event'
-import { ethers } from 'ethers'
+import { useState, useEffect, useContext } from 'react'
+import { useSigner } from '../../wallet'
+import { IBridgeMonitor } from '../../../instance'
+import { useBridgeContext } from '../../bridge/context'
+import { _events } from '../../event'
 import _ from "lodash"
 
 
-/**
- * Hook
- * 
- * checks if wallet is connected and calls BridgeMonitor functions to send transaction
- * @catagory [Convert]
- */
 export function useTransactionSender(props){
     const retrieveSigner = useSigner()
     const {connection, connectWallet} = global.wallet

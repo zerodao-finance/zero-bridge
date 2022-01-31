@@ -1,6 +1,6 @@
 import { TrivialUnderwriterTransferRequest, TransferRequest } from 'zero-protocol/dist/lib/zero';
 import {ethers} from 'ethers';
-import tools from '../../../utils/_utils';
+// import tools from '../../../utils/_utils';
 // import { _events, storage } from '../../instance';
 import { _events } from '../event'
 

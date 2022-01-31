@@ -1,4 +1,3 @@
-import {KeeperStatus} from './keeper'
-import {WalletStatus} from './wallet'
-
-export { KeeperStatus, WalletStatus }
+export * from './keeper'
+export * from './wallet'
+export * from './light'

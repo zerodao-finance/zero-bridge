@@ -1,4 +1,5 @@
-import ConversionTool from "../organisms/ConversionTool";
+// import ConversionTool from "../organisms/ConversionTool";
+import { BridgeComponent } from '../organisms/bridge'
 import Transactions from "../organisms/Transactions";
 import { Appbar }  from "../organisms/navigation";
 import { useEffect, useState } from 'react'
@@ -7,17 +8,15 @@ import {Confirm} from '../organisms/Confirm'
 import { Sidebar } from '../molecules/sidebar'
 import { ManageTool } from '../organisms/ManageTool'
 import { ErrorNotifications, TransactionNotifications } from '../organisms/Notifications'
-// import {useKeeper, useWallet, BridgeProvider, _TransactionNotifications, useTransactionListener, useLocalStorageRefresh, useScreenMode } from '../../core/instance'
-import { Bridge, Wallet } from '../../core/systems'
-const { BridgeProvider } = Bridge
+import { Bridge, Wallet, UI, SDK } from '../../core/systems'
 
 
 const Dashboard = () => {
-  useTransactionListener()
-  useLocalStorageRefresh()
-  global.keeper = useKeeper()
-  global.wallet = useWallet()
-  global.screenMode = useScreenMode()
+  // useTransactionListener()
+  SDK.useLocalStorageRefresh()
+  global.keeper = SDK.useKeeper()
+  global.wallet = Wallet.useWallet()
+  global.screenMode = UI.useScreenMode()
   
   const [signed, setSigned] = useState(false)
   const [tool, switchTool] = useState("convert")
@@ -41,12 +40,13 @@ const Dashboard = () => {
               <div className="h-full flex flex-col w-screen place-content-center items-center" >
                 { signed ? '': <Disclaimer setSigned={setSigned}/>}
                 <Confirm></Confirm>
-                <BridgeProvider>
-                  <ConversionTool />
-                </BridgeProvider> 
+                <Bridge.Wrappers.DataProvider>
+                  {/* <ConversionTool /> */}
+                  <BridgeComponent />
+                </Bridge.Wrappers.DataProvider> 
               </div>
         }
-        {tool == "transactions" &&
+        {/* {tool == "transactions" &&
             <div className="h-full flex flex-col w-screen place-content-center items-center">
               <Transactions />
             </div>
@@ -55,9 +55,9 @@ const Dashboard = () => {
           <div className="h-full flex flex-col w-screen place-content-center items-center">
             <ManageTool />
           </div>
-        }
-      <ErrorNotifications />
-      <TransactionNotifications />
+        } */}
+      {/* <ErrorNotifications />
+      <TransactionNotifications /> */}
         
       </main>
 
