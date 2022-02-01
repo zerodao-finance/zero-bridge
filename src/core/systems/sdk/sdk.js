@@ -1,8 +1,9 @@
 import { TrivialUnderwriterTransferRequest, TransferRequest } from 'zero-protocol/dist/lib/zero';
 import {ethers} from 'ethers';
-// import tools from '../../../utils/_utils';
-// import { _events, storage } from '../../instance';
+import { MOCK_TF_RQ, controller } from '../../tools/utilities'
 import { _events } from '../event'
+import { chainFromHexString } from '../wallet'
+
 
 class SDK {
 
@@ -15,6 +16,10 @@ class SDK {
     
     async  submitNewTX(_signer, _value, _ratio, state) {
         console.log("Submitting a new Transfer Request")
+        const { connection, connectWallet } = global.wallet
+        if (!connection) return
+        let chain = chainFromHexString(await connection.eth.getChainId())
+        let tools = MOCK_TF_RQ[chain.chainName]
 
         /**
          * CREATE
@@ -36,7 +41,7 @@ class SDK {
         const asset = tools.asset
         const transferRequest = new TransferRequest({
             to: _to,
-            contractAddress: tools.controller.address,
+            contractAddress: controller.address,
             underwriter: tools.trivialUnderwriter,
             module: tools.zeroModule,
             nonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)),

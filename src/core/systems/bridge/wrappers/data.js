@@ -3,6 +3,7 @@ import { dataReducer, data_state } from '../reducers'
 import { _events } from '../../event'
 import { Provider } from '../context/data'
 import { useETH } from '../../chainData'
+import { ethers } from 'ethers'
 export function DataProvider({children}) {
     const ETH = useETH()
     const [ state, dispatch ] = useReducer(dataReducer, data_state)

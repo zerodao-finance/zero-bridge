@@ -1,5 +1,6 @@
 import { ethers } from 'ethers'
 import { controller } from './zero'
+import { chainFromHexString } from '../../systems/wallet'
 const curveABI = [
     {
       stateMutability: "view",
@@ -33,4 +34,16 @@ export const NETWORK_ROUTER = {
             return new ethers.Contract(this.swap_address, [ 'function get_dy(uint256, uint256, uint256) view returns (uint256)' ], controller.provider)
             }
     }
+}
+
+export function contractFromProvider (provider) {
+    return new Promise(async (resolve, reject) => {
+        if (global.priceFeed) resolve(global.priceFeed)
+        let chainId = await provider.eth.getChainId()
+        let chain = chainFromHexString( chainId )
+        global.priceFeed = NETWORK_ROUTER[chain.chainName].contract 
+        resolve(global.priceFeed)
+        reject("failed")
+    })
+
 }

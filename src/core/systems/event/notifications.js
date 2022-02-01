@@ -19,28 +19,6 @@ import { EventEmitter } from "events";
 
 
 
-// export function useNotification(props){
-//     const [ data, action ] = useState(null)
-
-//     useEffect(() => {
-//         props.event.on("add", (data, time = null) => {
-//             console.log(props.group)
-//             action(data)
-//             if (time) setTimeout(() => action(null), time)
-//         })
-//         props.event.on("delete", () => {
-//             action(null)
-//         })
-
-//         return () => props.event.removeAllListeners()
-//     }, [])
-
-
-//     return data;
-// }
-
-
-
 export function useNotification(props){
     const [data, action] = useState([])
     const next = () => {
@@ -55,7 +33,6 @@ export function useNotification(props){
 
     useEffect(() => {
         props.event.on(props.type,  (_data, time = null) => {
-            // let stuff = data.push({data: _data, time: time, next: next})
             updater({data: _data, time: time, next: next})
         })
 
