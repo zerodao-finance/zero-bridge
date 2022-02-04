@@ -4,15 +4,14 @@ import { CHAINS, chainFromHexString } from './chains'
 import { ethers } from 'ethers'
 import { connectors } from 'web3modal'
 
-export async function connectWallet (setConnection) {
-    const { web3Loading, getweb3 } = wallet_modal()
-    await getweb3().then(async (response) => {
-        setConnection(response)
+export async function connectWallet (getweb3) {
+    return await getweb3().then(async (response) => {
         const chainId = await response.eth.getChainId();
         if (chainId) {
             await response.currentProvider.sendAsync({ method: "wallet_addEthereumChain", params: (Object.values(CHAINS).reverse())})
         }
         Contract.setProvider(response)
+        return response 
     })
 }
 

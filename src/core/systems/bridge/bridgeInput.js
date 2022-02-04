@@ -43,6 +43,7 @@ function reducer(state, action) {
 		    return state;
     }
 }
+
 export function BridgeProvider({children}) {
     const ETH = useETH()
     const [ state, dispatch ] = useReducer(reducer, initialState)

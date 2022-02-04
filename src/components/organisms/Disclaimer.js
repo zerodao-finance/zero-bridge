@@ -12,7 +12,6 @@ export const Disclaimer = (props) => {
     useEffect(()=> {
         const scroll_box = document.getElementById("disclaimer")
         const listener = (e) => {
-          console.log(scroll_box.scrollTop)
           if (scroll_box.scrollTop > 7000) {done(true)}
         };
         scroll_box.addEventListener("scroll", listener);
