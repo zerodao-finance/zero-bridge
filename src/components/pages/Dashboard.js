@@ -13,10 +13,10 @@ import { Bridge, Wallet, UI, SDK } from '../../core/systems'
 
 const Dashboard = () => {
   // useTransactionListener()
-  SDK.useLocalStorageRefresh()
-  global.keeper = SDK.useKeeper()
-  global.wallet = Wallet.useWallet()
-  global.screenMode = UI.useScreenMode()
+  // SDK.useLocalStorageRefresh()
+  // SDK.useKeeper()
+  // Wallet.useAllNetwork()
+  // UI.useScreenMode()
   
   const [signed, setSigned] = useState(false)
   const [tool, switchTool] = useState("convert")

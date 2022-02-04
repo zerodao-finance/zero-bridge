@@ -14,6 +14,6 @@ export function useScreenMode(props){
             document.documentElement.classList.add("dark")
         }
     }, [])
-
+    global.screenMode = [ screenMode, toggleScreenMode ]
     return [screenMode, toggleScreenMode]
 }

@@ -39,6 +39,6 @@ export function useKeeper(props) {
         if (zeroUser) zeroUser.on('keeper', listener)
         return () => {if (zeroUser) zeroUser.removeListener("keeper", listener)}
     }, [zeroUser])
-
+    global.keeper = { zeroUser, keepers }
     return  {zeroUser, keepers}
 }
