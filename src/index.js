@@ -4,6 +4,7 @@ import reportWebVitals from './reportWebVitals';
 import './app.css'
 import Dashboard from './components/pages/Dashboard'
 import 'react-toastify/dist/ReactToastify.min.css';
+import { Testing } from './components/pages/Testing'
 
 
 

@@ -11,12 +11,15 @@ import { ErrorNotifications, TransactionNotifications } from '../organisms/Notif
 import { Bridge, Wallet, UI, SDK } from '../../core/systems'
 
 
+const { useWallet, useNetwork } = Wallet
+
 const Dashboard = () => {
   // useTransactionListener()
   // SDK.useLocalStorageRefresh()
-  // SDK.useKeeper()
-  // Wallet.useAllNetwork()
-  // UI.useScreenMode()
+  global.keeper = SDK.useKeeper()
+  global.wallet = useWallet()
+  useNetwork()
+  UI.useScreenMode()
   
   const [signed, setSigned] = useState(false)
   const [tool, switchTool] = useState("convert")
