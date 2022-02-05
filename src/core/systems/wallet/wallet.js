@@ -54,10 +54,8 @@ export function useSigner(props){
     }
 
     const retrieveSigner = _.once(getSigner)
-    return (async function (){
-        if (_.isError(await retrieveSigner())) return getSigner 
-        else return retrieveSigner
-    })()
+    return retrieveSigner
+
 }
 
 export function useAllNetwork() {

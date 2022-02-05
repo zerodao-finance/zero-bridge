@@ -13,8 +13,9 @@ export function useTransactionSender(props){
     const {connection, connectWallet} = global.wallet
     const {state, dispatch} = useBridgeContext()
     
-    useEffect(async () => setSignerFunc(await useSigner()), [])
     const sign = async () => {
+        const retrieveSigner = await useSigner()
+        if (!retrieveSigner()) return
         sdk.submitNewTX(await retrieveSigner(), state.value, state.ratio, state)
     }
     
