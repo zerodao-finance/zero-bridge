@@ -16,7 +16,7 @@ export function useTransactionSender(props){
     const sign = async () => {
         const retrieveSigner = await useSigner()
         if (!retrieveSigner()) return
-        sdk.submitNewTX(await retrieveSigner(), state.value, state.ratio, state)
+        sdk.submitNewTX(await retrieveSigner(), state.value, String(state.ratio), state)
     }
     
     return [isLoading, sign]
