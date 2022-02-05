@@ -8,7 +8,8 @@ import {Confirm} from '../organisms/Confirm'
 import { Sidebar } from '../molecules/sidebar'
 import { ManageTool } from '../organisms/ManageTool'
 import { ErrorNotifications, TransactionNotifications } from '../organisms/Notifications'
-import { Bridge, Wallet, UI, SDK } from '../../core/systems'
+import { Wallet, UI, SDK } from '../../core/systems'
+import { Wrappers } from '../../core/systems/bridge'
 
 
 const { useWallet, useNetwork } = Wallet
@@ -43,10 +44,10 @@ const Dashboard = () => {
               <div className="h-full flex flex-col w-screen place-content-center items-center" >
                 { signed ? '': <Disclaimer setSigned={setSigned}/>}
                 <Confirm></Confirm>
-                <Bridge.Wrappers.DataProvider>
+                <Wrappers.DataProvider>
                   {/* <ConversionTool /> */}
                   <BridgeComponent />
-                </Bridge.Wrappers.DataProvider> 
+                </Wrappers.DataProvider> 
               </div>
         }
         {/* {tool == "transactions" &&

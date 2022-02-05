@@ -49,7 +49,7 @@ export function useSigner(props){
             const signer = await ethProvider.getSigner();
             return signer
         } catch ( error ) {
-            return new Error("Cannot get Provider, |Connect Wallet")
+            return new Error("Cannot get Provider, | Connect Wallet")
         }
     }
 
