@@ -1,5 +1,2 @@
-import { Appbar } from './topBar'
-
-export {
-    Appbar
-}
+export * from './topBar'
+export * from './sidebar'
