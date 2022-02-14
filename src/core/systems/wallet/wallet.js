@@ -18,7 +18,7 @@ export function useWallet(props) {
         return await getweb3().then(async (response) => {
             const chainId = await response.eth.getChainId();
             if (chainId) {
-                await response.currentProvider.sendAsync({ method: "wallet_addEthereumChain", params: (Object.values(CHAINS).reverse())})
+                await response.currentProvider.sendAsync({ method: "wallet_addEthereumChain", params: (Object.values(CHAINS))})
             }
             Contract.setProvider(response)
             return response 
@@ -47,6 +47,7 @@ export function useSigner(props){
             const ethProvider = new ethers.providers.Web3Provider(await global.wallet.connection.currentProvider);
             await ethProvider.send("eth_requestAccounts", []);
             const signer = await ethProvider.getSigner();
+            console.log(signer)
             return signer
         } catch ( error ) {
             return new Error("Cannot get Provider, | Connect Wallet")

@@ -7,7 +7,7 @@
   "scripts": {
     "build": "cross-env CHAIN=ARBITRUM REACT_APP_JSONRPC=https://arbitrum-mainnet.infura.io/v3/816df2901a454b18b7df259e61f92cd2 NODE_ENV=production NODE_OPTIONS=--max_old_space_size=4096 react-scripts build --profile",
     "start": "react-scripts start",
-    "start:dev": "REACT_APP_TEST=true REACT_APP_JSONRPC=http://localhost:8545 REACT_APP_CHAIN=ARBITRUM npm-run-all start",
+    "start:dev": "REACT_APP_TEST=true REACT_APP_JSONRPC=http://localhost:8545 REACT_APP_CHAIN=POLYGON npm-run-all start",
     "start:arbitrum": "REACT_APP_JSONRPC=https://arbitrum-mainnet.infura.io/v3/816df2901a454b18b7df259e61f92cd2 REACT_APP_CHAIN=ARBITRUM npm-run-all start"
   },
   "dependencies": {
