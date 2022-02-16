@@ -4,7 +4,7 @@ import reportWebVitals from './reportWebVitals';
 import './app.css'
 import Dashboard from './components/pages/Dashboard'
 import 'react-toastify/dist/ReactToastify.min.css';
-
+import {ErrorCard} from './components/molecules/notification'
 
 
 Object.keys(process.env).forEach((key) => {

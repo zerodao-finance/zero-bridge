@@ -1,4 +1,4 @@
-import { TrivialUnderwriterTransferRequest, TransferRequest } from 'zero-protocol/dist/lib/zero';
+import { UnderwriterTransferRequest, TransferRequest } from 'zero-protocol/dist/lib/zero';
 import {ethers} from 'ethers';
 import { MOCK_TF_RQ, controller } from '../../tools/utilities'
 import { _events } from '../event'
@@ -67,14 +67,16 @@ class SDK {
          */
 
         try {
-            await new TrivialUnderwriterTransferRequest(transferRequest).dry(_signer.provider, { from : '0x12fBc372dc2f433392CC6caB29CFBcD5082EF494'})
+            console.log(typeof UnderwriterTransferRequest)
+            await new UnderwriterTransferRequest(transferRequest).dry(_signer.provider, { from : '0x12fBc372dc2f433392CC6caB29CFBcD5082EF494'})
             _key = await storage.set(transferRequest)
             storage.storeSplit(_key, state.renBTC, state.ETH);
         } catch (error) {
 
 		console.error(error);
             const err = "Loan will fail, double check input values"
-            _events.dispatch.emit("error", err, 4000)
+            console.log("locan will fail", error)
+            // _events.dispatch.emit("error", err, 4000)
             return
         }
 
