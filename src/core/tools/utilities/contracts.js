@@ -1,19 +1,19 @@
 'use strict';
 
-import ArbitrumConvert from 'zero-protocol/deployments/arbitrum/ArbitrumConvert';
-import BTCVault from 'zero-protocol/deployments/arbitrum/BTCVault';
-import DummyVault from 'zero-protocol/deployments/arbitrum/DummyVault';
-import StrategyRenVM from 'zero-protocol/deployments/arbitrum/StrategyRenVM';
-import TrivialUnderwriter from 'zero-protocol/deployments/arbitrum/TrivialUnderwriter';
-import UnwrapNative from 'zero-protocol/deployments/arbitrum/UnwrapNative';
-import WrapNative from 'zero-protocol/deployments/arbitrum/WrapNative';
-import ZeroController from 'zero-protocol/deployments/arbitrum/ZeroController';
-import ZeroCurveFactory from 'zero-protocol/deployments/arbitrum/ZeroCurveFactory';
-import ZeroUniswapFactory from 'zero-protocol/deployments/arbitrum/ZeroUniswapFactory';
+import PolygonConvert from 'zero-protocol/deployments/matic/PolygonConvert';
+import BTCVault from 'zero-protocol/deployments/matic/BTCVault';
+import DummyVault from 'zero-protocol/deployments/matic/DummyVault';
+import StrategyRenVM from 'zero-protocol/deployments/matic/StrategyRenVM';
+import TrivialUnderwriter from 'zero-protocol/deployments/matic/TrivialUnderwriter';
+import UnwrapNative from 'zero-protocol/deployments/matic/UnwrapNative';
+import WrapNative from 'zero-protocol/deployments/matic/WrapNative';
+import ZeroController from 'zero-protocol/deployments/matic/ZeroController';
+import ZeroCurveFactory from 'zero-protocol/deployments/matic/ZeroCurveFactory';
+import ZeroUniswapFactory from 'zero-protocol/deployments/matic/ZeroUniswapFactory';
 import { ethers } from 'ethers';
 
 const contracts = {
-  ArbitrumConvert,
+  PolygonConvert,
   BTCVault,
   DummyVault,
   StrategyRenVM,

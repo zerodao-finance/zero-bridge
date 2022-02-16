@@ -22,7 +22,11 @@ export function switchNetwork(_chainId){
     try {
         connection.currentProvider.sendAsync({ method: "wallet_switchEthereumChain", params: [{chainId: _chainId }]})
     } catch (error) {
+<<<<<<< HEAD
         connection.currentProvider.sendAsync({ method: "wallet_switchEthereumChain", params: [{ chainId: _chainId}]}) //change to add network
+=======
+        connection.currentProvider.sendAsync({ method: "wallet_switchEthereumChain", params: [{ chainId: _chainId}]})
+>>>>>>> bcae5e1c069d03f81896b4203b40929982c6b159
     }
 }
 

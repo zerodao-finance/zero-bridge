@@ -41,9 +41,9 @@ class SDK {
         const asset = tools.asset
         const transferRequest = new TransferRequest({
             to: _to,
-            contractAddress: controller.address,
-            underwriter: tools.trivialUnderwriter,
-            module: tools.zeroModule,
+            contractAddress: "0x85dAC4da6eB28393088CF65b73bA1eA30e7e3cab", //controller.address,
+            underwriter: "0xFBbf4607bAAd3Aa46519AD4f34a60546C80DDDa7",//tools.trivialUnderwriter,
+            module: "0x32e07AfdC9b69de9f477908Acdbc6440cf9aa42D",//tools.zeroModule,
             nonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
             pNonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)), // nonce and pNonce must be unique every time, there is no special meaning to them,
             asset,
@@ -67,8 +67,13 @@ class SDK {
          */
 
         try {
+<<<<<<< HEAD
             console.log(typeof UnderwriterTransferRequest)
             await new UnderwriterTransferRequest(transferRequest).dry(_signer.provider, { from : '0x12fBc372dc2f433392CC6caB29CFBcD5082EF494'})
+=======
+            console.log(transferRequest)
+            await new UnderwriterTransferRequest(transferRequest).dry(_signer.provider, { from : '0x4A423AB37d70c00e8faA375fEcC4577e3b376aCa'})
+>>>>>>> bcae5e1c069d03f81896b4203b40929982c6b159
             _key = await storage.set(transferRequest)
             storage.storeSplit(_key, state.renBTC, state.ETH);
         } catch (error) {
@@ -79,6 +84,8 @@ class SDK {
             // _events.dispatch.emit("error", err, 4000)
             return
         }
+
+        return
 
 
         /**
