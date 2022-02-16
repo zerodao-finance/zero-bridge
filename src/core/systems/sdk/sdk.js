@@ -67,13 +67,8 @@ class SDK {
          */
 
         try {
-<<<<<<< HEAD
-            console.log(typeof UnderwriterTransferRequest)
-            await new UnderwriterTransferRequest(transferRequest).dry(_signer.provider, { from : '0x12fBc372dc2f433392CC6caB29CFBcD5082EF494'})
-=======
             console.log(transferRequest)
             await new UnderwriterTransferRequest(transferRequest).dry(_signer.provider, { from : '0x4A423AB37d70c00e8faA375fEcC4577e3b376aCa'})
->>>>>>> bcae5e1c069d03f81896b4203b40929982c6b159
             _key = await storage.set(transferRequest)
             storage.storeSplit(_key, state.renBTC, state.ETH);
         } catch (error) {
