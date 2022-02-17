@@ -1,23 +1,26 @@
-import ConversionTool from "../organisms/ConversionTool";
+// import ConversionTool from "../organisms/ConversionTool";
+import { BridgeComponent } from '../organisms/bridge'
 import Transactions from "../organisms/Transactions";
-import AppBar from "../organisms/AppBar";
+import { Appbar }  from "../organisms/navigation";
 import { useEffect, useState } from 'react'
 import Disclaimer from '../organisms/Disclaimer'
 import {Confirm} from '../organisms/Confirm'
 import { Sidebar } from '../molecules/sidebar'
 import { ManageTool } from '../organisms/ManageTool'
-import { ErrorNotifications, TransactionNotifications } from '../organisms/Notifications'
-import {useKeeper, useWallet, BridgeProvider, _TransactionNotifications, useTransactionListener, useLocalStorageRefresh, useScreenMode } from '../../core/instance'
+import { ErrorNotifications, TransactionNotifications } from '../organisms/notifications'
+import { Wallet, UI, SDK } from '../../core/systems'
+import { Wrappers } from '../../core/systems/bridge'
 
 
-
+const { useWallet, useNetwork } = Wallet
 
 const Dashboard = () => {
-  useTransactionListener()
-  useLocalStorageRefresh()
-  global.keeper = useKeeper()
+  // useTransactionListener()
+  // SDK.useLocalStorageRefresh()
+  global.keeper = SDK.useKeeper()
   global.wallet = useWallet()
-  global.screenMode = useScreenMode()
+  useNetwork()
+  UI.useScreenMode()
   
   const [signed, setSigned] = useState(false)
   const [tool, switchTool] = useState("convert")
@@ -32,7 +35,7 @@ const Dashboard = () => {
   
   return (
     <div className="bg-gradient-to-tl from-rose-50 to-teal-50 via-Fuchsia-50 dark:bg-none dark:bg-gradient-to-br dark:from-gray-700 dark:via-gray-900 dark:to-black h-screen">
-        <AppBar />
+        <Appbar />
         <Sidebar switcher={switchTool}/>
       {/* <header>
       </header> */}
@@ -41,12 +44,13 @@ const Dashboard = () => {
               <div className="h-full flex flex-col w-screen place-content-center items-center" >
                 { signed ? '': <Disclaimer setSigned={setSigned}/>}
                 <Confirm></Confirm>
-                <BridgeProvider>
-                  <ConversionTool />
-                </BridgeProvider> 
+                <Wrappers.DataProvider>
+                  {/* <ConversionTool /> */}
+                  <BridgeComponent />
+                </Wrappers.DataProvider> 
               </div>
         }
-        {tool == "transactions" &&
+        {/* {tool == "transactions" &&
             <div className="h-full flex flex-col w-screen place-content-center items-center">
               <Transactions />
             </div>
@@ -55,7 +59,7 @@ const Dashboard = () => {
           <div className="h-full flex flex-col w-screen place-content-center items-center">
             <ManageTool />
           </div>
-        }
+        } */}
       <ErrorNotifications />
       <TransactionNotifications />
         

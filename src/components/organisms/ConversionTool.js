@@ -1,5 +1,6 @@
 import ConvertBox, { ConfirmBox } from '../molecules/Box'
-import { _BridgeObserver, useBridge } from '../../core/instance'
+// import { _BridgeObserver, useBridge } from '../../core/instance'
+import {useBridge} from '../../core/systems/bridge'
 import {useState, useEffect, useContext} from 'react'
 
 

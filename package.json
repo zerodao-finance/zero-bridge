@@ -7,7 +7,7 @@
   "scripts": {
     "build": "cross-env CHAIN=ARBITRUM REACT_APP_JSONRPC=https://arbitrum-mainnet.infura.io/v3/816df2901a454b18b7df259e61f92cd2 NODE_ENV=production NODE_OPTIONS=--max_old_space_size=4096 react-scripts build --profile",
     "start": "react-scripts start",
-    "start:dev": "REACT_APP_TEST=true REACT_APP_JSONRPC=http://localhost:8545 REACT_APP_CHAIN=ARBITRUM npm-run-all start",
+    "start:dev": "REACT_APP_TEST=true REACT_APP_JSONRPC=http://localhost:8545 REACT_APP_CHAIN=POLYGON npm-run-all start",
     "start:arbitrum": "REACT_APP_JSONRPC=https://arbitrum-mainnet.infura.io/v3/816df2901a454b18b7df259e61f92cd2 REACT_APP_CHAIN=ARBITRUM npm-run-all start"
   },
   "dependencies": {
@@ -132,15 +132,19 @@
     "@babel/preset-typescript": "^7.16.0",
     "@types/marked": "^3.0.3",
     "@types/recharts": "^2.0.0",
+    "add": "^2.0.6",
     "cross-fetch": "^3.1.4",
     "ethers": "^5.5.2",
     "gm": "^1.23.1",
+    "jest": "26.6.0",
     "moment": "^2.29.1",
     "npm-run-all": "^4.1.5",
     "react-scripts": "^4.0.3",
+    "react-test-renderer": "^17.0.2",
     "tailwindcss": "^3.0.1",
     "typescript": "^4.5.2",
-    "web-vitals": "^2.1.2"
+    "web-vitals": "^2.1.2",
+    "yarn": "^1.22.17"
   },
   "browserslist": {
     "production": [

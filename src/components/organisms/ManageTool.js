@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import moment from 'moment'
 import { ethers } from 'ethers'
-import { _BridgeMonitor, storage } from "../../core/instance"
+import { IBridgeMonitor } from '../../core/instance'
 export const ManageTool = () => {
     const [requests, setRequests ] = useState([]);
     useEffect(() => {
@@ -32,17 +32,17 @@ const Transaction = ({date, status, data, item_key}) => {
     }
     
     const swap = async (e) => {
-        _BridgeMonitor._key = key
-        let gateway = _BridgeMonitor.load(data)
+        IBridgeMonitor._key = key
+        let gateway = IBridgeMonitor.load(data)
         setGateway(await gateway)
     }
     
     const load = async (e) => {
         console.log(key)
-        _BridgeMonitor._key = key
+        IBridgeMonitor._key = key
         var details = document.getElementById(`${date}`)
-        let gateway = await _BridgeMonitor.pollTX(data)
-        setGateway(await _BridgeMonitor._gatewayAddress)
+        let gateway = await IBridgeMonitor.pollTX(data)
+        setGateway(await IBridgeMonitor._gatewayAddress)
         details.close()
     }
     return (

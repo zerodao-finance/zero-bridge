@@ -24,3 +24,29 @@ yarn start:dev
 ## Author
 
 zeroDAO community
+
+## Core Documentation
+
+
+**_file structure_**
+
+- instance
+- tools
+- systems 
+- ~~error~~ ** _work in progress_
+- ~~validator~~ ** _work in progress_
+
+
+## Component Documenation
+
+**_file structure_** 
+
+- atoms
+- molecules
+- organisms
+
+
+
+
+**_usage_**
+

@@ -1,0 +1,22 @@
+/components
+    /atoms
+        /buttons TODO: refactor
+        /errors TODO: implement variants
+        /inputs TODO: implemenent variants
+        /icons TODO: implement
+        /notification TODO: implement
+    /molecules
+        /buttons
+        /errors
+        /inputs
+        /icons
+        /notification
+    /organisms
+        /buttons
+        /errors
+        /inputs
+        /icons
+        /notification
+    /templates
+        /pages
+    /pages

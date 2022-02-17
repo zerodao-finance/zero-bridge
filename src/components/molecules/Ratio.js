@@ -1,5 +1,5 @@
 import { FaBtc, FaEthereum } from 'react-icons/fa'
-import { useBridgeContext } from '../../core/instance'
+import { useBridgeContext } from '../../core/systems/bridge'
 
 
 
