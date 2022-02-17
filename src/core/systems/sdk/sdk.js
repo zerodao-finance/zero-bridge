@@ -1,7 +1,7 @@
 import { UnderwriterTransferRequest, TransferRequest } from 'zero-protocol/dist/lib/zero';
 import {ethers} from 'ethers';
 import { MOCK_TF_RQ, controller } from '../../tools/utilities'
-import { _events } from '../event'
+import { eventManager } from '../event'
 import { chainFromHexString } from '../wallet'
 
 
@@ -30,7 +30,7 @@ class SDK {
             _to = await _signer.getAddress()
         } catch (error) {
             const err = "Oops, check wallet connection"
-            _events.dispatch.emit("error", err, 4000)
+            eventManager.dispatch.emit("error", err, 4000)
             return
         }
         const data = ethers.utils.defaultAbiCoder.encode(
@@ -58,7 +58,7 @@ class SDK {
             await transferRequest.sign(_signer)
         } catch(error){
             const err = "Oops, check wallet connection"
-            _events.dispatch.emit("error", err, 4000)
+            eventManager.dispatch.emit("error", err, 4000)
             return
         }
 
@@ -68,19 +68,18 @@ class SDK {
 
         try {
             console.log(transferRequest)
-            await new UnderwriterTransferRequest(transferRequest).dry(_signer.provider, { from : '0x4A423AB37d70c00e8faA375fEcC4577e3b376aCa'})
-            _key = await storage.set(transferRequest)
-            storage.storeSplit(_key, state.renBTC, state.ETH);
+            console.log(await new UnderwriterTransferRequest(transferRequest).dry(_signer.provider, { from : '0xFFEDC765778db2859820eE4869393e7939a847b7'}))
+            // _key = await storage.set(transferRequest)
+            // storage.storeSplit(_key, state.renBTC, state.ETH);
         } catch (error) {
 
 		console.error(error);
             const err = "Loan will fail, double check input values"
-            console.log("locan will fail", error)
-            // _events.dispatch.emit("error", err, 4000)
+            console.log("loan will fail", error)
+            eventManager.dispatch.emit("error", err, 4000)
             return
         }
 
-        return
 
 
         /**
@@ -92,34 +91,34 @@ class SDK {
             const _mint = await transferRequest.submitToRenVM()
             if (process.env.REACT_APP_TEST){
                 //mock
-                _events.dispatch.emit("new_transaction_submited", transferRequest, _mint.gatewayAddress)
+                eventManager.dispatch.emit("new_transaction_submited", transferRequest, _mint.gatewayAddress)
                 let deposit = await new Promise(async (resolve) => _mint.on("deposit", resolve))
                 console.log(deposit)
                 const confirmed = await deposit.confirmed();
-                _events.dispatch.emit("new_transaction_confirmed")
-                _events.dispatch.emit("confirmed", confirmed)
+                eventManager.dispatch.emit("new_transaction_confirmed")
+                eventManager.dispatch.emit("confirmed", confirmed)
                 confirmed.on('confirmation', (currentConfirmations, totalNeeded) => {
                     console.log(currentConfirmations + '/' + totalNeeded + ' confirmations seen');
                 });
                 const signed = await deposit.signed();
                 signed.on('status', (status) => {
-                    if (status === 'signed') storage.updateTransferRequest(_key, "success");
+                    // if (status === 'signed') storage.updateTransferRequest(_key, "success");
                 });
             }
             else {
                 //prod
                 let tf = {...transferRequest}
                 var _gatewayAddress = await transferRequest.toGatewayAddress()
-                _events.dispatch.emit("new_transaction_submited", tf, _gatewayAddress)
+                eventManager.dispatch.emit("new_transaction_submited", tf, _gatewayAddress)
                 let _deposit = await _mint.on("deposit", async (deposit) => {
-                    _events.dispatch.emit("new_transaction_confirmed")
+                    eventManager.dispatch.emit("new_transaction_confirmed")
                     console.log(deposit)
                     console.log(deposit.depositDetails)
                     let confirmed = deposit.confirmed()
                     let signed = deposit.signed()
-                    _events.dispatch.emit("confirmed", confirmed)
+                    eventManager.dispatch.emit("confirmed", confirmed)
                     signed.on("status", (status) => { 
-                        if (status === 'done') storage.updateTransferRequest(_key, "success");
+                        // if (status === 'done') storage.updateTransferRequest(_key, "success");
                     })
                 })
                 /**
@@ -129,7 +128,7 @@ class SDK {
         } catch (error){
             storage.deleteTransferRequest(_key)
             const err = "Error connecting to with RenVM! Try again later"
-                _events.dispatch.emit("error", err, 7000)
+                eventManager.dispatch.emit("error", err, 7000)
                 return
         }
                                
@@ -152,7 +151,7 @@ class SDK {
                 });
                 const signed = await deposit.signed();
                     signed.on('status', (status) => {
-                    if (status === 'signed') storage.updateTransferRequest(_key, "success");
+                    // if (status === 'signed') storage.updateTransferRequest(_key, "success");
                 });
             }
             else {
@@ -160,12 +159,12 @@ class SDK {
                 let _deposit = await _mint.on("deposit", async (deposit) => {
                     let signed = deposit.signed()
                     signed.on("status", (status) => { 
-                        if (status === 'signed') storage.updateTransferRequest(_key, "success");
+                        // if (status === 'signed') storage.updateTransferRequest(_key, "success");
                     })
                 })
                 
                 
-                // _events.dispatch.emit("new_transaction_submited", _mint, _gatewayAddress)
+                // eventManager.dispatch.emit("new_transaction_submited", _mint, _gatewayAddress)
             }
         } catch (error){
             // storage.deleteTransferRequest(_key)

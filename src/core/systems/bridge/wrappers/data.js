@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from 'react'
 import { dataReducer, data_state } from '../reducers'
-import { _events } from '../../event'
+import { eventManager } from '../../event'
 import { Provider } from '../context/data'
 import { useETH } from '../../chainData'
 import { ethers } from 'ethers'
@@ -43,10 +43,10 @@ export function DataProvider({children}) {
     useEffect(updateAmounts, [state.amount, state.ratio, ETH])
     useEffect(() => {
         const listener = () => dispatch({ type: 'reset ' });
-        _events.dispatch.on("new_transaction_confirmed", listener);
+        eventManager.dispatch.on("new_transaction_confirmed", listener);
 
         return () => {
-            _events.dispatch.off("new_transaction_confirmed", listener);
+            eventManager.dispatch.off("new_transaction_confirmed", listener);
         };
     })
 

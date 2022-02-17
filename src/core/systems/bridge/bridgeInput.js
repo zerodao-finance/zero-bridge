@@ -1,7 +1,7 @@
 import {createContext, useContext, useEffect, useReducer} from "react"
 import _ from 'lodash'
 import {ethers} from 'ethers'
-import { _events }  from "../event"
+import { eventManager }  from "../event"
 import { useETH } from  '../chainData'
 
 
@@ -83,10 +83,10 @@ export function BridgeProvider({children}) {
     useEffect(updateAmounts, [state.amount, state.ratio, ETH])
     useEffect(() => {
         const listener = () => dispatch({ type: 'reset ' });
-        _events.dispatch.on("new_transaction_confirmed", listener);
+        eventManager.dispatch.on("new_transaction_confirmed", listener);
 
         return () => {
-            _events.dispatch.off("new_transaction_confirmed", listener);
+            eventManager.dispatch.off("new_transaction_confirmed", listener);
         };
     })
 

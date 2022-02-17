@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import { _events } from '../event'
+import { eventManager } from '../event'
 
 
 export function useBridgeDisplay(){
@@ -11,9 +11,9 @@ export function useBridgeDisplay(){
     }
 
     useEffect(() => {
-        _events.on("toggle_bridge_display", async (data = null) => togglePage(data))
+        eventManager.on("toggle_bridge_display", async (data = null) => togglePage(data))
 
-        return _events.off("toggle_bridge_display", async (data = null) => togglePage(data))
+        return eventManager.off("toggle_bridge_display", async (data = null) => togglePage(data))
     }, [])
 
     return [page, data]

@@ -8,7 +8,7 @@ export async function connectWallet (getweb3) {
     return await getweb3().then(async (response) => {
         const chainId = await response.eth.getChainId();
         if (chainId) {
-            await response.currentProvider.sendAsync({ method: "wallet_addEthereumChain", params: (Object.values(CHAINS).reverse())})
+            await response.currentProvider.sendAsync({ method: "wallet_addEthereumChain", params: (Object.values(CHAINS))})
         }
         Contract.setProvider(response)
         return response 

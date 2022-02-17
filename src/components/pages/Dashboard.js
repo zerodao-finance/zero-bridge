@@ -7,7 +7,7 @@ import Disclaimer from '../organisms/Disclaimer'
 import {Confirm} from '../organisms/Confirm'
 import { Sidebar } from '../molecules/sidebar'
 import { ManageTool } from '../organisms/ManageTool'
-import { ErrorNotifications, TransactionNotifications } from '../organisms/Notifications'
+import { ErrorNotifications, TransactionNotifications } from '../organisms/notifications'
 import { Wallet, UI, SDK } from '../../core/systems'
 import { Wrappers } from '../../core/systems/bridge'
 
@@ -60,8 +60,8 @@ const Dashboard = () => {
             <ManageTool />
           </div>
         } */}
-      {/* <ErrorNotifications />
-      <TransactionNotifications /> */}
+      <ErrorNotifications />
+      <TransactionNotifications />
         
       </main>
 

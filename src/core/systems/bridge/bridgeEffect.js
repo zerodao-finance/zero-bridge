@@ -16,18 +16,18 @@ export function useBridge(){
     const [ state, dispatch ] = useReducer(pageReducer, initialState)
     
     useEffect(() => {
-        _events.dispatch.on("new_transaction_submited", (transferRequest, gatewayAddress) => {
+        eventManager.dispatch.on("new_transaction_submited", (transferRequest, gatewayAddress) => {
             dispatch({type: "next", data: { transferRequest: {...transferRequest, gatewayAddress}, back: () => {dispatch({type: "prev"})}}})
         })
 
-        _events.dispatch.on("new_transaction_confirmed", () => { dispatch({type: "prev"})})
+        eventManager.dispatch.on("new_transaction_confirmed", () => { dispatch({type: "prev"})})
 
         return () => {
-            _events.dispatch.off("new_transaction_submited", (transferRequest, gatewayAddress) => {
+            eventManager.dispatch.off("new_transaction_submited", (transferRequest, gatewayAddress) => {
                 dispatch({type: "next", data: { transferRequest: {...transferRequest, gatewayAddress}, back: () => {dispatch("prev")}}})
             })
     
-            _events.dispatch.off("new_transaction_confirmed", () => { dispatch({type: "prev"})})
+            eventManager.dispatch.off("new_transaction_confirmed", () => { dispatch({type: "prev"})})
         }
     }, [])
 

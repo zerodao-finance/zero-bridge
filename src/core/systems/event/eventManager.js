@@ -1,11 +1,9 @@
 import { EventEmitter } from 'events'
 
-/**
- * singleton
- */
+//Singleton EventManager class
 class EventManager {
     constructor(){
-        if( ! EventManager.instance){
+        if ( !EventManager.instance ){
             this.dispatch = new EventEmitter()
             this.dispatch.setMaxListeners(25)
             EventManager.instance = this
@@ -15,32 +13,6 @@ class EventManager {
     }
 }
 
-export const _events = new EventManager()
-Object.freeze(_events)
+export const eventManager = new EventManager()
+Object.freeze(eventManager)
 
-// export default _events
-
-
-// TODO: improvement WORK IN PROGRESS
-class EventMothership {
-    stack = new Set([])
-    constructor(){
-
-    }
-
-    async createEventGroup() {
-
-    }
-
-    async hookFactory(group) {
-        if (!this.stack.has(type)) return
-        const emitter = this.stack.get(type)
-        return function useHook(component, data, action) {
-            useEffect(() => {
-
-            })
-
-            return 
-        }
-    }
-}

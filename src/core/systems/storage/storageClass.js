@@ -2,6 +2,12 @@ import hash from 'object-hash';
 import _ from "lodash";
 import { ethers } from "ethers";
 
+
+/**
+ * Storage
+ * 
+ * 
+ */
 class Storage {
     backend = window.localStorage
 
@@ -26,9 +32,13 @@ class Storage {
 
         return _.partition(returnArr, ['status', 'pending'])
     }
+
+    
     toStorageKey(txKey) {
       return 'request:' + txKey;
     }
+
+
     storeSplit(_key, renBTC, ETH) {
       const storageKey = this.toStorageKey(_key);
       const parsed = JSON.parse(this.backend.getItem(storageKey) || '{}');
