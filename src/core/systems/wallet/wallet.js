@@ -35,7 +35,7 @@ export function useNetwork(props) {
     const [network, changeNetwork] = useState(null)
     const networks = Object.values(_.mapValues(CHAINS, function (o) { return [o.chainId, o.chainName]}))
     const { switchNetwork, getNetworkCon } = wallet
-    useEffect(() => getNetworkCon(connection, changeNetwork), [])
+    //useEffect(() => getNetworkCon(connection, changeNetwork), [])
 
     return [network, networks, switchNetwork]
 }

@@ -4,6 +4,7 @@ import { MOCK_TF_RQ, controller } from '../../tools/utilities'
 import { eventManager } from '../event'
 import { deploymentsFromSigner } from '../../tools/utilities/zero';
 import { chainFromHexString } from '../wallet'
+import { TEST_KEEPER_ADDRESS } from 'zero-protocol/dist/lib/mock';
 
 
 class SDK {
@@ -38,7 +39,7 @@ class SDK {
         console.log("Submitting a new Transfer Request")
         const { connection, connectWallet } = global.wallet
         if (!connection) return
-        let chain = chainFromHexString(await connection.eth.getChainId())
+        let chain = chainFromHexString((await _signer.provider.getNetwork()).chainId);
         let tools = MOCK_TF_RQ[chain.chainName]
 
         /**
@@ -83,7 +84,7 @@ class SDK {
 
         try {
             console.log(transferRequest)
-            await (new UnderwriterTransferRequest(transferRequest)).dry(_signer.provider, { from : '0x4A423AB37d70c00e8faA375fEcC4577e3b376aCa'})
+            await (new UnderwriterTransferRequest(transferRequest)).dry(_signer.provider, { from : TEST_KEEPER_ADDRESS})
             _key = await storage.set(transferRequest)
             storage.storeSplit(_key, state.renBTC, state.ETH);
         } catch (error) {
