@@ -19,7 +19,7 @@ export const deployments = {
   arbitrum: {
     ZeroController: require('zero-protocol/deployments/arbitrum/ZeroController'),
     DelegateUnderwriter: require('zero-protocol/deployments/arbitrum/DelegateUnderwriter'),
-    Convert: require('zero-protocol/deployments/arbitrum/PolygonConvert'),
+    Convert: require('zero-protocol/deployments/arbitrum/ArbitrumConvert'),
     BTCVault: require('zero-protocol/deployments/arbitrum/BTCVault')
   }
 };

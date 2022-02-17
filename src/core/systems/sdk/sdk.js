@@ -5,18 +5,6 @@ import { eventManager } from '../event'
 import { deploymentsFromSigner } from '../../tools/utilities/zero';
 import { chainFromHexString } from '../wallet'
 
-const deployments = {
-
-
-
-const transferRequestFromSigner = ({
-  amount,
-  asset,
-  data,
-  to
-}) => {
-  const
-
 
 class SDK {
 
@@ -25,7 +13,7 @@ class SDK {
 
     }
     
-    async transferRequestFromSigner({
+    static async transferRequestFromSigner({
       amount,
       asset,
       to,
