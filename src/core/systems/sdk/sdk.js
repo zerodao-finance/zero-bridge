@@ -1,8 +1,21 @@
 import { UnderwriterTransferRequest, TransferRequest } from 'zero-protocol/dist/lib/zero';
 import {ethers} from 'ethers';
 import { MOCK_TF_RQ, controller } from '../../tools/utilities'
+import { deploymentsFromSigner } from '../../tools/utilities/zero';
 import { _events } from '../event'
 import { chainFromHexString } from '../wallet'
+
+const deployments = {
+
+
+
+const transferRequestFromSigner = ({
+  amount,
+  asset,
+  data,
+  to
+}) => {
+  const
 
 
 class SDK {
@@ -12,6 +25,25 @@ class SDK {
 
     }
     
+    async transferRequestFromSigner({
+      amount,
+      asset,
+      to,
+      data
+    }, signer) {
+      const contracts = await deploymentsFromSigner(signer);
+      return new UnderwriterTransferRequest({
+        amount,
+        asset,
+        to,
+        data,
+        pNonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
+        nonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
+        underwriter: contracts.DelegateUnderwriter.address,
+        module: contracts.Convert.address,
+        contractAddress: contracts.ZeroController.address
+      });
+    }
     
     
     async  submitNewTX(_signer, _value, _ratio, state) {
@@ -39,17 +71,12 @@ class SDK {
         )
 
         const asset = tools.asset
-        const transferRequest = new TransferRequest({
+        const transferRequest = await transferRequestFromSigner({
             to: _to,
-            contractAddress: "0x85dAC4da6eB28393088CF65b73bA1eA30e7e3cab", //controller.address,
-            underwriter: "0xFBbf4607bAAd3Aa46519AD4f34a60546C80DDDa7",//tools.trivialUnderwriter,
-            module: "0x32e07AfdC9b69de9f477908Acdbc6440cf9aa42D",//tools.zeroModule,
-            nonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
-            pNonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)), // nonce and pNonce must be unique every time, there is no special meaning to them,
             asset,
             amount: ethers.utils.parseUnits(String(_value), 8),
             data: String(data)
-        })
+        }, signer)
 
         /**
          * SIGN
@@ -68,7 +95,7 @@ class SDK {
 
         try {
             console.log(transferRequest)
-            await new UnderwriterTransferRequest(transferRequest).dry(_signer.provider, { from : '0x4A423AB37d70c00e8faA375fEcC4577e3b376aCa'})
+            await (new UnderwriterTransferRequest(transferRequest)).dry(_signer.provider, { from : '0x4A423AB37d70c00e8faA375fEcC4577e3b376aCa'})
             _key = await storage.set(transferRequest)
             storage.storeSplit(_key, state.renBTC, state.ETH);
         } catch (error) {
