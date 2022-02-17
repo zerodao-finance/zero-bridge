@@ -36,7 +36,7 @@ const Dashboard = () => {
   return (
     <div className="bg-gradient-to-tl from-rose-50 to-teal-50 via-Fuchsia-50 dark:bg-none dark:bg-gradient-to-br dark:from-gray-700 dark:via-gray-900 dark:to-black h-screen">
         <Appbar />
-        <Sidebar switcher={switchTool}/>
+        <Sidebar switcher={switchTool} tool={tool}/>
       {/* <header>
       </header> */}
       <main className="fixed h-screen top-0">
