@@ -1,3 +1,5 @@
+import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai'
+import { ethers } from 'ethers'
 export const Confirmation = ({transferRequest, back, status}) => {
     transferRequest
     
@@ -5,7 +7,7 @@ export const Confirmation = ({transferRequest, back, status}) => {
         <>
         {transferRequest &&
                         <div className="flex flex-col container h-max bg-white shadow-xl rounded-[30px] justify-center place-items-center gap-3 w-fit pb-4 relative dark:bg-gray-700 dark:text-white">
-                            <Confirm />
+                            {/* <Confirm /> */}
                             <AiOutlineClose className="absolute top-1 left-1 hover:scale-150 dark:stroke-white" onClick={back}/>
                             <p className=" text-lg font-light text-black  tracking-wider w-full bg-emerald-300 text-center shadow-md rounded-t-md">Confirm Transaction</p>
                             <div className="grid grid-flow-rows grid-cols-2 justify-items-start items-center auto-rows-min min-w-[20rem] max-w-fit mx-10 gap-4">

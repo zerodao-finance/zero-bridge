@@ -85,8 +85,8 @@ class SDK {
         try {
             console.log(transferRequest)
             await (new UnderwriterTransferRequest(transferRequest)).dry(_signer.provider, { from : TEST_KEEPER_ADDRESS})
-            _key = await storage.set(transferRequest)
-            storage.storeSplit(_key, state.renBTC, state.ETH);
+            // _key = await storage.set(transferRequest)
+            // storage.storeSplit(_key, state.renBTC, state.ETH);
         } catch (error) {
 
 		console.error(error);
@@ -142,7 +142,7 @@ class SDK {
                  */
             }
         } catch (error){
-            storage.deleteTransferRequest(_key)
+            // storage.deleteTransferRequest(_key)
             const err = "Error connecting to with RenVM! Try again later"
                 eventManager.dispatch.emit("error", err, 7000)
                 return
