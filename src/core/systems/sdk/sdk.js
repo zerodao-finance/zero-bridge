@@ -59,12 +59,12 @@ class SDK {
         )
 
         const asset = tools.asset
-        const transferRequest = await transferRequestFromSigner({
+        const transferRequest = await SDK.transferRequestFromSigner({
             to: _to,
             asset,
             amount: ethers.utils.parseUnits(String(_value), 8),
             data: String(data)
-        }, signer)
+        }, _signer)
 
         /**
          * SIGN
