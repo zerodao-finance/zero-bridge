@@ -16,7 +16,7 @@ export const Input = ({_token, _context}) => {
     
     const {connection, connectWallet} = global.wallet
     useEffect(async () => {
-       if (await token.priceFeed) setPrice(ethers.utils.formatUnits((await token.priceFeed).toString(), 4))
+       if (await token.priceFeed) setPrice(ethers.utils.formatUnits((await token.priceFeed).toString(), 6))
    }, [connection])
    const {state, dispatch} = _context() 
    

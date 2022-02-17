@@ -20,10 +20,12 @@ export const library = {
             }
             if (connection) {
                 let contract = Utilities.contractFromProvider(connection).then((response) => {
-                    return response.get_dy(0, 2, 1)
+                    return response.get_dy(1, 0, 1e8)
                 })
                 .catch(err => console.log(err || "failed"))
-                return contract.then(response => { return response})
+                return contract.then(response => { {
+                    return response
+                }})
             }
             else return null
             // return tools.contract.get_dy(0, 2, 1)
@@ -43,10 +45,12 @@ export const library = {
             }
             if (connection) {
                 let contract = Utilities.contractFromProvider(connection).then((response) => {
-                    return response.get_dy(0, 2, 1)
+                    return response.get_dy(2, 0, 1e18)
                 })
                 .catch(err => console.log(err || "failed"))
-                return contract.then(response => { return response})
+                return contract.then(response => { {
+                    return response
+                }})
             }
             else return null
             // return tools.contract.get_dy(0, 2, 1)

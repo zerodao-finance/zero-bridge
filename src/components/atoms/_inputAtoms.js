@@ -15,7 +15,7 @@
         })
         
     useEffect(async () => {
-        setPrice(ethers.utils.formatUnits((await token.priceFeed).toString(), 4))
+        setPrice(ethers.utils.formatUnits((await token.priceFeed).toString(), 6))
     })
     const {state, dispatch} = _context()
     
