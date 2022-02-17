@@ -38,18 +38,9 @@ export const Sidebar = ({switcher}) => {
                             Documentation
                         </button></a>
                     </div>
-                </div>
-                <div className="flex flex-row justify-center items-center group-hover:w-2/3 group-hover:rounded-full group-hover:ring-2 group-hover:ring-black">
-                    {/* <div className="hidden group-hover:block ">
-                        Dark/Light Mode
-                    </div> */}
-                    <DarkLight />
-                    <p className="hidden group-hover:block group-hover:opacity-100 opacity-0 transition-all delay-75">
-                        Dark/Light
-                    </p>
-
+                </div>  
+                 <DarkLight />
                 </div>
             </div>
-        </div>
     )
 }
