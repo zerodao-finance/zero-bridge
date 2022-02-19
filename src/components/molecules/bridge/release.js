@@ -3,9 +3,14 @@
  import { OutlinedInput } from '../../atoms/inputs'
  import { DefaultFullWidth } from '../../atoms/button'
  import { AiOutlineArrowDown } from 'react-icons/ai'
+ import { Unavailable } from './error'
  
  export const ReleaseTool = ({ _isLoading, _context }) => {
+     const isBeta = true
      return (
+         isBeta ? 
+         <Unavailable />
+         :
          <>
              <div className={`animate-flip-in-hor-top [animation-delay:400ms] container h-max flex flex-row place-content-center w-[25rem] gap-5 justify-around pr-[4.5rem] items-center px-8 ${_isLoading && 'invisible'}`}>
                  <p className="text-[10px] text-gray-300 whitespace-nowrap">release amount</p>

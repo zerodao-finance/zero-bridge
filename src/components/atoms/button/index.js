@@ -1,3 +1,4 @@
+import React from 'react'
 const DefaultFullWidth = ({text}) => {
     return (
         <>
@@ -8,7 +9,22 @@ const DefaultFullWidth = ({text}) => {
     )
 }
 
+const DefaultCheckBox = ({
+    name, label
+}) => {
+    const [checked, _check] = React.useState(false)
+    return (
+        <div className="flex flex-row gap-3 text-light tracking-wider items-center">
+            <input type="checkbox" name={name} className="input-checkbox rounded-md ring-emerald-400">
+            </input>
+            <label for={name} checked={!!checked} onChange={(e) => {_check(e.target.value)}}>
+                {label}
+            </label>
+        </div>
+    )
+}
+
 
 export { 
-    DefaultFullWidth 
+    DefaultFullWidth, DefaultCheckBox
 } 
