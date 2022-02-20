@@ -40,9 +40,7 @@ export function useNetwork(props) {
     return [network, networks, switchNetwork]
 }
 
-
-export function useSigner(props){
-    const getSigner = async () => {
+const getSigner = _.memoize(async () => {
         try {
             const ethProvider = new ethers.providers.Web3Provider(await global.wallet.connection.currentProvider);
             await ethProvider.send("eth_requestAccounts", []);
@@ -52,12 +50,9 @@ export function useSigner(props){
         } catch ( error ) {
             return new Error("Cannot get Provider, | Connect Wallet")
         }
-    }
+});
 
-    const retrieveSigner = _.once(getSigner)
-    return retrieveSigner
-
-}
+export const useSigner = () => getSigner;
 
 export function useAllNetwork() {
     const { connection, connectWallet } = useWallet()

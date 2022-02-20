@@ -33,6 +33,7 @@
                 </div>
                 <ConvertInput value={state.value} onChange={(e) => dispatch({type: "changeValue", event: e})} />
             </div>
+	     <div><label>Pay 0.1% for collateralized quick transfer (1 confirmation) <input type="checkbox" checked={ state.quick } onChange={ (e) => dispatch({type: 'changeQuick' }) } /></label></div>
             <div className=" xl:mr-5 italic font-light tracking-wider w-full text-right text-[10px] text-emerald-500">
                 ~ USD { tokenPrice && formatter.format(state.value * tokenPrice)}
             </div> 

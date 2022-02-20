@@ -1,7 +1,9 @@
 import { Input, Ratio, Result } from './submolecules'
 import { AiOutlineArrowDown, AiOutlineClose } from 'react-icons/ai'
+import { useBridgeContext } from '../../../core/systems/bridge';
 
 export const TransferTool = ({ _action, _isLoading, _context }) => {
+	const { dispatch, state } = _context();
     return (
         <>
             <div className={`animate-flip-in-hor-top [animation-delay:400ms] container h-max flex flex-row place-content-center w-[25rem] gap-5 justify-around pr-[4.5rem] items-center px-8 ${_isLoading && 'invisible'}`}>
@@ -21,6 +23,11 @@ export const TransferTool = ({ _action, _isLoading, _context }) => {
                     <Result _context={_context}/>
                 </div>
             </div>
+	    <div>
+	    <label htmlFor="quick" >Collateralize Quick Transfer (0.1% fee, 1 confirmation)
+	    <input name="quick" type="checkbox" checked={state.quick} onChange={ (evt) => { dispatch({ type: 'changeQuick' }) } } />
+	    </label>
+	    </div>
             <button className={`animate-flip-in-hor-top [animation-delay:700ms] rounded-full bg-emerald-300 dark:bg-emerald-500 text-white px-3 py-2 mt-4 hover:scale-90 transition-all font-fine duration-150 hover:ring-2 ring-emerald-700 tracking-wider ${_isLoading && 'invisible'}`} onClick={_action}>
                 Initiate & Sign
             </button>

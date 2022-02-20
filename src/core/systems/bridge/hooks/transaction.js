@@ -11,7 +11,9 @@ export function useTransactionSender(props){
     const [ isLoading, toggle ] = useState(false)
     const [ retrieveSigner, setSignerFunc ] = useState()
     const {connection, connectWallet} = global.wallet
-    const {state, dispatch} = useBridgeContext()
+    const { state, dispatch } = useBridgeContext();
+	console.log('STATE');
+	console.log(state);
     
     const sign = async () => {
         const retrieveSigner = await useSigner()

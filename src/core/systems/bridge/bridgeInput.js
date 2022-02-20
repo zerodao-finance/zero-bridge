@@ -17,6 +17,7 @@ export const useBridgeContext = () => useContext(BridgeContext)
 const initialState = {
     value: 0,
     ratio: 0,
+    quick: false,
     ETH: 0, 
     renBTC: 0
 }
@@ -25,18 +26,19 @@ function reducer(state, action) {
     switch (action.type) {
         case 'changeValue':
             if (!isNaN(action.event.nativeEvent.data) || '.'){
-                return (action.event.target.value == '' ?  {value: 0, ratio: state.ratio, ETH: state.ETH, renBTC: state.renBTC} : {value: action.event.target.value, ratio: state.ratio, ETH: state.ETH, renBTC: state.renBTC})
-            }
+                return Object.assign({ ...state }, { value: action.event.target.value == '' ? 0 : action.event.target.value });
+            } 
             break
+	case 'changeQuick':
+            return Object.assign({ ...state }, { quick: !state.quick });
         case 'changeRatio':
             console.log(state.ratio)
-            return {value: state.value, ratio: action.event.target.value, ETH: state.ETH, renBTC: state.renBTC}
+            return Object.assign({ ...state }, { ratio: action.event.target.value });
             break
         case 'changeETH':
-            return {value: state.value, ratio: state.ratio, ETH: action.value, renBTC: state.renBTC}
-            break
+            return Object.assign({ ...state }, { ETH: action.value });
         case 'changeRenBTC':
-            return {value: state.value, ratio: state.ratio, ETH: state.ETH, renBTC: action.value}
+            return Object.assign({ ...state }, { renBTC: action.value });
         case 'reset':
             return initialState
         default:

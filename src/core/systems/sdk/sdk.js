@@ -2,10 +2,9 @@ import { UnderwriterTransferRequest, TransferRequest } from 'zero-protocol/dist/
 import {ethers} from 'ethers';
 import { MOCK_TF_RQ, controller } from '../../tools/utilities'
 import { eventManager } from '../event'
-import { deploymentsFromSigner } from '../../tools/utilities/zero';
+import { deployments, deploymentsFromSigner } from '../../tools/utilities/zero';
 import { chainFromHexString } from '../wallet'
 import { TEST_KEEPER_ADDRESS } from 'zero-protocol/dist/lib/mock';
-
 
 class SDK {
 
@@ -66,6 +65,10 @@ class SDK {
             amount: ethers.utils.parseUnits(String(_value), 8),
             data: String(data)
         }, _signer)
+	    console.log(state);
+        if (state.quick) {
+          transferRequest.module = (deployments.arbitrum.ArbitrumConvertQuick || deployments.localhost.ArbitrumConvertQuick).address;
+	}
 
         /**
          * SIGN
@@ -154,8 +157,10 @@ class SDK {
     async submitPendingTX(data) {
         let _key = data.key
         try{
-            const transferRequest = new TransferRequest(data.data)
+		console.log(data);
+            const transferRequest = new UnderwriterTransferRequest(data.data)
             const _mint = await transferRequest.submitToRenVM()
+	    /*
             if (process.env.REACT_APP_TEST){
                 console.log("here")
                 //mock
@@ -180,8 +185,9 @@ class SDK {
                 })
                 
                 
-                // eventManager.dispatch.emit("new_transaction_submited", _mint, _gatewayAddress)
             }
+	    */
+            eventManager.dispatch.emit("new_transaction_submited", _mint, _gatewayAddress)
         } catch (error){
             // storage.deleteTransferRequest(_key)
         }

@@ -16,13 +16,13 @@ export async function connectWallet (getweb3) {
 }
 
 
-export function switchNetwork(_chainId){
+export async function switchNetwork(_chainId){
     console.log(_chainId, typeof _chainId)
     const { connection, connectWallet } = global.wallet
     try {
-        connection.currentProvider.sendAsync({ method: "wallet_switchEthereumChain", params: [{chainId: _chainId }]})
+        await connection.currentProvider.sendAsync({ method: "wallet_switchEthereumChain", params: [{chainId: _chainId }]})
     } catch (error) {
-        connection.currentProvider.sendAsync({ method: "wallet_switchEthereumChain", params: [{ chainId: _chainId}]})
+        await connection.currentProvider.sendAsync({ method: "wallet_switchEthereumChain", params: [{ chainId: _chainId}]})
     }
 }
 

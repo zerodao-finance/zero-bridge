@@ -1,55 +1,83 @@
 // import ConversionTool from "../organisms/ConversionTool";
-import { BridgeComponent } from '../organisms/bridge'
+import { BridgeComponent } from "../organisms/bridge";
 import Transactions from "../organisms/Transactions";
-import { Appbar }  from "../organisms/navigation";
-import { useEffect, useState } from 'react'
-import Disclaimer from '../organisms/Disclaimer'
-import {Confirm} from '../organisms/Confirm'
-import { Sidebar } from '../molecules/sidebar'
-import { ManageTool } from '../organisms/ManageTool'
-import { ErrorNotifications, TransactionNotifications } from '../organisms/notifications'
-import { Wallet, UI, SDK } from '../../core/systems'
-import { Wrappers } from '../../core/systems/bridge'
+import { Appbar } from "../organisms/navigation";
+import { useEffect, useState } from "react";
+import Disclaimer from "../organisms/Disclaimer";
+import { Confirm } from "../organisms/Confirm";
+import { Sidebar } from "../molecules/sidebar";
+import { ManageTool } from "../organisms/ManageTool";
+import {
+  ErrorNotifications,
+  TransactionNotifications,
+} from "../organisms/notifications";
+import { Wallet, UI, SDK } from "../../core/systems";
+import { initializeZeroUser } from "../../core/systems/sdk/keeper";
+import { Wrappers } from "../../core/systems/bridge";
 
-
-const { useWallet, useNetwork } = Wallet
+const { useWallet, useNetwork } = Wallet;
 
 const Dashboard = () => {
   // useTransactionListener()
   // SDK.useLocalStorageRefresh()
-  global.keeper = SDK.useKeeper()
-  global.wallet = useWallet()
-  useNetwork()
-  UI.useScreenMode()
-  
-  const [signed, setSigned] = useState(false)
-  const [tool, switchTool] = useState("convert")
+  const [keepers, setKeepers] = useState([]);
+  const [zeroUser, setZeroUser] = useState(null);
   useEffect(() => {
-    console.log(signed)
-    const agreement = window.localStorage.getItem("TC_agreement_signed")
+    (async () => {
+      setZeroUser(await initializeZeroUser());
+      console.log(`Keeper Effect: ZeroUser initialized`);
+    })().catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    const listener = (keeper) => {
+      console.log(`Keeper effect: ${keeper} found`);
+      setKeepers([...keepers, keeper]);
+    };
+
+    console.log(`Keeper Effect: Zero User searching for keeper: \n`, zeroUser);
+    if (zeroUser) zeroUser.on("keeper", listener);
+    return () => {
+      if (zeroUser) zeroUser.removeListener("keeper", listener);
+    };
+  }, [zeroUser]);
+  global.keeper = (global.keeper &&
+    Object.assign(global.keeper, { keepers, zeroUser })) || {
+    keepers,
+    zeroUser,
+  };
+  global.wallet = useWallet();
+  useNetwork();
+  UI.useScreenMode();
+
+  const [signed, setSigned] = useState(false);
+  const [tool, switchTool] = useState("convert");
+  useEffect(() => {
+    console.log(signed);
+    const agreement = window.localStorage.getItem("TC_agreement_signed");
     if (agreement == "true") {
-      setSigned(true)
+      setSigned(true);
     }
-  }, [signed])  
+  }, [signed]);
   // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-  
+
   return (
     <div className="bg-gradient-to-tl from-rose-50 to-teal-50 via-Fuchsia-50 dark:bg-none dark:bg-gradient-to-br dark:from-gray-700 dark:via-gray-900 dark:to-black h-screen">
-        <Appbar />
-        <Sidebar switcher={switchTool} tool={tool}/>
+      <Appbar />
+      <Sidebar switcher={switchTool} tool={tool} />
       {/* <header>
       </header> */}
       <main className="fixed h-screen top-0">
-      {tool == "convert" &&
-              <div className="h-full flex flex-col w-screen place-content-center items-center" >
-                { signed ? '': <Disclaimer setSigned={setSigned}/>}
-                <Confirm></Confirm>
-                <Wrappers.DataProvider>
-                  {/* <ConversionTool /> */}
-                  <BridgeComponent />
-                </Wrappers.DataProvider> 
-              </div>
-        }
+        {tool == "convert" && (
+          <div className="h-full flex flex-col w-screen place-content-center items-center">
+            {signed ? "" : <Disclaimer setSigned={setSigned} />}
+            <Confirm></Confirm>
+            <Wrappers.DataProvider>
+              {/* <ConversionTool /> */}
+              <BridgeComponent />
+            </Wrappers.DataProvider>
+          </div>
+        )}
         {/* {tool == "transactions" &&
             <div className="h-full flex flex-col w-screen place-content-center items-center">
               <Transactions />
@@ -60,15 +88,14 @@ const Dashboard = () => {
             <ManageTool />
           </div>
         } */}
-      <ErrorNotifications />
-      <TransactionNotifications />
-        
+        <ErrorNotifications />
+        <TransactionNotifications />
       </main>
 
       <footer className="absolute bottom-0 h-[2rem] w-screen text-xs px-4 flex flex-row justify-between">
         <p className="text-gray-400">
-          Copyright (the "zeroDAO Site"). Z DAO, LLC ("ZD") <a href="ZeroDao.com" >ZeroDao.com</a>
-          
+          Copyright (the "zeroDAO Site"). Z DAO, LLC ("ZD"){" "}
+          <a href="ZeroDao.com">ZeroDao.com</a>
         </p>
       </footer>
     </div>

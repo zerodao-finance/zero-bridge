@@ -11,7 +11,25 @@ const MATIC = {
     decimals: 18,
 }
 
+
+const hexChainIdFromChain = (name) => {
+  switch (name.toLowerCase()) {
+    case 'arbitrum':
+      return '42161';
+	  case 'matic':
+		  return '137'
+    default:
+      return '42161';
+  }
+};
+const chainFromEnv = () => {
+  return CHAINS[hexChainIdFromChain(process.env.REACT_APP_CHAIN)];
+};
+    
+    
+
 export const chainFromHexString = (_hex) => {
+    if (process.env.REACT_APP_TEST) return chainFromEnv();
     let bn = ethers.BigNumber.from(_hex)
     return (CHAINS[Number(bn.toString())])
 }
