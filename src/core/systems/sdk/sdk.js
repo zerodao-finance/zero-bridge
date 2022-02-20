@@ -91,13 +91,14 @@ class SDK {
             // _key = await storage.set(transferRequest)
             // storage.storeSplit(_key, state.renBTC, state.ETH);
         } catch (error) {
-
-		console.error(error);
+		    console.error(error);
             const err = "Loan will fail, double check input values"
             console.log("loan will fail", error)
             eventManager.dispatch.emit("error", err, 4000)
             return
         }
+
+        console.log("DRY COMPLETED")
 
 
 
