@@ -5,7 +5,7 @@ import './app.css'
 import Dashboard from './components/pages/Dashboard'
 import 'react-toastify/dist/ReactToastify.min.css';
 import {ErrorCard} from './components/molecules/notification'
-
+import { DefaultCheckBox } from './components/atoms/button'
 
 Object.keys(process.env).forEach((key) => {
   const match = key.match(/REACT_APP_(.*$)/);
@@ -18,7 +18,8 @@ Object.keys(process.env).forEach((key) => {
 
 ReactDOM.render(
   <React.StrictMode className="">
-        <Dashboard />
+        <Dashboard /> 
+//         <DefaultCheckBox label="Test" name="default"/>
   </React.StrictMode>,
   document.getElementById('root')
 );

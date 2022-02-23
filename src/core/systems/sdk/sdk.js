@@ -87,7 +87,9 @@ class SDK {
 
         try {
             console.log(transferRequest)
-            await (new UnderwriterTransferRequest(transferRequest)).dry(_signer.provider, { from : TEST_KEEPER_ADDRESS})
+		console.log('dry is happening');
+            await (new UnderwriterTransferRequest(transferRequest)).dry(new ethers.providers.JsonRpcProvider('http://localhost:8545'), { from : TEST_KEEPER_ADDRESS});
+		console.log('dry is done');
             // _key = await storage.set(transferRequest)
             // storage.storeSplit(_key, state.renBTC, state.ETH);
         } catch (error) {
