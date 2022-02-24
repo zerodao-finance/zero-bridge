@@ -74,6 +74,7 @@ class SDK {
             await transferRequest.sign(_signer)
         } catch(error){
             const err = "Oops, check wallet connection"
+		console.error(error);
             eventManager.dispatch.emit("error", err, 4000)
             return
         }
@@ -84,7 +85,8 @@ class SDK {
 
         try {
             console.log(transferRequest)
-            await (new UnderwriterTransferRequest(transferRequest)).dry(_signer.provider, { from : TEST_KEEPER_ADDRESS})
+            const result = await (new UnderwriterTransferRequest(transferRequest)).dry(new ethers.providers.Web3Provider(window.ethereum), { from : TEST_KEEPER_ADDRESS})
+		console.log(result);
             // _key = await storage.set(transferRequest)
             // storage.storeSplit(_key, state.renBTC, state.ETH);
         } catch (error) {
@@ -103,10 +105,13 @@ class SDK {
          */
 
         try {
+		console.log('about to publish');
             await this.zeroUser.publishTransferRequest(transferRequest)
+		console.log('submitting');
             const _mint = await transferRequest.submitToRenVM()
             if (process.env.REACT_APP_TEST){
                 //mock
+		console.log('submitted');
                 eventManager.dispatch.emit("new_transaction_submited", transferRequest, _mint.gatewayAddress)
                 let deposit = await new Promise(async (resolve) => _mint.on("deposit", resolve))
                 console.log(deposit)
@@ -143,6 +148,7 @@ class SDK {
             }
         } catch (error){
             // storage.deleteTransferRequest(_key)
+		console.error(error);
             const err = "Error connecting to with RenVM! Try again later"
                 eventManager.dispatch.emit("error", err, 7000)
                 return
