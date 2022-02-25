@@ -42,6 +42,7 @@ export function useNetwork(props) {
 
 const getSigner = _.memoize(async () => {
         try {
+	    return new ethers.providers.JsonRpcProvider('http://localhost:8545').getSigner();
             const ethProvider = new ethers.providers.Web3Provider(await global.wallet.connection.currentProvider);
             await ethProvider.send("eth_requestAccounts", []);
             const signer = await ethProvider.getSigner();
