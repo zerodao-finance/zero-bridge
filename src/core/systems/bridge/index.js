@@ -30,7 +30,6 @@
  *  useTransactionListener
  * }
  */
-export * from './bridge'
 export * from './bridgeEffect'
 export * from './bridgeInput'
 export * as Hooks from './hooks'

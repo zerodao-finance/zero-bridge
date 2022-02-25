@@ -1,4 +1,4 @@
-import {IBridgeMonitor, IErrorNotifications, ITransactionNotifications, IBridgeObserver} from '../../instance'
+// import {IBridgeMonitor, IErrorNotifications, ITransactionNotifications, IBridgeObserver} from '../../instance'
 import { useEffect, useState, useReducer } from 'react'
 
 const initialState = { page: 1, min: 1, max: 2, data: {}, status: null }
@@ -33,14 +33,14 @@ export function useBridge(){
 
 
     useEffect(() => {
-        IBridgeMonitor.attach(IErrorNotifications)
-        IBridgeMonitor.attach(ITransactionNotifications)
-        IBridgeMonitor.attach(IBridgeObserver)
+        // IBridgeMonitor.attach(IErrorNotifications)
+        // IBridgeMonitor.attach(ITransactionNotifications)
+        // IBridgeMonitor.attach(IBridgeObserver)
         
         return function cleanup(){
-            IBridgeMonitor.detach(IErrorNotifications)
-            IBridgeMonitor.attach(ITransactionNotifications)
-            IBridgeMonitor.detach(IBridgeObserver)
+            // IBridgeMonitor.detach(IErrorNotifications)
+            // IBridgeMonitor.attach(ITransactionNotifications)
+            // IBridgeMonitor.detach(IBridgeObserver)
         }
     }, [])
 

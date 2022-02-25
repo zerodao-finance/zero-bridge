@@ -1,5 +1,5 @@
 import { AiOutlineClose } from 'react-icons/ai'
-import { _ErrorObserver } from '../../core/instance'
+// import { _ErrorObserver } from '../../core/instance'
 import { useEffect, useState } from 'react'
 export const ErrorCard = ({data}) => {
     var element = document.getElementById("error_dialog")

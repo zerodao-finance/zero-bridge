@@ -1,12 +1,11 @@
 // import ConversionTool from "../organisms/ConversionTool";
 import { BridgeComponent } from "../organisms/bridge";
-import Transactions from "../organisms/Transactions";
-import { Appbar } from "../organisms/navigation";
+import { Transactions } from "../organisms/history";
+import { Appbar, Sidebar } from "../organisms/navigation";
 import { useEffect, useState } from "react";
-import Disclaimer from "../organisms/Disclaimer";
-import { Confirm } from "../organisms/Confirm";
-import { Sidebar } from "../molecules/sidebar";
-import { ManageTool } from "../organisms/ManageTool";
+import { Disclaimer } from "../organisms/notifications";
+import { Confirmation } from "../molecules/bridge";
+import { ManageTool } from "../organisms/manage";
 import {
   ErrorNotifications,
   TransactionNotifications,
@@ -71,7 +70,7 @@ const Dashboard = () => {
         {tool == "convert" && (
           <div className="h-full flex flex-col w-screen place-content-center items-center">
             {signed ? "" : <Disclaimer setSigned={setSigned} />}
-            <Confirm></Confirm>
+            <Confirmation></Confirmation>
             <Wrappers.DataProvider>
               {/* <ConversionTool /> */}
               <BridgeComponent />

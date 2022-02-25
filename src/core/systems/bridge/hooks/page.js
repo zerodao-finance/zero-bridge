@@ -1,7 +1,7 @@
 import { pageReducer, page_state } from '../reducers'
 import { useReducer, useEffect } from 'react'
 import { eventManager } from '../../event'
-import { IBridgeObserver, IBridgeMonitor, IErrorNotifications, ITransactionNotifications } from '../../../instance'
+// import { IBridgeObserver, IBridgeMonitor, IErrorNotifications, ITransactionNotifications } from '../../../instance'
 export function useBridgePage(){
     const [ state, dispatch ] = useReducer(pageReducer, page_state)
     
@@ -23,14 +23,14 @@ export function useBridgePage(){
 
 
     useEffect(() => {
-        IBridgeMonitor.attach(IErrorNotifications)
-        IBridgeMonitor.attach(ITransactionNotifications)
-        IBridgeMonitor.attach(IBridgeObserver)
+        // IBridgeMonitor.attach(IErrorNotifications)
+        // IBridgeMonitor.attach(ITransactionNotifications)
+        // IBridgeMonitor.attach(IBridgeObserver)
         
         return function cleanup(){
-            IBridgeMonitor.detach(IErrorNotifications)
-            IBridgeMonitor.attach(ITransactionNotifications)
-            IBridgeMonitor.detach(IBridgeObserver)
+            // IBridgeMonitor.detach(IErrorNotifications)
+            // IBridgeMonitor.attach(ITransactionNotifications)
+            // IBridgeMonitor.detach(IBridgeObserver)
         }
     }, [])
 

@@ -1,8 +1,7 @@
 // import { useNotification, _ErrorNotifications, _TransactionNotifications, eventManager } from '../../core/instance'
 import { Events } from '../../../core/systems'
 const { eventManager } = Events
-import {ErrorCard} from '../ErrorCard'
-import TransactionCard  from '../../molecules/TransactionCard'
+import { TransactionCard, ErrorCard }  from './cards'
 import _ from 'lodash'
 import {useState, useEffect} from 'react'
 const { useNotification } = Events
