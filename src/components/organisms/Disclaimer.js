@@ -12,7 +12,7 @@ export const Disclaimer = (props) => {
     useEffect(()=> {
         const scroll_box = document.getElementById("disclaimer")
         const listener = (e) => {
-          if (scroll_box.scrollTop > 7000) {done(true)}
+          if (scroll_box.scrollTop + window.innerHeight >= scroll_box.scrollHeight) {done(true)}
         };
         scroll_box.addEventListener("scroll", listener);
         return () => scroll_box.removeEventListener('scroll', listener);
