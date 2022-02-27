@@ -39,7 +39,11 @@ const initialStoreContext = {
         items: new Map(),
         transactions: [],
         isLoading: false,
-        error: null
+        error: null,
+        data: {
+            ratio: 0,
+            amount: '0'
+        }
     },
     dispatch: (_a) => {}
 }
@@ -69,9 +73,11 @@ const reducer = (state, action) => {
                     error: null
                 }
             }
-            
+        case "MODIFY_DATA":
+            return { ...state, data: action.payload }
+
         case "FAIL_REQUEST":
-            return { ...state, isLoading: false, error: action.payload }
+            return { ...state, isLoading: false, error: action.payload }           
 
         default:
             return assertNever(action)
@@ -93,7 +99,7 @@ const StateProvider = ({ children }) => {
         console.log(state.transactions)
         console.log(await PersistanceStore.get_all_data())
         if (!_.isEmpty(state.transactions))
-            PersistanceStore.put_data(state.transactions[0], 'pending')
+            await PersistanceStore.put_data(state.transactions[0], 'complete')
     }, [state.transactions])
 
     return <Provider value={{ state, dispatch }}>{children}</Provider>

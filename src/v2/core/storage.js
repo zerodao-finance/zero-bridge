@@ -39,7 +39,7 @@ class IndexedDBPeristanceStrategy {
         let tx = await this.db.transaction([this.objectStore], 'readwrite')
         let store = tx.objectStore(this.objectStore)
 
-        await store.put({ tx: hash(data), data: data, date: Date.now(), status: 'pending' })
+        await store.put({ tx: hash(data), data: data, date: Date.now(), status: status })
         await tx.complete
     }
 
