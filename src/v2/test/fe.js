@@ -56,7 +56,7 @@ export const ChildTest = ({}) => {
                         <p className="text-sm text-center text-black dark:text-white">renBTC</p>
                     </div>
                 </div>
-                { network && network}
+                { network_config && network_config.name}
                 <button onClick={connectWallet}>
                     { address ? 
                         address : "connect wallet"

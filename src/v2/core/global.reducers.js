@@ -36,7 +36,8 @@ export const globalBridgeState = {
         wallet: null,
         keepers: [],
         network: null,
-        address: null
+        address: null,
+        network_config: null
     },
     dipatch: (_a) => {}
 }
@@ -62,7 +63,7 @@ export const globalBridgeReducer = (state, action) => {
         case "FAIL_CONNECTION_REQUEST":
             return { ...state, isLoading: false, error: new Error("Could not establish Wallet Connection"), wallet: null, network: null}
         case "SUCCEED_CONNECTION_REQUEST":
-            return { ...state, isLoading: false, error: null, wallet: action.payload.data.wallet, network: action.payload.data.network, address: action.payload.data.address}
+            return { ...state, isLoading: false, error: null, wallet: action.payload.data.wallet, network: action.payload.data.network, address: action.payload.data.address, network_config: action.payload.data.network_config}
         case "SUCCEED_DISPLAY_REQUEST":
             return { ...state, isLoading: false, error: null, display: action.payload.data}
         case "FAIL_DISPLAY_REQUEST":
