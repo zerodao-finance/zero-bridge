@@ -29,78 +29,77 @@ import { createContext, useEffect, useReducer } from 'react'
 import { PersistanceStore } from './storage'
 import hash from 'object-hash'
 import _ from 'lodash'
+import { globalBridgeState, globalBridgeReducer } from './global.reducers'
 
 
 /** 
  * initial context
  */
-const initialStoreContext = {
-    state: {
-        items: new Map(),
-        transactions: [],
-        isLoading: false,
-        error: null,
-        data: {
-            ratio: 0,
-            amount: '0'
-        }
-    },
-    dispatch: (_a) => {}
-}
+// const initialStoreContext = {
+//     state: {
+//         items: new Map(),
+//         transactions: [],
+//         isLoading: false,
+//         error: null,
+//         data: {
+//             ratio: 0,
+//             amount: '0'
+//         }
+//     },
+//     dispatch: (_a) => {}
+// }
 
 
 
-function assertNever(x){
-    throw new Error("Unexpected Object", x);
-}
+// function assertNever(x){
+//     throw new Error("Unexpected Object", x);
+// }
 
-const reducer = (state, action) => {
-    switch (action.type) {
-        case "START_REQUEST":
-            return {...state, isLoading: true, error: null}
-        case "SUCCEED_REQUEST":
-            if (action.payload.type === 'transaction') {
-                return { ...state,
-                    transactions: [action.payload.data, ...state.transactions],
-                    isLoading: false, 
-                    error: null
-                }
-            } else if (action.payload.type === 'config') {
-                return {
-                    ...state,
-                    items: state.items.set(...action.payload.data),
-                    isLoading: false,
-                    error: null
-                }
-            }
-        case "MODIFY_DATA":
-            return { ...state, data: action.payload }
+// const reducer = (state, action) => {
+//     switch (action.type) {
+//         case "START_REQUEST":
+//             return {...state, isLoading: true, error: null}
+//         case "SUCCEED_REQUEST":
+//             if (action.payload.type === 'transaction') {
+//                 return { ...state,
+//                     transactions: [action.payload.data, ...state.transactions],
+//                     isLoading: false, 
+//                     error: null
+//                 }
+//             } else if (action.payload.type === 'config') {
+//                 return {
+//                     ...state,
+//                     items: state.items.set(...action.payload.data),
+//                     isLoading: false,
+//                     error: null
+//                 }
+//             }
+//         case "MODIFY_DATA":
+//             return { ...state, data: action.payload }
 
-        case "FAIL_REQUEST":
-            return { ...state, isLoading: false, error: action.payload }           
+//         case "FAIL_REQUEST":
+//             return { ...state, isLoading: false, error: action.payload }           
 
-        default:
-            return assertNever(action)
-    }
-}
+//         default:
+//             return assertNever(action)
+//     }
+// }
 
-const storeContext = createContext(initialStoreContext)
+const storeContext = createContext(globalBridgeState)
 const { Provider } = storeContext
 
 const StateProvider = ({ children }) => {
-    /**
-     * TODO: implement indexeddb storage
-     */
 
-    
-    const [ state, dispatch ] = useReducer(reducer, initialStoreContext.state)
 
-    useEffect(async () => {
-        console.log(state.transactions)
-        console.log(await PersistanceStore.get_all_data())
-        if (!_.isEmpty(state.transactions))
-            await PersistanceStore.put_data(state.transactions[0], 'complete')
-    }, [state.transactions])
+    const [ state, dispatch ] = useReducer(globalBridgeReducer, globalBridgeState.state)
+
+
+    // useEffect(async () => {
+    //     console.log(state.transactions)
+    //     console.log(await PersistanceStore.get_all_data())
+    //     if (!_.isEmpty(state.transactions))
+    //         await PersistanceStore.put_data(state.transactions[0], 'complete')
+    // }, [state.transactions])
 
     return <Provider value={{ state, dispatch }}>{children}</Provider>
 }
