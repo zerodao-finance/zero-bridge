@@ -130,6 +130,7 @@ export const NETWORK_ROUTER = {
 export const useInfura = () => {
     const { state, dispatch } = useContext( storeContext )
     var provider = process.env.REACT_APP_TESTING ? new ethers.providers.JsonRpcProvider('http://localhost:8545') : new ethers.providers.InfuraProvider('https://arbitrum-mainnet.infura.io/v3/' + process.env.infuraKey) 
+    
 
 }
 
