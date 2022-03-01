@@ -3,40 +3,19 @@ import { useContext, useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import wallet_modal from './walletModal'
 import { CHAINS } from './chains'
+import { deploymentsFromSigner } from './zero'
 
-
-export const useData = () => {
-    const {state, dispatch} = useContext(storeContext)
-    const { isLoading } = state
-    // useEffect(() => {
-    //     const call = () => {
-    //         try {
-    //             dispatch({ type: 'SUCCEED_REQUEST', payload: { type: 'transaction', data: { stuff: 'new_data' } }})
-    //         } catch (err){
-    //             dispatch({ type: 'FAIL_REQUEST', payload: err.message })
-    //         }
-    //     }
-        
-    //     if ( isLoading ) {
-    //         call()
-    //         console.log(state)
-    //     }
-
-    // }, [isLoading])
-
-    return [state.data, isLoading, dispatch]
-}
 
 
 export const useBridgeInput = () => {
     const { state, dispatch } = useContext( storeContext )
 
     const updateRatio = (e) => {
-        dispatch({type: 'UPDATE_INPUT', payload: {type: "RATIO", data: e.target.value}})
+        dispatch({type: 'SUCCEED_REQUEST', effect: 'input', payload: {effect: "ratio", data: e.target.value}})
     }
 
     const updateAmount = (e) => {
-        dispatch({type: 'UPDATE_INPUT', payload: { type: "AMOUNT", data: e.target.value}})
+        dispatch({type: 'SUCCEED_REQUEST', effect: 'input', payload: { effect: "amount", data: e.target.value}})
     }
 
     var ratio = state.input.ratio
@@ -127,37 +106,54 @@ export const NETWORK_ROUTER = {
     }
 }
 
-export const useInfura = () => {
+export const useZero = () => {
     const { state, dispatch } = useContext( storeContext )
-    var provider = process.env.REACT_APP_TESTING ? new ethers.providers.JsonRpcProvider('http://localhost:8545') : new ethers.providers.InfuraProvider('https://arbitrum-mainnet.infura.io/v3/' + process.env.infuraKey) 
+    
+    useEffect(() => {
+
+    }, [state.wallet.provider])
     
 
 }
 
+
+
 export const useWalletConnection = () => {
     const { state, dispatch } = useContext( storeContext )
-    const { isLoading } = state
+    const { wallet } = state
+    const { isLoading } = wallet
     const { web3Loading, getweb3 } = wallet_modal()
-    const connectWallet = async () => {
-        try {
-            return await getweb3().then(async (response) => {
-                await response.currentProvider.sendAsync({ method: "wallet_addEthereumChain", params: (Object.values(CHAINS).reverse())})
-                let chainId = await response.eth.getChainId()
-                let net_config = NETWORK_ROUTER[chainId]
-                await dispatch({type: "SUCCEED_CONNECTION_REQUEST", payload: { data: { wallet: response, address: (await response.eth.getAccounts())[0], network: await response.eth.getChainId(), network_config: net_config}}})
-            })
+    useEffect(() => {
+        const call = async () => {
+            try {
+                return await getweb3().then(async (response) => {
+                    await response.currentProvider.sendAsync({ method: "wallet_addEthereumChain", params: (Object.values(CHAINS).reverse())})
+                    let chainId = await response.eth.getChainId()
+                    await dispatch({type: "SUCCEED_BATCH_REQUEST", effect: 'wallet', payload: { address: (await response.eth.getAccounts())[0], chainId: chainId, network: NETWORK_ROUTER[chainId], provider: response.currentProvider }})
+                })
+            }
+            catch (err) {
+                console.log(err)
+                dispatch({ type: "FAIL_REQUEST", effect: 'wallet'})
+            }
         }
-        catch (err) {
-            console.log(err)
-            dispatch({ type: "FAIL_CONNECTION_REQUEST"})
+
+        if (isLoading) {
+            call()
         }
+
+        console.log(wallet)
+        
+    }, [isLoading])
+
+    const connect = async () => {
+        await dispatch({type: "START_REQUEST", effect: 'wallet'})
     }
-    var wallet = state.wallet
-    var address = state.address
-    var network = state.network
-    return { connectWallet, wallet, address, network }
 
+    const disconnect = async () => {
+        await dispatch({type: "RESET_REQUEST", effect: 'wallet'})
+    }
 
+    return { connect, disconnect, wallet, isLoading}
 }
-
 

@@ -27,16 +27,35 @@ export const ChildTest = ({}) => {
     // const [data, isLoading, dispatch] = useData()
     // const { bridgeState, bridgeDispatch } = useContext( storeContext )
     // const { state, dispatch } = useContext( storeContext )
+    // const { input } = state
+    // const { isLoading } = input 
+
+    // useEffect(() => {
+    //     const call = () => {
+    //         dispatch({type: "SUCCEED_REQUEST", effect: "input", payload: { effect: 'ratio', data: input.ratio + 1}})
+    //     }
+    //     if (isLoading) {
+    //         call()   
+    //     }
+    // }, [isLoading])
     // const { isLoading, error } = state
     const { ratio, amount, updateRatio, updateAmount } = useBridgeInput()
-    const { ETH, renBTC } = useBridgeDisplay()
-    const {connectWallet, wallet, address, network} = useWalletConnection()
+    // const { ETH, renBTC } = useBridgeDisplay()
+    const { connect, disconnect, wallet, isLoading } = useWalletConnection()
     return (
 
         <>
+        <br></br>
         {
-            // <button onClick={() => dispatch({ type: 'UPDATE_INPUT', payload: { type: "RATIO", data: state.input.ratio + 1}})}>Create Transaction</button>
-            // // <button onClick={(event) => updateData(event, data, dispatch)} id="amount">click me</button>
+            isLoading ?
+            <>Loading</>
+            :
+            // <>
+            //     <button onClick={() => dispatch({ type: 'START_REQUEST', effect: 'input'})}>Create Transaction</button>
+            //     <br />
+            //     <button onClick={() => dispatch({ type: 'RESET_REQUEST', effect: 'input'})}> Reset State </button>
+            //     <button onClick={(event) => updateData(event, data, dispatch)} id="amount">click me</button>
+            // </>
             <div className="flex flex-col gap-2 self-center text-black dark:text-white">
                 <div className="flex flex-row w-full justify-between items-center px-5 gap-2">
                     <span className="flex items-center"><FaEthereum className="fill-gray-900 dark:fill-gray-300 h-[1.3rem] w-max text-xs"/><p className="text-xs">{`${ratio}%`}</p></span>
@@ -46,7 +65,7 @@ export const ChildTest = ({}) => {
                 <div className="w-fit p-2">
                     <input id="transfer-amount" className="dark:bg-gray-600 dark:text-white form-input text-center border-0 focus:ring-0 text-md font-medium text-gray-600 bg-transparent caret-green-500 z-40 w-fit max-w-[5rem] rounded-xl bg-gray-100" type="number" value={amount} onChange={updateAmount}/>
                 </div>
-                <div className='flex flex-row justify-evenly divide-x-[.008rem] divide-emerald-300'>
+                {/* <div className='flex flex-row justify-evenly divide-x-[.008rem] divide-emerald-300'>
                     <div className="flex flex-col gap-2 w-[8rem]">
                         <p className="text-xl  text-emerald-300 truncate text-center">{ETH}</p>
                         <p className="text-sm text-center text-black dark:text-white">ETH</p>
@@ -55,12 +74,15 @@ export const ChildTest = ({}) => {
                         <p className="text-xl text-emerald-300 text-center">{renBTC}</p>
                         <p className="text-sm text-center text-black dark:text-white">renBTC</p>
                     </div>
-                </div>
-                { network_config && network_config.name}
-                <button onClick={connectWallet}>
-                    { address ? 
-                        address : "connect wallet"
+                </div> */}
+                {/* { network_config && network_config.name} */}
+                <button onClick={connect}>
+                    { wallet.address ? 
+                        wallet.address : "connect wallet"
                     }
+                </button>
+                <button onClick={ disconnect }>
+                    disconnect wallet
                 </button>
 
             </div>
