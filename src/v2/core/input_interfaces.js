@@ -3,9 +3,10 @@ import { useContext, useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import wallet_modal from './walletModal'
 import { CHAINS } from './chains'
+import _ from 'lodash'
+import { createZeroUser, createZeroConnection } from "zero-protocol/dist/lib/zero.js";
+import {enableGlobalMockRuntime, createMockKeeper} from "zero-protocol/dist/lib/mock.js"
 import { deploymentsFromSigner } from './zero'
-
-
 
 export const useBridgeInput = () => {
     const { state, dispatch } = useContext( storeContext )
@@ -108,12 +109,29 @@ export const NETWORK_ROUTER = {
 
 export const useZero = () => {
     const { state, dispatch } = useContext( storeContext )
-    
-    useEffect(() => {
+    const { zero } = state
+    const enableMocks = _.memoize(async () => {
+        if (process.env.REACT_APP_TEST) {
+          await createMockKeeper()
+          await enableGlobalMockRuntime()
+            console.log('enabled mocks');
+        }
+    });
 
-    }, [state.wallet.provider])
-    
+    useEffect(async () => {
+        await enableMocks();
+        if (!zero.zeroUser) {
+            let user = createZeroUser(await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/'))
+            await user.conn.start()
+            await user.subscribeKeepers()
+            user.on('keeper', (address) => dispatch({type: "SUCCEED_REQUEST", effect: "zero", payload: { effect: "keepers", data: [address, ...zero.keepers]}}))
+            dispatch({ type: "SUCCEED_REQUEST", effect: "zero", payload: { effect: "zeroUser", data: user}})
+        }
+    }, [])
 
+    var keeper = zero.keeper
+    var zeroUser = zero.zeroUser
+    return { keeper, zeroUser }
 }
 
 

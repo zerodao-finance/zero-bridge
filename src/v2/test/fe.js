@@ -1,6 +1,6 @@
 import { StateProvider, storeContext } from '../core/global'
 import { useContext, useEffect } from 'react'
-import { useBridgeInput, useBridgeDisplay, useWalletConnection } from '../core/input_interfaces'
+import { useBridgeInput, useZero, useWalletConnection } from '../core/input_interfaces'
 import { FaEthereum, FaBtc } from 'react-icons/fa'
 import _ from 'lodash'
 
@@ -41,11 +41,20 @@ export const ChildTest = ({}) => {
     // const { isLoading, error } = state
     const { ratio, amount, updateRatio, updateAmount } = useBridgeInput()
     // const { ETH, renBTC } = useBridgeDisplay()
+    const { keeper, zeroUser } = useZero()
     const { connect, disconnect, wallet, isLoading } = useWalletConnection()
     return (
 
         <>
         <br></br>
+        {
+            keeper ?
+            keeper[0] : "no keeper found"
+        }
+        { 
+            zeroUser ?
+            "found zero User" : "no zero user found"
+        }
         {
             isLoading ?
             <>Loading</>
@@ -56,6 +65,7 @@ export const ChildTest = ({}) => {
             //     <button onClick={() => dispatch({ type: 'RESET_REQUEST', effect: 'input'})}> Reset State </button>
             //     <button onClick={(event) => updateData(event, data, dispatch)} id="amount">click me</button>
             // </>
+
             <div className="flex flex-col gap-2 self-center text-black dark:text-white">
                 <div className="flex flex-row w-full justify-between items-center px-5 gap-2">
                     <span className="flex items-center"><FaEthereum className="fill-gray-900 dark:fill-gray-300 h-[1.3rem] w-max text-xs"/><p className="text-xs">{`${ratio}%`}</p></span>

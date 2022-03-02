@@ -4,13 +4,11 @@ import { useReducer } from 'react'
 /**
  * @Reducers
  * 
- * @input reducers
- * 
- * @display reducers
- * 
- * @output reducers (to be stored)
- * 
- * @config reducers (to be memoized after initialization)
+ * DONE: @input
+ * TODO: @display
+ * TODO: @transactions
+ * DONE: @wallet
+ * DONE: @zero
  */
 
 function assertNever(x){
@@ -48,6 +46,7 @@ export const globalBridgeState = {
         },
         zero: {
             keepers: [],
+            zeroUser: null,
             controller: null,
             isLoading: false,
             error: null
