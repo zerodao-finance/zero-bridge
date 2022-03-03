@@ -21,6 +21,16 @@ yarn start:dev
 
 ```
 
+## Jest Testing
+
+The following script will test both functionality and rendering of the app
+
+```shell
+
+yarn test
+
+```
+
 ## Author
 
 zeroDAO community
