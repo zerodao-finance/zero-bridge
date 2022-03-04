@@ -5,7 +5,7 @@ import { useReducer } from 'react'
  * @Reducers
  * 
  * DONE: @input
- * TODO: @display
+ * DONE: @display
  * TODO: @transactions
  * DONE: @wallet
  * DONE: @zero
@@ -20,6 +20,7 @@ export const globalBridgeState = {
         input: {
             ratio: 0,
             amount: '0',
+            isFast: false,
             isLoading: false,
             error: null
         },
@@ -47,6 +48,7 @@ export const globalBridgeState = {
         zero: {
             keepers: [],
             zeroUser: null,
+            signer: null,
             controller: null,
             isLoading: false,
             error: null

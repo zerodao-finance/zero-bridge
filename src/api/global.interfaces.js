@@ -1,5 +1,5 @@
 import { storeContext } from './global'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState, useMemo } from 'react'
 import { ethers } from 'ethers'
 import wallet_modal from './walletModal'
 import { CHAINS } from './chains'
@@ -8,6 +8,7 @@ import { createZeroUser, createZeroConnection } from "zero-protocol/dist/lib/zer
 import {enableGlobalMockRuntime, createMockKeeper} from "zero-protocol/dist/lib/mock.js"
 import { deploymentsFromSigner } from './zero'
 
+// input //
 export const useBridgeInput = () => {
     const { state, dispatch } = useContext( storeContext )
 
@@ -19,17 +20,35 @@ export const useBridgeInput = () => {
         dispatch({type: 'SUCCEED_REQUEST', effect: 'input', payload: { effect: "amount", data: e.target.value}})
     }
 
+    const updateModule = (e) => {
+        dispatch({type: 'SUCCEED_REQUEST', effect: 'input', payload: { effect: 'isFast', data: !!e.target.checked}})
+    }
+
+    var isFast = state.input.isFast
     var ratio = state.input.ratio
     var amount = state.input.amount
 
 
-    return { ratio, amount, updateRatio, updateAmount }
+    return { ratio, amount, isFast, updateRatio, updateAmount, updateModule }
 }
+
+// display //
 
 export const useBridgeDisplay = () => {
     const { state, dispatch } = useContext( storeContext )
+    const { input, zero } = state
+    
     const [ ETHPrice, setETHPrice ] = useState('0')
+
     const ln = (v) => (v);
+
+    const contract = useMemo(() => {
+        var provider = new ethers.providers.JsonRpcProvider(process.env.REACT_APP_JSONRPC)
+        if (state.wallet.network) {
+            return new ethers.Contract(state.wallet.network.swap_address, [ 'function get_dy(uint256, uint256, uint256) view returns (uint256)' ], provider)
+        }
+    }, [state.wallet.network])
+
     useEffect(async () => {
         const listener = async () => {
             try {
@@ -43,8 +62,8 @@ export const useBridgeDisplay = () => {
             }
         };
 
-        var invoke = _.throttle(listener, 2000)
-        if ( state.wallet ) {
+        var invoke = _.throttle(listener, 4000)
+        if ( state.wallet.network ) {
             contract.provider.on("block", invoke)
         }
 
@@ -52,7 +71,7 @@ export const useBridgeDisplay = () => {
             contract.provider.removeListener( "block", invoke)
             invoke.cancel()
         }
-    }, [state.wallet])
+    }, [state.wallet.network])
 
     useEffect(() => {
         const call = () => {
@@ -73,9 +92,23 @@ export const useBridgeDisplay = () => {
                 )
 
 
-                dispatch({type: "SUCCEED_DISPLAY_REQUEST", payload: { data: { renBTC: valueRenBTC, ETH: 0 }}})
+                var valueETH = ethers.utils.formatEther(
+                    ethers.BigNumber.from(String(state.input.ratio))
+                    .mul(ethers.utils.parseEther("0.01"))
+                    .mul(
+                        ethers.utils
+                        .parseUnits(String(state.input.amount), 8)
+                        .mul(ETHPrice)
+                    )
+                    .div(ethers.utils.parseEther("1", 18))
+                    .div(ethers.utils.parseUnits("1", 8))
+                )
+
+
+                dispatch({type: "SUCCEED_BATCH_REQUEST", effect: "display", payload: { ETH: valueETH, renBTC: valueRenBTC} })
             } catch (e) {
-                dispatch({type: "FAIL_DISPLAY_REQUEST"})
+                console.log(e)
+                dispatch({type: "FAIL_REQUEST", effect: 'display', payload: "Cannot set ETHPrice," })
             }
         }
 
@@ -92,20 +125,14 @@ export const NETWORK_ROUTER = {
     137: {
         name: "Polygon",
         swap_address: '0x751B1e21756bDbc307CBcC5085c042a0e9AaEf36',
-        // abi: curveABI,
-        // get contract() {
-        //     return new ethers.Contract(this.swap_address, [ 'function get_dy(uint256, uint256, uint256) view returns (uint256)' ], controller.provider)
-        //  }
         },
     42161: {
         name: "Arbitrum",
         swap_address: '0x960ea3e3C7FB317332d990873d354E18d7645590',
-        // curveABI: curveABI,
-        // get contract() {
-        //     return new ethers.Contract(this.swap_address, [ 'function get_dy(uint256, uint256, uint256) view returns (uint256)' ], controller.provider)
-        //     }
     }
 }
+
+// zero //
 
 export const useZero = () => {
     const { state, dispatch } = useContext( storeContext )
@@ -124,17 +151,17 @@ export const useZero = () => {
             let user = createZeroUser(await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/'))
             await user.conn.start()
             await user.subscribeKeepers()
-            user.on('keeper', (address) => dispatch({type: "SUCCEED_REQUEST", effect: "zero", payload: { effect: "keepers", data: [address, ...zero.keepers]}}))
+            user.on('keeper', (address) => {dispatch({type: "SUCCEED_REQUEST", effect: "zero", payload: { effect: "keepers", data: [address, ...zero.keepers]}}) })
             dispatch({ type: "SUCCEED_REQUEST", effect: "zero", payload: { effect: "zeroUser", data: user}})
         }
     }, [])
 
-    var keeper = zero.keeper
+    var keeper = zero.keepers
     var zeroUser = zero.zeroUser
     return { keeper, zeroUser }
 }
 
-
+// wallet //
 
 export const useWalletConnection = () => {
     const { state, dispatch } = useContext( storeContext )
@@ -173,5 +200,18 @@ export const useWalletConnection = () => {
     }
 
     return { connect, disconnect, wallet, isLoading}
+}
+
+// transaction //
+
+const useTransaction = () => {
+    const { state, dispatch } = useContext( storeContext )
+    const { transactions } = state
+    const { input } = state
+    const { zero } = state
+
+    const sendTransaction = () => {
+
+    }
 }
 
