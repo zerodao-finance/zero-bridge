@@ -16,7 +16,6 @@ Object.keys(process.env).forEach((key) => {
 ReactDOM.render(
   <React.StrictMode className="">
         <Dashboard /> 
-        <DefaultCheckBox label="Test" name="default"/>
   </React.StrictMode>,
   document.getElementById('root')
 );
