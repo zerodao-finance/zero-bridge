@@ -1,5 +1,7 @@
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai'
 import { ethers } from 'ethers'
+import { BitcoinQR } from '../../atoms/components/BitcoinQR'
+
 export const Confirmation = ({transferRequest, back, status}) => {
     transferRequest
     
@@ -38,6 +40,11 @@ export const Confirmation = ({transferRequest, back, status}) => {
                                 <p className="text-black dark:text-white">Deposit the exact amount of BTC to the Deposit Address</p>
                                 
                             </div>
+                            <BitcoinQR
+                                bitcoinAddress={transferRequest.gatewayAddress}
+                                amount={transferRequest.amount}
+                                title="Deposit bitcoin"
+                            />
                         </div>
         }
         </>
