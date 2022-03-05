@@ -1,12 +1,12 @@
 import { storeContext } from './global'
 import { useContext, useEffect, useState, useMemo } from 'react'
 import { ethers } from 'ethers'
-import wallet_modal from './walletModal'
-import { CHAINS } from './chains'
+import wallet_modal from '../walletModal'
+import { CHAINS } from '../utils/chains'
 import _ from 'lodash'
 import { createZeroUser, createZeroConnection } from "zero-protocol/dist/lib/zero.js";
 import {enableGlobalMockRuntime, createMockKeeper} from "zero-protocol/dist/lib/mock.js"
-import { deploymentsFromSigner } from './zero'
+import { deploymentsFromSigner } from '../utils/zero'
 
 // input //
 export const useBridgeInput = () => {
@@ -31,6 +31,7 @@ export const useBridgeInput = () => {
 
     return { ratio, amount, isFast, updateRatio, updateAmount, updateModule }
 }
+
 
 // display //
 

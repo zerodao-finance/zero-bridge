@@ -5,7 +5,7 @@ import { DarkLight } from '../../atoms/status'
 
 export const Sidebar = ({switcher}) => {
     return (
-        <div className="min-h-full flex fixed right-0 bg-white w-20 hover:w-[14rem] hover:rounded-l-[7rem] group rounded-l-[7rem] shadow-2xl z-50 dark:bg-emerald-300 transition-all ease-in-out duration-150 text-black font-light text-sm">
+        <div className="hidden min-h-full md:flex fixed right-0 bg-white w-20 hover:w-[14rem] hover:rounded-l-[7rem] group rounded-l-[7rem] shadow-2xl z-50 dark:bg-emerald-300 transition-all ease-in-out duration-150 text-black font-light text-sm">
             <div className="grow w-full flex flex-col items-center justify-between pb-40 mt-[8rem]">
                 <div className="flex flex-col gap-16 ">
                     <div className="flex flex-row gap-3 hover:scale-125">

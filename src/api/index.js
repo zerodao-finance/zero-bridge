@@ -3,4 +3,3 @@
  *  Easier to extend functionality of global store
  */
 
-export * from './input_interface'

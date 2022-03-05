@@ -1,5 +1,5 @@
 import { useReducer } from 'react'
-
+import _ from 'lodash'
 
 /**
  * @Reducers
@@ -23,6 +23,15 @@ export const globalBridgeState = {
             isFast: false,
             isLoading: false,
             error: null
+        },
+        utilities: {
+            ethPrice: 0,
+            btcPrice: 0,
+            themeMode: 'light',
+        },
+        network: {
+            provider: null,
+            priceFeedContract: null
         },
         display: {
             ETH: 0,
