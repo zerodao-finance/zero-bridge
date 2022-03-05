@@ -2,6 +2,8 @@ import {NetworkIndicator, PrimaryOutlinedButton, PrimaryRoundedButton, DefaultIn
 import { NavigationTopBar } from './molecules/navigation.topbar'
 import { MobileNavigationSidebar } from './molecules/navigation.sidebar.mobile'
 import { LayoutSidebarNavigation } from './layouts/layout.sidebar.nav'
+import { BridgeModule } from './organisms/bridge.module'
+
 export const TestUI = () => {
     return (
         <div className='relative'>
@@ -11,6 +13,7 @@ export const TestUI = () => {
                     <MobileNavigationSidebar />
                 </LayoutSidebarNavigation>
             </div> 
+            <BridgeModule />
         </div>
     )
 }
