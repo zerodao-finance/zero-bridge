@@ -9,11 +9,6 @@ export function useScreenMode(props) {
         localStorage.setItem("screenMode", dark ? "dark" : "light")
         dispatch({type: "SUCCEED_REQUEST", effect: "utilities", payload: { effect: "themeMode", data: dark}})
     }
-    useEffect(() => {
-        if (localStorage.getItem("screenMode") === "dark") {
-            document.documentElement.classList.add("dark")
-        }
-    }, [])
 
     var themeMode = utilities.themeMode
     

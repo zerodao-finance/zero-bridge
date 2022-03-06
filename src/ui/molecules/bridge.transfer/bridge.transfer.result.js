@@ -8,16 +8,24 @@ export const BridgeTransferResult = ({ETH, renBTC}) => {
     }
     return (
 
-            <div className='flex flex-row justify-evenly divide-emerald-300 scale-[0.8] md:scale-[1]'>
-                <div className="flex flex-col gap-2 w-[8rem] border-r border-emerald-300">
-                    <p className="text-xl  text-emerald-300 truncate text-center">{ETH}</p>
-                    <p className="text-sm text-center text-black dark:text-white">ETH</p>
-                </div>
-                <div className="flex flex-col gap-2 w-[8rem] border-l border-emerald-300">
-                    <p className="text-xl text-emerald-300 text-center">{renBTC}</p>
-                    <p className="text-sm text-center text-black dark:text-white">renBTC</p>
-                </div>
+        <div className="w-fit grid grid-cols-2 gap-3 self-center">
+            <div className="text-emerald-500 border-r-[1px] border-emerald-700 dark:border-slate-500 rounded-md px-4 py-2 flex flex-col justify-center items-center divide-y max-w-[90px] truncate w-[90px]">
+                <p className='max-w-[50px] truncate'>
+                    {ETH}
+                </p>
+                <p className="text-[13px]">
+                    ETH
+                </p>
+            </div>
+            <div className="text-emerald-500 border-l-[1px] border-emerald-700 dark:border-slate-500 rounded-md px-4 py-2 flex flex-col justify-center items-center divide-y max-w-[90px] truncate w-[90px]">
+                <p className="max-w-[50px] truncate">
+                    {renBTC}
+                </p>
+                <p className="text-[13px]">
+                    renBTC
+                </p>
             </div>
 
+        </div>
     )
 }

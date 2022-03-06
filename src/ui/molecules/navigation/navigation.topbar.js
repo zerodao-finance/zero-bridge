@@ -1,7 +1,7 @@
-import {PrimaryOutlinedButton} from '../atoms/buttons/button.outlined'
-import {NetworkIndicator} from '../atoms/indicators/indicator.network'
-import { useWalletConnection } from '../../api/global/interfaces/interfaces.wallet'
-import { useZero } from '../../api/global/interfaces/interfaces.zero'
+import {PrimaryOutlinedButton} from '../../atoms/buttons/button.outlined'
+import {NetworkIndicator} from '../../atoms/indicators/indicator.network'
+import { useWalletConnection } from '../../../api/global/interfaces/interfaces.wallet'
+import { useZero } from '../../../api/global/interfaces/interfaces.zero'
 
 export const NavigationTopBar = ({}) => {
     

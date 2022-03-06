@@ -1,6 +1,11 @@
 /* This example requires Tailwind CSS v2.0+ */
+import { RiFileListLine, RiExchangeFundsLine } from 'react-icons/ri'
+import { MdOutlinePending } from 'react-icons/md'
+import { BiTransfer } from 'react-icons/bi'
 import { CalendarIcon, ChartBarIcon, FolderIcon, HomeIcon, InboxIcon, UsersIcon } from '@heroicons/react/outline'
-import { useScreenMode } from '../../api/global/interfaces/interfaces.screenmode'
+import { useScreenMode } from '../../../api/global/interfaces/interfaces.screenmode'
+
+
 const navigation = [
   { name: 'Bridge Tool', href: '#', icon: HomeIcon, current: true, count: '5' },
   { name: 'Manage Transactions', href: '#', icon: UsersIcon, current: false },
@@ -17,33 +22,41 @@ export function MobileNavigationSidebar() {
     var light = false
   return (
     <nav className="space-y-8 " aria-label="Sidebar">
-      {navigation.map((item) => (
-        <a
-          key={item.name}
-          href={item.href}
-          className={classNames(
-            item.current ? 'bg-gray-100 text-black font-light border border-emerald-500' : 'text-black hover:bg-gray-50 hover:text-gray-900',
-            'flex items-center px-3 py-2 text-sm font-light rounded-md'
-          )}
-          aria-current={item.current ? 'page' : undefined}
-        >
-          <item.icon
-            className={classNames(item.current ? 'text-gray-500' : 'text-gray-400', 'flex-shrink-0 -ml-1 mr-3 h-6 w-6')}
-            aria-hidden="true"
-          />
-          <span className="truncate">{item.name}</span>
-          {item.count ? (
-            <span
-              className={classNames(
-                item.current ? 'bg-gray-50' : 'bg-gray-200 text-gray-600',
-                'ml-auto inline-block py-0.5 px-3 text-xs rounded-full'
-              )}
-            >
-              {item.count}
-            </span>
-          ) : null}
-        </a>
-      ))}
+      {/**
+       * Modules
+       */}
+        <div className="flex flex-row gap-3 ">
+            <RiExchangeFundsLine className="h-[1.2rem] w-[1.2rem] dark:fill-black"/>
+
+            <button >
+                Bridge Tool
+            </button>
+        </div>
+        <div className="flex flex-row gap-3 ">
+            <MdOutlinePending className="h-[1.2rem] w-[1.2rem] dark:fill-black"/>
+
+            <button >
+                Manage Transactions
+            </button>
+        </div>
+        <div className="flex flex-row gap-3 ">
+            <BiTransfer className="h-[1.2rem] w-[1.2rem] dark:fill-black"/>
+
+            <button >
+                History
+            </button>
+        </div>
+        <div className="flex flex-row gap-3 ">
+            <RiFileListLine className="h-[1.2rem] w-[1.2rem] dark:fill-black"/>
+            <a href="https://docs.zerodao.com" target="_blank"><button >
+                Documentation
+            </button></a>
+        </div>
+        {
+          /**
+           * Dark/Light toggle
+           */
+        }
         <div className="flex flex-row w-full justify-center self-center ">
 
             <button className="flex flex-row w-[100px] rounded-full border border-black justify-between" onClick={() => toggleScreenMode()}> 
