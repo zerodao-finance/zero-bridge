@@ -9,7 +9,7 @@ export function LayoutSidebarNavigation({children}) {
 
   return (
     <>  
-        <div className={`w-min right-0 absolute md:hidden items-center gap-2 capitalize font-light text-lg ${open ? 'hidden' : 'flex'}`} onClick={() => setOpen(true)}>
+        <div className={`w-min dark:text-white right-0 absolute md:hidden items-center gap-2 capitalize font-light text-lg ${open ? 'hidden' : 'flex'}`} onClick={() => setOpen(true)}>
             <span className="text-sm">menu</span>
             <AiOutlineMenu />
         </div>

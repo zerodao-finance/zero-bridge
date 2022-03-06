@@ -1,6 +1,6 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { CalendarIcon, ChartBarIcon, FolderIcon, HomeIcon, InboxIcon, UsersIcon } from '@heroicons/react/outline'
-
+import { useScreenMode } from '../../api/global/interfaces/interfaces.screenmode'
 const navigation = [
   { name: 'Bridge Tool', href: '#', icon: HomeIcon, current: true, count: '5' },
   { name: 'Manage Transactions', href: '#', icon: UsersIcon, current: false },
@@ -13,6 +13,7 @@ function classNames(...classes) {
 }
 
 export function MobileNavigationSidebar() {
+    const { themeMode, toggleScreenMode } = useScreenMode()
     var light = false
   return (
     <nav className="space-y-8 " aria-label="Sidebar">
@@ -45,9 +46,9 @@ export function MobileNavigationSidebar() {
       ))}
         <div className="flex flex-row w-full justify-center self-center ">
 
-            <button className="flex flex-row w-[100px] rounded-full border border-black justify-between"> 
-                <div className={`${light ? '' : 'border border-black rounded-full bg-black '} px-1 text-white`}>Dark</div>
-                <div className={`px-2 ${light ? 'border border-black rounded-full' : 'text-white'}`}> light </div>
+            <button className="flex flex-row w-[100px] rounded-full border border-black justify-between" onClick={() => toggleScreenMode()}> 
+                <div className={`${themeMode ? '' : 'border border-black rounded-full bg-black '} px-1 text-white`}>Dark</div>
+                <div className={`px-2 ${themeMode ? 'border border-black rounded-full' : 'text-white'}`}> light </div>
             </button>
         </div>
     </nav>

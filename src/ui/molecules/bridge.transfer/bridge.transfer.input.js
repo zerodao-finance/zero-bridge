@@ -1,16 +1,13 @@
 import { DefaultInput } from '../../atoms/inputs/input.default'
 import { FaBitcoin } from 'react-icons/fa'
 import { ethers } from 'ethers'
-export const BridgeTransferInput = () => {
+export const BridgeTransferInput = ({ amount, effect, tokenPrice }) => {
 
     var formatter = new Intl.NumberFormat('en-US', {
         style: "currency",
         currency: "USD"
     })
 
-    var amount = 0
-    var effect = () => {}
-    var tokenPrice = 400000
 
     return (
         <div className="w-fit self-center px-0 py-0 scale-[0.8] md:scale-[1]">

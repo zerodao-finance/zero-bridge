@@ -64,7 +64,7 @@ export const globalBridgeState = {
 
         }
     },
-    dipatch: (_a) => {}
+    dispatch: (_a) => {}
 }
 
 /**
