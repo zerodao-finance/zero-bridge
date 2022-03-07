@@ -4,6 +4,7 @@ import { MdOutlinePending } from 'react-icons/md'
 import { BiTransfer } from 'react-icons/bi'
 import { CalendarIcon, ChartBarIcon, FolderIcon, HomeIcon, InboxIcon, UsersIcon } from '@heroicons/react/outline'
 import { useScreenMode } from '../../../api/global/interfaces/interfaces.screenmode'
+import { useActiveModuleSwitcher } from '../../../api/global/interfaces/interfaces.active.module'
 
 
 const navigation = [
@@ -17,9 +18,15 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export function MobileNavigationSidebar({changeModule}) {
-    const { themeMode, toggleScreenMode } = useScreenMode()
-    var light = false
+export function MobileNavigationSidebar() {
+    const { changeActiveModule } = useActiveModuleSwitcher();
+    const { themeMode, toggleScreenMode } = useScreenMode();
+    var light = false;
+
+    function changeView(view){
+        changeActiveModule(view);
+    }
+
   return (
     <nav className="space-y-8 " aria-label="Sidebar">
       {/**
@@ -28,21 +35,21 @@ export function MobileNavigationSidebar({changeModule}) {
         <div className="flex flex-row gap-3 ">
             <RiExchangeFundsLine className="h-[1.2rem] w-[1.2rem] dark:fill-black"/>
 
-            <button >
+            <button onClick={() => changeView("bridge")}>
                 Bridge Tool
             </button>
         </div>
         <div className="flex flex-row gap-3 ">
             <MdOutlinePending className="h-[1.2rem] w-[1.2rem] dark:fill-black"/>
 
-            <button >
+            <button onClick={() => changeView("transactions")}>
                 Manage Transactions
             </button>
         </div>
         <div className="flex flex-row gap-3 ">
             <BiTransfer className="h-[1.2rem] w-[1.2rem] dark:fill-black"/>
 
-            <button >
+            <button onClick={() => changeView("history")}>
                 History
             </button>
         </div>

@@ -5,8 +5,8 @@ import { XIcon } from '@heroicons/react/outline'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { DefaultNavigationSidebar } from '../molecules/navigation/navigation.sidebar.default'
 
-export function LayoutSidebarNavigation({children, changeModule}) {
-  const [open, setOpen] = useState(false)
+export function LayoutSidebarNavigation({children}) {
+  const [open, setOpen] = useState(false);
 
   return (
     <>  
@@ -14,7 +14,7 @@ export function LayoutSidebarNavigation({children, changeModule}) {
             <span className="text-sm">menu</span>
             <AiOutlineMenu />
         </div>
-        <DefaultNavigationSidebar changeModule={changeModule}/>
+        <DefaultNavigationSidebar />
         <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="fixed inset-0 overflow-hidden " onClose={setOpen}>
             <div className="absolute inset-0 overflow-hidden">
@@ -32,13 +32,13 @@ export function LayoutSidebarNavigation({children, changeModule}) {
 
             <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
                 <Transition.Child
-                as={Fragment}
-                enter="transform transition ease-in-out duration-500 sm:duration-700"
-                enterFrom="translate-x-full"
-                enterTo="translate-x-0"
-                leave="transform transition ease-in-out duration-500 sm:duration-700"
-                leaveFrom="translate-x-0"
-                leaveTo="translate-x-full"
+                    as={Fragment}
+                    enter="transform transition ease-in-out duration-500 sm:duration-700"
+                    enterFrom="translate-x-full"
+                    enterTo="translate-x-0"
+                    leave="transform transition ease-in-out duration-500 sm:duration-700"
+                    leaveFrom="translate-x-0"
+                    leaveTo="translate-x-full"
                 >
                 <div className="pointer-events-auto w-screen max-w-md">
                     <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl rounded-l-lg">
@@ -47,9 +47,9 @@ export function LayoutSidebarNavigation({children, changeModule}) {
                         <Dialog.Title className="text-lg font-medium text-gray-900"> Menu </Dialog.Title>
                         <div className="ml-3 flex h-7 items-center">
                             <button
-                            type="button"
-                            className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                            onClick={() => setOpen(false)}
+                                type="button"
+                                className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                onClick={() => setOpen(false)}
                             >
                             <span className="sr-only">Close panel</span>
                             <XIcon className="h-6 w-6" aria-hidden="true" />
