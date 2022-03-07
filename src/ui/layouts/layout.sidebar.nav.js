@@ -4,7 +4,8 @@ import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { DefaultNavigationSidebar } from '../molecules/navigation/navigation.sidebar.default'
-export function LayoutSidebarNavigation({children}) {
+
+export function LayoutSidebarNavigation({children, changeModule}) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -13,7 +14,7 @@ export function LayoutSidebarNavigation({children}) {
             <span className="text-sm">menu</span>
             <AiOutlineMenu />
         </div>
-        <DefaultNavigationSidebar />
+        <DefaultNavigationSidebar changeModule={changeModule}/>
         <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="fixed inset-0 overflow-hidden " onClose={setOpen}>
             <div className="absolute inset-0 overflow-hidden">

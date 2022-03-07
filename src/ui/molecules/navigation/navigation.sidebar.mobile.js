@@ -17,7 +17,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export function MobileNavigationSidebar() {
+export function MobileNavigationSidebar({changeModule}) {
     const { themeMode, toggleScreenMode } = useScreenMode()
     var light = false
   return (

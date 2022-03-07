@@ -29,6 +29,11 @@ export const globalBridgeState = {
             btcPrice: 0,
             themeMode: 'light',
         },
+        module: {
+            currentModule: "bridge",
+            isLoading: false,
+            error: null
+        },
         network: {
             provider: null,
             priceFeedContract: null
@@ -93,6 +98,8 @@ export const globalBridgeReducer = (state, action) => {
         default: 
             assertNever(action.type)
     }
+
+    
     // switch (action.type) {
     //     case "UPDATE_INPUT":
     //         switch (action.payload.type) {

@@ -2,7 +2,7 @@ import { RiFileListLine, RiExchangeFundsLine } from 'react-icons/ri'
 import { MdOutlinePending } from 'react-icons/md'
 import { BiTransfer } from 'react-icons/bi'
 
-export const  DefaultNavigationSidebar = () => {
+export const  DefaultNavigationSidebar = ({changeModule}) => {
     function action(){
 
     }
