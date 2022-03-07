@@ -12,7 +12,7 @@ export const useTransferSender = () => {
         }
 
         /**
-         * create data and send to sdk logic
+         * TODO: cre
          */
     }
 

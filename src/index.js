@@ -5,7 +5,6 @@ import './app.css'
 import Dashboard from './components/pages/Dashboard'
 import 'react-toastify/dist/ReactToastify.min.css';
 import {ErrorCard} from './components/molecules/notification'
-import { FE } from './v2/test/fe'
 import { StateProvider } from './api/global'
 import { TestUI } from './ui/test'
 
@@ -20,11 +19,12 @@ Object.keys(process.env).forEach((key) => {
 
 ReactDOM.render(
   <React.StrictMode className="">
-        {/* <Dashboard /> */}
+    {/* <StateProvider>
+        <Dashboard />
+    </StateProvider> */}
     <StateProvider>
-    <TestUI/>
-    </StateProvider> 
-        {/* <FE /> */}
+      <TestUI/>
+    </StateProvider>   
   </React.StrictMode>,
   document.getElementById('root')
 );
