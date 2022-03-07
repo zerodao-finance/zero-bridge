@@ -6,8 +6,8 @@ import { sdkTransfer } from '../../utils/sdk'
 
 export const useTransferSender = () => {
     const { state, dispatch } = useContext(storeContext)
-    const { wallet, input, zero, transactions } = state
-    const { isLoading } = transactions
+    const { wallet, input, zero, transfer } = state
+    const { isLoading } = transfer
 
     const getSigner = useMemo(async () => {
         try {
@@ -26,6 +26,7 @@ export const useTransferSender = () => {
              */
         }
         
+        dispatch({ type: "START_REQUEST", effect: "transfer"})
         var zeroUser = zero.zeroUser
         var amount = input.amount
         var ratio = String(input.ratio)
@@ -38,16 +39,15 @@ export const useTransferSender = () => {
         )
 
         console.log(amount)
-        const transfer = new sdkTransfer(zeroUser, amount, ratio, signer, to, isFast, data)
+        const transfer = new sdkTransfer(zeroUser, amount, ratio, signer, to, isFast, dispatch, data)
         const response = await transfer.submitTX()
-        dispatch({ type: "START_REQUEST", effect: "transactions"})
 
 
         /**
-         * TODO: send transaction to sdk async
-         * TODO: send a start that will trigger loading screen 
+         * DONE: send transaction to sdk async
+         * DONE: send a start that will trigger loading screen 
          * TODO: return to input screen on failure and send error message
-         * TODO: go to confirm screen on success
+         * DONE: go to confirm screen on success
          * TODO: only save transfer requests when gateway address recieves a payment
          * FUTURE: save transfer request and based on time saved delete if gatway status remains unchanged (requires completed refresh module)
          */

@@ -44,9 +44,17 @@ export const globalBridgeState = {
             isLoading: false,
             error: null
         },
+        transfer: {
+            page: 'main',
+            request: null,
+            status: null,
+            isLoading: false,
+            error: null
+        },
         transactions: {
             release: [],
             transfer: [],
+            currentTX: null,
             isLoading: false,
             error: null
 
