@@ -73,6 +73,15 @@ export class sdkTransfer {
             const mint = await transferRequest.submitToRenVM()
             if ( process.env.REACT_APP_TEST) {
                 this.dispatch({ type: "SUCCEED_REQUEST", effect: "transfer", payload: { effect: "request", data: { ...transferRequest, gateway: mint.gatewayAddress }}})
+                let deposit = await new Promise(async (resolve) => mint.on("deposit", () => {
+                    resolve()
+                    this.dispatch({ type: "RESET_REQUEST", effect: "input"})
+                    this.dispatch({ type: "SUCCEED_REQUEST", effect: "transfer", payload: { effect: "page", data: "main"}})
+                }))
+                const confirmed = await deposit.confirmed()
+                confirmed.on("confirmation", (current_confs, total) => {
+                    console.log(current_confs + '/' + total + "confirmations")
+                })
             }
         } catch (err) {
             //handle errors

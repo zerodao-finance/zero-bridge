@@ -804,6 +804,16 @@ select {
   margin-right: 0.75rem;
 }
 
+.my-1 {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
 .ml-8 {
   margin-left: 2rem;
 }
@@ -993,6 +1003,18 @@ select {
   height: 40px;
 }
 
+.h-\[4px\] {
+  height: 4px;
+}
+
+.h-\[8px\] {
+  height: 8px;
+}
+
+.h-\[10px\] {
+  height: 10px;
+}
+
 .max-h-\[18px\] {
   max-height: 18px;
 }
@@ -1132,6 +1154,22 @@ select {
 
 .w-\[30px\] {
   width: 30px;
+}
+
+.w-\[4px\] {
+  width: 4px;
+}
+
+.w-\[5px\] {
+  width: 5px;
+}
+
+.w-\[8px\] {
+  width: 8px;
+}
+
+.w-\[10px\] {
+  width: 10px;
 }
 
 .min-w-\[20rem\] {
@@ -1799,6 +1837,16 @@ select {
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
 
+.bg-gray-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(156 163 175 / var(--tw-bg-opacity));
+}
+
+.bg-emerald-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(167 243 208 / var(--tw-bg-opacity));
+}
+
 .bg-opacity-0 {
   --tw-bg-opacity: 0;
 }
@@ -1867,6 +1915,10 @@ select {
 
 .fill-red-600 {
   fill: #dc2626;
+}
+
+.fill-emerald-300 {
+  fill: #6ee7b7;
 }
 
 .stroke-emerald-300 {
@@ -2306,6 +2358,12 @@ select {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+.shadow {
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
 .ring-\[1px\] {
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
@@ -2481,6 +2539,14 @@ code {
 
 .first\:gap-0:first-child {
   gap: 0px;
+}
+
+.last\:items-center:last-child {
+  align-items: center;
+}
+
+.last\:justify-center:last-child {
+  justify-content: center;
 }
 
 @keyframes scale-in-hor-center {
@@ -2925,6 +2991,18 @@ code {
     width: 25%;
   }
 
+  .md\:min-w-\[100px\] {
+    min-width: 100px;
+  }
+
+  .md\:min-w-\[200px\] {
+    min-width: 200px;
+  }
+
+  .md\:min-w-\[300px\] {
+    min-width: 300px;
+  }
+
   .md\:scale-\[1\] {
     --tw-scale-x: 1;
     --tw-scale-y: 1;
@@ -2939,6 +3017,10 @@ code {
     gap: 1.25rem;
   }
 
+  .md\:gap-4 {
+    gap: 1rem;
+  }
+
   .md\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
@@ -2946,6 +3028,18 @@ code {
 
   .md\:text-\[15px\] {
     font-size: 15px;
+  }
+
+  .md\:text-\[12px\] {
+    font-size: 12px;
+  }
+
+  .md\:text-\[14px\] {
+    font-size: 14px;
+  }
+
+  .md\:tracking-wider {
+    letter-spacing: 0.05em;
   }
 }
 
