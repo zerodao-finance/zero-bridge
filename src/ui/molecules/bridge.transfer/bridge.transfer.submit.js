@@ -1,7 +1,8 @@
 import { PrimaryRoundedButton } from '../../atoms/buttons/button.rounded'
 
-export const BridgeTransferSubmit = () => {
-    var action = () => {}
+
+export const BridgeTransferSubmit = ({action}) => {
+    
     return (
         <PrimaryRoundedButton label={"Transfer Funds"} action={action}/>
     )

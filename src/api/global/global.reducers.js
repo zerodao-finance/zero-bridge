@@ -54,6 +54,7 @@ export const globalBridgeState = {
         wallet: {
             address: null,
             provider: null,
+            signer: null,
             network: null,
             chainId: null,
             isLoading: false,

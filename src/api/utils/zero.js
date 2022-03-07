@@ -1,4 +1,4 @@
-import {getContract} from './contracts'
+// import {getContract} from './contracts'
 // import {NETWORK_ROUTER} from './networks'
 import { mapValues } from 'lodash';
 import { ethers } from 'ethers';
@@ -8,7 +8,7 @@ export const test = {
     SIGNALING_MULTIADDR : "/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/"
 }
 
-export const controller = getContract("ZeroController")
+// export const controller = getContract("ZeroController")
 
 export const deployments = {
   matic: {
