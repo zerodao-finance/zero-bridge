@@ -4,8 +4,8 @@ import { TransferRequestCard } from './molecules/notification.cards/transfer.car
 export const TestUI = () => {
     return (
         <div className='relative'>
-            {/* <DashboardPage /> */}
-            <TransferRequestCard />
+            <DashboardPage />
+            {/* <TransferRequestCard /> */}
         </div>
     )
 }

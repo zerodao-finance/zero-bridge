@@ -2,9 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import './app.css'
-import Dashboard from './components/pages/Dashboard'
 import 'react-toastify/dist/ReactToastify.min.css';
-import {ErrorCard} from './components/molecules/notification'
 import { StateProvider } from './api/global'
 import { TestUI } from './ui/test'
 
