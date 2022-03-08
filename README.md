@@ -59,9 +59,17 @@ zeroDAO community
 
 **_file structure_** 
 
-- atoms
-- molecules
-- organisms
+- UI
+    - atoms
+    - molecules
+    - organisms
+    - layouts
+    - pages
+- API
+    - event
+    - global
+    - storage
+    - utils
 
 
 
