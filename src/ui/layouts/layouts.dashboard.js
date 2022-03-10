@@ -3,6 +3,8 @@ import { BridgeModule } from '../organisms/bridge.module'
 import { LayoutSidebarNavigation } from "./layout.sidebar.nav"
 import { MobileNavigationSidebar } from "../molecules/navigation/navigation.sidebar.mobile"
 import { useActiveModuleSwitcher } from "../../api/global/interfaces/interfaces.active.module"
+import { TopLeftCardLayout } from './layout.card.top.left'
+import { TransferRequestCard } from '../molecules/notification.cards/transfer.card'
 import { useState } from 'react'
 export const DashboardLayout = () => {
     const { changeActiveModule, resetModule, currentModule, isLoading } = useActiveModuleSwitcher()
@@ -18,7 +20,12 @@ export const DashboardLayout = () => {
                         </LayoutSidebarNavigation>
                     </div> 
                 </div>
-                <div className="flex flex-row row-[span_8_/_span_8] justify-center items-center" id="hero">
+                <div className="absolute top-[4rem]">
+                    <TopLeftCardLayout >
+                        <TransferRequestCard />
+                    </TopLeftCardLayout>
+                </div>
+                <div className="flex flex-row row-[span_8_/_span_8] justify-center items-center isolate" id="hero">
                     {
                         isLoading ?
                             "Loading"
