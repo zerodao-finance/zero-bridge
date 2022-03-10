@@ -1,3 +1,5 @@
+import "core-js/stable"; // For 'regenerationRuntime'
+import "regenerator-runtime/runtime"; // For 'regenerationRuntime'
 import '@testing-library/react-hooks';
 import React from 'react'
 import { TextEncoder, TextDecoder } from 'util'

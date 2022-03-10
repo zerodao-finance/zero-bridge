@@ -1,14 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './app.css'
+import './app.css';
 import 'react-toastify/dist/ReactToastify.min.css';
-<<<<<<< HEAD
-import { ErrorCard } from './components/molecules/notification';
-import { DefaultCheckBox } from './components/atoms/button';
-=======
-import { StateProvider } from './api/global'
-import { TestUI } from './ui/test'
->>>>>>> b2b0b2a27e860a0776e9e6368e04cd3681129ae4
+import { StateProvider } from './api/global';
+import { TestUI } from './ui/test';
 
 Object.keys(process.env).forEach((key) => {
   const match = key.match(/REACT_APP_(.*$)/);
