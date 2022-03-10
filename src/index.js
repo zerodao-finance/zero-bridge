@@ -19,16 +19,12 @@ Object.keys(process.env).forEach((key) => {
 
 ReactDOM.render(
   <React.StrictMode className="">
-<<<<<<< HEAD
-        <Dashboard /> 
-=======
     {/* <StateProvider>
         <Dashboard />
     </StateProvider> */}
     <StateProvider>
       <TestUI/>
     </StateProvider>   
->>>>>>> b2b0b2a27e860a0776e9e6368e04cd3681129ae4
   </React.StrictMode>,
   document.getElementById('root')
 );
