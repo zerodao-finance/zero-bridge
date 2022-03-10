@@ -84,6 +84,27 @@ export class sdkTransfer {
                 confirmed.on("confirmation", (current_confs, total) => {
                     console.log(current_confs + '/' + total + "confirmations")
                 })
+
+                const signed = await deposit.signed();
+                signed.on("status", (status) => {
+                    // if status is completed update transfer request object
+                })
+            } else {
+                // production code
+                var _gatewayAddress = await transferRequest.toGatewayAddress()
+                this.dispatch({ type: "SUCCEED_REQUEST", effect: "transfer", payload: { effect: "request", data: { 
+                    ...transferRequest, gateway: _gatewayAddress
+                }}})
+
+                let deposit = mint.on("deposit", async (deposit) => {
+                    let confirmed = deposit.confirmed()
+                    let signed = deposit.signed()
+                    signed.on("status", (status) => {
+                        // if status is completed update transfer request object
+                    })
+                })
+
+                //end production workflow
             }
         } catch (err) {
             //handle errors
