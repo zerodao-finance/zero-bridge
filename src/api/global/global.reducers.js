@@ -45,7 +45,7 @@ export const globalBridgeState = {
             error: null
         },
         event_card_queue: {
-            backlog: [],
+            event: null,
             isLoading: false,
             error: null
         },

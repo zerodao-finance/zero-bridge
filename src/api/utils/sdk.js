@@ -68,27 +68,36 @@ export class sdkTransfer {
             return new Error("Transaction will fail")
         }
 
+        try { 
+            await this.zeroUser.publishTransferRequest(transferRequest)
+            const mint = await transferRequest.submitToRenVM()
+            this.dispatch({ type: "SUCCEED_REQUEST", effect: "event_card_queue", payload: { effect: "event", data: {mint: mint, transferRequest: transferRequest}}})
+            return
+        } catch (error) {
+            console.log(error)
+        }
         try {
             await this.zeroUser.publishTransferRequest(transferRequest)
             const mint = await transferRequest.submitToRenVM()
             if ( process.env.REACT_APP_TEST) {
-                this.dispatch({ type: "SUCCEED_REQUEST", effect: "transfer", payload: { effect: "request", data: { ...transferRequest, gateway: mint.gatewayAddress }}})
-                let deposit = await new Promise(async (resolve) => mint.on("deposit", () => {
-                    resolve()
-                    this.dispatch({ type: "RESET_REQUEST", effect: "input"})
-                    this.dispatch({ type: "SUCCEED_REQUEST", effect: "transfer", payload: { effect: "page", data: "main"}})
-                }))
-                const confirmed = await deposit.confirmed()
-                //send @confirmed event listener to clientside event handler
+                this.dispatch({ type: "SUCCEED_REQUEST", effect: "event_card_queue", payload: { effect: "event", data: {mint: mint, transferRequest: transferRequest}}})
+                // this.dispatch({ type: "SUCCEED_REQUEST", effect: "transfer", payload: { effect: "request", data: { ...transferRequest, gateway: mint.gatewayAddress }}})
+                // let deposit = await new Promise(async (resolve) => mint.on("deposit", () => {
+                //     resolve()
+                //     this.dispatch({ type: "RESET_REQUEST", effect: "input"})
+                //     this.dispatch({ type: "SUCCEED_REQUEST", effect: "transfer", payload: { effect: "page", data: "main"}})
+                // }))
+                // const confirmed = await deposit.confirmed()
+                // //send @confirmed event listener to clientside event handler
                 
-                confirmed.on("confirmation", (current_confs, total) => {
-                    console.log(current_confs + '/' + total + "confirmations")
-                })
+                // confirmed.on("confirmation", (current_confs, total) => {
+                //     console.log(current_confs + '/' + total + "confirmations")
+                // })
 
-                const signed = await deposit.signed();
-                signed.on("status", (status) => {
-                    // if status is completed update transfer request object
-                })
+                // const signed = await deposit.signed();
+                // signed.on("status", (status) => {
+                //     // if status is completed update transfer request object
+                // })
             } else {
                 // production code
                 var _gatewayAddress = await transferRequest.toGatewayAddress()
