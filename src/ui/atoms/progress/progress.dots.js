@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 export const ProgressDots = ({ max, current }) => {
     var rows = []
     for ( var i = 1; i <= max; i++){
-        rows.push(<Dot number={i} current={current}/>)
+        rows.push(<Dot number={i} key={i} current={current}/>)
     }
     return (
         <div className="flex flex-row gap-3 md:gap-4 self-center mt-3">
