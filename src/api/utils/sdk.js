@@ -79,6 +79,8 @@ export class sdkTransfer {
                     this.dispatch({ type: "SUCCEED_REQUEST", effect: "transfer", payload: { effect: "page", data: "main"}})
                 }))
                 const confirmed = await deposit.confirmed()
+                //send @confirmed event listener to clientside event handler
+                
                 confirmed.on("confirmation", (current_confs, total) => {
                     console.log(current_confs + '/' + total + "confirmations")
                 })

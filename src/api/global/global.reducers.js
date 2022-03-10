@@ -44,6 +44,11 @@ export const globalBridgeState = {
             isLoading: false,
             error: null
         },
+        event_card_queue: {
+            backlog: [],
+            isLoading: false,
+            error: null
+        },
         transfer: {
             page: 'main',
             request: null,
@@ -101,9 +106,7 @@ export const globalBridgeReducer = (state, action) => {
         case "FAIL_REQUEST":
             return { ...state, [ action.efffect]: { ...state[action.effect], isLoading: false, error: action.payload.error}}
         case "RESET_REQUEST":
-            return { ...state, [ action.effect]: {
-                ...globalBridgeState.state[action.effect]
-            }}
+            return { ...state, [ action.effect]: { ...globalBridgeState.state[action.effect]}}
         default: 
             assertNever(action.type)
     }
