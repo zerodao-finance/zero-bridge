@@ -21,29 +21,31 @@ export const useEvents = () => {
                 if ( error ) {
                     console.log("An error occurred while processing task", error)
                 } else {
-                    let deposit = await new Promise( async (resolve) => mint.on("deposit", () => {
-                        resolve()
+                    const deposit = await new Promise( async (resolve) => mint.on("deposit", async (deposit) => {
+                                /**
+                                 * Reset the bridge module back to input screen
+                                 */
+                                dispatch({ type: "RESET_REQUEST", effect: "input"})
+                                dispatch({ type: "SUCCEED_REQUEST", effect: "transfer", payload: { effect: "page", data: "main"}})
 
-                        /**
-                         * Reset the bridge module back to imput screen
-                         */
-                        dispatch({ type: "RESET_REQUEST", effect: "input"})
-                        dispatch({ type: "SUCCEED_REQUEST", effect: "transfer", payload: { effect: "page", data: "main"}})
-
-                    }))
-
-                    console.log("confirmed")
-
+                                resolve(deposit)
+                            })
+                    )
                     const confirmed = await deposit.confirmed()
                     confirmed.on("confirmation", (current_confs, total) => {
                         console.log(current_confs + "/" + total + "confirmations")
                     })
-                    console.log("processed", mint)
-                }
+                    
+                    const signed = await deposit.signed()
+                    signed.on("status", (status) => {
+                        if (status === "signed") {
+                            dispatch({ type: "RESET_REQUEST", effect: "event_card_queue"})
+                        }
+                    })
+                }   
             })
             // handle mint event with ui displays
             // store event transferRequest in global store & persitant storage
-            dispatch({ type: "RESET_REQUEST", effect: "event_card_queue"})
         }
 
     }, [ event ])

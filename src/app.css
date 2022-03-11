@@ -1026,6 +1026,10 @@ select {
   max-width: 50px;
 }
 
+.max-w-\[75px\] {
+  max-width: 75px;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
