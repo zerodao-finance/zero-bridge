@@ -33,7 +33,7 @@ export const DashboardLayout = () => {
 
                     }
                 </div>
-                <div className="footer row-span-2 flex flex-col-reverse">
+                <div className="footer row-span-2 flex flex-col-reverse text-[13px] md:text-md">
                     <p className="text-gray-400 ml-2">
                         Copyright (the "zeroDAO Site"). Z DAO, LLC ("ZD"){" "}
                         <a href="ZeroDao.com">ZeroDao.com</a>
