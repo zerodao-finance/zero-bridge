@@ -1,7 +1,9 @@
 import renderer from 'react-test-renderer';
 import { BridgeTransferInput } from '../ui/molecules/bridge.transfer/bridge.transfer.input';
 import { shallow } from 'enzyme';
-import { ethers } from "ethers";
+import { ethers } from 'ethers';
+// import { renderHook } from '@testing-library/react-hooks';
+// import { useBridgeDisplay } from '../api/global/interfaces/interfaces.display';
 
 describe('Unit Testing for zeroBRIDGE', () => {
     // Utils
@@ -39,12 +41,25 @@ describe('Unit Testing for zeroBRIDGE', () => {
         expect(state.inputValue).toEqual(0.1);
     });
 
-    it('should convert BTC input to USD', () => {
-        const btcUsdPrice = 50000;
+    // TODO - use 'renderHook' to use custom hook and get live prices
+    // it('should get all live price feeds', () => {
+    //     const { result } = renderHook(useBridgeDisplay);
+    //     const { btc_usd, ETH, eth_usd, renBTC } = result.current;
+        
+    //     console.log("\nLive Price Feed: ");
+    //     console.log("ETH - USD:", eth_usd);
+    //     console.log("BTC - USD:", btc_usd);
+    //     console.log("renBTC:", renBTC);
+    //     console.log("ETH", ETH);
+    // });
+
+    it('should convert user BTC input to USD', () => {
+        // Assuming BTC price is 50000 --> 50000000000 ethers
+        const btcUsdPrice = 50000000000;
         const btcInputInUsd = formatter.format(
             state.inputValue * ethers.utils.formatUnits(btcUsdPrice, 6)
         );
 
-        expect(btcInputInUsd).toBe("$5000.00");
+        expect(btcInputInUsd).toBe("$5,000.00");
     });
 })
