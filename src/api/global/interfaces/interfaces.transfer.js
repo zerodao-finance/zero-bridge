@@ -1,5 +1,6 @@
 import { storeContext } from '../global'
 import { useContext, useEffect, useMemo } from 'react'
+import { TransferEventEmitter } from '../../event/transfer.events'
 import _ from 'lodash'
 import { ethers } from 'ethers'
 import { sdkTransfer } from '../../utils/sdk'
@@ -39,23 +40,8 @@ export const useTransferSender = () => {
         )
 
         console.log(amount)
-        const transfer = new sdkTransfer(zeroUser, amount, ratio, signer, to, isFast, dispatch, data)
-        const response = await transfer.submitTX()
-
-
-        /**
-         * DONE: send transaction to sdk async
-         * DONE: send a start that will trigger loading screen 
-         * TODO: return to input screen on failure and send error message
-         * DONE: go to confirm screen on success
-         * TODO: only save transfer requests when gateway address recieves a payment
-         * FUTURE: save transfer request and based on time saved delete if gatway status remains unchanged (requires completed refresh module)
-         */
-
-
-        /**
-         * TODO: create transfer request for sdk
-         */
+        const transfer = new sdkTransfer(zeroUser, amount, ratio, signer, to, isFast, TransferEventEmitter, dispatch, data)
+        await transfer.submitTX()
     }
 
     return { 

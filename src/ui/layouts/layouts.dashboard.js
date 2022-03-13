@@ -4,8 +4,7 @@ import { LayoutSidebarNavigation } from "./layout.sidebar.nav"
 import { MobileNavigationSidebar } from "../molecules/navigation/navigation.sidebar.mobile"
 import { useActiveModuleSwitcher } from "../../api/global/interfaces/interfaces.active.module"
 import { TopLeftCardLayout } from './layout.card.top.left'
-import { TransferRequestCard } from '../molecules/notification.cards/transfer.card'
-import { useState } from 'react'
+import { NotificationTransferCard } from '../organisms/card.notif'
 export const DashboardLayout = () => {
     const { changeActiveModule, resetModule, currentModule, isLoading } = useActiveModuleSwitcher()
     
@@ -22,7 +21,7 @@ export const DashboardLayout = () => {
                 </div>
                 <div className="absolute top-[4rem]">
                     <TopLeftCardLayout >
-                        <TransferRequestCard />
+                        <NotificationTransferCard />
                     </TopLeftCardLayout>
                 </div>
                 <div className="flex flex-row row-[span_8_/_span_8] justify-center items-center isolate" id="hero">
@@ -34,7 +33,7 @@ export const DashboardLayout = () => {
 
                     }
                 </div>
-                <div className="footer row-span-2 flex flex-col-reverse">
+                <div className="footer row-span-2 flex flex-col-reverse text-[13px] md:text-md">
                     <p className="text-gray-400 ml-2">
                         Copyright (the "zeroDAO Site"). Z DAO, LLC ("ZD"){" "}
                         <a href="ZeroDao.com">ZeroDao.com</a>

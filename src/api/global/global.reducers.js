@@ -44,15 +44,14 @@ export const globalBridgeState = {
             isLoading: false,
             error: null
         },
-        event_card_queue: {
-            event: null,
+        transferRequestCard: {
+            confirmations: null,
+            status: null,
             isLoading: false,
             error: null
         },
         transfer: {
             page: 'main',
-            request: null,
-            status: null,
             isLoading: false,
             error: null
         },

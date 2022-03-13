@@ -1,23 +1,48 @@
 import EventEmitter from 'events'
+import { useState, useContext, useEffect } from 'react'
 
-export const TransferEvents = new EventEmitter()
+export const TransferEventEmitter = new EventEmitter()
 
-export const throwTransferRequest = (event, emitter) => {
-    ErrorEvents.emit(event, emitter)
+export const useTransferEvents = (TransferComponent) => {
+    const [ display, setComponent ] = useState(null)
+    useEffect(() => {
+        TransferEventEmitter.on("display", (confirmed) => {
+            setComponent(<TransferComponent confirmations={confirmed} />)
+        })
+        TransferEventEmitter.on("clear", () => {
+            setComponent(null)
+        })
+        return () =>  {
+             TransferEventEmitter.off("display", (confirmed) => {
+            setComponent(<TransferComponent confirmations={confirmed} />)
+            })
+
+            TransferEventEmitter.off("clear", () => {
+                setComponent(null)
+            })
+        }
+    }, [])
+
+    return {
+        display
+    }
 }
 
+export const useConfirmationsHandler = ({confirmations}) => {
+    const [ max, setMax ] = useState(null)
+    const [ current, setCurrent ] = useState(null)
 
+    useEffect(() => {
+        console.log(confirmations)
+        if (confirmations) {
+            confirmations.on('confirmation', (i, target) => {
+                if (!max) setMax(target)
+                setCurrent(i)
+            })
+        }
+    }, [confirmations])
 
-class TransferEvent {
-    constructor (transferRequest) { 
-        this.transferRequest = transferRequest
+    return {
+        max, current
     }
-
-    getMintStatusListener ( ) {
-        const mint = this.transferRequest.submitToRenVM()
-        const deposit = await new Promise(async (resolve) => mint.on("deposit", resolve))
-        return deposit
-    }
-
-    
 }
