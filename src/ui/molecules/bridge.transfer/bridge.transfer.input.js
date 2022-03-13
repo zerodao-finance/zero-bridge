@@ -26,6 +26,7 @@ export const BridgeTransferInput = ({ amount, effect, tokenPrice }) => {
         <div className=" xl:mr-5 italic font-light tracking-wider w-full text-right text-[10px] text-emerald-500">
             ~ USD { tokenPrice && formatter.format(amount * ethers.utils.formatUnits(tokenPrice, 6)) }
         </div> 
+        {console.log(tokenPrice)}
     </div> 
     )
 }
