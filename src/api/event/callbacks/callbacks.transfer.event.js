@@ -25,7 +25,7 @@ export async function handleTransferEvent ( error, mint, dispatch ) {
         return 
     } else {
         console.log("=".repeat(10), "handling task", "=".repeat(10), `\n`)
-        
+       //deposit listener 
         const deposit = await new Promise(async (resolve) => mint.on("deposit", async (deposit) => {
             // handles page reset when deposit is recieved
             dispatch({ type: "RESET_REQUEST", effect: "input"})

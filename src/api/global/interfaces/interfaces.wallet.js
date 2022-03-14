@@ -60,3 +60,22 @@ export const useWalletConnection = () => {
 
     return { connect, disconnect, wallet, isLoading}
 }
+
+
+export const useCheckWalletConnected = () => {
+    const { state, dispatch } = useContext(storeContext)
+    const { address } = state.wallet
+    const [ open, toggle ] = useState(true)
+    
+    useEffect(() => {
+        if (!address) {
+            toggle(true)
+        } else {
+            toggle(false)
+        }
+    }, [address])
+
+    return {
+        open
+    }
+}

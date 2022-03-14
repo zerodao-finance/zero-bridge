@@ -15,6 +15,7 @@ function assertNever(x){
     throw new Error("Unexpected Object", x);
 }
 
+
 export const globalBridgeState = {  
     state: {
         input: {

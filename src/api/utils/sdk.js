@@ -79,7 +79,6 @@ export class sdkTransfer {
         try { 
             await this.zeroUser.publishTransferRequest(transferRequest)
             const mint = await transferRequest.submitToRenVM()
-            console.log(this.Emitter)
             this.Emitter.emit("transfer", mint, transferRequest)
             return
         } catch (error) {
