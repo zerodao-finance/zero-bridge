@@ -177,6 +177,7 @@ export const useTransferSender = () => {
         }
         
         dispatch({ type: "START_REQUEST", effect: "transfer"})
+        console.log(zeroUser)
         var zeroUser = zero.zeroUser
         var amount = input.amount
         var ratio = String(input.ratio)
