@@ -30,10 +30,13 @@ export const globalBridgeState = {
                 ETH: 0,
                 renBTC: 0
             },
-            mode: 'transfer',
-            processing: {
-                signature: false,
-                gateway: false
+            mode: {
+                mode: 'transfer', //transfer, release
+                processing: false,
+                signed: false,
+                data: null,
+                error: null,
+                isLoading: false
             }
         },
         utilities: {

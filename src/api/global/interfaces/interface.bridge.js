@@ -176,7 +176,9 @@ export const useTransferSender = () => {
              */
         }
         
-        dispatch({ type: "START_REQUEST", effect: "transfer"})
+        dispatch({ type: "UPDATE", module: "bridge", effect: "mode", data: { processing: true }})
+
+        // dispatch({ type: "START_REQUEST", effect: "transfer"})
         console.log(zeroUser)
         var zeroUser = zero.zeroUser
         var amount = input.amount
@@ -238,7 +240,7 @@ const validateInputs = (state) => {
 export const useBridgeMode = () => {
     const { state, dispatch } = useContext(storeContext)
     const { bridge } = state
-    const { mode, processing } = bridge
+    const { mode } = bridge
     
     useEffect(() => {
         if (mode === "processing") {
@@ -252,5 +254,25 @@ export const useBridgeMode = () => {
     }, [mode])
     return {
         mode
+    }
+}
+
+
+export const useBridgePage = () => {
+    const [ component, setComponent ] = useState(null)
+    const { state, dispatch } = useContext(storeContext)
+    const { mode } = state.bridge
+
+    const toggleMode = (newMode) => {
+        dispatch({ type: "UPDATE", module: "bridge", effect: "mode", data: {mode: newMode}})
+    }
+
+    // reset mode and return to 'transfer' | 'release'
+    const back = () => {
+        dispatch({ type: "UPDATE", module: "bridge", effect: "mode", data: { processing: false }})
+    }
+
+    return {
+        ...mode, back, toggleMode
     }
 }

@@ -57,7 +57,7 @@ export class sdkTransfer {
 
         try {
             await transferRequest.sign(this.signer)
-            this.dispatch({ type: "SUCCEED_REQUEST", effect: "transfer", payload: {effect: "page", data: "confirm"}})
+            this.dispatch({ type: "UPDATE", module: "bridge", effect: "mode", data: {signed: true}})
             // this.dispatch({type: ""})  reset transfer input state
             // this.dispatch({type: "SUCCEED_REQUEST", effect: "transfer", payload: { effect: "request", data: transferRequest}})            
         } catch (err) {
@@ -79,6 +79,8 @@ export class sdkTransfer {
         try { 
             await this.zeroUser.publishTransferRequest(transferRequest)
             const mint = await transferRequest.submitToRenVM()
+            var gatewayAddress = await transferRequest.toGatewayAddress()
+            this.dispatch({ type: "UPDATE", module: "bridge", effect: "mode", data: {data: {transferRequest: transferRequest, gatewayAddress: gatewayAddress}}})
             this.Emitter.emit("transfer", mint, transferRequest)
             return
         } catch (error) {
