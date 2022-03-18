@@ -16,6 +16,7 @@ export const useEvents = () => {
         TransferEventEmitter.on("transfer", (mint, transferRequest) => {
             console.log("event recieved")
             //store transfer request
+            // dispatch({type: "SUCCEED_REQUEST", effect: "transactions", payload: { effect: "transfer", data: { transfer: transferRequest, status: "pending"}}})
             queue.push(mint, handleTransferEvent)
         })
 

@@ -21,7 +21,7 @@ export function MobileNavigationSidebar({changeModule}) {
     const { themeMode, toggleScreenMode } = useScreenMode()
     var light = false
   return (
-    <nav className="space-y-8 " aria-label="Sidebar">
+    <nav className="space-y-8" aria-label="Sidebar">
       {/**
        * Modules
        */}
@@ -60,8 +60,8 @@ export function MobileNavigationSidebar({changeModule}) {
         <div className="flex flex-row w-full justify-center self-center ">
 
             <button className="flex flex-row w-[100px] rounded-full border border-black justify-between" onClick={() => toggleScreenMode()}> 
-                <div className={`${themeMode ? '' : 'border border-black rounded-full bg-black '} px-1 text-white`}>Dark</div>
-                <div className={`px-2 ${themeMode ? 'border border-black rounded-full' : 'text-white'}`}> light </div>
+                <div className={`${themeMode ? '' : 'border border-black rounded-full bg-black '} px-1 text-white dark:text-emerald-300`}>Dark</div>
+                <div className={`px-2 ${themeMode ? 'border border-black rounded-full bg-white' : 'text-white '}`}> light </div>
             </button>
         </div>
     </nav>

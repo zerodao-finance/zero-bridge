@@ -15,14 +15,29 @@ function assertNever(x){
     throw new Error("Unexpected Object", x);
 }
 
+
 export const globalBridgeState = {  
     state: {
-        input: {
-            ratio: 0,
-            amount: '0',
-            isFast: false,
-            isLoading: false,
-            error: null
+        bridge: {
+            input: {
+                ratio: 0,
+                amount: '0',
+                isFast: false, 
+                isLoading: false,
+                error: null,
+            },
+            display: {
+                ETH: 0,
+                renBTC: 0
+            },
+            mode: {
+                mode: 'transfer', //transfer, release
+                processing: false,
+                signed: false,
+                data: null,
+                error: null,
+                isLoading: false
+            }
         },
         utilities: {
             ethPrice: 0,
@@ -37,12 +52,6 @@ export const globalBridgeState = {
         network: {
             provider: null,
             priceFeedContract: null
-        },
-        display: {
-            ETH: 0,
-            renBTC: 0,
-            isLoading: false,
-            error: null
         },
         transferRequestCard: {
             confirmations: null,
@@ -95,7 +104,33 @@ export const globalBridgeState = {
  *  ie. 
  */
 export const globalBridgeReducer = (state, action) => {
+
     switch ( action.type ) {
+        case "UPDATE":
+            var { module } = action
+            var { effect } = action
+            var { data } = action
+            return {
+                ...state,
+                [module]: {
+                    ...state[module],
+                    [effect]: {
+                        ...state[module][effect],
+                        ...data
+                    }
+                }
+            }
+        case "RESET":
+            var { module } = action
+            var { effect } = action
+            return {
+                ...state,
+                [module] : { 
+                    ...state[module],
+                    [effect]: globalBridgeState.state[module][effect]
+                }
+            }
+        
         case "START_REQUEST":
             return { ...state, [action.effect]: { ...state[action.effect], isLoading: true, error: null}}
         case "SUCCEED_REQUEST":
