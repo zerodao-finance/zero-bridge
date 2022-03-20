@@ -49,3 +49,8 @@ export async function handleTransferEvent ( error, mint, dispatch ) {
         })
     }
 }
+
+const storeTransferEvent = (dispatch, data) => {
+    const key = hash(data)
+    
+}

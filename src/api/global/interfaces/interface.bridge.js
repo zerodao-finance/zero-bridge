@@ -276,3 +276,7 @@ export const useBridgePage = () => {
         ...mode, back, toggleMode
     }
 }
+
+export const useBridgeRefresh = () => {
+    // refresh past transactions
+}

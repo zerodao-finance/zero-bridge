@@ -39,6 +39,10 @@ export const globalBridgeState = {
                 isLoading: false
             }
         },
+        requests: {
+            transfer: new Map(),
+            burn: new Map()
+        },
         utilities: {
             ethPrice: 0,
             btcPrice: 0,
@@ -141,6 +145,11 @@ export const globalBridgeReducer = (state, action) => {
             return { ...state, [ action.efffect]: { ...state[action.effect], isLoading: false, error: action.payload.error}}
         case "RESET_REQUEST":
             return { ...state, [ action.effect]: { ...globalBridgeState.state[action.effect]}}
+        case "ADD_DATA":
+            //get a map -- data structure
+            var map = state[action.module][action.effect]
+            map.set(action.payload.key, action.payload.data)
+            return { ...state, [action.module]: { [action.effect]: map }}
         default: 
             assertNever(action.type)
     }
