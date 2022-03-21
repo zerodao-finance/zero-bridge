@@ -145,11 +145,22 @@ export const globalBridgeReducer = (state, action) => {
             return { ...state, [ action.efffect]: { ...state[action.effect], isLoading: false, error: action.payload.error}}
         case "RESET_REQUEST":
             return { ...state, [ action.effect]: { ...globalBridgeState.state[action.effect]}}
+            
         case "ADD_DATA":
             //get a map -- data structure
             var map = state[action.module][action.effect]
             map.set(action.payload.key, action.payload.data)
-            return { ...state, [action.module]: { [action.effect]: map }}
+            return { ...state, [action.module]: { ...action.module, [action.effect]: map }}
+
+        case "UPDATE_DATA":
+            var key = action.payload.reference
+            var map = state[action.module][action.effect]
+            let obj = map.get(key)
+            let updated = { ...obj, status: action.payload.update }
+            map.set(key, updated)
+            console.log(map)
+            return { ...state, [action.module]: { ...action.module, [action.effect]: map}}
+        
         default: 
             assertNever(action.type)
     }

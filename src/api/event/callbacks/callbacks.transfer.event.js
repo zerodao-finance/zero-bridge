@@ -18,16 +18,18 @@ import { TransferEventEmitter } from "../transfer.events"
  * 
  * 
  */
-export async function handleTransferEvent ( error, mint, dispatch ) {
+export async function handleTransferEvent ( error, mintObject, dispatch ) {
     if ( error ) {
         //TODO handle error with transfer request
         console.log("An error occurred processing this task", error)
         return 
     } else {
+        let mint = mintObject.mint
         console.log("=".repeat(10), "handling task", "=".repeat(10), `\n`)
        //deposit listener 
         const deposit = await new Promise(async (resolve) => mint.on("deposit", async (deposit) => {
             // handles page reset when deposit is recieved
+            mintObject.updateObjectLocally("deposit received")
             dispatch({ type: "RESET", module: "bridge", effect: "input"})
             dispatch({ type: "RESET", module: "bridge", effect: "mode"})
             resolve(deposit)
@@ -42,6 +44,7 @@ export async function handleTransferEvent ( error, mint, dispatch ) {
         //signature status listener
         const signed = await deposit.signed()
         signed.on("status", (status) => {
+            mintObject.updateObjectLocally("signed")
             TransferEventEmitter.emit("clear")
             //kill card ui
             // resets event card queue state 
