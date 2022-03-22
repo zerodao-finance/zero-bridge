@@ -29,7 +29,7 @@ export async function handleTransferEvent ( error, mintObject, dispatch ) {
        //deposit listener 
         const deposit = await new Promise(async (resolve) => mint.on("deposit", async (deposit) => {
             // handles page reset when deposit is recieved
-            mintObject.updateObjectLocally("deposit received")
+            mintObject.updateObject("deposit received")
             dispatch({ type: "RESET", module: "bridge", effect: "input"})
             dispatch({ type: "RESET", module: "bridge", effect: "mode"})
             resolve(deposit)
@@ -44,16 +44,11 @@ export async function handleTransferEvent ( error, mintObject, dispatch ) {
         //signature status listener
         const signed = await deposit.signed()
         signed.on("status", (status) => {
-            mintObject.updateObjectLocally("signed")
+            mintObject.updateObject(status)
             TransferEventEmitter.emit("clear")
             //kill card ui
             // resets event card queue state 
             // dispatch({ type: "RESET_REQUEST", effect: "event_card_queue"})
         })
     }
-}
-
-const storeTransferEvent = (dispatch, data) => {
-    const key = hash(data)
-    
 }

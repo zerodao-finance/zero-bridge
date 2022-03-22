@@ -37,7 +37,7 @@ export const useConfirmationsHandler = ({confirmations}) => {
         if (confirmations) {
             confirmations.on('confirmation', (i, target) => {
                 if (!max) setMax(target)
-                setCurrent(i)
+                setCurrent(i+1)
             })
         }
     }, [confirmations])

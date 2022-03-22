@@ -2,9 +2,10 @@ import { storeContext } from '../global'
 import { useContext, useEffect } from 'react'
 import { handleTransferEvent } from '../../event/callbacks/callbacks.transfer.event'
 import { TransferEventEmitter } from '../../event/transfer.events'
+import { PersistanceStore } from '../../storage/storage'
 import async from 'async'
 import hash from 'object-hash'
-import { storeObjectLocally } from '../callback/callbacks.request'
+
 
 
 export const useEvents = () => {
@@ -16,20 +17,8 @@ export const useEvents = () => {
      }, 1);
 
 
-    //  const transferCallback = (mint, transferRequest) => {
-    //      console.log("Event Received")
-    //      let key = storeObjectLocally(dispatch, { date: Date.now(), mint: mint, transferRequest: transferRequest, satus: "pending"})
-    //      queue.push(mint, handleTransferEvent)
-    //  }
-
-    //testing
-    useEffect(() => {
-        console.log(transfer)
-    }, [transfer])
-
     const transferCallback = ( mint, transferRequest ) => {
-        let TransferObject = new MintQueueObject(mint, queue, dispatch)
-        TransferObject.storeObjectLocally({ mint: mint, transferRequest: transferRequest, status: TransferObject.status, date: Date.now()})
+        return new MintQueueObject(mint, queue, transferRequest, dispatch)
     }
 
     useEffect(() => {
@@ -43,25 +32,41 @@ export const useEvents = () => {
 }
 
 
+
 class MintQueueObject {
-    constructor (mint, queue, dispatch) {
+    constructor (mint, queue, data, dispatch) {
+        this.store = PersistanceStore
         this.status = "pending"
         this.mint = mint
         this.queue = queue
         this.dispatch = dispatch
-    }
-
-    storeObjectLocally (data) {
+        this.date = Date.now()
         this.key = hash(data)
-        this.data = data
-        this.dispatch({type: "ADD_DATA", module: "requests", effect: "transfer", payload: {key: this.key, data: data}})
+        this.data = {data: data, date: this.date, status: this.status}
+        this.storeObject()
+    }
+    
+    async storeObject() {
+        this.dispatch({ type: "ADD_DATA", module: "requests", effect: "transfer", payload: { key: this.key, data: this.data}})
         this.queue.push(this, handleTransferEvent)
+        await this.store.put(this.key, this.data)
     }
 
-    updateObjectLocally (update) {
+    async updateObject(update) {
         this.status = update
-        this.dispatch({ type: "UPDATE_DATA", module: "requests", effect: "transfer", payload: {reference: this.key, update: update}})
+        this.data = { ...this.data, status: this.status}
+        this.dispatch({ type: "UPDATE_DATA", module: "requests", effect: "transfer", payload: { reference: this.key, update: this.data}})
+        await this.store.put(this.key, this.data)
     }
+
+    mint(){
+        return this.mint
+    }
+
+    data(){
+        return this.data
+    }
+
 }
 
 

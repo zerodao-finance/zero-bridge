@@ -34,6 +34,14 @@ class IndexedDBPeristanceStrategy {
     async close_store () {
         this.db.close()
     }
+
+    async put (key, data) {
+        let tx = await this.db.transaction([this.objectStore], 'readwrite')
+        let store = tx.objectStore(this.objectStore)
+        console.log(data)
+        await store.put({ tx: key, data: data.data, date: data.date, status: data.status})
+        await tx.complete
+    }
     
     async put_data (data, status) {
         let tx = await this.db.transaction([this.objectStore], 'readwrite')
@@ -81,5 +89,5 @@ class IndexedDBPeristanceStrategy {
 }
 
 const PersistanceStore = new IndexedDBPeristanceStrategy("TRANSACTION_STORE", 1)
-export { PersistanceStore}
+export { PersistanceStore }
 
