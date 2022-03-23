@@ -42,7 +42,7 @@ class MintQueueObject {
         this.dispatch = dispatch
         this.date = Date.now()
         this.key = hash(data)
-        this.data = {data: data, date: this.date, status: this.status}
+        this.data = {data: JSON.stringify(data), date: this.date, status: this.status}
         this.storeObject()
     }
     
