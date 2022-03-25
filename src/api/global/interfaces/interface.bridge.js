@@ -3,6 +3,7 @@ import { useContext, useEffect, useState, useMemo } from 'react'
 import { ethers } from 'ethers'
 import { TransferEventEmitter } from '../../event/transfer.events'
 import { sdkTransfer } from '../../utils/sdk'
+import async from 'async'
 import _ from 'lodash'
 
 
@@ -277,6 +278,3 @@ export const useBridgePage = () => {
     }
 }
 
-export const useBridgeRefresh = () => {
-    // refresh past transactions
-}
