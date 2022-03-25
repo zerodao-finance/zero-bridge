@@ -1,7 +1,6 @@
 import { RiFileListLine, RiExchangeFundsLine } from 'react-icons/ri'
 import { MdOutlinePending } from 'react-icons/md'
 import { BiTransfer } from 'react-icons/bi'
-import { useScreenMode } from '../../../api/global/interfaces/interfaces.screenmode'
 
 export const  DefaultNavigationSidebar = ({changeModule}) => {
     const active = " bg-slate-100 dark:bg-emerald-400"
