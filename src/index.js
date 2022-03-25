@@ -2,10 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import './app.css'
-import Dashboard from './components/pages/Dashboard'
 import 'react-toastify/dist/ReactToastify.min.css';
-
-
+import { StateProvider } from './api/global'
+import { TestUI } from './ui/test'
 
 Object.keys(process.env).forEach((key) => {
   const match = key.match(/REACT_APP_(.*$)/);
@@ -18,7 +17,12 @@ Object.keys(process.env).forEach((key) => {
 
 ReactDOM.render(
   <React.StrictMode className="">
+    {/* <StateProvider>
         <Dashboard />
+    </StateProvider> */}
+    <StateProvider>
+      <TestUI/>
+    </StateProvider>   
   </React.StrictMode>,
   document.getElementById('root')
 );
