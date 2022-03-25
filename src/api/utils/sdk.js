@@ -53,7 +53,7 @@ export class sdkTransfer {
         
         // set correct module based on past in speed
         const transferRequest = await this.transferRequest
-        transferRequest.module = this.isFast ? deployments.arbitrum.Convert.address : deployments.localhost.ArbitrumConvertQuick.address
+        transferRequest.module = this.isFast ? deployments.arbitrum.Convert.address : deployments.arbitrum.ArbitrumConvertQuick.address
 
         try {
             await transferRequest.sign(this.signer)

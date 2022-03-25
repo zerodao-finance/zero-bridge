@@ -22,9 +22,6 @@ export const deployments = {
     DelegateUnderwriter: require('zero-protocol/deployments/arbitrum/DelegateUnderwriter'),
     Convert: require('zero-protocol/deployments/arbitrum/ArbitrumConvert'),
     BTCVault: require('zero-protocol/deployments/arbitrum/BTCVault')
-  },
-  localhost: {
-    ArbitrumConvertQuick: process.env.NODE_ENV="production" ? null : require('zero-protocol/deployments/localhost/ArbitrumConvertQuick') 
   }
 };
 

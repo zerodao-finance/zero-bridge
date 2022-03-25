@@ -46,8 +46,8 @@ export const useBridgeDisplay = () => {
     useEffect( () => {
         const listener = async () => {
             try {
-                set_btc_usd(await network.priceFeedContract.get_dy(1, 0, 1e8))
-                set_eth_usd(await network.priceFeedContract.get_dy(2, 0, 1e18))
+                set_btc_usd(await network.priceFeedContract.get_dy(1, 0, ethers.BigNumber.from(String("100000000"))))
+                set_eth_usd(await network.priceFeedContract.get_dy(2, 0, ethers.BigNumber.from(String("1000000000000000000"))))
             } catch (e) {
                 console.log(e)
             }
