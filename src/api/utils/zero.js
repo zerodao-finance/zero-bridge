@@ -21,7 +21,8 @@ export const deployments = {
     ZeroController: require('zero-protocol/deployments/arbitrum/ZeroController'),
     DelegateUnderwriter: require('zero-protocol/deployments/arbitrum/DelegateUnderwriter'),
     Convert: require('zero-protocol/deployments/arbitrum/ArbitrumConvert'),
-    BTCVault: require('zero-protocol/deployments/arbitrum/BTCVault')
+    BTCVault: require('zero-protocol/deployments/arbitrum/BTCVault'),
+    ArbitrumConvertQuick: require('zero-protocol/deployments/arbitrum/ArbitrumConvertQuick') 
   }
 };
 

@@ -2,7 +2,6 @@ import { ethers } from 'ethers'
 import { deployments, deploymentsFromSigner } from './zero'
 import { UnderwriterTransferRequest } from 'zero-protocol/dist/lib/zero';
 import { TEST_KEEPER_ADDRESS } from 'zero-protocol/dist/lib/mock';
-import { TransferEventEmitter } from '../event/transfer.events';
 
 export class sdkTransfer {
     constructor (
@@ -53,7 +52,7 @@ export class sdkTransfer {
         
         // set correct module based on past in speed
         const transferRequest = await this.transferRequest
-        transferRequest.module = this.isFast ? deployments.arbitrum.Convert.address : deployments.arbitrum.ArbitrumConvertQuick.address
+        transferRequest.module = this.isFast ? deployments.arbitrum.ArbitrumConvertQuick.address : deployments.arbitrum.Convert.address;
 
         try {
             await transferRequest.sign(this.signer)
