@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import { deployments, deploymentsFromSigner } from './zero'
-import { UnderwriterTransferRequest } from 'zero-protocol/dist/lib/zero';
-import { TEST_KEEPER_ADDRESS } from 'zero-protocol/dist/lib/mock';
+import { UnderwriterTransferRequest } from '@zero-protocol/dist/lib/zero';
+import { TEST_KEEPER_ADDRESS } from '@zero-protocol/dist/lib/mock';
 
 export class sdkTransfer {
     constructor (
