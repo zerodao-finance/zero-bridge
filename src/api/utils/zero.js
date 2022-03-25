@@ -24,7 +24,7 @@ export const deployments = {
     BTCVault: require('zero-protocol/deployments/arbitrum/BTCVault')
   },
   localhost: {
-    ArbitrumConvertQuick: require('zero-protocol/deployments/localhost/ArbitrumConvertQuick')
+    ArbitrumConvertQuick: process.env.NODE_ENV="production" ? null : require('zero-protocol/deployments/localhost/ArbitrumConvertQuick') 
   }
 };
 
