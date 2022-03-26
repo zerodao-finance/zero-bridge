@@ -4,6 +4,7 @@ import { BridgeLoadingGateway } from "../molecules/bridge.gateway/bridge.loading
 import { BridgeLoadingSignature } from "../molecules/bridge.transfer/bridge.loading.signature"
 import { useBridgePage } from "../../api/global/interfaces/interface.bridge"
 import { useTransactions } from "../../api/global/interfaces/interface.manage"
+import { BridgeBurnModule } from "../molecules/bridge.burn/bridge.burn"
 
 export const BridgeModule = () => {
     const { toggleMode, back, mode, processing, signed, data } = useBridgePage()
@@ -32,7 +33,7 @@ export const BridgeModule = () => {
                         mode === "transfer" ? 
                         <BridgeTransferModule />
                     :
-                    <>Release</>
+                    <BridgeBurnModule />
             
             }
         </div>

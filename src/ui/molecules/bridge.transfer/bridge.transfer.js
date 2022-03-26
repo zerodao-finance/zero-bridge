@@ -8,28 +8,20 @@ import { BridgeLoadingWallet } from './bridge.loading.wallet'
 import { AiOutlineArrowDown } from 'react-icons/ai'
 import { useBridgeInput, useBridgeDisplay, useTransferSender } from '../../../api/global/interfaces/interface.bridge'
 import { useCheckWalletConnected } from '../../../api/global/interfaces/interfaces.wallet'
-
+import { useBridgeTransfer } from '../../../api/global/interfaces/interface.bridge.main'
 export const BridgeTransferModule = () => {
     const { 
-        ratio,
-        amount,
-        isFast,
-        updateRatio,
-        updateAmount,
-        updateModule
+        isLoading,
+        getTransferSenderProps,
+        getTransferInputProps,
+        getTransferRatioProps,
+        getTransferResultsProps,
+        getTransferModuleToggleProps
     } = useBridgeInput()
-
-    const {
-        ETH,
-        renBTC,
-        btc_usd
-    } = useBridgeDisplay()
 
     const { 
         open
     } = useCheckWalletConnected()
-
-    const { sendTransferRequest, isLoading } = useTransferSender()
 
     return (
         <>{
@@ -42,22 +34,22 @@ export const BridgeTransferModule = () => {
                     <div className="animate-flip-in-hor-top [animation-delay:400ms] container h-max flex flex-row place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around pr-[4.5rem] items-center px-1 md:px-8 ">
                         <p className="text-[10px] text-gray-300 whitespace-nowrap"> transfer amount </p>
                         <div className="flex flex-col">
-                            <BridgeTransferInput amount={amount} effect={updateAmount} tokenPrice={btc_usd}/>
+                            <BridgeTransferInput {...getTransferInputProps()}/>
                         </div>
                     </div>
                     <div className={`animate-flip-in-hor-top [animation-delay:500ms] flex flex-col justify-center place-items-center mt-5`}>
-                        <BridgeTransferRatio ratio={ratio} effect={updateRatio}/>
+                        <BridgeTransferRatio {...getTransferRatioProps()}/>
                         <AiOutlineArrowDown  className="fill-black" />
                     </div>
                     <div className={` animate-flip-in-hor-top [animation-delay:600ms] container h-max flex flex-col place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around items-center px-1 md:px-8  pt-8 pb-4`}>
                         <p className="text-[10px] text-gray-300 whitespace-nowrap">result</p>
                         <div className="flex flex-col w-full">
-                            <BridgeTransferResult ETH={ETH} renBTC={renBTC} />
+                            <BridgeTransferResult {...getTransferResultsProps()} />
                         </div>
                     </div>
-                    <BridgeModuleToggle isFast={isFast} action={updateModule}/>
+                    <BridgeModuleToggle {...getTransferModuleToggleProps()}/>
                     <div className="animate-flip-in-hor-top [animation-delay:700ms] mt-4">
-                        <BridgeTransferSubmit action={sendTransferRequest}/>
+                        <BridgeTransferSubmit {...getTransferSenderProps()}/>
                     </div>
                 </>
             }

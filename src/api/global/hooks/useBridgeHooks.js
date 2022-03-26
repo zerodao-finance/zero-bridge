@@ -18,7 +18,7 @@ export const useBridgeDisplay = () => {
     const ln = (v) => (v);
 
     useEffect(() => {
-        const ethPriceListener = async () => {
+        const listener = async () => {
             try {
                 setETHPrice(
                     ( 
@@ -30,22 +30,7 @@ export const useBridgeDisplay = () => {
             }
         };
 
-        const usdPriceListener = async () => {
-            try {
-                set_btc_usd(await network.priceFeedContract.get_dy(1, 0, 1e8))
-                set_eth_usd(await network.priceFeedContract.get_dy(2, 0, ethers.constants.WeiPerEther))
-            } catch (e) {
-                console.log(e)
-            }
-        }
-
-        const call = async () => {
-            await ethPriceListener()
-            await usdPriceListener()
-        }
-
-        var invoke = _.throttle(call, 10000)
-
+        var invoke = _.throttle(listener, 4000)
         if ( network.priceFeedContract ) {
             network.priceFeedContract.provider.on("block", invoke)
         }
@@ -59,6 +44,28 @@ export const useBridgeDisplay = () => {
         }
     }, [network.priceFeedContract])
 
+    useEffect( () => {
+        const listener = async () => {
+            try {
+                set_btc_usd(await network.priceFeedContract.get_dy(1, 0, 1e8))
+                set_eth_usd(await network.priceFeedContract.get_dy(2, 0, ethers.constants.WeiPerEther))
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        var invoke = _.throttle(listener, 10000)
+
+        if ( network.priceFeedContract ) {
+            network.priceFeedContract.provider.on('block', invoke)
+        }
+
+        return () => {
+            if (network.priceFeedContract) {
+                network.priceFeedContract.provider.removeListener(  'block', invoke )
+                invoke.cancel()
+            }
+        }
+    }, [network.priceFeedContract])
 
     useEffect(() => {
         const call = () => {
@@ -114,6 +121,37 @@ export const useBridgeDisplay = () => {
 
 }
 
+// Bridge Input Hook
+export const useBridgeInput = () => {
+    const { state, dispatch } = useContext( storeContext )
+    const { input } = state.bridge
+    const updateRatio = (e) => {
+        dispatch({type: "UPDATE", module: "bridge", effect: "input", data: { ratio: e.target.value}})
+        // dispatch({type: 'SUCCEED_REQUEST', effect: 'input', payload: {effect: "ratio", data: e.target.value}})
+    }
+    
+    const updateAmount = (e) => {
+        dispatch({type: "UPDATE", module: "bridge", effect: "input", data: { amount: e.target.value}})
+        // dispatch({type: 'SUCCEED_REQUEST', effect: 'input', payload: { effect: "amount", data: e.target.value}})
+    }
+    
+    const updateModule = (e) => {
+        dispatch({type: "UPDATE", module: "bridge", effect: "input", data: { isFast: !!e.target.checked}})
+        // dispatch({type: 'SUCCEED_REQUEST', effect: 'input', payload: { effect: 'isFast', data: !!e.target.checked}})
+    }
+
+    var { ratio, amount, isFast } = input
+    
+    return {
+        ratio,
+        amount,
+        isFast,
+        updateRatio,
+        updateAmount,
+        updateModule
+    }    
+}
+
 //Bridge Transfer Request Hook
 export const useTransferSender = () => {
     const { state, dispatch } = useContext(storeContext)
@@ -164,67 +202,6 @@ export const useTransferSender = () => {
         isLoading
     }
 }
-
-// Bridge Input Hook
-export const useBridgeInput = () => {
-    const { state, dispatch } = useContext( storeContext )
-    const { ETH, renBTC, btc_usd, eth_usd } = useBridgeDisplay()
-    const { sendTransferRequest, isLoading } = useTransferSender()
-    const { input } = state.bridge
-
-    const updateRatio = (e) => {
-        dispatch({type: "UPDATE", module: "bridge", effect: "input", data: { ratio: e.target.value}})
-        // dispatch({type: 'SUCCEED_REQUEST', effect: 'input', payload: {effect: "ratio", data: e.target.value}})
-    }
-    
-    const updateAmount = (e) => {
-        dispatch({type: "UPDATE", module: "bridge", effect: "input", data: { amount: e.target.value}})
-        // dispatch({type: 'SUCCEED_REQUEST', effect: 'input', payload: { effect: "amount", data: e.target.value}})
-    }
-    
-    const updateModule = (e) => {
-        dispatch({type: "UPDATE", module: "bridge", effect: "input", data: { isFast: !!e.target.checked}})
-        // dispatch({type: 'SUCCEED_REQUEST', effect: 'input', payload: { effect: 'isFast', data: !!e.target.checked}})
-    }
-
-    var { ratio, amount, isFast } = input
-
-    const getTransferInputProps = ({...otherProps} = {}) => ({
-        amount: amount,
-        effect: updateAmount,
-        tokenPrice: btc_usd
-    })
-    
-    const getTransferRatioProps = ({ ...otherProps } = {}) => ({
-        ratio: ratio,
-        effect: updateRatio
-    })
-
-    const getTransferResultsProps = ({ ...otherProps } = {}) => ({
-        ETH: ETH,
-        renBTC: renBTC
-    })
-
-    const getTransferModuleToggleProps = ({...otherProps} = {}) => ({
-        isFast: isFast,
-        action: updateModule
-    })
-
-    const getTransferSenderProps = ({ ...otherProps } = {}) => ({
-        action: sendTransferRequest
-    })
-
-    return {
-        isLoading,
-        getTransferSenderProps,
-        getTransferInputProps,
-        getTransferRatioProps,
-        getTransferResultsProps,
-        getTransferModuleToggleProps
-    }    
-}
-
-
 
 
 const validateInputs = (state) => {
