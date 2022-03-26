@@ -3,6 +3,7 @@ import { useContext, useEffect, useState, useMemo } from 'react'
 import { ethers } from 'ethers'
 import { TransferEventEmitter } from '../../event/transfer.events'
 import { sdkTransfer } from '../../utils/sdk'
+import async from 'async'
 import _ from 'lodash'
 
 
@@ -46,8 +47,8 @@ export const useBridgeDisplay = () => {
     useEffect( () => {
         const listener = async () => {
             try {
-                set_btc_usd(await network.priceFeedContract.get_dy(1, 0, ethers.BigNumber.from(String("100000000"))))
-                set_eth_usd(await network.priceFeedContract.get_dy(2, 0, ethers.BigNumber.from(String("1000000000000000000"))))
+                set_btc_usd(await network.priceFeedContract.get_dy(1, 0, 1e8))
+                set_eth_usd(await network.priceFeedContract.get_dy(2, 0, ethers.constants.WeiPerEther))
             } catch (e) {
                 console.log(e)
             }
@@ -277,6 +278,3 @@ export const useBridgePage = () => {
     }
 }
 
-export const useBridgeRefresh = () => {
-    // refresh past transactions
-}
