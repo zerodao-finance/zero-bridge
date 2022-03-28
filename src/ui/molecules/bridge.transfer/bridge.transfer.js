@@ -6,9 +6,8 @@ import { BridgeModuleToggle } from './bridge.module.toggle'
 import { BridgeLoadingSignature } from './bridge.loading.signature'
 import { BridgeLoadingWallet } from './bridge.loading.wallet'
 import { AiOutlineArrowDown } from 'react-icons/ai'
-import { useBridgeInput, useBridgeDisplay, useTransferSender } from '../../../api/global/interfaces/interface.bridge'
+import { useBridgeInput } from '../../../api/global/interfaces/interface.bridge.transfer'
 import { useCheckWalletConnected } from '../../../api/global/interfaces/interfaces.wallet'
-import { useBridgeTransfer } from '../../../api/global/interfaces/interface.bridge.main'
 export const BridgeTransferModule = () => {
     const { 
         isLoading,

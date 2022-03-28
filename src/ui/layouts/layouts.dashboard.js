@@ -5,8 +5,14 @@ import { MobileNavigationSidebar } from "../molecules/navigation/navigation.side
 import { useActiveModuleSwitcher } from "../../api/global/interfaces/interfaces.active.module"
 import { TopLeftCardLayout } from './layout.card.top.left'
 import { NotificationTransferCard } from '../organisms/card.notif'
+
+import { useCheckWalletConnected } from '../../api/global/interfaces/interfaces.wallet'
+import { useBridgePage } from '../../api/global/interfaces/interface.bridge'
+
 export const DashboardLayout = () => {
     const { changeActiveModule, resetModule, currentModule, isLoading } = useActiveModuleSwitcher()
+    const { getWalletConnectionProps } = useCheckWalletConnected()
+    const { getBridgePageProps } = useBridgePage()
     
     return ( 
         <>
@@ -29,7 +35,7 @@ export const DashboardLayout = () => {
                         isLoading ?
                             "Loading"
                             :
-                            currentModule === 'bridge' ? <BridgeModule /> : ''
+                            currentModule === 'bridge' ? <BridgeModule {...getWalletConnectionProps()} {...getBridgePageProps()}/> : ''
 
                     }
                 </div>

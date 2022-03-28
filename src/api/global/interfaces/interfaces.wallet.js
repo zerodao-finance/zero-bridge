@@ -65,7 +65,7 @@ export const useWalletConnection = () => {
 export const useCheckWalletConnected = () => {
     const { state, dispatch } = useContext(storeContext)
     const { address } = state.wallet
-    const [ open, toggle ] = useState(true)
+    const [ walletConnected, toggle ] = useState(true)
     
     useEffect(() => {
         if (!address) {
@@ -75,7 +75,11 @@ export const useCheckWalletConnected = () => {
         }
     }, [address])
 
+    const getWalletConnectionProps = ({...otherProps} = {}) => ({
+        wallet: walletConnected
+    })
+
     return {
-        open
+        getWalletConnectionProps
     }
 }

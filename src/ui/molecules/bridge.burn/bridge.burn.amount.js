@@ -9,9 +9,6 @@ export const BridgeBurnInput = ({ amount, effect, tokenPrice }) => {
         currency: "USD"
     })
 
-    amount = 0
-    effect = () => {}
-    tokenPrice = 3000
 
     return (
         <div className="w-fit self-center px-0 py-0 scale-[0.8] md:scale-[1]">

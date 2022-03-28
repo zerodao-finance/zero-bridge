@@ -49,6 +49,7 @@ const StateProvider = ({ children }) => {
 
     }, [state.wallet.network])
 
+
     useEffect( async () => {
 
         if (!state.network.provider && state.wallet.network) {

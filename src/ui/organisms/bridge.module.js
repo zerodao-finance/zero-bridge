@@ -1,14 +1,8 @@
 import { BridgeTransferModule } from "../molecules/bridge.transfer"
-import { BridgeGatewayConfirmation } from "../molecules/bridge.gateway/bridge.gateway"
-import { BridgeLoadingGateway } from "../molecules/bridge.gateway/bridge.loading.gateway"
-import { BridgeLoadingSignature } from "../molecules/bridge.transfer/bridge.loading.signature"
-import { useBridgePage } from "../../api/global/interfaces/interface.bridge"
-import { useTransactions } from "../../api/global/interfaces/interface.manage"
 import { BridgeBurnModule } from "../molecules/bridge.burn/bridge.burn"
+import { BridgeLoadingWallet } from "../molecules/bridge.transfer/bridge.loading.wallet"
 
-export const BridgeModule = () => {
-    const { toggleMode, back, mode, processing, signed, data } = useBridgePage()
-    const { transfer } = useTransactions()
+export const BridgeModule = ({ wallet, mode, toggleMode }) => {
     return (
         <div className='flex flex-col container h-fit bg-white shadow-xl rounded-[30px] justify-center place-items-center gap-1 md:gap-3  first:gap-0 w-fit pb-4 dark:bg-gray-700 text-white min-w-[370px]'>
             <p className="text-lg font-light text-black tracking-wider w-full bg-emerald-300 text-center shadow-md rounded-t-md">Bridge Funds</p>
@@ -20,20 +14,13 @@ export const BridgeModule = () => {
                     Release
                 </div>
             </div>
-            { processing ? 
-            
-                signed ? 
-                    data ?
-                        <BridgeGatewayConfirmation />
-                        :
-                        <BridgeLoadingGateway />
-                    :
-                    <BridgeLoadingSignature />
-                    :
+            { wallet ?
                         mode === "transfer" ? 
                         <BridgeTransferModule />
+                        :
+                        <BridgeBurnModule />
                     :
-                    <BridgeBurnModule />
+                        <BridgeLoadingWallet />
             
             }
         </div>
