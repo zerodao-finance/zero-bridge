@@ -8,10 +8,8 @@ import { sdkTransfer } from '../../utils/sdk'
 //Bridge Transfer Request Hook
 export const useInputSubmit = (module) => {
     const { state, dispatch } = useContext(storeContext)
-    const { wallet, zero, transfer } = state
+    const { wallet, zero, transfer, burn } = state
     const { input } = state[module]
-    
-    const { isLoading } = transfer
 
     const getSigner = useMemo(async () => {
         try {
@@ -27,9 +25,6 @@ export const useInputSubmit = (module) => {
         
         
         dispatch({ type: "UPDATE", module: "transfer", effect: "mode", data: { processing: true }})
-
-        // dispatch({ type: "START_REQUEST", effect: "transfer"})
-        console.log(zeroUser)
         var zeroUser = zero.zeroUser
         var amount = input.amount
         var ratio = String(input.ratio)
@@ -51,3 +46,5 @@ export const useInputSubmit = (module) => {
         isLoading
     }
 }
+
+

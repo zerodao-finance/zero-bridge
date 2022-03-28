@@ -15,12 +15,12 @@ export const BridgeModule = ({ wallet, mode, toggleMode }) => {
                 </div>
             </div>
             { wallet ?
-                        mode === "transfer" ? 
-                        <BridgeTransferModule />
-                        :
-                        <BridgeBurnModule />
+                    <BridgeLoadingWallet />
                     :
-                        <BridgeLoadingWallet />
+                    mode === "transfer" ? 
+                    <BridgeTransferModule />
+                    :
+                    <BridgeBurnModule />
             
             }
         </div>
