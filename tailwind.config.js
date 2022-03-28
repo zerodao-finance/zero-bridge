@@ -3,6 +3,11 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        'header': ['Nexa Bold', 'Helvetica', 'Arial', 'sans-serif'],
+        'caption': ['Nexa Light', 'Helvetica', 'Arial', 'sans-serif'],
+        'sans': ['Nexa Regular', 'Helvetica', 'Arial', 'sans-serif']
+      },
       animation: {
           "jello-horizontal": "jello-horizontal 0.8s ease   both",
           "trace-path": "trace-path 4s",
