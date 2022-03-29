@@ -55,6 +55,7 @@ export class sdkTransfer {
         transferRequest.module = this.isFast ? deployments.arbitrum.ArbitrumConvertQuick.address : deployments.arbitrum.Convert.address;
 
         try {
+            console.log('signing:', this.signer)
             await transferRequest.sign(this.signer)
             this.dispatch({ type: "UPDATE", module: "bridge", effect: "mode", data: {signed: true}})
             // this.dispatch({type: ""})  reset transfer input state

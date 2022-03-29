@@ -268,6 +268,17 @@ export const useBridgePage = () => {
     const [ component, setComponent ] = useState(null)
     const { state, dispatch } = useContext(storeContext)
     const { mode } = state.bridge
+    const { tcSigned } = state.termsAndConditions
+
+    // Initialize the bridge page
+    useEffect(async () => {
+        const isSigned = localStorage.getItem('TC_agreement_signed')
+        console.log("is signed?", isSigned)
+        if (isSigned == 'true') {
+            console.log("dispatching")
+            dispatch({ type: "UPDATE_TC", data: {"tcSigned": true}})
+        }
+    }, [])
 
     const toggleMode = (newMode) => {
         dispatch({ type: "UPDATE", module: "bridge", effect: "mode", data: {mode: newMode}})
@@ -279,7 +290,7 @@ export const useBridgePage = () => {
     }
 
     return {
-        ...mode, back, toggleMode
+        ...mode, tcSigned, back, toggleMode
     }
 }
 

@@ -5,9 +5,10 @@ import { MobileNavigationSidebar } from "../molecules/navigation/navigation.side
 import { useActiveModuleSwitcher } from "../../api/global/interfaces/interfaces.active.module"
 import { TopLeftCardLayout } from './layout.card.top.left'
 import { NotificationTransferCard } from '../organisms/card.notif'
+
 export const DashboardLayout = () => {
     const { changeActiveModule, resetModule, currentModule, isLoading } = useActiveModuleSwitcher()
-    
+
     return ( 
         <>
             <div className="grid grid-rows-11 grid-flow-cols h-full w-full">
