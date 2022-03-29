@@ -1,13 +1,16 @@
+import { storeContext } from '../global'
+
 import Web3 from 'web3'
 import Web3Modal from 'web3modal'
 import Authereum from 'authereum'
 import WalletConnectProvider from '@walletconnect/web3-provider'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { URLS } from './chains'
 
 
 export default function wallet_modal() {
     const [loading, setLoading] = useState(false)
+    const { dispatch } = useContext( storeContext )
     return {
         get web3Loading() {
             return loading;
@@ -60,6 +63,9 @@ export default function wallet_modal() {
             provider.on("end", e => console.error("WS End", e))
             provider.on("disconnect", (error) => console.log("error"))
             provider.on("connect", info => console.log(info))
+            provider.on("accountsChanged", (accounts) => {
+                dispatch({type: "UPDATE_WALLET", data: {"address": accounts[0]} })
+            });
             provider.on("chainChanged", (chainId) => {
                 console.log(chainId);
               });
