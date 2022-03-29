@@ -194,7 +194,12 @@ export const useTransferSender = () => {
 
         console.log(amount)
         const transfer = new sdkTransfer(zeroUser, amount, ratio, signer, to, isFast, TransferEventEmitter, dispatch, data)
-        await transfer.submitTX()
+        try {
+            await transfer.submitTX()
+        } catch (e) {
+            dispatch({type: "RESET_REQUEST", effect: 'bridge'})
+        }
+        
     }
 
     return { 

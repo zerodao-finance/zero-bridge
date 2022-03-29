@@ -58,6 +58,7 @@ export default function wallet_modal() {
                 cacheProvider: true,
                 providerOptions
             });
+
             provider = await web3Modal.connect();
             provider.on("error", e => console.error("WS Error", e))
             provider.on("end", e => console.error("WS End", e))
@@ -68,7 +69,7 @@ export default function wallet_modal() {
             });
             provider.on("chainChanged", (chainId) => {
                 console.log(chainId);
-              });
+            });
             
             web3 = new Web3(provider)
             setLoading(false)
