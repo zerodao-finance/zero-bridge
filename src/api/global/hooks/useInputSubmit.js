@@ -10,7 +10,7 @@ import { ethers } from 'ethers'
 //Bridge Transfer Request Hook
 export const useInputSubmit = (module) => {
     const { state, dispatch } = useContext(storeContext)
-    const { wallet, zero, transfer } = state
+    const { wallet, zero, transfer, burn } = state
     const { input } = state[module]
 
     const getSigner = useMemo(async () => {
@@ -25,8 +25,13 @@ export const useInputSubmit = (module) => {
     
     async function sendTransferRequest() {
         
+<<<<<<< HEAD
         const StateHelper = new GlobalStateHelper(state, dispatch)
         StateHelper.update('transfer', 'mode', { mode: "showSigning"})
+=======
+        
+        dispatch({ type: "UPDATE", module: "transfer", effect: "mode", data: { processing: true }})
+>>>>>>> 06ade8b8dc2657a0ae16f80633230eede28bcac2
         var zeroUser = zero.zeroUser
         var amount = input.amount
         var ratio = String(input.ratio)
@@ -64,3 +69,5 @@ export const useInputSubmit = (module) => {
         sendBurnRequest
     }
 }
+
+
