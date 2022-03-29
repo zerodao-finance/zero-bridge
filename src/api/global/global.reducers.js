@@ -36,11 +36,11 @@ export const globalBridgeState = {
                 renBTC: 0
             },
             mode: {
-                processing: false,
-                signed: false,
-                data: null,
-                error: null,
-                isLoading: false
+                mode: "input",
+                gatewayData: {
+                    address: null,
+                    requestData: null
+                }
             }
         },
         burn: {

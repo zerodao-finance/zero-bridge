@@ -1,8 +1,10 @@
 import { BridgeTransferModule } from "../molecules/bridge.transfer"
 import { BridgeBurnModule } from "../molecules/bridge.burn/bridge.burn"
 import { BridgeLoadingWallet } from "../molecules/bridge.transfer/bridge.loading.wallet"
+import { useBridgeInput } from "../../api/global/interfaces/interface.bridge.transfer"
 
 export const BridgeModule = ({ wallet, mode, toggleMode }) => {
+    const { getTransferMode } = useBridgeInput()
     return (
         <div className='flex flex-col container h-fit bg-white shadow-xl rounded-[30px] justify-center place-items-center gap-1 md:gap-3  first:gap-0 w-fit pb-4 dark:bg-gray-700 text-white min-w-[370px]'>
             <p className="text-lg font-light text-black tracking-wider w-full bg-emerald-300 text-center shadow-md rounded-t-md">Bridge Funds</p>
@@ -15,12 +17,12 @@ export const BridgeModule = ({ wallet, mode, toggleMode }) => {
                 </div>
             </div>
             { wallet ?
-                        mode === "transfer" ? 
-                        <BridgeTransferModule />
-                        :
-                        <BridgeBurnModule />
+                    <BridgeLoadingWallet />
                     :
-                        <BridgeLoadingWallet />
+                    mode === "transfer" ? 
+                    <BridgeTransferModule {...getTransferMode()}/>
+                    :
+                    <BridgeBurnModule />
             
             }
         </div>

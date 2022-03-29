@@ -3,11 +3,15 @@ import { BridgeLoadingSignature } from "./bridge.loading.signature"
 import { useCheckWalletConnected } from "../../../api/global/interfaces/interfaces.wallet"
 import { BridgeBurnResult } from './bridge.burn.result'
 import { BridgeBurnInput } from './bridge.burn.amount'
+import { BridgeBurnSubmit } from './bridge.burn.submit'
 import { useBridgeBurnInput } from "../../../api/global/interfaces/interface.bridge.burn"
 
 export const BridgeBurnModule = () => {
     const { open } = useCheckWalletConnected()
-    const { getBridgeBurnInputProps } = useBridgeBurnInput() 
+    const { 
+        getBridgeBurnInputProps,
+        getBurnSenderProps
+     } = useBridgeBurnInput() 
     const isLoading = false
     const BTC = 0.0
     return (
@@ -32,6 +36,9 @@ export const BridgeBurnModule = () => {
                         <div className="flex flex-col w-full">
                             <BridgeBurnResult BTC={BTC} />
                         </div>
+                    </div>
+                    <div className="animate-flip-in-hor-top [animation-delay:700ms] mt-4">
+                        <BridgeBurnSubmit {...getBurnSenderProps()}/>
                     </div>
                 </>
             }
