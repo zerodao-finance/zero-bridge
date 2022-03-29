@@ -105,7 +105,9 @@ export const globalBridgeState = {
             controller: null,
             isLoading: false,
             error: null
-
+        },
+        termsAndConditions: {
+            tcSigned: false
         }
     },
     dispatch: (_a) => {}
@@ -182,7 +184,14 @@ export const globalBridgeReducer = (state, action) => {
                     ...action.data
                 }
             }
-        
+        case "UPDATE_TC":
+            return {
+                ...state,
+                "termsAndConditions": {
+                    ...state["termsAndConditions"],
+                    ...action.data
+                }
+            }
         default: 
             assertNever(action.type)
     }

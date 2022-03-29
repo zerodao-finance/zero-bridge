@@ -45,7 +45,7 @@ export const BridgeTransferModule = ({ mode }) => {
                         </div>
                     </div>
                     <BridgeModuleToggle {...getTransferModuleToggleProps()}/>
-                    <div className="animate-flip-in-hor-top [animation-delay:700ms] mt-4">
+                    <div className="animate-flip-in-hor-top [animation-delay:700ms] w-10/12 mt-4">
                         <BridgeTransferSubmit {...getTransferSenderProps()}/>
                     </div>
                 </>
