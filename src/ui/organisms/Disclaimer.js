@@ -3,8 +3,16 @@ import { storeContext } from '../../api/global/global'
 
 export const Disclaimer = () => {
 	const [read, done] = useState(false);
-	const [show, toggle] = useState(true);
+	const [show, toggle] = useState(false);
     const { dispatch } = useContext(storeContext)
+
+	useEffect(() => {
+		let timer = setTimeout(() => {
+			toggle(true);
+			timer = null;
+		}, 1000);
+		return () => timer && clearTimeout(timer);
+	});
 
 	useEffect(() => {
 		const scroll_box = document.getElementById('disclaimer');

@@ -19,6 +19,11 @@ function assertNever(x){
 export const globalBridgeState = {  
     state: {
         bridge: {
+            mode: {
+                mode: 'transfer', //transfer, release
+            }
+        },
+        transfer: {
             input: {
                 ratio: 0,
                 amount: '0',
@@ -31,12 +36,25 @@ export const globalBridgeState = {
                 renBTC: 0
             },
             mode: {
-                mode: 'transfer', //transfer, release
-                processing: false,
-                signed: false,
-                data: null,
-                error: null,
-                isLoading: false
+                mode: "input",
+                gatewayData: {
+                    address: null,
+                    requestData: null
+                }
+            }
+        },
+        burn: {
+            input: {
+                amount: '0',
+                isLoading: false,
+                error: null
+            }
+        },
+        priceFeeds: {
+            data: {
+                btc_usd: 0,
+                eth_usd: 0,
+                btc_eth: 0,
             }
         },
         requests: {
@@ -60,11 +78,6 @@ export const globalBridgeState = {
         transferRequestCard: {
             confirmations: null,
             status: null,
-            isLoading: false,
-            error: null
-        },
-        transfer: {
-            page: 'main',
             isLoading: false,
             error: null
         },
@@ -172,7 +185,6 @@ export const globalBridgeReducer = (state, action) => {
                 }
             }
         case "UPDATE_TC":
-            console.log('updating tc', action.data, state)
             return {
                 ...state,
                 "termsAndConditions": {

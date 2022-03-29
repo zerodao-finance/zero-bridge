@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 import { deployments, deploymentsFromSigner } from './zero'
-import { UnderwriterTransferRequest } from '@zero-protocol/dist/lib/zero';
+import { UnderwriterTransferRequest, UnderwriterBurnRequest } from '@zero-protocol/dist/lib/zero';
 import { TEST_KEEPER_ADDRESS } from '@zero-protocol/dist/lib/mock';
 
 export class sdkTransfer {
@@ -12,7 +12,7 @@ export class sdkTransfer {
         to,
         isFast,
         TransferEventEmitter,
-        dispatch,        
+        StateHelper,        
         _data
     ) {
         this.isFast = isFast;
@@ -20,7 +20,7 @@ export class sdkTransfer {
         this.zeroUser = zeroUser;
         this.signer = signer;
         this.Emitter = TransferEventEmitter
-        this.dispatch = dispatch
+        this.StateHelper = StateHelper
         
         // initialize Transfer Request Object
 
@@ -57,9 +57,10 @@ export class sdkTransfer {
         try {
             console.log('signing:', this.signer)
             await transferRequest.sign(this.signer)
-            this.dispatch({ type: "UPDATE", module: "bridge", effect: "mode", data: {signed: true}})
-            // this.dispatch({type: ""})  reset transfer input state
-            // this.dispatch({type: "SUCCEED_REQUEST", effect: "transfer", payload: { effect: "request", data: transferRequest}})            
+            this.StateHelper.update("transfer", "mode", { mode: "waitingDry" })
+            
+            
+            
         } catch (err) {
             // handle signing error
             console.log("submit tx error", err)
@@ -67,7 +68,7 @@ export class sdkTransfer {
         }   
 
         try {
-            await transferRequest.dry(this.signer.provider, { from: TEST_KEEPER_ADDRESS})
+            await transferRequest.dry(this.signer, { from: TEST_KEEPER_ADDRESS})
         } catch ( err ) {
             console.log(err)
             return new Error("Transaction will fail")
@@ -80,7 +81,7 @@ export class sdkTransfer {
             await this.zeroUser.publishTransferRequest(transferRequest)
             const mint = await transferRequest.submitToRenVM()
             var gatewayAddress = await transferRequest.toGatewayAddress()
-            this.dispatch({ type: "UPDATE", module: "bridge", effect: "mode", data: {data: {transferRequest: transferRequest, gatewayAddress: gatewayAddress}}})
+            this.StateHelper.update("transfer", "mode", { mode: "showGateway", gatewayData: { address: gatewayAddress, requestData: transferRequest} })
             this.Emitter.emit("transfer", mint, transferRequest)
             return
         } catch (error) {
@@ -119,4 +120,41 @@ export class sdkTransfer {
     }
 
     
+}
+
+
+export class sdkBurn {
+    constructor ( 
+        zeroUser,
+        amount, 
+        to,
+        deadline,
+        signer,
+        destination,
+        StateHelper
+        ) {
+           this.StateHelper = StateHelper
+           this.BurnRequest = ( async function(){
+
+               const contracts = await deploymentsFromSigner(signer)  
+               const value = ethers.utils.parseUnits(String(amount), 8)
+               const asset = '0xDBf31dF14B66535aF65AaC99C32e9eA844e14501'
+
+
+               return new UnderwriterBurnRequest({
+                   owner: to,
+                   underwriter: contracts.DelegateUnderwriter.address,
+                   asset: asset,
+                   amount: value,
+                   deadline: deadline,
+                   destination: destination,
+                   contractAddress: contracts.ZeroController.address,
+               })
+           })()
+           //TODO: finish this
+        }
+
+        async call () {
+            this.BurnRequest
+        }
 }

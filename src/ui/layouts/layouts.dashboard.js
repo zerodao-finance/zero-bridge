@@ -6,9 +6,14 @@ import { useActiveModuleSwitcher } from "../../api/global/interfaces/interfaces.
 import { TopLeftCardLayout } from './layout.card.top.left'
 import { NotificationTransferCard } from '../organisms/card.notif'
 
+import { useCheckWalletConnected } from '../../api/global/interfaces/interfaces.wallet'
+import { useBridgePage } from '../../api/global/interfaces/interface.bridge'
+
 export const DashboardLayout = () => {
     const { changeActiveModule, resetModule, currentModule, isLoading } = useActiveModuleSwitcher()
-
+    const { getWalletConnectionProps } = useCheckWalletConnected()
+    const { getBridgePageProps } = useBridgePage()
+    
     return ( 
         <>
             <div className="grid grid-rows-11 grid-flow-cols h-full w-full">
@@ -30,7 +35,7 @@ export const DashboardLayout = () => {
                         isLoading ?
                             "Loading"
                             :
-                            currentModule === 'bridge' ? <BridgeModule /> : ''
+                            currentModule === 'bridge' ? <BridgeModule {...getWalletConnectionProps()} {...getBridgePageProps()}/> : ''
 
                     }
                 </div>

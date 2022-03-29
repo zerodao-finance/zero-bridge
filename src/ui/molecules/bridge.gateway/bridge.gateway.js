@@ -3,15 +3,14 @@ import { ethers } from 'ethers'
 import { BridgeLoadingGateway } from './bridge.loading.gateway'
 import { useBridgePage } from '../../../api/global/interfaces/interface.bridge'
 
-export const BridgeGatewayConfirmation = ({}) => {
+export const BridgeGatewayConfirmation = ({transferRequest, gatewayAddress}) => {
     
-    const { data, back } = useBridgePage()
+    
     return (
         <>
-            { data ?
             <div className="flex flex-col justify-center items-center gap-5 min-h-[290px] text-black dark:text-emerald-400">
                 <p className="cursor-copy select-all">
-                {data.gatewayAddress}
+                {gatewayAddress}
                 </p>
                 <div id="usage" className="text-[11px] indent max-w-[300px] text-emerald-500 dark:text-emerald-300 justify-self-end">
                     <p>Reminder: deposit the exact amount of BTC indicated to the deposit address</p>
@@ -25,13 +24,13 @@ export const BridgeGatewayConfirmation = ({}) => {
                     </div>
                     <div className="flex flex-col items-start pr-2">
                         <span className="truncate max-w-[80px]">
-                            {0.001 + ethers.utils.formatUnits(ethers.BigNumber.from(data.transferRequest.amount), 8 ) * .15}
+                            {0.001 + ethers.utils.formatUnits(ethers.BigNumber.from(transferRequest.amount), 8 ) * .15}
                         </span >
                         <span className="truncate max-w-[80px]">
-                            {0.0015 + ethers.utils.formatUnits(ethers.BigNumber.from(data.transferRequest.amount), 8 ) * .3}
+                            {0.0015 + ethers.utils.formatUnits(ethers.BigNumber.from(transferRequest.amount), 8 ) * .3}
                         </span>
                         <span className="truncate max-w-[80px]">
-                            {ethers.utils.formatUnits(ethers.BigNumber.from(data.transferRequest.amount), 8 ) * .04}
+                            {ethers.utils.formatUnits(ethers.BigNumber.from(transferRequest.amount), 8 ) * .04}
                         </span>
                     </div>
                 </div>
@@ -40,9 +39,6 @@ export const BridgeGatewayConfirmation = ({}) => {
                     use this tool at your discretion and never deposit more funds than you could afford to lose</p>
                 </div>
             </div>
-            :
-            <BridgeLoadingGateway />
-            }
         </>
     )
 }
