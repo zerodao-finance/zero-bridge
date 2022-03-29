@@ -26,8 +26,6 @@
  */
 
 import { createContext, useEffect, useReducer, useMemo } from 'react'
-import { PersistanceStore } from '../storage/storage'
-import hash from 'object-hash'
 import { globalBridgeState, globalBridgeReducer } from './global.reducers'
 import { ethers } from 'ethers'
 import _ from 'lodash'
@@ -37,8 +35,6 @@ const storeContext = createContext(globalBridgeState)
 const { Provider } = storeContext
 
 const StateProvider = ({ children }) => {
-
-
     const [ state, dispatch ] = useReducer(globalBridgeReducer, globalBridgeState.state)
     const getContract = useMemo(() => {
         var provider = new ethers.providers.JsonRpcProvider(process.env.REACT_APP_JSONRPC)

@@ -22,8 +22,15 @@ export const useWalletConnection = () => {
             return new Error("Cannot get Provider | Reconnect Wallet")
         }
     }, [wallet.provider])
-    useEffect(() => {
 
+    useEffect(async () => {
+        const provider = localStorage.getItem("WEB3_CONNECT_CACHED_PROVIDER");
+        if (provider) {
+            await connect()
+        }
+    }, [])
+
+    useEffect(() => {
 
         const call = async () => {
             try {
@@ -51,11 +58,12 @@ export const useWalletConnection = () => {
     }, [isLoading])
 
     const connect = async () => {
-        await dispatch({type: "START_REQUEST", effect: 'wallet'})
+        dispatch({type: "START_REQUEST", effect: 'wallet'})
     }
 
     const disconnect = async () => {
-        await dispatch({type: "RESET_REQUEST", effect: 'wallet'})
+        dispatch({type: "RESET_REQUEST", effect: 'wallet'})
+        localStorage.removeItem("WEB3_CONNECT_CACHED_PROVIDER")
     }
 
     return { connect, disconnect, wallet, isLoading}

@@ -33,6 +33,7 @@ export const BridgeTransferModule = ({ mode }) => {
                             <BridgeTransferInput {...getTransferInputProps()}/>
                         </div>
                     </div>
+                    
                     <div className={`animate-flip-in-hor-top [animation-delay:500ms] flex flex-col justify-center place-items-center mt-5`}>
                         <BridgeTransferRatio {...getTransferRatioProps()}/>
                         <AiOutlineArrowDown  className="fill-black" />

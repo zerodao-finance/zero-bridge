@@ -62,8 +62,8 @@ export class sdkTransfer {
             
         } catch (err) {
             // handle signing error
-            console.log("error", err)
-            return new Error("Failed to sign request")
+            console.log("submit tx error", err)
+            throw new Error("Failed to sign request")
         }   
 
         try {
