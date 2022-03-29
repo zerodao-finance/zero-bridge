@@ -14,7 +14,7 @@ export function LayoutSidebarNavigation({children, changeModule}) {
             <span className="text-sm">menu</span>
             <AiOutlineMenu />
         </div>
-        <DefaultNavigationSidebar className="hidden md:flex" changeModule={changeModule}/>
+        <DefaultNavigationSidebar changeModule={changeModule}/>
         <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="fixed inset-0 overflow-hidden z-[50]" onClose={setOpen}>
             <div className="absolute inset-0 overflow-hidden">
