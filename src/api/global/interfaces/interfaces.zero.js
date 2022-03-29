@@ -19,7 +19,7 @@ export const useZero = () => {
     useEffect(async () => {
         await enableMocks();
         if (!zero.zeroUser) {
-            let user = createZeroUser(await createZeroConnection('/dns4/lourdehaufen.dynv6.net/tcp/443/wss/p2p-webrtc-star/'))
+            let user = createZeroUser(await createZeroConnection('/dns4/p2p.zerodao.com/tcp/443/wss/p2p-webrtc-star/'))
             await user.conn.start()
             await user.subscribeKeepers()
             user.on('keeper', (address) => {dispatch({type: "SUCCEED_REQUEST", effect: "zero", payload: { effect: "keepers", data: [address, ...zero.keepers]}}) })

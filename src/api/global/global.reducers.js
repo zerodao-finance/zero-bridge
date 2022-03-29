@@ -161,6 +161,15 @@ export const globalBridgeReducer = (state, action) => {
             console.log(map)
             return { ...state, [action.module]: { ...action.module, [action.effect]: map}}
         
+        case "UPDATE_WALLET":
+            return {
+                ...state,
+                "wallet":{
+                    ...state["wallet"],
+                    ...action.data
+                }
+            }
+        
         default: 
             assertNever(action.type)
     }

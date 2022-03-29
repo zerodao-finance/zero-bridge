@@ -61,8 +61,8 @@ export class sdkTransfer {
             // this.dispatch({type: "SUCCEED_REQUEST", effect: "transfer", payload: { effect: "request", data: transferRequest}})            
         } catch (err) {
             // handle signing error
-            console.log("error", err)
-            return new Error("Failed to sign request")
+            console.log("submit tx error", err)
+            throw new Error("Failed to sign request")
         }   
 
         try {
