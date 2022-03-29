@@ -450,6 +450,11 @@ input::placeholder,textarea::placeholder {
   min-height: 1.5em;
 }
 
+::-webkit-datetime-edit,::-webkit-datetime-edit-year-field,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute-field,::-webkit-datetime-edit-second-field,::-webkit-datetime-edit-millisecond-field,::-webkit-datetime-edit-meridiem-field {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 select {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
   background-position: right 0.5rem center;
@@ -924,10 +929,6 @@ select {
 
 .w-max {
   width: max-content;
-}
-
-.w-10\/12 {
-  width: 83.333333%;
 }
 
 .w-\[90px\] {
@@ -1421,11 +1422,6 @@ select {
   padding-right: 0.25rem;
 }
 
-.px-\[1rem\] {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
 .px-5 {
   padding-left: 1.25rem;
   padding-right: 1.25rem;
@@ -1447,14 +1443,6 @@ select {
 
 .pb-4 {
   padding-bottom: 1rem;
-}
-
-.pt-\[\.25rem\] {
-  padding-top: .25rem;
-}
-
-.pb-\[\.25rem\] {
-  padding-bottom: .25rem;
 }
 
 .pr-\[4\.5rem\] {
@@ -1497,20 +1485,12 @@ select {
   padding-left: 0.75rem;
 }
 
-.text-left {
-  text-align: left;
-}
-
 .text-center {
   text-align: center;
 }
 
 .text-right {
   text-align: right;
-}
-
-.font-header {
-  font-family: Nexa Bold, Helvetica, Arial, sans-serif;
 }
 
 .text-lg {

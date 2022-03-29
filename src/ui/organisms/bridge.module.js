@@ -20,11 +20,7 @@ export const BridgeModule = ({ wallet, mode, toggleMode }) => {
                     <BridgeLoadingWallet />
                     :
                     mode === "transfer" ? 
-<<<<<<< HEAD
                     <BridgeTransferModule {...getTransferMode()}/>
-=======
-                    <BridgeTransferModule />
->>>>>>> 06ade8b8dc2657a0ae16f80633230eede28bcac2
                     :
                     <BridgeBurnModule />
             
