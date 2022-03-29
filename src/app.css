@@ -1154,8 +1154,8 @@ select {
   gap: 2.5rem;
 }
 
-.gap-8 {
-  gap: 2rem;
+.gap-4 {
+  gap: 1rem;
 }
 
 .space-y-8 > :not([hidden]) ~ :not([hidden]) {
@@ -1425,6 +1425,11 @@ select {
 .py-2 {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .pl-10 {
@@ -1789,9 +1794,9 @@ code {
   border-color: rgb(100 116 139 / 0.75);
 }
 
-.hover\:bg-emerald-300:hover {
+.hover\:bg-emerald-200:hover {
   --tw-bg-opacity: 1;
-  background-color: rgb(110 231 183 / var(--tw-bg-opacity));
+  background-color: rgb(167 243 208 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-slate-100:hover {
@@ -1854,6 +1859,11 @@ code {
 
 .dark .dark\:hidden {
   display: none;
+}
+
+.dark .dark\:border-emerald-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(110 231 183 / var(--tw-border-opacity));
 }
 
 .dark .dark\:border-slate-500 {
@@ -1962,6 +1972,11 @@ code {
 
 .dark .dark\:decoration-white {
   text-decoration-color: #fff;
+}
+
+.dark .dark\:hover\:border-white:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity));
 }
 
 .dark .dark\:hover\:bg-emerald-400:hover {
