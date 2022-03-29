@@ -55,7 +55,6 @@ export class sdkTransfer {
         transferRequest.module = this.isFast ? deployments.arbitrum.ArbitrumConvertQuick.address : deployments.arbitrum.Convert.address;
 
         try {
-            console.log('signing:', this.signer)
             await transferRequest.sign(this.signer)
             this.StateHelper.update("transfer", "mode", { mode: "waitingDry" })
             
