@@ -13,6 +13,13 @@ export const DashboardLayout = () => {
     const { changeActiveModule, resetModule, currentModule, isLoading } = useActiveModuleSwitcher()
     const { getWalletConnectionProps } = useCheckWalletConnected()
     const { getBridgePageProps } = useBridgePage()
+
+    const getTitle = () => {
+        switch (currentModule) {
+            default:
+                return 'Bridge'
+        }
+    }
     
     return ( 
         <>
@@ -30,15 +37,19 @@ export const DashboardLayout = () => {
                         <NotificationTransferCard />
                     </TopLeftCardLayout>
                 </div>
-                <div className="flex flex-row row-[span_8_/_span_8] justify-center items-center isolate" id="hero">
-                    {
-                        isLoading ?
-                            "Loading"
-                            :
-                            currentModule === 'bridge' ? <BridgeModule {...getWalletConnectionProps()} {...getBridgePageProps()}/> : ''
+                <div className="flex flex-col w-fit ml-auto mr-auto">
+                    <p className="pb-[.5rem] opacity-60 text-center font-bold dark:text-white">{getTitle()}</p>
+                    <div className="flex flex-row row-[span_8_/_span_8] justify-center items-center isolate" id="hero">
+                        {
+                            isLoading ?
+                                "Loading"
+                                :
+                                currentModule === 'bridge' ? <BridgeModule {...getWalletConnectionProps()} {...getBridgePageProps()}/> : ''
 
-                    }
+                        }
+                    </div>
                 </div>
+                
                 <div className="footer row-span-2 flex flex-col-reverse text-[13px] md:text-md">
                     <p className="text-gray-400 ml-2">
                         Copyright (the "zeroDAO Site"). Z DAO, LLC ("ZD"){" "}
