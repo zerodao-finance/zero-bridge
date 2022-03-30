@@ -55,7 +55,8 @@ export const useInputSubmit = (module) => {
 
         console.log(amount, destination, deadline, to)
 
-        const transfer = new sdkBurn(zeroUser, amount, to, deadline, destination)
+        const transfer = new sdkBurn(zeroUser, amount, to, deadline, signer, destination)
+        await transfer.call()
         
     }
 

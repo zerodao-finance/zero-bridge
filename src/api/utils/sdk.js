@@ -132,28 +132,46 @@ export class sdkBurn {
         destination,
         StateHelper
         ) {
-           this.StateHelper = StateHelper
-           this.BurnRequest = ( async function(){
+            this.signer = signer
+            this.StateHelper = StateHelper
+            this.zeroUser = zeroUser
+            this.BurnRequest = ( async function(){
+                const contracts = await deploymentsFromSigner(signer)  
+                const value = ethers.utils.parseUnits(String(amount), 8)
+                const asset = '0xDBf31dF14B66535aF65AaC99C32e9eA844e14501'
 
-               const contracts = await deploymentsFromSigner(signer)  
-               const value = ethers.utils.parseUnits(String(amount), 8)
-               const asset = '0xDBf31dF14B66535aF65AaC99C32e9eA844e14501'
 
+                return new UnderwriterBurnRequest({
+                    owner: to,
+                    underwriter: contracts.DelegateUnderwriter.address,
+                    asset: asset,
+                    amount: value,
+                    deadline: deadline,
+                    destination: destination,
+                    contractAddress: contracts.ZeroController.address,
+                })
 
-               return new UnderwriterBurnRequest({
-                   owner: to,
-                   underwriter: contracts.DelegateUnderwriter.address,
-                   asset: asset,
-                   amount: value,
-                   deadline: deadline,
-                   destination: destination,
-                   contractAddress: contracts.ZeroController.address,
-               })
-           })()
-           //TODO: finish this
+            })()
         }
 
         async call () {
-            this.BurnRequest
+            const BurnRequest = await this.BurnRequest
+            const contracts = await deploymentsFromSigner(this.signer)
+            
+
+            //sign burn request
+            try {
+                await BurnRequest.sign(this.signer, contracts.ZeroController.address)
+            } catch (error) {
+                console.log(error)
+                //handle signature error
+            }
+
+            //publishBurnRequest
+            try {
+                this.zeroUser.publishBurnRequest(BurnRequest)
+            } catch (error) {
+                console.log(error)
+            }
         }
 }

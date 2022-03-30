@@ -1,4 +1,4 @@
-import { TransferEventEmitter } from "../transfer.events"
+import { TransferEventEmitter } from "../transfer.events";
 /**
  * 
  * @param {*} error 
