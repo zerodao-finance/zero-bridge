@@ -30,7 +30,6 @@ export class sdkTransfer {
             const amount = ethers.utils.parseUnits(String(value), 8)
             const data = String(_data)
 
-            console.log(amount)
             return new UnderwriterTransferRequest({
                 amount,
                 asset,
@@ -57,19 +56,16 @@ export class sdkTransfer {
         try {
             await transferRequest.sign(this.signer)
             this.StateHelper.update("transfer", "mode", { mode: "waitingDry" })
-            
-            
-            
         } catch (err) {
             // handle signing error
-            console.log("submit tx error", err)
+            console.error("submit tx error", err)
             throw new Error("Failed to sign request")
         }   
 
         try {
             await transferRequest.dry(this.signer, { from: TEST_KEEPER_ADDRESS})
         } catch ( err ) {
-            console.log(err)
+            console.error(err)
             return new Error("Transaction will fail")
         }
 
@@ -84,7 +80,8 @@ export class sdkTransfer {
             this.Emitter.emit("transfer", mint, transferRequest)
             return
         } catch (error) {
-            console.log(error)
+            console.error('Error submitting transaction: ', error);
+            throw new Error("Error publishing transfer request")
         }
 
         // handle publish transfer request 

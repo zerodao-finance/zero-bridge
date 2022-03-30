@@ -2,7 +2,6 @@ import hash from "object-hash"
 export const storeObjectLocally = (dispatch, transaction) => {
     const key = hash(transaction)
     const data = transaction
-    console.log(key, data)
     dispatch({ type: "ADD_DATA", module: "requests", effect: "transfer", payload: {key: key, data: data}})
     return key
 }

@@ -173,7 +173,6 @@ export const globalBridgeReducer = (state, action) => {
             let obj = map.get(key)
             let updated = { ...obj, status: action.payload.update }
             map.set(key, updated)
-            console.log(map)
             return { ...state, [action.module]: { ...action.module, [action.effect]: map}}
         
         case "UPDATE_WALLET":

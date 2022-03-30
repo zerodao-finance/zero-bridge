@@ -7,7 +7,6 @@ export const useTransactions = () => {
     const { transfer, burn } = requests
 
     useEffect(() => {
-        console.log(transfer)
     }, [requests])
     
     return {
