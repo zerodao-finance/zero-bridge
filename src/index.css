@@ -21,11 +21,12 @@
   -webkit-appearance: none;
   width: 50%;
   height: 15px;
-  background: #4b5563;
+  background: transparent;
   outline: none;
   border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
+  padding: 0 5px 0 5px;
 }
 
 
@@ -37,8 +38,10 @@
   appearance: none;
   background: #6ee7b7;
   border-radius: 100% !important;
+  box-shadow: none !important;
   cursor: pointer;
 }
+
 
 /* for firefox */
 .slider::-moz-range-thumb {

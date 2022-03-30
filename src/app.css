@@ -1320,6 +1320,11 @@ select {
   border-color: rgb(0 0 0 / var(--tw-border-opacity));
 }
 
+.border-emerald-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(110 231 183 / var(--tw-border-opacity));
+}
+
 .border-green-300 {
   --tw-border-opacity: 1;
   border-color: rgb(134 239 172 / var(--tw-border-opacity));
@@ -1852,11 +1857,12 @@ select {
   -webkit-appearance: none;
   width: 50%;
   height: 15px;
-  background: #4b5563;
+  background: transparent;
   outline: none;
   border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
+  padding: 0 5px 0 5px;
 }
 
 /* for chrome/safari */
@@ -1868,6 +1874,7 @@ select {
   appearance: none;
   background: #6ee7b7;
   border-radius: 100% !important;
+  box-shadow: none !important;
   cursor: pointer;
 }
 
@@ -1889,7 +1896,7 @@ select {
     /* height: 15px; */
     /* cursor: ew-resize; */
     /* background: #FFF; */
-    /* box-shadow: -405px 0 0 400px #6EE7B7; */
+    box-shadow: -405px 0 0 400px #6EE7B7;
     border-radius: 50%;
   }
 }
@@ -1999,6 +2006,11 @@ code {
 .dark .dark\:border-emerald-300 {
   --tw-border-opacity: 1;
   border-color: rgb(110 231 183 / var(--tw-border-opacity));
+}
+
+.dark .dark\:border-white {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity));
 }
 
 .dark .dark\:border-slate-500 {
