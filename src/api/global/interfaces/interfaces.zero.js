@@ -22,7 +22,10 @@ export const useZero = () => {
             let user = createZeroUser(await createZeroConnection('mainnet'))
             await user.conn.start()
             await user.subscribeKeepers()
-            user.on('keeper', (address) => {dispatch({type: "SUCCEED_REQUEST", effect: "zero", payload: { effect: "keepers", data: [address, ...zero.keepers]}}) })
+            user.on('keeper', (address) => {
+                dispatch({type: "SUCCEED_REQUEST", effect: "zero", payload: { effect: "keepers", data: [address, ...zero.keepers]}}) 
+                keeper = zero.keepers;
+            })
             dispatch({ type: "SUCCEED_REQUEST", effect: "zero", payload: { effect: "zeroUser", data: user}})
         }
     }, [])
