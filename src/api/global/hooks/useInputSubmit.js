@@ -38,8 +38,13 @@ export const useInputSubmit = (module) => {
             [ethers.utils.parseEther(ratio).div(ethers.BigNumber.from('100'))]
         )
 
-        const transfer = new sdkTransfer(zeroUser, amount, ratio, signer, to, isFast, TransferEventEmitter, StateHelper, data)
-        await transfer.submitTX()
+        const transfer = new sdkTransfer(zeroUser, amount, ratio, signer, to, isFast, TransferEventEmitter, StateHelper, data);
+        try {
+            await transfer.submitTX()
+        } catch (e) {
+            console.log('did catch error')
+            dispatch({type: "RESET_REQUEST", effect: 'transfer'})
+        }
     }
 
 
@@ -53,7 +58,6 @@ export const useInputSubmit = (module) => {
         var deadline = ethers.constants.MaxUint256
         var destination = ethers.utils.hexlify(ethers.utils.base58.decode('36c5pSLZ4J11EiyaXuYfJypNzrufYVJ5Qd'))
 
-        console.log(amount, destination, deadline, to)
 
         const transfer = new sdkBurn(zeroUser, amount, to, deadline, destination)
         

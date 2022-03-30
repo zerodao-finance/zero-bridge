@@ -33,7 +33,6 @@ export const useConfirmationsHandler = ({confirmations}) => {
     const [ current, setCurrent ] = useState(null)
 
     useEffect(() => {
-        console.log(confirmations)
         if (confirmations) {
             confirmations.on('confirmation', (i, target) => {
                 if (!max) setMax(target)

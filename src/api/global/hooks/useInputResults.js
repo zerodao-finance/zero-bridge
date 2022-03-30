@@ -42,7 +42,7 @@ export const useInputResults = (input, module) => {
 
                 dispatch({type: "UPDATE", module: module, effect: "display", data: { ETH: valueETH, renBTC: valueRenBTC} })
             } catch (e) {
-                console.log(e)
+                console.error(e)
                 dispatch({type: "FAIL_REQUEST", effect: 'display', payload: "Cannot set ETHPrice," })
             }
         }

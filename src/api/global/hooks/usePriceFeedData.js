@@ -40,10 +40,8 @@ export const usePriceFeedContracts = () => {
 
     useEffect(() => {
         const call = () => {
-            console.log(priceFeedContract)
-            let prices = Promise.allSettled([getBtcEthPrice(network), getBtcUsdPrice(network), getEthUsdPrice(network)])
+            Promise.allSettled([getBtcEthPrice(network), getBtcUsdPrice(network), getEthUsdPrice(network)])
                 .then(async result => {
-                    console.log(result)
                     dispatch({ type: "UPDATE", module: "priceFeeds", effect: "data", data: {btc_usd: result[1].value ,eth_usd: result[2].value, btc_eth: result[0].value,}})
                 })
             

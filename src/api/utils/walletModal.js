@@ -16,8 +16,6 @@ export default function wallet_modal() {
             return loading;
         },
         async getweb3() {
-
-            console.log(URLS)
             setLoading(true);
             let web3Modal;
             let provider;
