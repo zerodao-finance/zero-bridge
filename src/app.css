@@ -879,10 +879,6 @@ select {
   height: fit-content;
 }
 
-.h-1 {
-  height: 0.25rem;
-}
-
 .h-\[10px\] {
   height: 10px;
 }
@@ -1363,11 +1359,6 @@ select {
   background-color: transparent;
 }
 
-.bg-slate-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(148 163 184 / var(--tw-bg-opacity));
-}
-
 .bg-gray-400 {
   --tw-bg-opacity: 1;
   background-color: rgb(156 163 175 / var(--tw-bg-opacity));
@@ -1760,27 +1751,10 @@ select {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-.shadow-none {
-  --tw-shadow: 0 0 #0000;
-  --tw-shadow-colored: 0 0 #0000;
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
 .shadow-md {
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-.outline-none {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-}
-
-.ring-0 {
-  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 
 .ring-\[1px\] {
@@ -1874,6 +1848,39 @@ select {
   src: local('Nexa Regular'), url(./fonts/NexaRegular.otf) format('otf');
 }
 
+.slider {
+  -webkit-appearance: none;
+  width: 50%;
+  height: 15px;
+  background: #4b5563;
+  outline: none;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* for chrome/safari */
+
+.slider::-webkit-slider-thumb {
+  width: 8px !important;
+  height: 8px !important;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #6ee7b7;
+  border-radius: 100% !important;
+  cursor: pointer;
+}
+
+/* for firefox */
+
+.slider::-moz-range-thumb {
+  width: 8px;
+  height: 8px;
+  background: #6ee7b7;
+  cursor: pointer;
+  border-radius: 100%;
+}
+
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   input[type="range"]::-webkit-slider-thumb {
     width: 1px;
@@ -1882,7 +1889,7 @@ select {
     /* height: 15px; */
     /* cursor: ew-resize; */
     /* background: #FFF; */
-    box-shadow: -405px 0 0 400px #6EE7B7;
+    /* box-shadow: -405px 0 0 400px #6EE7B7; */
     border-radius: 50%;
   }
 }
