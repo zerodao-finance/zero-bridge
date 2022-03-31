@@ -64,7 +64,7 @@ export const globalBridgeState = {
         utilities: {
             ethPrice: 0,
             btcPrice: 0,
-            themeMode: 'light',
+            themeMode: localStorage.getItem('screenMode') === 'light' ? 'light' : 'dark',
         },
         module: {
             currentModule: "bridge",
