@@ -1,9 +1,25 @@
 export const PrimaryRoundedButton = ({ active, label, action }) => {
-    return (
-        <>
-            <button onClick={action} disabled={!active} className="px-2 py-1 disabled:bg-hover-green hover:bg-hover-green text-black font-bold w-full rounded-xl bg-main-green w-full truncate text-[13px] md:text-[15px]">
-                    {label}
-            </button>
-        </>
-    )
-}
+	const getClass = () => {
+		if (active) {
+			return 'transition ease-in-out duration-150 px-2 py-1 hover:bg-main-green/10 font-bold w-full rounded-xl border border-main-green text-main-green w-full truncate text-[13px] md:text-[15px]';
+		}
+		return 'transition ease-in-out duration-150 px-2 py-1 hover:bg-alert-red/10 font-bold w-full rounded-xl border border-alert-red text-alert-red w-full truncate text-[13px] md:text-[15px]';
+	};
+	console.log(label, 'is active:', active);
+	return (
+		<>
+			<button
+				onClick={
+					active
+						? action
+						: () => {
+								return;
+						  }
+				}
+				className={getClass()}
+			>
+				{label}
+			</button>
+		</>
+	);
+};

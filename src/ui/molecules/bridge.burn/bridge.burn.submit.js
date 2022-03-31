@@ -1,9 +1,5 @@
-import { PrimaryRoundedButton } from '../../atoms/buttons/button.rounded'
+import { PrimaryRoundedButton } from '../../atoms/buttons/button.rounded';
 
-
-export const BridgeBurnSubmit = ({action}) => {
-    
-    return (
-        <PrimaryRoundedButton label={"Release Funds"} action={action}/>
-    )
-}
+export const BridgeBurnSubmit = ({ action }) => {
+	return <PrimaryRoundedButton active={false} label={'Release Funds'} action={action} />;
+};

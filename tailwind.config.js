@@ -6,11 +6,12 @@ module.exports = {
       colors: {
         'main-green': '#52B76C',
         'hover-green': '#3D8951',
+        'alert-red': '#CF6679',
       },
       fontFamily: {
-        'header': ['Nexa Bold', 'Helvetica', 'Arial', 'sans-serif'],
-        'caption': ['Nexa Light', 'Helvetica', 'Arial', 'sans-serif'],
-        'sans': ['Nexa Regular', 'Helvetica', 'Arial', 'sans-serif']
+        'header': ['Open Sans', 'Helvetica', 'Arial', 'sans-serif'],
+        'caption': ['Open Sans', 'Helvetica', 'Arial', 'sans-serif'],
+        'sans': ['Open Sans', 'Helvetica', 'Arial', 'sans-serif']
       },
       animation: {
           "jello-horizontal": "jello-horizontal 0.8s ease   both",
