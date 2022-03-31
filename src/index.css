@@ -17,6 +17,41 @@
   src: local('Nexa Regular'), url(./fonts/NexaRegular.otf) format('otf');
 }
 
+.slider {
+  -webkit-appearance: none;
+  width: 50%;
+  height: 15px;
+  background: transparent;
+  outline: none;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0 5px 0 5px;
+}
+
+
+/* for chrome/safari */
+.slider::-webkit-slider-thumb {
+  width: 8px !important;
+  height: 8px !important;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #6ee7b7;
+  border-radius: 100% !important;
+  box-shadow: none !important;
+  cursor: pointer;
+}
+
+
+/* for firefox */
+.slider::-moz-range-thumb {
+  width: 8px;
+  height: 8px;
+  background: #6ee7b7;
+  cursor: pointer;
+  border-radius: 100%;
+}
+
 @layer utilities {
   .animate-delay-xs {
     animation-delay: 150ms;

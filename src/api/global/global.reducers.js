@@ -105,7 +105,9 @@ export const globalBridgeState = {
             controller: null,
             isLoading: false,
             error: null
-
+        },
+        termsAndConditions: {
+            tcSigned: false
         }
     },
     dispatch: (_a) => {}
@@ -171,7 +173,6 @@ export const globalBridgeReducer = (state, action) => {
             let obj = map.get(key)
             let updated = { ...obj, status: action.payload.update }
             map.set(key, updated)
-            console.log(map)
             return { ...state, [action.module]: { ...action.module, [action.effect]: map}}
         
         case "UPDATE_WALLET":
@@ -182,7 +183,14 @@ export const globalBridgeReducer = (state, action) => {
                     ...action.data
                 }
             }
-        
+        case "UPDATE_TC":
+            return {
+                ...state,
+                "termsAndConditions": {
+                    ...state["termsAndConditions"],
+                    ...action.data
+                }
+            }
         default: 
             assertNever(action.type)
     }

@@ -21,7 +21,7 @@ import { TransferEventEmitter } from "../transfer.events";
 export async function handleTransferEvent ( error, mintObject, dispatch ) {
     if ( error ) {
         //TODO handle error with transfer request
-        console.log("An error occurred processing this task", error)
+        console.error("An error occurred processing this task", error)
         return 
     } else {
         let mint = mintObject.mint

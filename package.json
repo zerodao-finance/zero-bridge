@@ -9,7 +9,7 @@
     "start": "react-scripts start",
     "start:dev": "REACT_APP_TEST=true REACT_APP_JSONRPC=http://localhost:8545 REACT_APP_CHAIN=ARBITRUM npm-run-all start",
     "start:arbitrum": "REACT_APP_JSONRPC=https://arbitrum-mainnet.infura.io/v3/816df2901a454b18b7df259e61f92cd2 REACT_APP_CHAIN=ARBITRUM npm-run-all start",
-    "build:css": "tailwindcss -i ./src/index.css -o ./src/app.css --watch"
+    "build:css": "tailwindcss -i ./src/index.css -o ./src/app.css"
   },
   "dependencies": {
     "@babel/core": "^7.16.0",
@@ -57,6 +57,7 @@
     "@types/react-window": "^1.8.5",
     "@types/styled-components": "5.1.15",
     "@walletconnect/web3-provider": "^1.6.6",
+    "@zero-protocol": "https://github.com/zerodao-finance/zero-protocol",
     "accept-language": "^3.0.18",
     "address": "^1.1.2",
     "ast-types": "^0.14.2",
@@ -124,12 +125,12 @@
     "stylis": "^4.0.10",
     "stylis-plugin-rtl": "^2.1.1",
     "stylis-plugin-rtl-sc": "npm:stylis-plugin-rtl@^1.1.0",
+    "uuid": "^8.3.2",
     "web3": "^1.6.1",
     "web3-eth-contract": "^1.6.1",
     "web3modal": "^1.9.4",
     "webfontloader": "^1.6.28",
-    "webpack-bundle-analyzer": "^4.5.0",
-    "@zero-protocol": "https://github.com/zerodao-finance/zero-protocol"
+    "webpack-bundle-analyzer": "^4.5.0"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-constant-elements": "^7.16.0",

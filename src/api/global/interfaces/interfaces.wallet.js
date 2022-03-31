@@ -44,7 +44,7 @@ export const useWalletConnection = () => {
                 })
             }
             catch (err) {
-                console.log(err)
+                console.error(err)
                 dispatch({ type: "FAIL_REQUEST", effect: 'wallet'})
             }
         }
@@ -52,8 +52,6 @@ export const useWalletConnection = () => {
         if (isLoading) {
             call()
         }
-
-        console.log(wallet)
         
     }, [isLoading])
 
