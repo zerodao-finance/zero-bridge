@@ -2,21 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'Nexa Bold';
-  src: local('Nexa Bold'), url(./fonts/Nexa-Bold.otf) format('otf');
-}
-
-@font-face {
-  font-family: 'Nexa Light';
-  src: local('Nexa Light'), url(./fonts/Nexa-Light.otf) format('otf');
-}
-
-@font-face {
-  font-family: 'Nexa Regular';
-  src: local('Nexa Regular'), url(./fonts/NexaRegular.otf) format('otf');
-}
-
 .slider {
   -webkit-appearance: none;
   width: 50%;

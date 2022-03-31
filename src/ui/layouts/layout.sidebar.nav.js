@@ -1,7 +1,7 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { XIcon } from '@heroicons/react/outline'
+import { FaRegWindowClose } from 'react-icons/fa'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { DefaultNavigationSidebar } from '../molecules/navigation/navigation.sidebar.default'
 
@@ -11,7 +11,6 @@ export function LayoutSidebarNavigation({children, changeModule}) {
   return (
     <>  
         <div className={`w-min dark:text-white right-0 absolute md:hidden items-center gap-2 capitalize font-light text-lg z-[50] ${open ? 'hidden' : 'flex'}`} onClick={() => setOpen(true)}>
-            <span className="text-sm">menu</span>
             <AiOutlineMenu />
         </div>
         <DefaultNavigationSidebar changeModule={changeModule}/>
@@ -46,14 +45,7 @@ export function LayoutSidebarNavigation({children, changeModule}) {
                         <div className="flex items-start justify-between">
                         <Dialog.Title className="text-lg font-medium text-gray-900"> Menu </Dialog.Title>
                         <div className="ml-3 flex h-7 items-center">
-                            <button
-                            type="button"
-                            className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                            onClick={() => setOpen(false)}
-                            >
-                            <span className="sr-only">Close panel</span>
-                            <XIcon className="h-6 w-6 dark:bg-main-green" aria-hidden="true" />
-                            </button>
+                            <FaRegWindowClose className='cursor-pointer' onClick={() => setOpen(false)} />
                         </div>
                         </div>
                     </div>
