@@ -17,8 +17,9 @@ export const useEvents = () => {
      }, 1);
 
 
-    const transferCallback = ( mint, transferRequest ) => {
-        return new MintQueueObject(mint, queue, transferRequest, dispatch)
+    const transferCallback = async ( mint, transferRequest ) => {
+        const data = await transferRequest;
+        return new MintQueueObject(mint, queue, data, dispatch)
     }
 
     useEffect(() => {
@@ -41,7 +42,7 @@ class MintQueueObject {
         this.queue = queue
         this.dispatch = dispatch
         this.date = Date.now()
-        this.key = hash(data)
+        this.key = hash(JSON.stringify(data))
         this.data = {data: JSON.stringify(data), date: this.date, status: this.status}
         this.storeObject()
     }

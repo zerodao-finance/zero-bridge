@@ -24,13 +24,13 @@ export const BridgeGatewayConfirmation = ({transferRequest, gatewayAddress}) => 
                     </div>
                     <div className="flex flex-col items-start pr-2">
                         <span className="truncate max-w-[80px]">
-                            {0.001 + ethers.utils.formatUnits(ethers.BigNumber.from(transferRequest.amount), 8 ) * .15}
+                            {ethers.utils.formatUnits(ethers.BigNumber.from(transferRequest.amount), 8 ) * .002}
                         </span >
                         <span className="truncate max-w-[80px]">
-                            {0.0015 + ethers.utils.formatUnits(ethers.BigNumber.from(transferRequest.amount), 8 ) * .3}
+                            {+ ethers.utils.formatUnits(ethers.BigNumber.from(transferRequest.amount), 8 ) * .003}
                         </span>
                         <span className="truncate max-w-[80px]">
-                            {ethers.utils.formatUnits(ethers.BigNumber.from(transferRequest.amount), 8 ) * .04}
+                            {ethers.utils.formatUnits(ethers.BigNumber.from(transferRequest.amount), 8 ) * .0004}
                         </span>
                     </div>
                 </div>
