@@ -10,6 +10,7 @@ export const usePriceFeedContracts = () => {
     const { state, dispatch } = useContext(storeContext)
     const { network } = state
     const { priceFeedContract } = network
+    const { wallet: {address} } = state
     
     const getBtcEthPrice = (network) => (new Promise( async (resolve, reject) => {
         let x = await _.attempt(network.priceFeedContract.get_dy, 1, 2, ethers.utils.parseUnits("1", 8))
@@ -60,5 +61,5 @@ export const usePriceFeedContracts = () => {
             }
         }
         
-    }, [network.priceFeedContract])
+    }, [network.priceFeedContract, address])
 }

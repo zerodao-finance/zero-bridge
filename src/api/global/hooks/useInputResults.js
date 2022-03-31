@@ -11,7 +11,7 @@ export const useInputResults = (input, module) => {
     useEffect(() => {
         const call = () => {
             try {
-                var valueRenBTC = ethers.utils.formatUnits(
+                var valueRenBTC = parseFloat(ethers.utils.formatUnits(
                     ln (
                         ethers.utils
                             .parseEther("1")
@@ -24,10 +24,10 @@ export const useInputResults = (input, module) => {
                     .mul(ethers.utils.parseUnits(String(input.amount), 8))
                     .div(ethers.utils.parseEther("1")),
                     8
-                )
+                )).toFixed(4)
 
-
-                var valueETH = ethers.utils.formatEther(
+                                    
+                var valueETH = parseFloat(ethers.utils.formatEther(
                     ethers.BigNumber.from(String(input.ratio))
                     .mul(ethers.utils.parseEther("0.01"))
                     .mul(
@@ -37,7 +37,14 @@ export const useInputResults = (input, module) => {
                     )
                     .div(ethers.utils.parseEther("1", 18))
                     .div(ethers.utils.parseUnits("1", 8))
-                )
+                )).toFixed(5)
+                
+                if ( parseFloat(valueETH) > 0 && parseFloat(valueETH) < 0.0001 ) {
+                    valueETH = "< 0.0001"
+                } else {
+                    valueETH = parseFloat(valueETH).toFixed(4)
+                }
+                console.log("value eth:", valueETH, typeof valueETH)
 
 
                 dispatch({type: "UPDATE", module: module, effect: "display", data: { ETH: valueETH, renBTC: valueRenBTC} })
