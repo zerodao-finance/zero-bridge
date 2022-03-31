@@ -1339,10 +1339,6 @@ input:checked + .toggle-bg {
   max-width: fit-content;
 }
 
-.max-w-\[5rem\] {
-  max-width: 5rem;
-}
-
 .max-w-\[25rem\] {
   max-width: 25rem;
 }
@@ -2384,6 +2380,20 @@ input:checked + .toggle-bg {
   background: #6ee7b7;
   cursor: pointer;
   border-radius: 100%;
+}
+
+/* Chrome, Safari, Edge, Opera */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
