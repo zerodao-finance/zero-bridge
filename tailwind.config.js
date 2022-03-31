@@ -1,5 +1,5 @@
 module.exports = {
-  content: ["./src/**/*.{js,jsx}"],
+  content: ["./src/**/*.{js,jsx}", "./node_modules/flowbite/**/*.js"],
   darkMode: 'class',
   theme: {
     extend: {
@@ -164,5 +164,6 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/forms'),
+    require('flowbite/plugin')
   ],
 }
