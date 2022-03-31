@@ -2,21 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'Nexa Bold';
-  src: local('Nexa Bold'), url(./fonts/Nexa-Bold.otf) format('otf');
-}
-
-@font-face {
-  font-family: 'Nexa Light';
-  src: local('Nexa Light'), url(./fonts/Nexa-Light.otf) format('otf');
-}
-
-@font-face {
-  font-family: 'Nexa Regular';
-  src: local('Nexa Regular'), url(./fonts/NexaRegular.otf) format('otf');
-}
-
 .slider {
   -webkit-appearance: none;
   width: 50%;
@@ -50,6 +35,18 @@
   background: #6ee7b7;
   cursor: pointer;
   border-radius: 100%;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 @layer utilities {
