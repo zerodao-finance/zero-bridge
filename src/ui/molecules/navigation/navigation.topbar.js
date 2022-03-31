@@ -19,7 +19,7 @@ export const NavigationTopBar = ({}) => {
                 <img src="/ZDBeta_logo-02.svg" alt="image" className="h-[40px] md:h-[70px] dark:hidden" />
             </div>
             <div id="content" className="flex flex-row items-center gap-3">
-                <PrimaryOutlinedButton label={wallet.address ? truncateAddress(wallet.address) : "Connect"} action={wallet.address ? disconnect : connect}/>
+                <PrimaryOutlinedButton label={wallet.address ? truncateAddress(wallet.address).toUpperCase() : "CONNECT"} action={wallet.address ? disconnect : connect}/>
                 <NetworkIndicator keeper={keeper}/>
             </div>
         </nav>

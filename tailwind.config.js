@@ -3,6 +3,10 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      colors: {
+        'main-green': '#52B76C',
+        'hover-green': '#3D8951',
+      },
       fontFamily: {
         'header': ['Nexa Bold', 'Helvetica', 'Arial', 'sans-serif'],
         'caption': ['Nexa Light', 'Helvetica', 'Arial', 'sans-serif'],

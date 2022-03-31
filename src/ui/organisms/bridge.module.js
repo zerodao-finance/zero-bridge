@@ -20,7 +20,7 @@ export const BridgeModule = ({ wallet, mode, toggleMode }) => {
 				<div
 					className={`py-[10px] rounded-tl-[30px] cursor-pointer ${
 						mode === 'transfer'
-							? 'bg-emerald-300 text-black font-bold'
+							? 'bg-main-green text-black font-bold'
 							: 'text-black dark:text-white'
 					}`}
 					onClick={() => toggleMode('transfer')}
@@ -30,8 +30,8 @@ export const BridgeModule = ({ wallet, mode, toggleMode }) => {
 				<div
 					className={`py-[10px] rounded-tr-[30px] cursor-pointer ${
 						mode === 'release'
-							? 'bg-emerald-300 text-black font-bold'
-							: 'text-black dark:text-white'
+							? 'bg-main-green text-black font-bold'
+							: 'text-black hover-green dark:text-white'
 					}`}
 					onClick={() => toggleMode('release')}
 				>
