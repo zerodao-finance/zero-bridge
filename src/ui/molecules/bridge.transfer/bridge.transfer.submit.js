@@ -8,11 +8,10 @@ export const BridgeTransferSubmit = ({action}) => {
     const { amount } = getTransferInputProps()
 
     const isActive = () => { 
-        console.log("amount:", amount)
         return keeper.length > 0 && amount > 0;
     }
 
     return (
-        <PrimaryRoundedButton active={isActive() > 0 ? true : false} label={isActive() ? "Transfer Funds" : keeper.length > 0 ? "Input Valid Amount" : "Awaiting Keeper"} action={action}/>
+            <PrimaryRoundedButton  active={isActive() ? true : false} label={isActive() ? "Transfer Funds" : keeper.length > 0 ? "Input Valid Amount" : "Awaiting Keeper"} action={action}/>
     )
 }
