@@ -16,7 +16,7 @@ export const BridgeGatewayConfirmation = ({transferRequest, gatewayAddress}) => 
                     <p>Reminder: deposit the exact amount of BTC indicated to the deposit address</p>
                 </div>
                 <div id="fee_data" className="flex flex-row justify-center items-center gap-5 text-[13px] text-gray-700 dark:text-gray-300">
-                    <p className="text-[14px] text-red-700 dark:text-red-500">Fees Breakdown</p> 
+                    <p className="text-[14px] text-red-700 dark:text-alert-red">Fees Breakdown</p> 
                     <div className="flex flex-col items-end pr-5 border-r-[1px] border-black">
                         <span>RenVM Fee:</span> 
                         <span>Zero Fee:</span> 

@@ -23,7 +23,7 @@ export const BridgeTransferInput = ({ amount, effect, tokenPrice }) => {
             </div>
             <DefaultInput value={amount} onChange={effect}/>
         </div>
-        <div className=" xl:mr-5 italic font-light tracking-wider w-full text-right text-[10px] text-main-green">
+        <div className=" xl:mr-5 italic tracking-wider w-full text-right text-[10px] text-main-green">
             ~ { tokenPrice && formatter.format(amount * ethers.utils.formatUnits(tokenPrice, 6)) }
         </div> 
     </div> 
