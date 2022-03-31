@@ -41,7 +41,7 @@ export function LayoutSidebarNavigation({children, changeModule}) {
                 leaveTo="translate-x-full"
                 >
                 <div className="pointer-events-auto w-screen max-w-md">
-                    <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl rounded-l-lg dark:bg-emerald-300">
+                    <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl rounded-l-lg dark:bg-main-green">
                     <div className="px-4 sm:px-6">
                         <div className="flex items-start justify-between">
                         <Dialog.Title className="text-lg font-medium text-gray-900"> Menu </Dialog.Title>
@@ -52,7 +52,7 @@ export function LayoutSidebarNavigation({children, changeModule}) {
                             onClick={() => setOpen(false)}
                             >
                             <span className="sr-only">Close panel</span>
-                            <XIcon className="h-6 w-6 dark:bg-emerald-300" aria-hidden="true" />
+                            <XIcon className="h-6 w-6 dark:bg-main-green" aria-hidden="true" />
                             </button>
                         </div>
                         </div>

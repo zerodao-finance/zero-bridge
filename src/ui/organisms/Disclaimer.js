@@ -456,7 +456,7 @@ export const Disclaimer = () => {
 					<button
 						className={
 							read
-								? `capitalize px-5 py-3 bg-emerald-300 m-4 hover:border-4 border-black hover:bg-emerald-400 transition-all duration-150`
+								? `capitalize px-5 py-3 bg-emerald-300 m-4 hover:border-4 border-black hover:bg-hover-green transition-all duration-150`
 								: 'capitalize px-5 py-3 bg-gray-300 m-4 '
 						}
 						onClick={() => sign()}

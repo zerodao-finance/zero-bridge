@@ -24,7 +24,7 @@ export const BridgeBurnInput = ({ amount, effect, tokenPrice }) => {
             </div>
             <DefaultInput value={amount} onChange={effect}/>
         </div>
-        <div className=" xl:mr-5 italic font-light tracking-wider w-full text-right text-[10px] text-emerald-500">
+        <div className=" xl:mr-5 italic font-light tracking-wider w-full text-right text-[10px] text-main-green">
             ~ USD { tokenPrice && formatter.format(amount * ethers.utils.formatUnits(tokenPrice, 6)) }
         </div> 
     </div> 
