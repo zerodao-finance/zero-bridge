@@ -10,7 +10,6 @@ export const NavigationTopBar = ({}) => {
 	const { connect, disconnect, wallet, isLoading } = useWalletConnection();
 	const { keeper } = useZero();
 	const { themeMode, toggleScreenMode } = useScreenMode();
-    console.log('theme mode:', themeMode)
 
 	function truncateAddress(address) {
 		return address.slice(0, 6) + '...' + address.slice(-4);
@@ -23,12 +22,23 @@ export const NavigationTopBar = ({}) => {
 				<img src="/ZDBeta_logo-02.svg" alt="image" className="h-[40px] md:h-[70px] dark:hidden" />
 			</div>
 			<div id="content" className="flex flex-row items-center gap-3">
-				<div className="flex flex-row justify-center self-center cursor-pointer" onClick={() => toggleScreenMode()}>
-					<FaSun className={`${themeMode == 'dark' ? 'block' : 'hidden'} w-fit h-[24px] w-[24px] pr-2 fill-main-green`}/>
-					<FaMoon className={`${themeMode == 'dark' ? 'hidden' : 'block'} w-fit h-[24px] w-[24px] pr-2 fill-main-green`} />
+				<div
+					className="flex flex-row justify-center self-center cursor-pointer"
+					onClick={() => toggleScreenMode()}
+				>
+					<FaSun
+						className={`${
+							themeMode == 'dark' ? 'block' : 'hidden'
+						} w-fit h-[24px] w-[24px] pr-2 fill-main-green`}
+					/>
+					<FaMoon
+						className={`${
+							themeMode == 'dark' ? 'hidden' : 'block'
+						} w-fit h-[24px] w-[24px] pr-2 fill-main-green`}
+					/>
 				</div>
 				<PrimaryRoundedButton
-                    className="w-fit"
+					className="w-fit"
 					active={true}
 					label={wallet.address ? truncateAddress(wallet.address).toUpperCase() : 'CONNECT'}
 					action={wallet.address ? disconnect : connect}
