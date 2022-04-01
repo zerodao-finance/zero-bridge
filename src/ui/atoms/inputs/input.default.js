@@ -6,7 +6,7 @@ export const DefaultInput = ({ value, onChange, onClick }) => {
 		<div className="w-full text-right p-2">
 			<input
 				id="transfer-amount"
-				className="dark:bg-gray-600 dark:text-white form-input text-right border-0 focus:ring-0 text-md font-medium text-gray-600 bg-transparent caret-green-500 z-40 w-full rounded-xl bg-gray-200"
+				className="dark:text-white form-input !outline-offset-0 !outline-1 text-right bg-transparent border !border-gray-600 focus:!border-[#2D9548] focus:!outline-[#2D9548] dark:focus:!border-[#2D9548] dark:!border-white focus:ring-0 text-md font-medium text-gray-600 z-40 w-full rounded-xl"
 				type="number"
 				min="0"
 				value={value}

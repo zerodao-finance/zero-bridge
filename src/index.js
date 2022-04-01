@@ -20,12 +20,8 @@ Object.keys(process.env).forEach((key) => {
 
 ReactDOM.render(
   <React.StrictMode className="">
-    {/* <StateProvider>
-        <Dashboard />
-    </StateProvider> */}
     <NotificationProvider >
       <StateProvider>
-        {/* <TestComponent /> */}
         <DashboardPage/>
       </StateProvider>   
     </NotificationProvider>

@@ -19,7 +19,7 @@ export const NotificationContainer = ({card}) => {
                 {
                     card.reverse().map(i => {
                         return (
-                            <div key={i.id} className="my-3 z-[100]">
+                            <div key={i.id} className="container relative mb-2">
                                 { renderItem({...i, dispatch: cardDispatch})}
                             </div>
                         )

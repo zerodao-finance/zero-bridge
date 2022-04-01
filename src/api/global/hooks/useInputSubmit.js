@@ -48,7 +48,6 @@ export const useInputSubmit = (module) => {
         try {
             await transfer.submitTX()
         } catch (e) {
-            console.error('did catch error:', e)
             dispatch({type: "RESET_REQUEST", effect: 'transfer'})
         }
     }

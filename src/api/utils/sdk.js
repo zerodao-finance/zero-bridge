@@ -61,14 +61,14 @@ export class sdkTransfer {
         } catch (err) {
             // handle signing error
             this.Notification.createCard(5000, "error", { message: "Failed! Must sign Transaction"})
-            return
+            throw new Error('Failed to sign transaction')
         }   
 
         try {
             await transferRequest.dry(this.signer, { from: TEST_KEEPER_ADDRESS})
         } catch ( err ) {
-            this.Notification.createCard(5000, "error", { message: "Double check your input value"})
-            return
+            this.Notification.createCard(5000, "error", { message: `Error Processing Transaction: ${err}`})
+            throw new Error('Dry failed to run')
         }
 
 
@@ -82,7 +82,8 @@ export class sdkTransfer {
             this.Emitter.emit("transfer", mint, transferRequest)
             return
         } catch (error) {
-            return this.Notification.createCard(5000, "error", {message: "Error Publishing Transaction"})
+            this.Notification.createCard(5000, "error", {message: `Error Publishing Transaction: ${err}`})
+            throw new Error('Error publishing transaction')
         }
 
         // handle publish transfer request 
