@@ -1,31 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
-import './app.css';
+import './app.css'
 import 'react-toastify/dist/ReactToastify.min.css';
-import { StateProvider } from './api/global';
-import { TestUI } from './ui/test';
-import { NotificationProvider } from './api/notification/NotificationContext';
+import { StateProvider } from './api/global'
+import { TestUI } from './ui/test'
+import { NotificationsProvider } from './api/notification/NotificationContext';
 
-Object.keys(process.env).forEach(key => {
-	const match = key.match(/REACT_APP_(.*$)/);
-	if (match) {
-		process.env[match[1]] = process.env[key];
-	}
+Object.keys(process.env).forEach((key) => {
+  const match = key.match(/REACT_APP_(.*$)/);
+  if (match) {
+    process.env[match[1]] = process.env[key];
+  }
 });
 
+
+
 ReactDOM.render(
-	<React.StrictMode className="">
-		{/* <StateProvider>
+  <React.StrictMode className="">
+    {/* <StateProvider>
         <Dashboard />
     </StateProvider> */}
-		<NotificationProvider>
-			<StateProvider>
-				<TestUI />
-			</StateProvider>
-		</NotificationProvider>
-	</React.StrictMode>,
-	document.getElementById('root')
+    <NotificationsProvider >
+    <StateProvider>
+      <TestUI/>
+    </StateProvider>   
+    </NotificationsProvider>
+  </React.StrictMode>,
+  document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function
