@@ -12,7 +12,8 @@ export class sdkTransfer {
         to,
         isFast,
         TransferEventEmitter,
-        StateHelper,        
+        StateHelper,
+        Notification,        
         _data
     ) {
         this.isFast = isFast;
@@ -21,6 +22,7 @@ export class sdkTransfer {
         this.signer = signer;
         this.Emitter = TransferEventEmitter
         this.StateHelper = StateHelper
+        this.Notification = Notification
         
         // initialize Transfer Request Object
 
@@ -58,15 +60,15 @@ export class sdkTransfer {
             this.StateHelper.update("transfer", "mode", { mode: "waitingDry" })
         } catch (err) {
             // handle signing error
-            console.error("submit tx error", err)
-            throw new Error("Failed to sign request")
+            this.Notification.createCard(5000, "error", { message: "Failed! Must sign Transaction"})
+            return
         }   
 
         try {
             await transferRequest.dry(this.signer, { from: TEST_KEEPER_ADDRESS})
         } catch ( err ) {
-            console.error(err)
-            return new Error("Transaction will fail")
+            this.Notification.createCard(5000, "error", { message: "Double check your input value"})
+            return
         }
 
 
@@ -80,8 +82,7 @@ export class sdkTransfer {
             this.Emitter.emit("transfer", mint, transferRequest)
             return
         } catch (error) {
-            console.error('Error submitting transaction: ', error);
-            throw new Error("Error publishing transfer request")
+            return this.Notification.createCard(5000, "error", {message: "Error Publishing Transaction"})
         }
 
         // handle publish transfer request 

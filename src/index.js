@@ -5,7 +5,9 @@ import './app.css'
 import 'react-toastify/dist/ReactToastify.min.css';
 import { StateProvider } from './api/global'
 import { TestUI } from './ui/test'
-import { NotificationProvider } from './api/notification/NotificationContext'
+import { TestComponent } from './ui/testing/index'
+import { NotificationProvider } from './api/notification/index'
+import { DashboardPage } from './ui/pages/dashboard'
 
 Object.keys(process.env).forEach((key) => {
   const match = key.match(/REACT_APP_(.*$)/);
@@ -22,9 +24,10 @@ ReactDOM.render(
         <Dashboard />
     </StateProvider> */}
     <NotificationProvider >
-    <StateProvider>
-      <TestUI/>
-    </StateProvider>   
+      <StateProvider>
+        {/* <TestComponent /> */}
+        <DashboardPage/>
+      </StateProvider>   
     </NotificationProvider>
   </React.StrictMode>,
   document.getElementById('root')

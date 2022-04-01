@@ -32,11 +32,11 @@ export const DashboardLayout = () => {
                         </LayoutSidebarNavigation>
                     </div> 
                 </div>
-                <div className="absolute top-[4rem]">
+                {/* <div className="absolute top-[4rem]">
                     <TopLeftCardLayout >
                         <NotificationTransferCard />
                     </TopLeftCardLayout>
-                </div>
+                </div> */}
                 <div className="flex flex-col w-fit ml-auto mr-auto">
                     <p className="pb-[.5rem] opacity-60 text-center font-bold dark:text-white">{getTitle()}</p>
                     <div className="flex flex-row row-[span_8_/_span_8] justify-center items-center isolate" id="hero">
