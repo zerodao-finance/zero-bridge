@@ -1766,6 +1766,11 @@ input:checked + .toggle-bg {
   border-color: rgb(207 102 121 / var(--tw-border-opacity));
 }
 
+.\!border-gray-600 {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(75 85 99 / var(--tw-border-opacity)) !important;
+}
+
 .border-green-300 {
   --tw-border-opacity: 1;
   border-color: rgb(132 225 188 / var(--tw-border-opacity));
@@ -1835,9 +1840,9 @@ input:checked + .toggle-bg {
   background-color: rgb(156 163 175 / var(--tw-bg-opacity));
 }
 
-.bg-gray-50 {
+.bg-gray-100 {
   --tw-bg-opacity: 1;
-  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
 .bg-slate-100 {
@@ -1883,11 +1888,6 @@ input:checked + .toggle-bg {
 .bg-blue-700 {
   --tw-bg-opacity: 1;
   background-color: rgb(26 86 219 / var(--tw-bg-opacity));
-}
-
-.bg-gray-100 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
 .bg-white\/50 {
@@ -2293,10 +2293,6 @@ input:checked + .toggle-bg {
   text-decoration-thickness: 2px;
 }
 
-.caret-green-500 {
-  caret-color: #0E9F6E;
-}
-
 .opacity-0 {
   opacity: 0;
 }
@@ -2351,6 +2347,14 @@ input:checked + .toggle-bg {
 
 .outline {
   outline-style: solid;
+}
+
+.\!outline-1 {
+  outline-width: 1px !important;
+}
+
+.\!outline-offset-0 {
+  outline-offset: 0px !important;
 }
 
 .ring-\[1px\] {
@@ -2590,9 +2594,18 @@ code {
   text-decoration-line: underline;
 }
 
+.focus\:\!border-\[\#2D9548\]:focus {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(45 149 72 / var(--tw-border-opacity)) !important;
+}
+
 .focus\:outline-none:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+
+.focus\:\!outline-\[\#2D9548\]:focus {
+  outline-color: #2D9548 !important;
 }
 
 .focus\:ring-0:focus {
@@ -2637,6 +2650,11 @@ code {
 
 .dark .dark\:hidden {
   display: none;
+}
+
+.dark .dark\:\!border-white {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity)) !important;
 }
 
 .dark .dark\:border-white {
@@ -2828,6 +2846,11 @@ code {
 .dark .dark\:hover\:text-gray-300:hover {
   --tw-text-opacity: 1;
   color: rgb(209 213 219 / var(--tw-text-opacity));
+}
+
+.dark .dark\:focus\:\!border-\[\#2D9548\]:focus {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(45 149 72 / var(--tw-border-opacity)) !important;
 }
 
 @media (min-width: 640px) {
