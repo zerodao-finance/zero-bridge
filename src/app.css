@@ -1334,6 +1334,10 @@ input:checked + .toggle-bg {
   width: 83.333333%;
 }
 
+.w-\[55px\] {
+  width: 55px;
+}
+
 .w-\[90px\] {
   width: 90px;
 }
