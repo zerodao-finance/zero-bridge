@@ -61,14 +61,14 @@ export class sdkTransfer {
         } catch (err) {
             // handle signing error
             this.Notification.createCard(5000, "error", { message: "Failed! Must sign Transaction"})
-            return
+            return new Error('Failed to sign transaction')
         }   
 
         try {
             await transferRequest.dry(this.signer, { from: TEST_KEEPER_ADDRESS})
         } catch ( err ) {
-            this.Notification.createCard(5000, "error", { message: "Double check your input value"})
-            return
+            this.Notification.createCard(5000, "error", { message: `Error processing transaction: ${err}`})
+            return new Error('Dry failed to run')
         }
 
 
