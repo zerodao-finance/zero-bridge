@@ -12,7 +12,6 @@ export const useZero = () => {
         if (process.env.REACT_APP_TEST) {
           await createMockKeeper()
           await enableGlobalMockRuntime()
-            console.log('enabled mocks');
         }
     });
 

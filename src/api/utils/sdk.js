@@ -1,5 +1,5 @@
-import { ethers } from 'ethers'
-import { deployments, deploymentsFromSigner } from './zero'
+import { ethers } from 'ethers';
+import { deployments, deploymentsFromSigner } from './zero';
 import { UnderwriterTransferRequest, UnderwriterBurnRequest } from '@zero-protocol/dist/lib/zero';
 import { TEST_KEEPER_ADDRESS } from '@zero-protocol/dist/lib/mock';
 
@@ -119,57 +119,45 @@ export class sdkTransfer {
     
 }
 
-
 export class sdkBurn {
-    constructor ( 
-        zeroUser,
-        amount, 
-        to,
-        deadline,
-        signer,
-        destination,
-        StateHelper
-        ) {
-            this.signer = signer
-            this.StateHelper = StateHelper
-            this.zeroUser = zeroUser
-            this.BurnRequest = ( async function(){
-                const contracts = await deploymentsFromSigner(signer)  
-                const value = ethers.utils.parseUnits(String(amount), 8)
-                const asset = '0xDBf31dF14B66535aF65AaC99C32e9eA844e14501'
+	constructor(zeroUser, amount, to, deadline, signer, destination, StateHelper) {
+		this.signer = signer;
+		this.StateHelper = StateHelper;
+		this.zeroUser = zeroUser;
+		this.BurnRequest = (async function () {
+			const contracts = await deploymentsFromSigner(signer);
+			const value = ethers.utils.parseUnits(String(amount), 8);
+			const asset = '0xDBf31dF14B66535aF65AaC99C32e9eA844e14501';
 
+			return new UnderwriterBurnRequest({
+				owner: to,
+				underwriter: contracts.DelegateUnderwriter.address,
+				asset: asset,
+				amount: value,
+				deadline: deadline,
+				destination: destination,
+				contractAddress: contracts.ZeroController.address
+			});
+		})();
+	}
 
-                return new UnderwriterBurnRequest({
-                    owner: to,
-                    underwriter: contracts.DelegateUnderwriter.address,
-                    asset: asset,
-                    amount: value,
-                    deadline: deadline,
-                    destination: destination,
-                    contractAddress: contracts.ZeroController.address,
-                })
+	async call() {
+		const BurnRequest = await this.BurnRequest;
+		const contracts = await deploymentsFromSigner(this.signer);
 
-            })()
-        }
+		//sign burn request
+		try {
+			await BurnRequest.sign(this.signer, contracts.ZeroController.address);
+		} catch (error) {
+			console.error(error);
+			//handle signature error
+		}
 
-        async call () {
-            const BurnRequest = await this.BurnRequest
-            const contracts = await deploymentsFromSigner(this.signer)
-            
-
-            //sign burn request
-            try {
-                await BurnRequest.sign(this.signer, contracts.ZeroController.address)
-            } catch (error) {
-                console.log(error)
-                //handle signature error
-            }
-
-            //publishBurnRequest
-            try {
-                this.zeroUser.publishBurnRequest(BurnRequest)
-            } catch (error) {
-                console.log(error)
-            }
-        }
+		//publishBurnRequest
+		try {
+			this.zeroUser.publishBurnRequest(BurnRequest);
+		} catch (error) {
+			console.error(error);
+		}
+	}
 }

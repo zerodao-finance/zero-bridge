@@ -5,9 +5,13 @@ import './app.css'
 import 'react-toastify/dist/ReactToastify.min.css';
 import { StateProvider } from './api/global'
 import { TestUI } from './ui/test'
+<<<<<<< HEAD
 import { TestComponent } from './ui/testing/index'
 import { NotificationProvider } from './api/notification/index'
 import { DashboardPage } from './ui/pages/dashboard'
+=======
+import { NotificationsProvider } from './api/notification/NotificationContext';
+>>>>>>> 1234ddf5a656babae67605e525500fd362717ddd
 
 Object.keys(process.env).forEach((key) => {
   const match = key.match(/REACT_APP_(.*$)/);
