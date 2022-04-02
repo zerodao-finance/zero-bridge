@@ -2,7 +2,7 @@ import { DefaultInput } from '../../atoms/inputs/input.default'
 import { FaEthereum } from 'react-icons/fa'
 import { ethers } from 'ethers'
 
-export const BridgeBurnInput = ({ amount, effect, tokenPrice }) => {
+export const BridgeBurnInput = ({ destination, amount, updateDestination, effect, tokenPrice }) => {
 
     var formatter = new Intl.NumberFormat('en-US', {
         style: "currency",
@@ -10,7 +10,7 @@ export const BridgeBurnInput = ({ amount, effect, tokenPrice }) => {
     })
 
 
-    return (
+    return (<>
         <div className="w-fit self-center px-0 py-0 scale-[0.8] md:scale-[1]">
         <div className="w-fit flex items-center justify-between gap-10 dark:bg-gray-600 bg-gray-100 px-2 rounded-2xl">
             <div>
@@ -28,5 +28,11 @@ export const BridgeBurnInput = ({ amount, effect, tokenPrice }) => {
             ~ { tokenPrice && formatter.format(amount * ethers.utils.formatUnits(tokenPrice, 6)) }
         </div> 
     </div> 
-    )
+        <div className="w-fit self-center px-0 py-0 scale-[0.8] md:scale-[1]">
+        <div className="w-fit flex items-center justify-between gap-10 dark:bg-gray-600 bg-gray-100 px-2 rounded-2xl">
+            <DefaultInput value={destination} onChange={updateDestination} type={ 'text' }/>
+        </div>
+    </div> 
+    
+    </>)
 }

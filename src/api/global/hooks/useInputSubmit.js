@@ -54,17 +54,19 @@ export const useInputSubmit = (module) => {
 
 
     async function sendBurnRequest() {
+	    console.log('sendBurnRequest');
         const StateHelper = new GlobalStateHelper(state, dispatch)
         StateHelper.update("burn","mode",{mode: "showSigning"})
+	    console.log(input);
         var signer = await getSigner
         var to = await signer.getAddress()
         var zeroUser = zero.zeroUser
         var amount = input.amount
         var deadline = ethers.constants.MaxUint256
-        var destination = ethers.utils.hexlify(ethers.utils.base58.decode('36c5pSLZ4J11EiyaXuYfJypNzrufYVJ5Qd'))
+	    console.log(input.destination);
 
 
-        const transfer = new sdkBurn(zeroUser, amount, to, deadline, signer, destination)
+        const transfer = new sdkBurn(zeroUser, amount, to, deadline, signer, input.destination)
         await transfer.call()
         
     }

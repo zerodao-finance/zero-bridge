@@ -46,6 +46,7 @@ export const globalBridgeState = {
         burn: {
             input: {
                 amount: '0',
+		destination: '',
                 isLoading: false,
                 error: null
             }

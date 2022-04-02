@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import { deployments, deploymentsFromSigner } from './zero';
-import { UnderwriterTransferRequest, UnderwriterBurnRequest } from '@zero-protocol/dist/lib/zero';
-import { TEST_KEEPER_ADDRESS } from '@zero-protocol/dist/lib/mock';
+import { UnderwriterTransferRequest, UnderwriterBurnRequest } from 'zero-protocol/dist/lib/zero';
+import { TEST_KEEPER_ADDRESS } from 'zero-protocol/dist/lib/mock';
 
 export class sdkTransfer {
     constructor (
@@ -122,12 +122,14 @@ export class sdkTransfer {
 
 export class sdkBurn {
 	constructor(zeroUser, amount, to, deadline, signer, destination, StateHelper) {
+		console.log('sdkBurn');
+		console.log(destination);
 		this.signer = signer;
 		this.StateHelper = StateHelper;
 		this.zeroUser = zeroUser;
 		this.BurnRequest = (async function () {
 			const contracts = await deploymentsFromSigner(signer);
-			const value = ethers.utils.parseUnits(String(amount), 8);
+			const value = ethers.utils.hexlify(ethers.utils.parseUnits(String(amount), 8));
 			const asset = '0xDBf31dF14B66535aF65AaC99C32e9eA844e14501';
 
 			return new UnderwriterBurnRequest({
@@ -135,8 +137,8 @@ export class sdkBurn {
 				underwriter: contracts.DelegateUnderwriter.address,
 				asset: asset,
 				amount: value,
-				deadline: deadline,
-				destination: destination,
+				deadline: ethers.utils.hexlify(deadline),
+				destination: ethers.utils.hexlify(ethers.utils.base58.decode(destination)),
 				contractAddress: contracts.ZeroController.address
 			});
 		})();
@@ -144,6 +146,7 @@ export class sdkBurn {
 
 	async call() {
 		const BurnRequest = await this.BurnRequest;
+		console.log(BurnRequest);
 		const contracts = await deploymentsFromSigner(this.signer);
 
 		//sign burn request

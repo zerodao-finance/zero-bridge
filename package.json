@@ -57,7 +57,7 @@
     "@types/react-window": "^1.8.5",
     "@types/styled-components": "5.1.15",
     "@walletconnect/web3-provider": "^1.6.6",
-    "@zero-protocol": "https://github.com/zerodao-finance/zero-protocol",
+    "zero-protocol": "https://github.com/zerodao-finance/zero-protocol",
     "accept-language": "^3.0.18",
     "address": "^1.1.2",
     "ast-types": "^0.14.2",

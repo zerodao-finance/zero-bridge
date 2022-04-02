@@ -11,15 +11,21 @@ export const useBridgeBurnInput = () => {
     const { sendBurnRequest } = useInputSubmit('burn')
     const { input } = state.burn
 
+    const { amount, destination } = input
     const updateAmount = (e) => {
-        dispatch({ type: "UPDATE", module: "burn", effect: "input", data: { amount: e.target.value}})
+        dispatch({ type: "UPDATE", module: "burn", effect: "input", data: { amount: e.target.value, destination }})
     }    
+    const updateDestination = (e) => {
+        dispatch({ type: "UPDATE", module: "burn", effect: "input", data: { destination: e.target.value, amount }})
+    };
 
-    const { amount } = input
     const getBridgeBurnInputProps = ({...otherProps} = {}) => ({
         amount: amount,
+        destination: destination,
         tokenPrice: eth_usd,
-        effect: updateAmount
+        effect: updateAmount,
+        updateAmount,
+	updateDestination
     })
 
     const getBurnSenderProps = ({...otherProps} = {}) => ({

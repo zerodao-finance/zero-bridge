@@ -1,4 +1,4 @@
-export const DefaultInput = ({ value, onChange, onClick }) => {
+export const DefaultInput = ({ value, onChange, type, onClick }) => {
 	if (!value) {
 		value = 0;
 	}
@@ -7,7 +7,7 @@ export const DefaultInput = ({ value, onChange, onClick }) => {
 			<input
 				id="transfer-amount"
 				className="dark:text-white form-input !outline-offset-0 !outline-1 text-right bg-transparent border !border-gray-600 focus:!border-[#2D9548] focus:!outline-[#2D9548] dark:focus:!border-[#2D9548] dark:!border-white focus:ring-0 text-md font-medium text-gray-600 z-40 w-full rounded-xl"
-				type="number"
+				type={ type || 'number' }
 				min="0"
 				value={value}
 				onChange={onChange}

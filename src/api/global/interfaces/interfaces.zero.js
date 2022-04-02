@@ -1,8 +1,8 @@
 import { storeContext } from '../global'
 import { useContext, useEffect, useState, useMemo } from 'react'
 import { ethers } from 'ethers'
-import { createZeroUser, createZeroConnection } from '@zero-protocol/dist/lib/zero.js'
-import { enableGlobalMockRuntime, createMockKeeper } from '@zero-protocol/dist/lib/mock'
+import { createZeroUser, createZeroConnection } from 'zero-protocol/dist/lib/zero.js'
+import { enableGlobalMockRuntime, createMockKeeper } from 'zero-protocol/dist/lib/mock'
 import _ from 'lodash'
 
 export const useZero = () => {
