@@ -4,13 +4,16 @@ import { GlobalStateHelper } from '../../utils/global.utilities'
 import { TransferEventEmitter } from '../../event/transfer.events'
 import { sdkBurn, sdkTransfer } from '../../utils/sdk'
 import { ethers } from 'ethers'
-
+import { useNotificationContext } from '../../notification'
+import { NotificationHelper } from '../../notification/helper'
+import { getCard } from '../../../ui/molecules/notification.cards/notification.cards.core'
 
 
 //Bridge Transfer Request Hook
 export const useInputSubmit = (module) => {
     const { state, dispatch } = useContext(storeContext)
-    const { wallet, zero, transfer } = state
+    const { card, cardDispatch } = useNotificationContext()
+    const { wallet, zero, transfer, burn } = state
     const { input } = state[module]
 
     const getSigner = useMemo(async () => {
@@ -26,6 +29,9 @@ export const useInputSubmit = (module) => {
     async function sendTransferRequest() {
         
         const StateHelper = new GlobalStateHelper(state, dispatch)
+        const Notification = new NotificationHelper(card, cardDispatch)
+
+        Notification.createCard(5000, "message", { message: "Submitting Transaction"})
         StateHelper.update('transfer', 'mode', { mode: "showSigning"})
         var zeroUser = zero.zeroUser
         var amount = input.amount
@@ -38,28 +44,30 @@ export const useInputSubmit = (module) => {
             [ethers.utils.parseEther(ratio).div(ethers.BigNumber.from('100'))]
         )
 
-        const transfer = new sdkTransfer(zeroUser, amount, ratio, signer, to, isFast, TransferEventEmitter, StateHelper, data);
+        const transfer = new sdkTransfer(zeroUser, amount, ratio, signer, to, isFast, TransferEventEmitter, StateHelper, Notification, data);
         try {
             await transfer.submitTX()
         } catch (e) {
-            console.log('did catch error')
             dispatch({type: "RESET_REQUEST", effect: 'transfer'})
         }
     }
 
 
     async function sendBurnRequest() {
+	    console.log('sendBurnRequest');
         const StateHelper = new GlobalStateHelper(state, dispatch)
         StateHelper.update("burn","mode",{mode: "showSigning"})
+	    console.log(input);
         var signer = await getSigner
         var to = await signer.getAddress()
         var zeroUser = zero.zeroUser
         var amount = input.amount
         var deadline = ethers.constants.MaxUint256
-        var destination = ethers.utils.hexlify(ethers.utils.base58.decode('36c5pSLZ4J11EiyaXuYfJypNzrufYVJ5Qd'))
+	    console.log(input.destination);
 
 
-        const transfer = new sdkBurn(zeroUser, amount, to, deadline, destination)
+        const transfer = new sdkBurn(zeroUser, amount, to, deadline, signer, input.destination)
+        await transfer.call()
         
     }
 
@@ -68,3 +76,5 @@ export const useInputSubmit = (module) => {
         sendBurnRequest
     }
 }
+
+

@@ -1,7 +1,7 @@
-import { ethers } from 'ethers'
-import { deployments, deploymentsFromSigner } from './zero'
-import { UnderwriterTransferRequest, UnderwriterBurnRequest } from '@zero-protocol/dist/lib/zero';
-import { TEST_KEEPER_ADDRESS } from '@zero-protocol/dist/lib/mock';
+import { ethers } from 'ethers';
+import { deployments, deploymentsFromSigner } from './zero';
+import { UnderwriterTransferRequest, UnderwriterBurnRequest } from 'zero-protocol/dist/lib/zero';
+import { TEST_KEEPER_ADDRESS } from 'zero-protocol/dist/lib/mock';
 
 export class sdkTransfer {
     constructor (
@@ -12,7 +12,8 @@ export class sdkTransfer {
         to,
         isFast,
         TransferEventEmitter,
-        StateHelper,        
+        StateHelper,
+        Notification,        
         _data
     ) {
         this.isFast = isFast;
@@ -21,6 +22,7 @@ export class sdkTransfer {
         this.signer = signer;
         this.Emitter = TransferEventEmitter
         this.StateHelper = StateHelper
+        this.Notification = Notification
         
         // initialize Transfer Request Object
 
@@ -58,15 +60,15 @@ export class sdkTransfer {
             this.StateHelper.update("transfer", "mode", { mode: "waitingDry" })
         } catch (err) {
             // handle signing error
-            console.error("submit tx error", err)
-            throw new Error("Failed to sign request")
+            this.Notification.createCard(5000, "error", { message: "Failed! Must sign Transaction"})
+            throw new Error('Failed to sign transaction')
         }   
 
         try {
             await transferRequest.dry(this.signer, { from: TEST_KEEPER_ADDRESS})
         } catch ( err ) {
-            console.error(err)
-            return new Error("Transaction will fail")
+            this.Notification.createCard(5000, "error", { message: `Error Processing Transaction: ${err}`})
+            throw new Error('Dry failed to run')
         }
 
 
@@ -80,8 +82,8 @@ export class sdkTransfer {
             this.Emitter.emit("transfer", mint, transferRequest)
             return
         } catch (error) {
-            console.error('Error submitting transaction: ', error);
-            throw new Error("Error publishing transfer request")
+            this.Notification.createCard(5000, "error", {message: `Error Publishing Transaction: ${err}`})
+            throw new Error('Error publishing transaction')
         }
 
         // handle publish transfer request 
@@ -118,39 +120,48 @@ export class sdkTransfer {
     
 }
 
-
 export class sdkBurn {
-    constructor ( 
-        zeroUser,
-        amount, 
-        to,
-        deadline,
-        signer,
-        destination,
-        StateHelper
-        ) {
-           this.StateHelper = StateHelper
-           this.BurnRequest = ( async function(){
+	constructor(zeroUser, amount, to, deadline, signer, destination, StateHelper) {
+		console.log('sdkBurn');
+		console.log(destination);
+		this.signer = signer;
+		this.StateHelper = StateHelper;
+		this.zeroUser = zeroUser;
+		this.BurnRequest = (async function () {
+			const contracts = await deploymentsFromSigner(signer);
+			const value = ethers.utils.hexlify(ethers.utils.parseUnits(String(amount), 8));
+			const asset = '0xDBf31dF14B66535aF65AaC99C32e9eA844e14501';
 
-               const contracts = await deploymentsFromSigner(signer)  
-               const value = ethers.utils.parseUnits(String(amount), 8)
-               const asset = '0xDBf31dF14B66535aF65AaC99C32e9eA844e14501'
+			return new UnderwriterBurnRequest({
+				owner: to,
+				underwriter: contracts.DelegateUnderwriter.address,
+				asset: asset,
+				amount: value,
+				deadline: ethers.utils.hexlify(deadline),
+				destination: ethers.utils.hexlify(ethers.utils.base58.decode(destination)),
+				contractAddress: contracts.ZeroController.address
+			});
+		})();
+	}
 
+	async call() {
+		const BurnRequest = await this.BurnRequest;
+		console.log(BurnRequest);
+		const contracts = await deploymentsFromSigner(this.signer);
 
-               return new UnderwriterBurnRequest({
-                   owner: to,
-                   underwriter: contracts.DelegateUnderwriter.address,
-                   asset: asset,
-                   amount: value,
-                   deadline: deadline,
-                   destination: destination,
-                   contractAddress: contracts.ZeroController.address,
-               })
-           })()
-           //TODO: finish this
-        }
+		//sign burn request
+		try {
+			await BurnRequest.sign(this.signer, contracts.ZeroController.address);
+		} catch (error) {
+			console.error(error);
+			//handle signature error
+		}
 
-        async call () {
-            this.BurnRequest
-        }
+		//publishBurnRequest
+		try {
+			this.zeroUser.publishBurnRequest(BurnRequest);
+		} catch (error) {
+			console.error(error);
+		}
+	}
 }

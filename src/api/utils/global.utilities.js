@@ -23,3 +23,21 @@ export class GlobalStateHelper {
     }
 
 }
+
+export class EventHelper {
+    event = []
+    constructor ( ) {
+
+    }
+
+    
+    newEvent(type, name, dataArgs) {
+        this.event[type].emit(name, ...dataArgs)
+    }
+
+    callback(type, listen, fn) {
+        return this.event[type].on(listen, fn)
+    }
+
+
+}

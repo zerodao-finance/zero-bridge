@@ -5,6 +5,9 @@ import './app.css'
 import 'react-toastify/dist/ReactToastify.min.css';
 import { StateProvider } from './api/global'
 import { TestUI } from './ui/test'
+import { TestComponent } from './ui/testing/index'
+import { NotificationProvider } from './api/notification/index'
+import { DashboardPage } from './ui/pages/dashboard'
 
 Object.keys(process.env).forEach((key) => {
   const match = key.match(/REACT_APP_(.*$)/);
@@ -17,12 +20,11 @@ Object.keys(process.env).forEach((key) => {
 
 ReactDOM.render(
   <React.StrictMode className="">
-    {/* <StateProvider>
-        <Dashboard />
-    </StateProvider> */}
-    <StateProvider>
-      <TestUI/>
-    </StateProvider>   
+    <NotificationProvider >
+      <StateProvider>
+        <DashboardPage/>
+      </StateProvider>   
+    </NotificationProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
