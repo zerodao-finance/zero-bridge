@@ -31,7 +31,6 @@ export const useWalletConnection = () => {
     }, [])
 
     useEffect(() => {
-
         const call = async () => {
             try {
                 return await getweb3().then(async (response) => {
@@ -45,7 +44,7 @@ export const useWalletConnection = () => {
             }
             catch (err) {
                 console.error(err)
-                dispatch({ type: "FAIL_REQUEST", effect: 'wallet'})
+                dispatch({ type: "RESET_REQUEST", effect: "wallet"})
             }
         }
 

@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { storeContext } from '../../api/global/global'
+import { PrimaryRoundedButton } from '../atoms';
 
 export const Disclaimer = () => {
 	const [read, done] = useState(false);
@@ -34,11 +35,11 @@ export const Disclaimer = () => {
 	};
 
 	return (
-		<div className={`fixed w-screen h-screen z-50 backdrop-blur-lg mt-5 ${show ? '' : 'hidden'}`}>
-			<div className="w-2/5 h-5/6 mx-auto my-auto bg-white shadow-2xl grid grid-flow-cols justify-items-center px-10 py-5 gap-4 rounded-lg">
+		<div className={`flex w-full h-screen z-50 backdrop-blur-lg ${show ? '' : 'hidden'}`}>
+			<div className="w-full h-full md:w-2/5 md:h-5/6 mx-auto my-auto bg-white shadow-2xl grid grid-flow-cols justify-items-center px-10 py-5 gap-4 rounded-lg">
 				<img src="/ZDBeta_logo-02.svg" alt="image" className="h-[70px]" />
 				<h1 className="text-2xl font-medium underline">Terms and Conditions</h1>
-				<div className="gap-3 flex flex-col overflow-scroll p-8 snap-y snap-mandatory" id="disclaimer">
+				<div className="gap-3 flex flex-col overflow-scroll overflow-x-hidden md:p-8" id="disclaimer">
 					<p className="indent-10 text-black snap-center">
 						Welcome to bridge.zerodao.com (the "zeroDAO Site"). Z DAO, LLC ("ZD"), a Wyoming limited
 						liability company, provides the zeroDAO Site and any files available thereon, as well as the
@@ -452,18 +453,15 @@ export const Disclaimer = () => {
 						ZD welcomes your questions or comments regarding the Terms via email at support@zdao.group.
 					</p>
 				</div>
-				<div className="flex flex-col">
-					<button
-						className={
-							read
-								? `capitalize px-5 py-3 bg-emerald-300 m-4 hover:border-4 border-black hover:bg-hover-green transition-all duration-150`
-								: 'capitalize px-5 py-3 bg-gray-300 m-4 '
-						}
-						onClick={() => sign()}
-					>
-						acknowledge
-					</button>
-					<div className="text-sm text-black italic">
+				<div className="flex flex-col items-center w-10/12 ">
+					<div className='container w-10/12 pb-2'>
+						<PrimaryRoundedButton
+							active={read}
+							action={sign}
+							label={read ? "Acknowledge" : "Scroll To Read"}
+						/>
+					</div>
+					<div className="text-sm text-black italic text-center">
 						By selecting acknowledge you are confirming that you have READ and ACCEPT the terms and
 						conditions
 					</div>

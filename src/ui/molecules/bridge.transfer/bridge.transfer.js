@@ -27,10 +27,10 @@ export const BridgeTransferModule = ({ mode }) => {
     if ( mode === "input") {
         return (
             <>
-                    <div className="animate-flip-in-hor-top [animation-delay:400ms] container h-max flex flex-row place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around md:pr-[4.5rem] items-center px-1 md:px-8 ">
+                    <div className="animate-flip-in-hor-top [animation-delay:400ms] container h-max flex flex-row place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around items-center px-1 md:px-8 ">
                         <div className='flex flex-col w-full justify-center items-center'>
-                            <p className="text-[10px] w-10/12 text-black dark:text-white opacity-60 whitespace-nowrap text-left"> transfer amount </p>
-                            <div className="flex flex-col md:w-10/12">
+                            <p className="text-[10px] text-black dark:text-white opacity-60 w-full whitespace-nowrap text-left"> transfer amount </p>
+                            <div className="flex flex-col">
                                 <BridgeTransferInput {...getTransferInputProps()}/>
                             </div>
                         </div>

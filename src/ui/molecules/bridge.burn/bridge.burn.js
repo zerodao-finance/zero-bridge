@@ -25,7 +25,7 @@ export const BridgeBurnModule = () => {
                 isLoading ? <BridgeLoadingSignature />
                 :
                 <>
-                    <div className="animate-flip-in-hor-top [animation-delay:400ms] container h-max flex flex-row place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around md:pr-[4.5rem] items-center px-1 md:px-8 ">
+                    <div className="animate-flip-in-hor-top [animation-delay:400ms] container h-max flex flex-row place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around items-center px-1 md:px-8 ">
                         <p className="text-[10px] text-gray-300 whitespace-nowrap"> release amount </p>
                         <div className="flex flex-col">
                             <BridgeBurnInput {...getBridgeBurnInputProps()}/>

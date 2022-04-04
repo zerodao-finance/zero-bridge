@@ -158,7 +158,7 @@ export const globalBridgeReducer = (state, action) => {
         case "SUCCEED_BATCH_REQUEST":
             return { ...state, [action.effect]: {...state[action.effect], ...action.payload, isLoading: false, error: null}}
         case "FAIL_REQUEST":
-            return { ...state, [ action.efffect]: { ...state[action.effect], isLoading: false, error: action.payload.error}}
+            return { ...state, [action.efffect]: { ...state[action.effect], isLoading: false}}
         case "RESET_REQUEST":
             return { ...state, [ action.effect]: { ...globalBridgeState.state[action.effect]}}
             
