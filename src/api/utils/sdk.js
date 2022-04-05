@@ -40,6 +40,8 @@ export class sdkTransfer {
         UnderwriterTransferRequest.prototype.loan = async function () {
           return { wait: async () => {} };
         };
+        UnderwriterTransferRequest.prototype.getExecutionFunction = () =>
+          "repay";
       }
       return new UnderwriterTransferRequest({
         amount,
@@ -80,16 +82,16 @@ export class sdkTransfer {
       throw new Error("Failed to sign transaction");
     }
 
-    try {
-      console.log("calling dry");
-      await transferRequest.dry(this.signer, { from: TEST_KEEPER_ADDRESS });
-      console.log("called dry");
-    } catch (err) {
-      this.Notification.createCard(5000, "error", {
-        message: `Error Processing Transaction: ${err}`,
-      });
-      throw new Error("Dry failed to run");
-    }
+    // try {
+    //   console.log("calling dry");
+    //   await transferRequest.dry(this.signer, { from: TEST_KEEPER_ADDRESS });
+    //   console.log("called dry");
+    // } catch (err) {
+    //   this.Notification.createCard(5000, "error", {
+    //     message: `Error Processing Transaction: ${err}`,
+    //   });
+    //   throw new Error("Dry failed to run");
+    // }
 
     //handle publish transfer request
     // emit transfer request
