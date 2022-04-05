@@ -2702,6 +2702,11 @@ code {
   background-color: rgb(61 137 81 / var(--tw-bg-opacity));
 }
 
+.dark .dark\:bg-badger-yellow-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(230 166 69 / var(--tw-bg-opacity));
+}
+
 .dark .dark\:bg-\[\#D32F2F\] {
   --tw-bg-opacity: 1;
   background-color: rgb(211 47 47 / var(--tw-bg-opacity));
