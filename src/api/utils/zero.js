@@ -2,7 +2,9 @@
 // import {NETWORK_ROUTER} from './networks'
 import { mapValues } from "lodash";
 import { ethers } from "ethers";
-import * as deployments from "zero-protocol/deployments/deployments.json";
+import deployments from "zero-protocol/deployments/deployments.json";
+
+console.log(deployments);
 
 export const test = {
   TEST_KEEPER_ADDRESS: "0x4A423AB37d70c00e8faA375fEcC4577e3b376aCa",
@@ -26,13 +28,6 @@ export const deployments__old = {
     BTCVault: require("zero-protocol/deployments/arbitrum/BTCVault"),
     ArbitrumConvertQuick: require("zero-protocol/deployments/arbitrum/ArbitrumConvertQuick"),
   },
-  mainnet: {
-    ZeroController: require("zero-protocol/deployments/localhost/ZeroController"),
-    DelegateUnderwriter: require("zero-protocol/deployments/arbitrum/DelegateUnderwriter"),
-    Convert: require("zero-protocol/deployments/arbitrum/ArbitrumConvert"),
-    BTCVault: require("zero-protocol/deployments/arbitrum/BTCVault"),
-    ArbitrumConvertQuick: require("zero-protocol/deployments/arbitrum/ArbitrumConvertQuick"),
-  },
 };
 const contracts = [
   "ZeroController",
@@ -43,10 +38,15 @@ const contracts = [
 ];
 
 export const chainIdToNetworkName = (chainId) => {
+  if (process.env.REACT_APP_TEST) return "localhost";
   return {
     [42161]: ["arbitrum", undefined, undefined],
     [137]: ["matic", undefined, ["ArbitrumConvertQuick"]],
-    [1]: ["mainnet", ["BadgerBridgeZeroController"], undefined],
+    [1]: [
+      "mainnet",
+      [{ BadgerBridgeZeroController: "ZeroController" }],
+      undefined,
+    ],
   }[chainId];
 };
 
@@ -61,10 +61,24 @@ export const deploymentsFromSigner = async (signer) => {
       ? contractsToInclude
       : contracts.filter((d) => !contractsToExclude.includes(d))
   ).reduce((contracts, _contract) => {
-    const contract = deployments[chainId][name][_contract];
+    const [[contractName], [deployName]] =
+      typeof _contract == "string"
+        ? [[_contract], [_contract]]
+        : Object.entries(_contract);
+    const contract = deployments[chainId][name][deployName];
     return {
       ...contracts,
-      [_contract]: new ethers.Contract(contract.address, contract.abi, signer),
+      [contractName]: new ethers.Contract(
+        contract.address,
+        contract.abi,
+        signer
+      ),
     };
   }, {});
 };
+
+const deploymentsFromChain =
+  deployments[process.env.REACT_APP_CHAINID][
+    chainIdToNetworkName(process.env.REACT_APP_CHAINID)
+  ];
+export { deploymentsFromChain as deployments };
