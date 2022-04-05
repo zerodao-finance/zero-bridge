@@ -15,13 +15,13 @@ export const BridgeModule = ({ wallet, mode, toggleMode }) => {
 	) : (
 		<div className="h-full w-full flex flex-col container h-fit bg-white shadow-xl rounded-[30px] justify-center place-items-center gap-1 md:gap-3  first:gap-0 w-fit pb-4 dark:bg-gray-700 text-white min-w-[370px]">
 			<div
-				className={`h-full w-full overflow-hidden rounded-t-[30px] grid grid-cols-2 grid-flow-rows mb-8 bg-gray-200 dark:bg-gray-800 align-center font-light tracking-wider text-sm text-center`}
+				className={`h-full w-full overflow-hidden rounded-t-[30px] grid grid-cols-2 grid-flow-rows mb-8 bg-gray-200 dark:bg-badger-gray-400 align-center font-light tracking-wider text-sm text-center`}
 			>
 				<div
 					className={`py-[10px] rounded-tl-[30px] cursor-pointer ${
 						mode === 'transfer'
-							? 'transition ease-in-out duration-150 bg-main-green hover:bg-main-green/90 text-black font-bold'
-							: 'transition ease-in-out duration-150 text-black hover:bg-main-green/10 dark:text-white'
+							? 'transition ease-in-out duration-150 bg-badger-blue-400 hover:bg-badger-blue-400/90 text-black font-bold'
+							: 'transition ease-in-out duration-150 text-black hover:bg-badger-blue-400/10 dark:text-white'
 					}`}
 					onClick={() => toggleMode('transfer')}
 				>
@@ -30,8 +30,8 @@ export const BridgeModule = ({ wallet, mode, toggleMode }) => {
 				<div
 					className={`py-[10px] rounded-tr-[30px] cursor-pointer ${
 						mode === 'release'
-							? 'bg-main-green text-black font-bold'
-							: 'transition ease-in-out duration-150 text-black hover:bg-main-green/10 dark:text-white'
+							? 'transition ease-in-out duration-150 bg-badger-blue-400 hover:bg-badger-blue-400/90 text-black font-bold'
+							: 'transition ease-in-out duration-150 text-black hover:bg-badger-blue-400/10 dark:text-white'
 					}`}
 					onClick={() => toggleMode('release')}
 				>
