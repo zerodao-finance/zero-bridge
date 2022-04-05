@@ -7,7 +7,7 @@ export const BridgeModuleToggle = ({ isFast, action}) => {
                 Collateralize Quick Transfer
             </label>
 
-            <input name="quick" type="checkbox" className="rounded-md border-green-300 ring-[1px] ring-main-green ring-offset-[1px]" checked={isFast} onChange={ action } />
+            <input name="quick" type="checkbox" className="rounded-md border-badger-yellow-400 ring-[1px] ring-badger-yellow-neon-400 ring-offset-[1px]" checked={isFast} onChange={ action } />
 	    </div>
     )
 }
