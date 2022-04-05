@@ -13,13 +13,6 @@ export const DashboardLayout = () => {
     const { changeActiveModule, resetModule, currentModule, isLoading } = useActiveModuleSwitcher()
     const { getWalletConnectionProps } = useCheckWalletConnected()
     const { getBridgePageProps } = useBridgePage()
-
-    const getTitle = () => {
-        switch (currentModule) {
-            default:
-                return 'Bridge'
-        }
-    }
     
     return ( 
         <>
@@ -38,7 +31,7 @@ export const DashboardLayout = () => {
                     </TopLeftCardLayout>
                 </div> */}
                 <div className="flex flex-col w-fit ml-auto mr-auto">
-                    <p className="pb-[.5rem] opacity-60 text-center font-bold dark:text-white">{getTitle()}</p>
+                    <p className="pb-[.5rem] text-center font-bold dark:text-badger-gray-300"> Bridge </p>
                     <div className="flex flex-row row-[span_8_/_span_8] justify-center items-center isolate" id="hero">
                         {
                             isLoading ?

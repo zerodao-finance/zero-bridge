@@ -2288,12 +2288,12 @@ input:checked + .toggle-bg {
   opacity: 1;
 }
 
-.opacity-60 {
-  opacity: 0.6;
-}
-
 .opacity-75 {
   opacity: 0.75;
+}
+
+.opacity-60 {
+  opacity: 0.6;
 }
 
 .shadow-xl {
@@ -2765,6 +2765,11 @@ code {
 .dark .dark\:text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.dark .dark\:text-badger-gray-300 {
+  --tw-text-opacity: 1;
+  color: rgb(175 175 175 / var(--tw-text-opacity));
 }
 
 .dark .dark\:text-main-green {
