@@ -57,7 +57,6 @@
     "@types/react-window": "^1.8.5",
     "@types/styled-components": "5.1.15",
     "@walletconnect/web3-provider": "^1.6.6",
-    "zero-protocol": "https://github.com/zerodao-finance/zero-protocol",
     "accept-language": "^3.0.18",
     "address": "^1.1.2",
     "ast-types": "^0.14.2",
@@ -131,7 +130,8 @@
     "web3-eth-contract": "^1.6.1",
     "web3modal": "^1.9.4",
     "webfontloader": "^1.6.28",
-    "webpack-bundle-analyzer": "^4.5.0"
+    "webpack-bundle-analyzer": "^4.5.0",
+    "zero-protocol": "https://github.com/zerodao-finance/zero-protocol"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-constant-elements": "^7.16.0",
