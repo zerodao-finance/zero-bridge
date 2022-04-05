@@ -8,6 +8,7 @@ module.exports = {
         'hover-green': '#3D8951',
         'alert-red': '#CF6679',
         'badger-black': {
+          '500': '#363636',
           '700': '#1e1e1e',
           '800': '#121212',
         },
@@ -24,6 +25,7 @@ module.exports = {
           '200': '#a5a5a5',
           '300': '#afafaf',
           '400': '#404040',
+          '500': '#666666'
         },
         'badger-blue': {
           '400': '#91cdff',
