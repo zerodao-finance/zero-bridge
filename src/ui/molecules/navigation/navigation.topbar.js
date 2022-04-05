@@ -18,7 +18,7 @@ export const NavigationTopBar = ({}) => {
 	return (
 		<nav className="w-screen flex flex-row justify-between items-center sticky top-0 px-2 py-2">
 			<div id="logo">
-				<img src="/ZDBeta_logo-02-Dark.svg" alt="image" className="h-[40px] md:h-[70px] hidden dark:flex" />
+				<img src="/badger-logo.svg" alt="image" className="h-[40px] md:h-[70px] hidden dark:flex" />
 				<img src="/ZDBeta_logo-02.svg" alt="image" className="h-[40px] md:h-[70px] dark:hidden" />
 			</div>
 			<div id="content" className="flex flex-row items-center gap-3">

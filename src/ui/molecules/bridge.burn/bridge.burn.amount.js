@@ -12,7 +12,7 @@ export const BridgeBurnInput = ({ destination, amount, updateDestination, effect
 
     return (<>
         <div className="w-fit self-center px-0 py-0 scale-[0.8] md:scale-[1]">
-        <div className="w-fit flex items-center justify-between gap-10 dark:bg-gray-600 bg-gray-100 px-2 rounded-2xl">
+        <div className="w-fit flex items-center justify-between gap-10 dark:bg-badger-gray-500 bg-gray-100 px-2 rounded-2xl">
             <div>
                 <p className="text-[10px] text-gray-500 whitespace-nowrap mb-1">FROM</p>
                 <span className="flex items-center gap-2">
@@ -29,7 +29,7 @@ export const BridgeBurnInput = ({ destination, amount, updateDestination, effect
         </div> 
     </div> 
         <div className="w-fit self-center px-0 py-0 scale-[0.8] md:scale-[1]">
-        <div className="w-fit flex items-center justify-between gap-10 dark:bg-gray-600 bg-gray-100 px-2 rounded-2xl">
+        <div className="w-fit flex items-center justify-between gap-10 dark:bg-badger-gray-500 bg-gray-100 px-2 rounded-2xl">
             <DefaultInput value={destination} onChange={updateDestination} type={ 'text' }/>
         </div>
     </div> 
