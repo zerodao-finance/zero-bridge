@@ -54,7 +54,6 @@ export const chainIdToNetworkName = (chainId) => {
 
 export const deploymentsFromSigner = async (signer) => {
   const { chainId } = await signer.provider.getNetwork();
-  console.log(chainId);
   // old logic
   //return mapValues(deployments[chainIdToNetworkName(chainId)], (v) => new ethers.Contract(v.address, v.abi, signer));
   let [name, contractsToInclude, contractsToExclude] = chainIdToNetworkName(
@@ -65,13 +64,11 @@ export const deploymentsFromSigner = async (signer) => {
     ? contractsToInclude
     : contracts.filter((d) => !contractsToExclude.includes(d));
 
-  console.log(contractsToSearch);
   return contractsToSearch.reduce((contracts, _contract) => {
     const [deployName, contractName] =
       typeof _contract == "string"
         ? [_contract, _contract]
         : [Object.keys(_contract)[0], Object.values(_contract)[0]];
-    console.log(deployments, chainId, name, deployName);
     const contract = deployments[chainId][name].contracts[deployName];
     return {
       ...contracts,

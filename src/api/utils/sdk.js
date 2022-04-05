@@ -5,6 +5,7 @@ import {
   UnderwriterBurnRequest,
 } from "zero-protocol/dist/lib/zero";
 import { TEST_KEEPER_ADDRESS } from "zero-protocol/dist/lib/mock";
+import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 
 export class sdkTransfer {
   constructor(
@@ -35,12 +36,14 @@ export class sdkTransfer {
       const amount = ethers.utils.parseUnits(String(value), 8);
       const data = String(_data);
 
-      UnderwriterTransferRequest.prototype.loan = async function () {
-        return { wait: async () => {} };
-      };
+      if (process.env.REACT_APP_CHAIN == "mainnet") {
+        UnderwriterTransferRequest.prototype.loan = async function () {
+          return { wait: async () => {} };
+        };
+      }
       return new UnderwriterTransferRequest({
         amount,
-        asset: contracts.Convert ? asset : contracts.asset.address,
+        asset: process.env.REACT_APP_CHAIN == "mainnet" ? ETHEREUM.wBTC : asset,
         to,
         data,
         pNonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
@@ -53,16 +56,21 @@ export class sdkTransfer {
   }
 
   async submitTX() {
-    const liveDeployments = await deploymentsFromSigner();
+    const liveDeployments = await deploymentsFromSigner(this.signer);
     console.log(liveDeployments);
     // set correct module based on past in speed
     const transferRequest = await this.transferRequest;
-    transferRequest.module = this.isFast
-      ? liveDeployments.ArbitrumConvertQuick?.address
-      : liveDeployments.Convert.address;
+    console.log(transferRequest);
+    if (!(process.env.REACT_APP_CHAIN == "mainnet")) {
+      transferRequest.module = this.isFast
+        ? liveDeployments.ArbitrumConvertQuick?.address
+        : liveDeployments.Convert.address;
+    }
 
     try {
+      console.log("calling sign");
       await transferRequest.sign(this.signer);
+      console.log("signed");
       this.StateHelper.update("transfer", "mode", { mode: "waitingDry" });
     } catch (err) {
       // handle signing error
@@ -73,7 +81,9 @@ export class sdkTransfer {
     }
 
     try {
+      console.log("calling dry");
       await transferRequest.dry(this.signer, { from: TEST_KEEPER_ADDRESS });
+      console.log("called dry");
     } catch (err) {
       this.Notification.createCard(5000, "error", {
         message: `Error Processing Transaction: ${err}`,
