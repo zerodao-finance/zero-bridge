@@ -1748,13 +1748,13 @@ input:checked + .toggle-bg {
   border-color: rgb(0 0 0 / var(--tw-border-opacity));
 }
 
-.border-badger-yellow-400\/10 {
-  border-color: rgb(255 184 77 / 0.1);
-}
-
 .border-badger-yellow-400 {
   --tw-border-opacity: 1;
   border-color: rgb(255 184 77 / var(--tw-border-opacity));
+}
+
+.border-badger-yellow-400\/10 {
+  border-color: rgb(255 184 77 / 0.1);
 }
 
 .\!border-gray-600 {
@@ -1765,11 +1765,6 @@ input:checked + .toggle-bg {
 .border-main-green {
   --tw-border-opacity: 1;
   border-color: rgb(82 183 108 / var(--tw-border-opacity));
-}
-
-.border-green-300 {
-  --tw-border-opacity: 1;
-  border-color: rgb(132 225 188 / var(--tw-border-opacity));
 }
 
 .border-gray-300 {
@@ -1910,8 +1905,8 @@ input:checked + .toggle-bg {
   fill: #059669;
 }
 
-.fill-main-green {
-  fill: #52B76C;
+.fill-badger-yellow-neon-400 {
+  fill: #ffcf4d;
 }
 
 .fill-alert-red {
@@ -2227,13 +2222,13 @@ input:checked + .toggle-bg {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.text-badger-yellow-400\/10 {
-  color: rgb(255 184 77 / 0.1);
-}
-
 .text-badger-yellow-400 {
   --tw-text-opacity: 1;
   color: rgb(255 184 77 / var(--tw-text-opacity));
+}
+
+.text-badger-yellow-400\/10 {
+  color: rgb(255 184 77 / 0.1);
 }
 
 .text-main-green {
@@ -2254,6 +2249,11 @@ input:checked + .toggle-bg {
 .text-gray-500 {
   --tw-text-opacity: 1;
   color: rgb(107 114 128 / var(--tw-text-opacity));
+}
+
+.text-badger-yellow-neon-400 {
+  --tw-text-opacity: 1;
+  color: rgb(255 207 77 / var(--tw-text-opacity));
 }
 
 .text-gray-300 {
@@ -2358,9 +2358,9 @@ input:checked + .toggle-bg {
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 
-.ring-main-green {
+.ring-badger-yellow-neon-400 {
   --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(82 183 108 / var(--tw-ring-opacity));
+  --tw-ring-color: rgb(255 207 77 / var(--tw-ring-opacity));
 }
 
 .ring-offset-\[1px\] {
@@ -2453,7 +2453,7 @@ input:checked + .toggle-bg {
   height: 8px !important;
   -webkit-appearance: none;
   appearance: none;
-  background: #6ee7b7;
+  background: #ffcf4d;
   border-radius: 100% !important;
   box-shadow: none !important;
   cursor: pointer;
@@ -2464,7 +2464,7 @@ input:checked + .toggle-bg {
 .slider::-moz-range-thumb {
   width: 8px;
   height: 8px;
-  background: #6ee7b7;
+  background: #ffcf4d;
   cursor: pointer;
   border-radius: 100%;
 }
@@ -2491,7 +2491,7 @@ input[type=number] {
     /* height: 15px; */
     /* cursor: ew-resize; */
     /* background: #FFF; */
-    box-shadow: -405px 0 0 400px #6EE7B7;
+    box-shadow: -405px 0 0 400px #ffcf4d;
     border-radius: 50%;
   }
 }

@@ -21,7 +21,7 @@
   height: 8px !important;
   -webkit-appearance: none;
   appearance: none;
-  background: #6ee7b7;
+  background: #ffcf4d;
   border-radius: 100% !important;
   box-shadow: none !important;
   cursor: pointer;
@@ -32,7 +32,7 @@
 .slider::-moz-range-thumb {
   width: 8px;
   height: 8px;
-  background: #6ee7b7;
+  background: #ffcf4d;
   cursor: pointer;
   border-radius: 100%;
 }
@@ -82,7 +82,7 @@ input[type=number] {
       /* height: 15px; */
       /* cursor: ew-resize; */
       /* background: #FFF; */
-      box-shadow: -405px 0 0 400px #6EE7B7;
+      box-shadow: -405px 0 0 400px #ffcf4d;
       border-radius: 50%;  
       
   }

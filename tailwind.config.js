@@ -11,7 +11,11 @@ module.exports = {
           '700': '#1e1e1e',
           '800': '#121212',
         },
+        'badger-yellow-neon': {
+          '400': '#ffcf4d',
+        },
         'badger-yellow': {
+          '300': '#f2bc1b',
           '400': '#ffb84d',
           '500': '#e6a645',
           '600': '#cc933e',
