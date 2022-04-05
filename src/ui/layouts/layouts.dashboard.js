@@ -43,11 +43,12 @@ export const DashboardLayout = () => {
                     </div>
                 </div>
                 
-                <div className="footer row-span-2 flex flex-col-reverse text-[13px] md:text-md">
-                    <p className="text-gray-400 ml-2">
+                <div className="footer grid grid-cols-8 justify-center mr-12 items-end mb-2 text-[13px] md:text-md">
+                    <p className="text-gray-400 ml-2 col-start-2 col-end-6">
                         Powered By ZeroDAO - Copyright (the "zeroDAO Site"). Z DAO, LLC ("ZD"){" "}
                         <a href="ZeroDao.com">ZeroDao.com</a>
                     </p>
+                    <img src="/ZDBeta_logo-02-Dark.svg" alt="image" className="h-[40px] md:h-[70px] w-[225px] col-start-6 col-end-8" />
                 </div>
             </div>
         </>
