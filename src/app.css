@@ -1731,6 +1731,10 @@ input:checked + .toggle-bg {
   border-width: 0px;
 }
 
+.border-b-2 {
+  border-bottom-width: 2px;
+}
+
 .border-b-\[1px\] {
   border-bottom-width: 1px;
 }
@@ -1741,6 +1745,11 @@ input:checked + .toggle-bg {
 
 .border-l-\[1px\] {
   border-left-width: 1px;
+}
+
+.border-badger-yellow-neon-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 207 77 / var(--tw-border-opacity));
 }
 
 .border-black {
@@ -1800,11 +1809,6 @@ input:checked + .toggle-bg {
 .bg-gray-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
-}
-
-.bg-badger-blue-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(145 205 255 / var(--tw-bg-opacity));
 }
 
 .bg-main-green {
@@ -2511,21 +2515,13 @@ code {
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
 }
 
-.hover\:bg-badger-blue-400\/90:hover {
-  background-color: rgb(145 205 255 / 0.9);
-}
-
-.hover\:bg-badger-blue-400\/10:hover {
-  background-color: rgb(145 205 255 / 0.1);
+.hover\:bg-badger-yellow-400\/10:hover {
+  background-color: rgb(255 184 77 / 0.1);
 }
 
 .hover\:bg-hover-green:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(61 137 81 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-badger-yellow-400\/10:hover {
-  background-color: rgb(255 184 77 / 0.1);
 }
 
 .hover\:bg-slate-100:hover {
@@ -2759,6 +2755,11 @@ code {
 .dark .dark\:text-badger-gray-300 {
   --tw-text-opacity: 1;
   color: rgb(175 175 175 / var(--tw-text-opacity));
+}
+
+.dark .dark\:text-badger-yellow-neon-400 {
+  --tw-text-opacity: 1;
+  color: rgb(255 207 77 / var(--tw-text-opacity));
 }
 
 .dark .dark\:text-main-green {
