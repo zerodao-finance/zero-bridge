@@ -20,8 +20,8 @@ export const BridgeModule = ({ wallet, mode, toggleMode }) => {
 				<div
 					className={`py-[10px] rounded-tl-[8px] cursor-pointer ${
 						mode === 'transfer'
-							? 'transition ease-in-out duration-150 bg-badger-blue-400 hover:bg-badger-blue-400/90 text-black font-bold'
-							: 'transition ease-in-out duration-150 text-black hover:bg-badger-blue-400/10 dark:text-white'
+							? 'transition ease-in-out duration-150 text-black border-b-2 border-badger-yellow-neon-400 dark:text-badger-yellow-neon-400 font-bold'
+							: 'transition ease-in-out duration-150 text-black hover:bg-badger-yellow-400/10 dark:text-white'
 					}`}
 					onClick={() => toggleMode('transfer')}
 				>
@@ -30,8 +30,8 @@ export const BridgeModule = ({ wallet, mode, toggleMode }) => {
 				<div
 					className={`py-[10px] rounded-tr-[8px] cursor-pointer ${
 						mode === 'release'
-							? 'transition ease-in-out duration-150 bg-badger-blue-400 hover:bg-badger-blue-400/90 text-black font-bold'
-							: 'transition ease-in-out duration-150 text-black hover:bg-badger-blue-400/10 dark:text-white'
+							? 'transition ease-in-out duration-150 text-black border-b-2 border-badger-yellow-neon-400 dark:text-badger-yellow-neon-400 font-bold'
+							: 'transition ease-in-out duration-150 text-black hover:bg-badger-yellow-400/10 dark:text-white'
 					}`}
 					onClick={() => toggleMode('release')}
 				>
