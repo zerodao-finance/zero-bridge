@@ -7,6 +7,17 @@ module.exports = {
         'main-green': '#52B76C',
         'hover-green': '#3D8951',
         'alert-red': '#CF6679',
+        'badger-black-700': '#1e1e1e',
+        'badger-black-800': '#121212',
+        'badger-yellow-400': '#FFB84D',
+        'badger-yellow-500': '#e6a645',
+        'badger-yellow-600': '#cc933e',
+        'bager-grey-200': '#a5a5a5',
+        'badger-grey-300': '#afafaf',
+        'badger-grey-400': '#404040',
+        'badger-blue-400': '#91cdff',
+        'badger-white': '#e2e2e2',
+
       },
       fontFamily: {
         'header': ['Open Sans', 'Helvetica', 'Arial', 'sans-serif'],
