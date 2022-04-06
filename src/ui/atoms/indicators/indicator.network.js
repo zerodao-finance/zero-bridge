@@ -6,7 +6,7 @@ export const NetworkIndicator = ({keeper}) => {
             <FaConnectdevelop data-tooltip-target="tooltip-keepers" data-tooltip-placement="left" className={`w-[24px] h-[24px] animate-[spin_5s_linear_infinite] ${keeper.length > 0 ? "fill-badger-yellow-neon-400" : "fill-alert-red"}`} />
             <div id="tooltip-keepers" role="tooltip" className="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
                 {keeper.length > 0 ? "Keeper Connected" : "Searching For Keepers"}
-                <div class="tooltip-arrow" data-popper-arrow></div>
+                <div className="tooltip-arrow" data-popper-arrow></div>
             </div>
         </div> 
     )
