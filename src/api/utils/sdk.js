@@ -2,8 +2,12 @@ import { ethers } from 'ethers';
 import { deployments, deploymentsFromSigner } from './zero';
 import { UnderwriterTransferRequest, UnderwriterBurnRequest } from 'zero-protocol/dist/lib/zero';
 import { TEST_KEEPER_ADDRESS } from 'zero-protocol/dist/lib/mock';
+import EventEmitter from 'events'
 
 export class sdkTransfer {
+
+    response = new EventEmitter({ captureRejections: true })
+
     constructor (
         zeroUser,
         value,
@@ -49,7 +53,7 @@ export class sdkTransfer {
     }
 
 
-    async submitTX() {
+    async call() {
         
         // set correct module based on past in speed
         const transferRequest = await this.transferRequest
@@ -57,18 +61,22 @@ export class sdkTransfer {
 
         try {
             await transferRequest.sign(this.signer)
-            this.StateHelper.update("transfer", "mode", { mode: "waitingDry" })
+            this.response.emit('signed')
+            // this.StateHelper.update("transfer", "mode", { mode: "waitingDry" })
         } catch (err) {
+            this.response.emit('error', { message: "failed! must sign transaction"})
             // handle signing error
-            this.Notification.createCard(5000, "error", { message: "Failed! Must sign Transaction"})
-            throw new Error('Failed to sign transaction')
+            // this.Notification.createCard(5000, "error", { message: "Failed! Must sign Transaction"})
+            // throw new Error('Failed to sign transaction')
         }   
 
         try {
             await transferRequest.dry(this.signer, { from: TEST_KEEPER_ADDRESS})
+            this.response.emit('dry', { error: false, message: null})
         } catch ( err ) {
-            this.Notification.createCard(5000, "error", { message: `Error Processing Transaction: ${err}`})
-            throw new Error('Dry failed to run')
+            this.response.emit('error', { message: `error processing transaction ${err}`})
+            // this.Notification.createCard(5000, "error", { message: `Error Processing Transaction: ${err}`})
+            // throw new Error('Dry failed to run')
         }
 
 
@@ -78,42 +86,16 @@ export class sdkTransfer {
             await this.zeroUser.publishTransferRequest(transferRequest)
             const mint = await transferRequest.submitToRenVM()
             var gatewayAddress = await transferRequest.toGatewayAddress()
-            this.StateHelper.update("transfer", "mode", { mode: "showGateway", gatewayData: { address: gatewayAddress, requestData: transferRequest} })
-            this.Emitter.emit("transfer", mint, transferRequest)
+            // this.StateHelper.update("transfer", "mode", { mode: "showGateway", gatewayData: { address: gatewayAddress, requestData: transferRequest} })
+            this.response.emit('published', {gateway: gatewayAddress, request: transferRequest, mintEmitter: mint})
+            // this.Emitter.emit("transfer", mint, transferRequest)
             return
         } catch (error) {
-            this.Notification.createCard(5000, "error", {message: `Error Publishing Transaction: ${err}`})
-            throw new Error('Error publishing transaction')
+            this.response.emit('error', { message: `error publishing transaction ${err}`})
+            // this.Notification.createCard(5000, "error", {message: `Error Publishing Transaction: ${err}`})
+            // throw new Error('Error publishing transaction')
         }
 
-        // handle publish transfer request 
-        // try {
-        //     await this.zeroUser.publishTransferRequest(transferRequest)
-        //     const mint = await transferRequest.submitToRenVM()
-        //     if ( process.env.REACT_APP_TEST) {
-        //         this.dispatch({ type: "SUCCEED_REQUEST", effect: "event_card_queue", payload: { effect: "event", data: {mint: mint, transferRequest: transferRequest}}})
-        //     } else {
-        //         // production code
-        //         var _gatewayAddress = await transferRequest.toGatewayAddress()
-        //         this.dispatch({ type: "SUCCEED_REQUEST", effect: "transfer", payload: { effect: "request", data: { 
-        //             ...transferRequest, gateway: _gatewayAddress
-        //         }}})
-
-        //         let deposit = mint.on("deposit", async (deposit) => {
-        //             let confirmed = deposit.confirmed()
-        //             let signed = deposit.signed()
-        //             signed.on("status", (status) => {
-        //                 // if status is completed update transfer request object
-        //             })
-        //         })
-
-        //         //end production workflow
-        //     }
-        // } catch (err) {
-        //     //handle errors
-        //     console.log(err)
-        //     return false
-        // }
 
     }
 

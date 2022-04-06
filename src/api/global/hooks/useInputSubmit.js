@@ -3,6 +3,7 @@ import { storeContext } from '../global'
 import { GlobalStateHelper } from '../../utils/global.utilities'
 import { TransferEventEmitter } from '../../event/transfer.events'
 import { sdkBurn, sdkTransfer } from '../../utils/sdk'
+import { SDKHelperClass } from '../../utils/sdkHelper'
 import { ethers } from 'ethers'
 import { useNotificationContext } from '../../notification'
 import { NotificationHelper } from '../../notification/helper'
@@ -44,9 +45,23 @@ export const useInputSubmit = (module) => {
             [ethers.utils.parseEther(ratio).div(ethers.BigNumber.from('100'))]
         )
 
-        const transfer = new sdkTransfer(zeroUser, amount, ratio, signer, to, isFast, TransferEventEmitter, StateHelper, Notification, data);
+        // const transfer = new sdkTransfer(zeroUser, amount, ratio, signer, to, isFast, TransferEventEmitter, StateHelper, Notification, data);
+        const transfer = SDKHelperClass.newTransfer(
+            Notification,
+            StateHelper,
+            zeroUser,
+            amount,
+            ratio,
+            signer,
+            to,
+            isFast,
+            TransferEventEmitter,
+            StateHelper,
+            Notification,
+            data
+            )
         try {
-            await transfer.submitTX()
+            // await transfer.submitTX()
         } catch (e) {
             dispatch({type: "RESET_REQUEST", effect: 'transfer'})
         }
