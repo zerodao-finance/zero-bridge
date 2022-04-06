@@ -19,6 +19,7 @@ export const useWalletConnection = () => {
             const signer = await wallet.provider.getSigner()
             return signer
         } catch (err) {
+            dispatch({type: "RESET_REQUEST", effect: 'wallet'})
             return new Error("Cannot get Provider | Reconnect Wallet")
         }
     }, [wallet.provider])
@@ -33,6 +34,7 @@ export const useWalletConnection = () => {
     useEffect(() => {
         const call = async () => {
             try {
+                // TODO: Make getweb3 dynamic and allow the app to define what chain we're on
                 const web3Modal = await getweb3();
                 await web3Modal.currentProvider.sendAsync({ method: "wallet_addEthereumChain", params: (Object.values(CHAINS).reverse())});
                 let chainId = await web3Modal.eth.getChainId()

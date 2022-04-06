@@ -16,6 +16,7 @@ export default function wallet_modal() {
         get web3Loading() {
             return loading;
         },
+        // TODO: Make getweb3 dynamic and allow the app to define what chain we're on
         async getweb3() {
             setLoading(true);
             let web3Modal;
@@ -36,7 +37,7 @@ export default function wallet_modal() {
                             accumulator[chainId] = URLS[Number(chainId)][0]
                             return accumulator
                           }, {}),
-                        network: 'mainnet',
+                        network: 'arbitrum',
                         qrcodeModalOptions: {
                             mobileLinks: [
                                 'rainbow',

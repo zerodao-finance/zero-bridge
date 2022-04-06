@@ -18,8 +18,14 @@ export const useInputSubmit = (module) => {
 
     const getSigner = useMemo(async () => {
         try {
-            await wallet.provider.send("eth_requestAccounts", [])
-            const signer = await wallet.provider.getSigner()
+            let signer = undefined
+            if (wallet.provider.provider) {
+                await wallet.provider.provider.send("eth_requestAccounts", [])
+                signer = await wallet.provider.getSigner()
+            } else {
+                await wallet.provider.send("eth_requestAccounts", [])
+                signer = await wallet.provider.getSigner()
+            }
             return signer
         } catch (err) {
             return new Error("Cannot get Provider | Reconnect Wallet")
