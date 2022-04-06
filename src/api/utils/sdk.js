@@ -57,12 +57,11 @@ export class sdkTransfer {
     })();
   }
 
-  async submitTX() {
+  async submitTX(asset = "renBTC") {
     const liveDeployments = await deploymentsFromSigner(this.signer);
-    console.log(liveDeployments);
     // set correct module based on past in speed
     const transferRequest = await this.transferRequest;
-    console.log(transferRequest);
+    transferRequest.asset = this.StateHelper.state.wallet.network[asset];
     if (!(process.env.REACT_APP_CHAIN == "mainnet")) {
       transferRequest.module = this.isFast
         ? liveDeployments.ArbitrumConvertQuick?.address
@@ -81,20 +80,6 @@ export class sdkTransfer {
       });
       throw new Error("Failed to sign transaction");
     }
-
-    // try {
-    //   console.log("calling dry");
-    //   await transferRequest.dry(this.signer, { from: TEST_KEEPER_ADDRESS });
-    //   console.log("called dry");
-    // } catch (err) {
-    //   this.Notification.createCard(5000, "error", {
-    //     message: `Error Processing Transaction: ${err}`,
-    //   });
-    //   throw new Error("Dry failed to run");
-    // }
-
-    //handle publish transfer request
-    // emit transfer request
     try {
       await this.zeroUser.publishTransferRequest(transferRequest);
       const mint = await transferRequest.submitToRenVM();
@@ -179,14 +164,15 @@ export class sdkBurn {
     })();
   }
 
-  async call() {
-    const BurnRequest = await this.BurnRequest;
-    console.log(BurnRequest);
+  async call(asset = "renBTC") {
+    const burnRequest = await this.BurnRequest;
+    burnRequest.asset = this.StateHelper.state.wallet.network[asset];
+    console.log(burnRequest);
     const contracts = await deploymentsFromSigner(this.signer);
 
     //sign burn request
     try {
-      await BurnRequest.sign(this.signer, contracts.ZeroController.address);
+      await burnRequest.sign(this.signer, contracts.ZeroController.address);
     } catch (error) {
       console.error(error);
       //handle signature error
@@ -194,7 +180,7 @@ export class sdkBurn {
 
     //publishBurnRequest
     try {
-      this.zeroUser.publishBurnRequest(BurnRequest);
+      this.zeroUser.publishBurnRequest(burnRequest);
     } catch (error) {
       console.error(error);
     }
