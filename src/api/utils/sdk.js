@@ -4,6 +4,7 @@ import {
   UnderwriterTransferRequest,
   UnderwriterBurnRequest,
 } from "zero-protocol/dist/lib/zero";
+import fixtures from 'zero-protocol/dist/lib/fixtures';
 import { TEST_KEEPER_ADDRESS } from "zero-protocol/dist/lib/mock";
 import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 
@@ -31,12 +32,13 @@ export class sdkTransfer {
     // initialize Transfer Request Object
 
     this.transferRequest = (async function () {
-      var asset = "0xDBf31dF14B66535aF65AaC99C32e9eA844e14501";
+      const asset = fixtures[process.env.REACT_APP_CHAIN].renBTC;
       const contracts = await deploymentsFromSigner(signer);
       const amount = ethers.utils.parseUnits(String(value), 8);
       const data = String(_data);
+      const module = contracts.Convert && contracts.Convert.address || (process.env.REACT_APP_CHAIN === 'ETHEREUM' ? ETHEREUM.wBTC : asset);
 
-      if (process.env.REACT_APP_CHAIN == "mainnet") {
+      if (process.env.REACT_APP_CHAIN == "ETHEREUM") {
         UnderwriterTransferRequest.prototype.loan = async function () {
           return { wait: async () => {} };
         };
@@ -45,13 +47,13 @@ export class sdkTransfer {
       }
       return new UnderwriterTransferRequest({
         amount,
-        asset: process.env.REACT_APP_CHAIN == "mainnet" ? ETHEREUM.wBTC : asset,
+        asset,
         to,
         data,
         pNonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
         nonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
         underwriter: contracts.DelegateUnderwriter.address,
-        module: contracts.Convert ? contracts.Convert.address : asset,
+        module,
         contractAddress: contracts.ZeroController.address,
       });
     })();
@@ -62,7 +64,7 @@ export class sdkTransfer {
     // set correct module based on past in speed
     const transferRequest = await this.transferRequest;
     transferRequest.asset = this.StateHelper.state.wallet.network[asset];
-    if (!(process.env.REACT_APP_CHAIN == "mainnet")) {
+    if (!(process.env.REACT_APP_CHAIN == "ETHEREUM")) {
       transferRequest.module = this.isFast
         ? liveDeployments.ArbitrumConvertQuick?.address
         : liveDeployments.Convert.address;

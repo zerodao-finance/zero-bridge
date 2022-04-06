@@ -66,6 +66,7 @@ export const useInputSubmit = (module) => {
       console.log("calling transfer.submitTx");
       await transfer.submitTX();
     } catch (e) {
+	    console.error(e);
       dispatch({ type: "RESET_REQUEST", effect: "transfer" });
     }
   }
