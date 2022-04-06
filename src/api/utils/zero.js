@@ -38,34 +38,38 @@ const contracts = [
 ];
 
 export const chainIdToNetworkName = (chainId) => {
-  if (process.env.REACT_APP_TEST) return "localhost";
   return {
-    [42161]: ["arbitrum", undefined, undefined],
+    [42161]: ["arbitrum", undefined, []],
     [137]: ["matic", undefined, ["ArbitrumConvertQuick"]],
     [1]: [
       "mainnet",
-      [{ BadgerBridgeZeroController: "ZeroController" }],
-      undefined,
+      [{ BadgerBridgeZeroController: "ZeroController" }, "DelegateUnderwriter"],
+      [],
     ],
   }[chainId];
 };
 
 export const deploymentsFromSigner = async (signer) => {
   const { chainId } = await signer.provider.getNetwork();
-  //old logic
+  console.log(chainId);
+  // old logic
   //return mapValues(deployments[chainIdToNetworkName(chainId)], (v) => new ethers.Contract(v.address, v.abi, signer));
-  const [name, contractsToInclude, contractsToExclude] =
-    chainIdToNetworkName(chainId);
-  return (
-    contractsToInclude
-      ? contractsToInclude
-      : contracts.filter((d) => !contractsToExclude.includes(d))
-  ).reduce((contracts, _contract) => {
-    const [[contractName], [deployName]] =
+  let [name, contractsToInclude, contractsToExclude] = chainIdToNetworkName(
+    process.env.REACT_APP_CHAINID || chainId
+  );
+  if (process.env.REACT_APP_TEST) name = "localhost";
+  const contractsToSearch = contractsToInclude
+    ? contractsToInclude
+    : contracts.filter((d) => !contractsToExclude.includes(d));
+
+  console.log(contractsToSearch);
+  return contractsToSearch.reduce((contracts, _contract) => {
+    const [deployName, contractName] =
       typeof _contract == "string"
-        ? [[_contract], [_contract]]
-        : Object.entries(_contract);
-    const contract = deployments[chainId][name][deployName];
+        ? [_contract, _contract]
+        : [Object.keys(_contract)[0], Object.values(_contract)[0]];
+    console.log(deployments, chainId, name, deployName);
+    const contract = deployments[chainId][name].contracts[deployName];
     return {
       ...contracts,
       [contractName]: new ethers.Contract(
