@@ -57,7 +57,6 @@
     "@types/react-window": "^1.8.5",
     "@types/styled-components": "5.1.15",
     "@walletconnect/web3-provider": "^1.6.6",
-    "zero-protocol": "https://github.com/zerodao-finance/zero-protocol",
     "accept-language": "^3.0.18",
     "address": "^1.1.2",
     "ast-types": "^0.14.2",
@@ -129,9 +128,10 @@
     "uuid": "^8.3.2",
     "web3": "^1.6.1",
     "web3-eth-contract": "^1.6.1",
-    "web3modal": "^1.9.4",
+    "web3modal": "^1.9.6",
     "webfontloader": "^1.6.28",
-    "webpack-bundle-analyzer": "^4.5.0"
+    "webpack-bundle-analyzer": "^4.5.0",
+    "zero-protocol": "https://github.com/zerodao-finance/zero-protocol"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-constant-elements": "^7.16.0",
@@ -144,7 +144,8 @@
     "gm": "^1.23.1",
     "moment": "^2.29.1",
     "npm-run-all": "^4.1.5",
-    "react-scripts": "^4.0.3",
+    "react-error-overlay": "6.0.9",
+    "react-scripts": "4.0.3",
     "react-test-renderer": "^17.0.2",
     "tailwindcss": "^3.0.1",
     "typescript": "^4.5.2",
@@ -164,5 +165,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "resolutions": {
+    "react-error-overlay": "6.0.9"
   }
 }

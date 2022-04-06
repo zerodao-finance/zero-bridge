@@ -19,6 +19,7 @@ export const useWalletConnection = () => {
             const signer = await wallet.provider.getSigner()
             return signer
         } catch (err) {
+            dispatch({type: "RESET_REQUEST", effect: 'wallet'})
             return new Error("Cannot get Provider | Reconnect Wallet")
         }
     }, [wallet.provider])
@@ -33,14 +34,12 @@ export const useWalletConnection = () => {
     useEffect(() => {
         const call = async () => {
             try {
-                return await getweb3().then(async (response) => {
-                    await response.currentProvider.sendAsync({ method: "wallet_addEthereumChain", params: (Object.values(CHAINS).reverse())})
-                    let chainId = await response.eth.getChainId()
-
-
-
-                    await dispatch({type: "SUCCEED_BATCH_REQUEST", effect: 'wallet', payload: { address: (await response.eth.getAccounts())[0], chainId: chainId, network: NETWORK_ROUTER[chainId], provider: new ethers.providers.Web3Provider(await response.currentProvider) }})
-                })
+                // TODO: Make getweb3 dynamic and allow the app to define what chain we're on
+                const web3Modal = await getweb3();
+                await web3Modal.currentProvider.sendAsync({ method: "wallet_addEthereumChain", params: (Object.values(CHAINS).reverse())});
+                let chainId = await web3Modal.eth.getChainId()
+                await dispatch({type: "SUCCEED_BATCH_REQUEST", effect: 'wallet', payload: { address: (await web3Modal.eth.getAccounts())[0], chainId: chainId, network: NETWORK_ROUTER[chainId], provider: new ethers.providers.Web3Provider(await web3Modal.currentProvider) }})
+                return
             }
             catch (err) {
                 console.error(err)

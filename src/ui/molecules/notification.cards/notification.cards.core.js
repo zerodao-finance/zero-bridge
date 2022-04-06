@@ -13,7 +13,7 @@ export const getCard = (_ref) => {
     }
 }
 export const ErrorCard = ({type, message, id, callback, close}) => {
-    console.log(callback)
+    console.error(message)
     return (
         <div className="bg-[#E4D4D4] dark:bg-[#D32F2F] min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] text-sm p-5 rounded-md shadow-md text-xs md:text-sm" key={id}>
             <span className="absolute top-1 right-1 text-md text-black dark:text-white cursor-pointer" onClick={close}>
@@ -28,7 +28,7 @@ export const ErrorCard = ({type, message, id, callback, close}) => {
 }
 
 export const MessageCard = ({type, message, id, callback, close}) => {
-    console.log(callback)
+    console.log(message)
     return (
         <div className="bg-[#D7E0DA] dark:bg-gray-500 min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] text-sm p-5 rounded-md shadow-md text-xs md:text-sm" key={id}>
             <span className="absolute top-1 right-1 text-md dark:text-white cursor-pointer" onClick={close}>
@@ -43,7 +43,7 @@ export const MessageCard = ({type, message, id, callback, close}) => {
 }
 
 export const WarningCard = ({type, message, id, callback, close}) => {
-    console.log(callback)
+    console.warn("Warning: ", message)
     return (
         <div className="bg-[#E8DFD2] dark:bg-[#F9A825] min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] text-sm p-5 rounded-md shadow-md text-xs md:text-sm" key={id}>
             <span className="absolute top-1 right-1 text-md text-black cursor-pointer" onClick={close}>
@@ -58,7 +58,6 @@ export const WarningCard = ({type, message, id, callback, close}) => {
 }
 
 export const SuccessCard = ({type, message, id, callback, close}) => {
-    console.log(callback)
     return (
         <div className="bg-[#D7E0DA] dark:bg-main-green min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] text-sm p-5 rounded-md shadow-md text-xs md:text-sm" key={id}>
             <span className="absolute top-1 right-1 text-md text-black cursor-pointer" onClick={close}>

@@ -26,7 +26,6 @@ const chainFromEnv = () => {
   return CHAINS[hexChainIdFromChain(process.env.REACT_APP_CHAIN)];
 };
     
-    
 
 export const chainFromHexString = (_hex) => {
     if (process.env.REACT_APP_TEST) return chainFromEnv();
@@ -55,6 +54,16 @@ export const CHAINS = {
         ].filter((url) => url !== undefined),
         blockExplorerUrls: ['https://polygonscan.com'],
       },
+    1: {
+      chainId: ethers.utils.hexValue(1),
+      chainName: 'mainnet',
+      nativeCurrency: ETH,
+      rpcUrls: [
+        process.env.REACT_APP_ETH_RPC ? `https://eth-mainnet.alchemyapi.io/v2/${process.env.REACT_APP_ETH_RPC}` : undefined, 
+        'https://mainnet.infura.io/v3/c5b9bb3f18d84965b8a89f547411229b'
+      ].filter((url) => url !== undefined),
+      blockExplorerUrls: ['https://etherscan.com'],
+    }
 }
 
 export const URLS = Object.keys(CHAINS).reduce((accumulator, chainId) => {

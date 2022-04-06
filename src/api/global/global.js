@@ -58,7 +58,7 @@ const StateProvider = ({ children }) => {
 	}, [state.wallet.network]);
 
 	useEffect(() => {
-		if (localStorage.getItem('screenMode') === 'dark') {
+		if (localStorage.getItem('screenMode') !== 'light') {
 			document.documentElement.classList.add('dark');
 		}
 	}, []);
