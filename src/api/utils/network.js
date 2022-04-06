@@ -10,6 +10,6 @@ export const NETWORK_ROUTER = {
   },
   1: {
     name: "Mainnet",
-    swap_address: ethers.constants.AddressZero,
+    swap_address: "0x80466c64868E1ab14a1Ddf27A676C3fcBE638Fe5",
   },
 };
