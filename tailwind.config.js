@@ -16,6 +16,7 @@ module.exports = {
           '400': '#ffcf4d',
         },
         'badger-yellow': {
+          '200': '#ffe3b8',
           '300': '#f2bc1b',
           '400': '#ffb84d',
           '500': '#e6a645',
