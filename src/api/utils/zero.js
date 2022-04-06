@@ -43,7 +43,10 @@ export const chainIdToNetworkName = (chainId) => {
     [137]: ["matic", undefined, ["ArbitrumConvertQuick"]],
     [1]: [
       "mainnet",
-      [{ BadgerBridgeZeroController: "ZeroController" }, "DelegateUnderwriter"],
+      [
+        { BadgerBridgeZeroController: "ZeroController" },
+        { BadgerBridgeZeroController: "DelegateUnderwriter" },
+      ],
       [],
     ],
   }[chainId];

@@ -13,6 +13,8 @@ const MATIC = {
 
 const hexChainIdFromChain = (name) => {
   switch (name.toLowerCase()) {
+    case "mainnet":
+      return "1";
     case "arbitrum":
       return "42161";
     case "matic":
@@ -60,7 +62,9 @@ export const CHAINS = {
     chainId: ethers.utils.hexValue(1),
     chainName: "Mainnet",
     nativeCurrency: ETH,
-    rpcUrls: [`https://mainnet.infura.io/v3/${process.env.infuraKey}`],
+    rpcUrls: process.env.infuraKey
+      ? [`https://mainnet.infura.io/v3/${process.env.infuraKey}`]
+      : "",
     blockExplorerUrls: ["https://etherscan.io"],
   },
 };

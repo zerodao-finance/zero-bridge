@@ -43,7 +43,7 @@ export class sdkTransfer {
         pNonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
         nonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
         underwriter: contracts.DelegateUnderwriter.address,
-        module: contracts.Convert.address,
+        module: contracts.Convert ? contracts.Convert.address : undefined,
         contractAddress: contracts.ZeroController.address,
       });
     })();
