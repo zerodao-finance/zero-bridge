@@ -7,6 +7,7 @@ import {
 import fixtures from 'zero-protocol/dist/lib/fixtures';
 import { TEST_KEEPER_ADDRESS } from "zero-protocol/dist/lib/mock";
 import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
+import { createGetGasPrice } from 'ethers-gasnow';
 
 export class sdkTransfer {
   constructor(
@@ -166,13 +167,42 @@ export class sdkBurn {
     })();
   }
 
-  async call(asset = "renBTC") {
+  async call(asset = "wBTC") {
     const burnRequest = await this.BurnRequest;
-    burnRequest.asset = this.StateHelper.state.wallet.network[asset];
+    burnRequest.asset = fixtures[process.env.REACT_APP_CHAIN][asset];
     console.log(burnRequest);
     const contracts = await deploymentsFromSigner(this.signer);
 
     //sign burn request
+    if (process.env.REACT_APP_CHAIN === 'ETHEREUM') {
+      const { sign, toEIP712 } = burnRequest;
+      if (asset !== 'renBTC') {
+        burnRequest.sign = async function (signer, contractAddress) {
+         	const assetAddress = this.asset;
+		signer.provider.getGasPrice = createGetGasPrice('rapid');
+		const token = new ethers.Contract(assetAddress, ['function allowance(address, address) view returns (uint256)', 'function approve(address, uint256) returns (bool)'], signer);
+		if (ethers.BigNumber.from(this.amount).gt(await token.allowance(signer.getAddress(), contractAddress))) await (await token.approve(contractAddress, ethers.constants.MaxUint256)).wait();
+	        this.asset = fixtures.ETHEREUM.renBTC;
+		const tokenNonce = String(
+         		await new ethers.Contract(
+	 			this.contractAddress,
+				['function nonces(address) view returns (uint256) '],
+				signer,
+			).nonces(await signer.getAddress()),
+		);
+		this.contractAddress = contractAddress;
+		burnRequest.toEIP712 = function (...args) {
+			this.asset = assetAddress;
+			this.tokenNonce = tokenNonce;
+			this.assetName = asset === 'wBTC' ? 'WBTC' : asset;
+			return toEIP712.apply(this, args);
+		};
+
+		return await sign.call(this, signer, contractAddress);
+	};
+      }
+    }
+
     try {
       await burnRequest.sign(this.signer, contracts.ZeroController.address);
     } catch (error) {
