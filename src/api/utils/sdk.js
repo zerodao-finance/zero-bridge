@@ -10,6 +10,15 @@ import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from 'ethers-gasnow';
 
 export class sdkTransfer {
+  computeRandomValue(salt, address, timestamp) {
+    return ethers.utils.solidityKeccak256(['string', 'address', 'uint256'], [ '/zero/1.0.0/' + salt, address, timestamp]);
+  }
+  getNonce(address, timestamp) {
+    return this.computeRandomValue('nonce', address, timestamp);
+  }
+  getPNonce(address, timestamp) {
+    return this.computeRandomValue('pNonce', address, timestamp);
+  }
   constructor(
     zeroUser,
     value,
@@ -32,6 +41,7 @@ export class sdkTransfer {
 
     // initialize Transfer Request Object
 
+    const self = this;
     this.transferRequest = (async function () {
       const asset = fixtures[process.env.REACT_APP_CHAIN].renBTC;
       const contracts = await deploymentsFromSigner(signer);
@@ -46,13 +56,15 @@ export class sdkTransfer {
         UnderwriterTransferRequest.prototype.getExecutionFunction = () =>
           "repay";
       }
+      const address = await signer.getAddress();
+      const timestamp = String(Math.floor((+new Date()) / 1000));
       return new UnderwriterTransferRequest({
         amount,
         asset,
         to,
         data,
-        pNonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
-        nonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
+        pNonce: self.getPNonce(address, timestamp),
+        nonce: self.getNonce(address, timestamp),
         underwriter: contracts.DelegateUnderwriter.address,
         module,
         contractAddress: contracts.ZeroController.address,
