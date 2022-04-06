@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 export const NETWORK_ROUTER = {
   137: {
     name: "Polygon",
@@ -9,5 +10,6 @@ export const NETWORK_ROUTER = {
   },
   1: {
     name: "Mainnet",
+    swap_address: ethers.constants.AddressZero,
   },
 };

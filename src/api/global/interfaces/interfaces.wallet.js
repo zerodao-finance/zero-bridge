@@ -3,7 +3,7 @@ import { useContext, useEffect, useState, useMemo } from "react";
 import { ethers } from "ethers";
 import wallet_modal from "../../utils/walletModal";
 import { NETWORK_ROUTER } from "../../utils/network";
-import { CHAINS, chainFromHexString } from "../../utils/chains";
+import { CHAINS } from "../../utils/chains";
 import _ from "lodash";
 
 export const useWalletConnection = () => {

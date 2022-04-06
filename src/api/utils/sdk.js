@@ -35,15 +35,18 @@ export class sdkTransfer {
       const amount = ethers.utils.parseUnits(String(value), 8);
       const data = String(_data);
 
+      UnderwriterTransferRequest.prototype.loan = async function () {
+        return { wait: async () => {} };
+      };
       return new UnderwriterTransferRequest({
         amount,
-        asset,
+        asset: contracts.Convert ? asset : contracts.asset.address,
         to,
         data,
         pNonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
         nonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)),
         underwriter: contracts.DelegateUnderwriter.address,
-        module: contracts.Convert ? contracts.Convert.address : undefined,
+        module: contracts.Convert ? contracts.Convert.address : asset,
         contractAddress: contracts.ZeroController.address,
       });
     })();
