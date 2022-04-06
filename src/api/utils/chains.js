@@ -1,77 +1,76 @@
-import { ethers } from 'ethers'
+import { ethers } from "ethers";
 const ETH = {
-    name: 'Ether',
-    symbol: 'ETH',
-    decimals: 18,
-}
+  name: "Ether",
+  symbol: "ETH",
+  decimals: 18,
+};
 
 const MATIC = {
-    name: 'Matic',
-    symbol: 'MATIC',
-    decimals: 18,
-}
-
+  name: "Matic",
+  symbol: "MATIC",
+  decimals: 18,
+};
 
 const hexChainIdFromChain = (name) => {
   switch (name.toLowerCase()) {
-    case 'arbitrum':
-      return '42161';
-	  case 'matic':
-		  return '137'
+    case "arbitrum":
+      return "42161";
+    case "matic":
+      return "137";
     default:
-      return '42161';
+      return "42161";
   }
 };
 const chainFromEnv = () => {
   return CHAINS[hexChainIdFromChain(process.env.REACT_APP_CHAIN)];
 };
-    
 
 export const chainFromHexString = (_hex) => {
-    if (process.env.REACT_APP_TEST) return chainFromEnv();
-    let bn = ethers.BigNumber.from(_hex)
-    return (CHAINS[Number(bn.toString())])
-}
+  if (process.env.REACT_APP_TEST) return chainFromEnv();
+  let bn = ethers.BigNumber.from(_hex);
+  return CHAINS[Number(bn.toString())];
+};
 
 export const CHAINS = {
-    42161: {
-        chainId: ethers.utils.hexValue(42161),
-        chainName: 'Arbitrum',
-        nativeCurrency: ETH,
-        rpcUrls: [
-            process.env.infuraKey ? `https://arbitrum-mainnet.infura.io/v3/${process.env.infuraKey}` : undefined,
-            'https://arb1.arbitrum.io/rpc',
-        ].filter((url) => url !== undefined),
-        blockExplorerUrls: ['https://arbiscan.io'],
-    },
-    137: {
-        chainId: ethers.utils.hexValue(137),
-        chainName: 'Polygon',
-        nativeCurrency: MATIC,
-        rpcUrls: [
-          process.env.infuraKey ? `https://polygon-mainnet.infura.io/v3/${process.env.infuraKey}` : undefined,
-          'https://polygon-rpc.com',
-        ].filter((url) => url !== undefined),
-        blockExplorerUrls: ['https://polygonscan.com'],
-      },
-    1: {
-      chainId: ethers.utils.hexValue(1),
-      chainName: 'mainnet',
-      nativeCurrency: ETH,
-      rpcUrls: [
-        process.env.REACT_APP_ETH_RPC ? `https://eth-mainnet.alchemyapi.io/v2/${process.env.REACT_APP_ETH_RPC}` : undefined, 
-        'https://mainnet.infura.io/v3/c5b9bb3f18d84965b8a89f547411229b'
-      ].filter((url) => url !== undefined),
-      blockExplorerUrls: ['https://etherscan.com'],
-    }
-}
+  42161: {
+    chainId: ethers.utils.hexValue(42161),
+    chainName: "Arbitrum",
+    nativeCurrency: ETH,
+    rpcUrls: [
+      process.env.infuraKey
+        ? `https://arbitrum-mainnet.infura.io/v3/${process.env.infuraKey}`
+        : undefined,
+      "https://arb1.arbitrum.io/rpc",
+    ].filter((url) => url !== undefined),
+    blockExplorerUrls: ["https://arbiscan.io"],
+  },
+  137: {
+    chainId: ethers.utils.hexValue(137),
+    chainName: "Polygon",
+    nativeCurrency: MATIC,
+    rpcUrls: [
+      process.env.infuraKey
+        ? `https://polygon-mainnet.infura.io/v3/${process.env.infuraKey}`
+        : undefined,
+      "https://polygon-rpc.com",
+    ].filter((url) => url !== undefined),
+    blockExplorerUrls: ["https://polygonscan.com"],
+  },
+  1: {
+    chainId: ethers.utils.hexValue(1),
+    chainName: "Mainnet",
+    nativeCurrency: ETH,
+    rpcUrls: [`https://mainnet.infura.io/v3/${process.env.infuraKey}`],
+    blockExplorerUrls: ["https://etherscan.io"],
+  },
+};
 
 export const URLS = Object.keys(CHAINS).reduce((accumulator, chainId) => {
-    const validUrls = CHAINS[Number(chainId)].rpcUrls
+  const validUrls = CHAINS[Number(chainId)].rpcUrls;
 
-    if (validUrls.length) {
-        accumulator[chainId] = validUrls
-    }
+  if (validUrls.length) {
+    accumulator[chainId] = validUrls;
+  }
 
-    return accumulator
-}, {})
+  return accumulator;
+}, {});
