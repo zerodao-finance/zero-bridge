@@ -6,6 +6,7 @@ import Authereum from 'authereum'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import { useContext, useState } from 'react'
 import { URLS } from './chains'
+import { NETWORK_ROUTER } from './network'
 
 
 export default function wallet_modal() {
@@ -61,12 +62,12 @@ export default function wallet_modal() {
             provider.on("error", e => console.error("WS Error", e))
             provider.on("end", e => console.error("WS End", e))
             provider.on("disconnect", (error) => console.log("error"))
-            provider.on("connect", info => console.log(info))
+            provider.on("connect", info => console.log("connecting: ", info))
             provider.on("accountsChanged", (accounts) => {
                 dispatch({type: "UPDATE_WALLET", data: {"address": accounts[0]} })
             });
             provider.on("chainChanged", (chainId) => {
-                console.log(chainId);
+                dispatch({type: "UPDATE_WALLET", data: {"chainId": chainId, "network": NETWORK_ROUTER[parseInt(chainId)]} })
             });
             
             web3 = new Web3(provider)
