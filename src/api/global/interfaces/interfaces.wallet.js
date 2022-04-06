@@ -34,10 +34,10 @@ export const useWalletConnection = () => {
       try {
         // TODO: Make getweb3 dynamic and allow the app to define what chain we're on
         const web3Modal = await getweb3();
-        await web3Modal.currentProvider.sendAsync({
-          method: "wallet_addEthereumChain",
-          params: Object.values(CHAINS).reverse(),
-        });
+        // await web3Modal.currentProvider.sendAsync({
+        //   method: "wallet_addEthereumChain",
+        //   params: Object.values(CHAINS).reverse(),
+        // });
         let chainId = await web3Modal.eth.getChainId();
         await dispatch({
           type: "SUCCEED_BATCH_REQUEST",
