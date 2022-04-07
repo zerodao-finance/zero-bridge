@@ -10,8 +10,8 @@ export const useBridgeBurnInput = () => {
     const { eth_usd, btc_eth, btc_usd } = state.priceFeeds.data
     const { sendBurnRequest } = useInputSubmit('burn')
     const { input } = state.burn
+    var { amount, destination, token } = input
 
-    const { amount, destination, token } = input
     const updateAmount = (e) => {
         dispatch({ type: "UPDATE", module: "burn", effect: "input", data: { token, amount: e.target.value, destination }})
     }    
@@ -19,7 +19,7 @@ export const useBridgeBurnInput = () => {
         dispatch({ type: "UPDATE", module: "burn", effect: "input", data: { token, destination: e.target.value, amount }})
     };
     const setToken = (e) => {
-        dispatch({ type: "UPDATE", module: "burn", effect: "input", data: { destination, amount, token }})
+        dispatch({ type: "UPDATE", module: "burn", effect: "input", data: { destination, amount, token: e }})
     };
 
     const getBridgeBurnInputProps = ({...otherProps} = {}) => ({

@@ -46,8 +46,8 @@ export const globalBridgeState = {
         burn: {
             input: {
                 amount: '0',
-		destination: '',
-		token: 'renBTC',
+                destination: '',
+                token: 'renBTC',
                 isLoading: false,
                 error: null
             }
