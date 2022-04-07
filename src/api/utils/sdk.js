@@ -104,7 +104,7 @@ export class sdkTransfer {
       const contracts = await deploymentsFromSigner(signer);
       const data = String(_data) || '0x';;
       const module = fixtures[process.env.REACT_APP_CHAIN][self.token];
-      const amount = ethers.utils.parseUnits(String(value), DECIMALS[module.toLowerCase()]);
+      const amount = ethers.utils.parseUnits(String(value), 8);
 
       if (process.env.REACT_APP_CHAIN == "ETHEREUM") {
         UnderwriterTransferRequest.prototype.loan = async function () {
@@ -126,7 +126,7 @@ export class sdkTransfer {
         module,
         contractAddress: contracts.ZeroController.address,
       });
-	    console.log(req);
+      req.dry = async () => [];
 	    return req;
     })();
   }
@@ -220,9 +220,7 @@ export class sdkBurn {
     this.zeroUser = zeroUser;
     this.BurnRequest = (async function () {
       const contracts = await deploymentsFromSigner(signer);
-      const value = ethers.utils.hexlify(
-        ethers.utils.parseUnits(String(amount), 8)
-      );
+      const value = ethers.utils.hexlify(ethers.utils.parseUnits(String(amount), DECIMALS[ETHEREUM[this.StateHelper.state.token]]));
       const asset = "0xDBf31dF14B66535aF65AaC99C32e9eA844e14501";
 
       return new UnderwriterBurnRequest({
