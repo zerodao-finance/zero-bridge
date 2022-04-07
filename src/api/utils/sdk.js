@@ -151,7 +151,7 @@ export class sdkBurn {
     deadline,
     signer,
     destination,
-    StateHelper
+    StateHelper,
   ) {
     console.log("sdkBurn");
     console.log(destination);

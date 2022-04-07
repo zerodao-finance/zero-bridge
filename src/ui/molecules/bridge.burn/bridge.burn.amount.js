@@ -4,8 +4,8 @@ import { FaEthereum } from 'react-icons/fa'
 import { ethers } from 'ethers'
 import TokenDropdown from '../../atoms/dropdowns/dropdown.tokens'
 
-export const BridgeBurnInput = ({ destination, amount, updateDestination, effect, tokenPrice }) => {
-    const [token, setToken] = useState("ETH");
+export const BridgeBurnInput = ({ destination, amount, setToken, token, updateDestination, effect, tokenPrice }) => {
+//    const [token, setToken] = useState("renBTC");
 
     var formatter = new Intl.NumberFormat('en-US', {
         style: "currency",

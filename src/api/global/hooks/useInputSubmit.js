@@ -91,7 +91,7 @@ export const useInputSubmit = (module) => {
       signer,
       input.destination
     );
-    await transfer.call();
+    await transfer.call(input.token);
   }
 
   return {

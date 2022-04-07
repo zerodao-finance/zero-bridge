@@ -8,10 +8,10 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-function TokenDropdown({ token = "BTC", setToken, tokensRemoved = [] }) {
+function TokenDropdown({ token = "renBTC", setToken, tokensRemoved = [] }) {
     const items = [
         {
-            text: "BTC",
+            text: "renBTC",
             icon: FaBitcoin
         },
         {
@@ -20,10 +20,6 @@ function TokenDropdown({ token = "BTC", setToken, tokensRemoved = [] }) {
         },
         {
             text: "ibBTC",
-            icon: FaBitcoin
-        },
-        {
-            text: "renBTC",
             icon: FaBitcoin
         },
         {

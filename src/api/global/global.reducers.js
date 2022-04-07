@@ -47,6 +47,7 @@ export const globalBridgeState = {
             input: {
                 amount: '0',
 		destination: '',
+		token: 'renBTC',
                 isLoading: false,
                 error: null
             }
