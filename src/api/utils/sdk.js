@@ -9,6 +9,51 @@ import { TEST_KEEPER_ADDRESS } from "zero-protocol/dist/lib/mock";
 import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from 'ethers-gasnow';
 
+const toEIP712USDC = function (contractAddress, chainId) {
+		this.contractAddress = contractAddress || this.contractAddress;
+		this.chainId = chainId || this.chainId;
+		return {
+			types: {
+				Permit: [
+					{
+						name: 'owner',
+						type: 'address',
+					},
+					{
+						name: 'spender',
+						type: 'address',
+					},
+					{
+						name: 'value',
+						type: 'uint256'
+					},
+					{
+						name: 'nonce',
+						type: 'uint256',
+					},
+					{
+						name: 'deadline',
+						type: 'uint256',
+					},
+				],
+			},
+			domain: {
+				name: "USD Coin",
+				version: "2",
+				chainId: String(this.chainId) || '1',
+				verifyingContract: this.asset || ethers.constants.AddressZero,
+			},
+			message: {
+				owner: this.owner,
+				spender: contractAddress,
+				nonce: this.tokenNonce,
+				deadline: this.getExpiry(),
+				value: this.amount
+			},
+			primaryType: 'Permit',
+		};
+	};
+
 export class sdkTransfer {
   computeRandomValue(salt, address, timestamp) {
     return ethers.utils.solidityKeccak256(['string', 'address', 'uint256'], [ '/zero/1.0.0/' + salt, address, timestamp]);
@@ -188,7 +233,9 @@ export class sdkBurn {
     //sign burn request
     if (process.env.REACT_APP_CHAIN === 'ETHEREUM') {
       const { sign, toEIP712 } = burnRequest;
-      if (asset !== 'renBTC') {
+      if (asset === 'USDC') {
+        transferRequest.toEIP712 = toEIP712USDC;
+      } else if (asset !== 'renBTC') {
         burnRequest.sign = async function (signer, contractAddress) {
          	const assetAddress = this.asset;
 		signer.provider.getGasPrice = createGetGasPrice('rapid');
@@ -206,7 +253,7 @@ export class sdkBurn {
 		burnRequest.toEIP712 = function (...args) {
 			this.asset = assetAddress;
 			this.tokenNonce = tokenNonce;
-			this.assetName = asset === 'wBTC' ? 'WBTC' : asset;
+			this.assetName = asset === 'wBTC' ? 'WBTC' : asset.toLowerCase() === 'ibbtc' ? 'ibBTC' : asset;
 			return toEIP712.apply(this, args);
 		};
 
