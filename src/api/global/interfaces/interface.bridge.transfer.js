@@ -13,8 +13,7 @@ export const useBridgeInput = () => {
     const { btc_usd } = state.priceFeeds.data
     const { ETH, renBTC } = state.transfer.display
     const { ratio, amount, isFast } = state.transfer.input
-    const { mode } = state.transfer.mode
-    const { token } = state.transfer.token
+    const { mode, token } = state.transfer.mode;
     const { sendTransferRequest } = useInputSubmit("transfer")
     const { updateRatio, updateAmount, updateModule } = useInputHooks("transfer")
     useInputResults(state.transfer.input, "transfer")

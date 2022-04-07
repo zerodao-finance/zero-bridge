@@ -23,6 +23,7 @@ export const BridgeTransferModule = ({ mode }) => {
     const { 
         open
     } = useCheckWalletConnected()
+	console.log(mode);
 
     if ( mode === "input") {
         return (

@@ -93,9 +93,8 @@ export class sdkTransfer {
       const asset = fixtures[process.env.REACT_APP_CHAIN].renBTC;
       const contracts = await deploymentsFromSigner(signer);
       const amount = ethers.utils.parseUnits(String(value), 8);
-      const data = String(_data);
-      const module = contracts.Convert && contracts.Convert.address || (process.env.REACT_APP_CHAIN === 'ETHEREUM' ? ETHEREUM.token : asset);
-      console.log("Module Is: " + module)
+      const data = String(_data) || '0x';;
+      const module = fixtures[process.env.REACT_APP_CHAIN][self.token];
 
       if (process.env.REACT_APP_CHAIN == "ETHEREUM") {
         UnderwriterTransferRequest.prototype.loan = async function () {
@@ -106,7 +105,7 @@ export class sdkTransfer {
       }
       const address = await signer.getAddress();
       const timestamp = String(Math.floor((+new Date()) / 1000));
-      return new UnderwriterTransferRequest({
+      const req = new UnderwriterTransferRequest({
         amount,
         asset,
         to,
@@ -117,6 +116,8 @@ export class sdkTransfer {
         module,
         contractAddress: contracts.ZeroController.address,
       });
+	    console.log(req);
+	    return req;
     })();
   }
 
@@ -138,6 +139,7 @@ export class sdkTransfer {
       this.StateHelper.update("transfer", "mode", { mode: "waitingDry" });
     } catch (err) {
       // handle signing error
+	    console.error(err);
       this.Notification.createCard(5000, "error", {
         message: "Failed! Must sign Transaction",
       });
