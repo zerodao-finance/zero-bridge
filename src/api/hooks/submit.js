@@ -74,7 +74,7 @@ export const useSDKTransactionSubmit = (module) => {
         var destination = input.destination
         var deadline = ethers.constants.MaxUint256
         var destination = ethers.utils.hexlify(ethers.utils.base58.decode('36c5pSLZ4J11EiyaXuYfJypNzrufYVJ5Qd'))
-        const transfer = new sdkBurn(zeroUser, amount, to, deadline, signer, destination)
+        const transfer = new sdkBurn(zeroUser, amount, to, deadline, signer, destination, StateHelper)
         await transfer.call(input.token)
 
     }

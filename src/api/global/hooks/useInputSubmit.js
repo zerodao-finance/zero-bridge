@@ -91,7 +91,8 @@ export const useInputSubmit = (module) => {
       to,
       deadline,
       signer,
-      input.destination
+      input.destination,
+	    StateHelper
     );
     await transfer.call(input.token);
   }
