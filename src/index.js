@@ -4,8 +4,7 @@ import reportWebVitals from './reportWebVitals';
 import './app.css'
 import 'react-toastify/dist/ReactToastify.min.css';
 import { StateProvider } from './api/global'
-
-
+import { TransactionProvider } from './api/transaction';
 import { NotificationProvider } from './api/notification/index'
 import { DashboardPage } from './ui/pages/dashboard'
 
@@ -21,9 +20,11 @@ Object.keys(process.env).forEach((key) => {
 ReactDOM.render(
   <React.StrictMode className="">
     <NotificationProvider >
-      <StateProvider>
-        <DashboardPage/>
-      </StateProvider>   
+      <TransactionProvider>
+        <StateProvider>
+          <DashboardPage/>
+        </StateProvider>   
+      </TransactionProvider>
     </NotificationProvider>
   </React.StrictMode>,
   document.getElementById('root')

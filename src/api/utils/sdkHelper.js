@@ -1,27 +1,52 @@
 import { sdkTransfer, sdkBurn } from "./sdk"
 export class SDKHelperClass {
     
-    constructor(request, notify, txHelper, process) {
-        this.request = request,
-        this.notify = notify.
+    constructor(
+        request,
+        notify,
+        txHelper,
+        state
+        ) {
+        this.request = request
+        this.response = request.response
+        this.notify = notify
         this.txHelper = txHelper
-        this.process = process
+        this.state = state
     }
 
+    
+    static Request(type, notify, txHelper, state, ...args){
+        switch ( type ) {
+            case 'transfer':
+                return new SDKHelperClass(new sdkTransfer(...args), notify, txHelper, state)
+            case 'burn':
+                return new SDKHelperClass(new sdkBurn(...args), notify, txHelper, state)
+            }
+    }
+            
+            
     call(){
+        this.processTransfer()
         this.request.call()
-        this.process(this.request)
-    }
-
-    static newTransfer(notify, txHelper, type, ...args){
-        let transfer = new sdkTransfer(...args)
-        return new SDKHelperClass(transfer, notify, txHelper, SDKHelperClass.processTransfer)
+        this.clean()
     }
     
-    static processTransfer(transfer) {
-        transfer.response.on('signed', () => console.log("signed"))
-        transfer.response.on('dry', () => console.log("dry"))
-        transfer.response.on('published', (data) => console.log(data) )    
+    processTransfer() {
+        this.response.on('signed', () => this.state.update('transfer', 'mode', { mode: "showSigning"}))
+        this.response.on('dry', () => this.state.update('transfer', 'mode', { mode: 'waitingDry'}))
+        this.response.on('published', (data) => {
+            this.notify.createCard(5000, "message", { message: "Successfully created a transaction"})
+            this.txHelper.createRequest('transfer', { request: data.request, gateway: data.gateway })
+            this.state.update('transfer', 'mode', { mode: 'showGateway', gatewayData: { address: data.gateway, requestData: data.request}})
+
+            }
+        )
+        this.response.on('error', () => console.log("error"))    
+    }
+
+    clean() {
+        this.response.removeAllListeners(['signed', 'dry', 'published', 'error'])
+        return
     }
 
     static newBurn(...args){

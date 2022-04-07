@@ -3,6 +3,7 @@ import { useInputResults } from '../hooks/useInputResults'
 import { useContext, useEffect, useState, useMemo } from 'react'
 import _ from 'lodash'
 import { useInputHooks } from '../hooks/useInputFunctions'
+import { useSDKTransactionSubmit } from '../../hooks/submit'
 import { useInputSubmit } from '../hooks/useInputSubmit'
 import { GlobalStateHelper } from '../../utils/global.utilities'
 
@@ -14,7 +15,7 @@ export const useBridgeInput = () => {
     const { ETH, renBTC } = state.transfer.display
     const { ratio, amount, isFast } = state.transfer.input
     const { mode } = state.transfer.mode
-    const { sendTransferRequest } = useInputSubmit("transfer")
+    const { sendTransferRequest } = useSDKTransactionSubmit("transfer")
     const { updateRatio, updateAmount, updateModule } = useInputHooks("transfer")
     useInputResults(state.transfer.input, "transfer")
 

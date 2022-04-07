@@ -15,18 +15,12 @@ export class sdkTransfer {
         signer,
         to,
         isFast,
-        TransferEventEmitter,
-        StateHelper,
-        Notification,        
         _data
     ) {
         this.isFast = isFast;
         this.ratio = ratio;
         this.zeroUser = zeroUser;
         this.signer = signer;
-        this.Emitter = TransferEventEmitter
-        this.StateHelper = StateHelper
-        this.Notification = Notification
         
         // initialize Transfer Request Object
 
@@ -58,10 +52,11 @@ export class sdkTransfer {
         // set correct module based on past in speed
         const transferRequest = await this.transferRequest
         transferRequest.module = this.isFast ? deployments.arbitrum.ArbitrumConvertQuick.address : deployments.arbitrum.Convert.address;
-
+        this.response.emit('signed')
+        
         try {
             await transferRequest.sign(this.signer)
-            this.response.emit('signed')
+            this.response.emit('dry', { error: false, message: null})
             // this.StateHelper.update("transfer", "mode", { mode: "waitingDry" })
         } catch (err) {
             this.response.emit('error', { message: "failed! must sign transaction"})
@@ -72,7 +67,6 @@ export class sdkTransfer {
 
         try {
             await transferRequest.dry(this.signer, { from: TEST_KEEPER_ADDRESS})
-            this.response.emit('dry', { error: false, message: null})
         } catch ( err ) {
             this.response.emit('error', { message: `error processing transaction ${err}`})
             // this.Notification.createCard(5000, "error", { message: `Error Processing Transaction: ${err}`})
@@ -104,7 +98,6 @@ export class sdkTransfer {
 
 export class sdkBurn {
 	constructor(zeroUser, amount, to, deadline, signer, destination, StateHelper) {
-		console.log('sdkBurn');
 		console.log(destination);
 		this.signer = signer;
 		this.StateHelper = StateHelper;
