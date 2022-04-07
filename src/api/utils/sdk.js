@@ -9,6 +9,16 @@ import { TEST_KEEPER_ADDRESS } from "zero-protocol/dist/lib/mock";
 import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from 'ethers-gasnow';
 
+const toLower = (s) => s.toLowerCase();
+
+const DECIMALS = {
+  [toLower(ETHEREUM.WBTC)]: 8,
+  [toLower(ETHEREUM.renBTC)]: 8,
+  [toLower(ETHEREUM.USDC)]: 6,
+  [toLower(ETHEREUM.ibBTC)]: 8,
+  [ethers.constants.AddressZero]: 18
+};
+
 const toEIP712USDC = function (contractAddress, chainId) {
 		this.contractAddress = contractAddress || this.contractAddress;
 		this.chainId = chainId || this.chainId;
@@ -92,9 +102,9 @@ export class sdkTransfer {
     this.transferRequest = (async function () {
       const asset = fixtures[process.env.REACT_APP_CHAIN].renBTC;
       const contracts = await deploymentsFromSigner(signer);
-      const amount = ethers.utils.parseUnits(String(value), 8);
       const data = String(_data) || '0x';;
       const module = fixtures[process.env.REACT_APP_CHAIN][self.token];
+      const amount = ethers.utils.parseUnits(String(value), DECIMALS[module.toLowerCase()]);
 
       if (process.env.REACT_APP_CHAIN == "ETHEREUM") {
         UnderwriterTransferRequest.prototype.loan = async function () {
@@ -229,7 +239,7 @@ export class sdkBurn {
     })();
   }
 
-  async call(asset = "wBTC") {
+  async call(asset) {
     const burnRequest = await this.BurnRequest;
     burnRequest.asset = fixtures[process.env.REACT_APP_CHAIN][asset];
     console.log(burnRequest);
@@ -239,7 +249,7 @@ export class sdkBurn {
     if (process.env.REACT_APP_CHAIN === 'ETHEREUM') {
       const { sign, toEIP712 } = burnRequest;
       if (asset === 'USDC') {
-        transferRequest.toEIP712 = toEIP712USDC;
+        burnRequest.toEIP712 = toEIP712USDC;
       } else if (asset !== 'renBTC') {
         burnRequest.sign = async function (signer, contractAddress) {
          	const assetAddress = this.asset;
