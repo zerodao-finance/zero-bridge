@@ -24,8 +24,30 @@ export class NotificationHelper {
         }})
     }
 
-    //callbacks
+    createTXCard(confirmation = true, type="request", data) {
+        var id = uuidv4()
+        this.dispatch({ type: "ADD", payload: {
+            id: id,
+            type: type,
+            timeout: null,
+            content: getCard,
+            confirmation: confirmation,
+            callback: () => this._confirmation(id, data.confirmed),
+            close: () => this._close(id),
+            ...data
+        }})
+    }
 
+    //callbacks
+    
+    _confirmation(id, data) {
+        data.on('confirmation', (i, target) => {
+            if (i >= target) {
+                this.dispatch({ type: "REMOVE", payload: { id: id}})
+            }
+
+        })
+    }
     _close(id) {
         this.dispatch({type: "REMOVE", payload: { id: id }})
     }

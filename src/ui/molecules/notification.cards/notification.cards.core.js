@@ -1,3 +1,4 @@
+import * as React from 'react'
 export const getCard = (_ref) => {
     switch (_ref.type) {
         case "error":
@@ -8,9 +9,17 @@ export const getCard = (_ref) => {
             return SuccessCard({..._ref})
         case "message":
             return MessageCard({..._ref})
+        case "transfer":
+            return TransferCard({ ..._ref})
         default:
             return MessageCard({..._ref})
     }
+}
+
+export const TransferCard = ({ id, close, data}) => {
+    return (
+        <div className="bg-gray-200 shadow-md text-black">{max} // {current}</div>
+    )
 }
 export const ErrorCard = ({type, message, id, callback, close}) => {
     console.error(message)
@@ -70,3 +79,4 @@ export const SuccessCard = ({type, message, id, callback, close}) => {
         </div>
     )
 }
+
