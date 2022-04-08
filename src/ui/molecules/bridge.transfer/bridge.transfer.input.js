@@ -3,16 +3,13 @@ import { ethers } from 'ethers'
 import TokenDropdown from '../../atoms/dropdowns/dropdown.tokens'
 import { useState } from 'react';
 
-export const BridgeTransferInput = ({ amount, effect, tokenPrice }) => {
+export const BridgeTransferInput = ({ amount, effect, tokenPrice, setToken, token }) => {
     // How to use 'TokenDropdown' component
     // Create 'useState' variables and pass it to 'TokenDropdown' 
     // (props are 'token' and 'setToken' where 'token' is a string of the token symbol)
 
     // Additional Props: 'tokensRemoved' which is an array of tokens you do not want in dropdown
     // Default Dropdown Items: ETH, WBTC, ibBTC, renBTC, USDC
-
-    // Example of 'useState' which are passed to 'TokenDropdown' below
-    const [token, setToken] = useState("BTC");
 
     var formatter = new Intl.NumberFormat('en-US', {
         style: "currency",

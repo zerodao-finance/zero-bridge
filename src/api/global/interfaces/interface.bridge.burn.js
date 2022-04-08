@@ -30,7 +30,7 @@ export const useBridgeBurnInput = () => {
         tokenPrice: eth_usd,
         effect: updateAmount,
         updateAmount,
-	updateDestination
+	    updateDestination
     })
 
     const getBurnSenderProps = ({...otherProps} = {}) => ({

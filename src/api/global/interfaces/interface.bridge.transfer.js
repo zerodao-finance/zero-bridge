@@ -14,6 +14,7 @@ export const useBridgeInput = () => {
     const { ETH, renBTC } = state.transfer.display
     const { ratio, amount, isFast } = state.transfer.input
     const { mode } = state.transfer.mode
+    const { token } = state.transfer.token
     const { sendTransferRequest } = useInputSubmit("transfer")
     const { updateRatio, updateAmount, updateModule } = useInputHooks("transfer")
     useInputResults(state.transfer.input, "transfer")
@@ -21,6 +22,8 @@ export const useBridgeInput = () => {
     
     const getTransferInputProps = ({...otherProps} = {}) => ({
         amount: amount,
+        token: token,
+        setToken: setToken,
         effect: updateAmount,
         tokenPrice: btc_usd
     })
@@ -47,6 +50,10 @@ export const useBridgeInput = () => {
     const getTransferMode = ({ ...otherProps } = {}) => ({
         mode: mode
     })
+    
+    const setToken = (e) => {
+        dispatch({ type: "UPDATE", module: "transfer", effect: "input", data: { token: e }})
+    };
 
     const getGatewayData = ({...otherProps} = {}) => ({...(StateHelper.getModuleGatewayProps('transfer'))})
 

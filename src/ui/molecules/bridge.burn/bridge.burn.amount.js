@@ -5,8 +5,6 @@ import { ethers } from 'ethers'
 import TokenDropdown from '../../atoms/dropdowns/dropdown.tokens'
 
 export const BridgeBurnInput = ({ destination, amount, setToken, token, updateDestination, effect, tokenPrice }) => {
-//    const [token, setToken] = useState("renBTC");
-
     var formatter = new Intl.NumberFormat('en-US', {
         style: "currency",
         currency: "USD"
