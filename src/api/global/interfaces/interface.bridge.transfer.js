@@ -13,19 +13,12 @@ export const useBridgeInput = () => {
     const { btc_usd } = state.priceFeeds.data
     const { ETH, renBTC } = state.transfer.display
     const { ratio, amount, isFast } = state.transfer.input
-    const { mode, token } = state.transfer.mode;
+    const { mode } = state.transfer.mode;
+    const { input } = state.transfer
+    const { token } = input
     const { sendTransferRequest } = useInputSubmit("transfer")
     const { updateRatio, updateAmount, updateModule } = useInputHooks("transfer")
     useInputResults(state.transfer.input, "transfer")
-
-    
-    const getTransferInputProps = ({...otherProps} = {}) => ({
-        amount: amount,
-        token: token,
-        setToken: setToken,
-        effect: updateAmount,
-        tokenPrice: btc_usd
-    })
     
     const getTransferRatioProps = ({ ...otherProps } = {}) => ({
         ratio: ratio,
@@ -49,10 +42,18 @@ export const useBridgeInput = () => {
     const getTransferMode = ({ ...otherProps } = {}) => ({
         mode: mode
     })
-    
+
     const setToken = (e) => {
         dispatch({ type: "UPDATE", module: "transfer", effect: "input", data: { token: e }})
     };
+
+    const getTransferInputProps = ({...otherProps} = {}) => ({
+        amount: amount,
+        token: token,
+        setToken: setToken,
+        effect: updateAmount,
+        tokenPrice: btc_usd
+    })
 
     const getGatewayData = ({...otherProps} = {}) => ({...(StateHelper.getModuleGatewayProps('transfer'))})
 
