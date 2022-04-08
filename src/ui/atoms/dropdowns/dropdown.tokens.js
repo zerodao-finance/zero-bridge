@@ -1,9 +1,9 @@
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
-import { ReactComponent as ETH } from '../../../assets/svg/eth.svg'
-import { ReactComponent as BTC } from '../../../assets/svg/btc.svg'
-import { ReactComponent as USDC } from '../../../assets/svg/usdc.svg'
+import { ReactComponent as ETH } from '../../../assets/svg-coins/eth.svg'
+import { ReactComponent as BTC } from '../../../assets/svg-coins/btc.svg'
+import { ReactComponent as USDC } from '../../../assets/svg-coins/usdc.svg'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')

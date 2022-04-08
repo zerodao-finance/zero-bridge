@@ -237,7 +237,7 @@ export class sdkBurn {
         ),
         contractAddress: contracts.ZeroController.address,
       });
-    })();
+    });
   }
 
   async call() {
