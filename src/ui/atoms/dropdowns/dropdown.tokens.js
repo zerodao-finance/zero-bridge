@@ -3,6 +3,9 @@ import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import { FaBitcoin, FaEthereum } from 'react-icons/fa'
 import { IoLogoUsd } from 'react-icons/io'
+import { ReactComponent as ETH } from '../../../assets/svg/eth.svg'
+import { ReactComponent as BTC } from '../../../assets/svg/btc.svg'
+import { ReactComponent as USDC } from '../../../assets/svg/usdc.svg'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -12,23 +15,23 @@ function TokenDropdown({ token = "renBTC", setToken, tokensRemoved = [] }) {
     const items = [
         {
             text: "renBTC",
-            icon: FaBitcoin
+            icon: BTC
         },
         {
             text: "WBTC",
-            icon: FaBitcoin
+            icon: BTC
         },
         {
             text: "ibBTC",
-            icon: FaBitcoin
+            icon: BTC
         },
         {
             text: "ETH",
-            icon: FaEthereum
+            icon: ETH
         },
         {
             text: "USDC",
-            icon: IoLogoUsd
+            icon: USDC
         }
     ]
 
