@@ -1,12 +1,16 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { FaRegWindowClose } from 'react-icons/fa'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { DefaultNavigationSidebar } from '../molecules/navigation/navigation.sidebar.default'
 
 export function LayoutSidebarNavigation({children, changeModule}) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setOpen(false), 200)
+  }, [children])
 
   return (
     <>  

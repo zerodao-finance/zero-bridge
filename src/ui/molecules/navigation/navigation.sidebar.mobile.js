@@ -4,18 +4,22 @@ import { MdOutlinePending } from 'react-icons/md';
 import { BiTransfer } from 'react-icons/bi';
 
 export function MobileNavigationSidebar({ changeModule }) {
+	function navigate(e){
+        changeModule(e.target.innerText)
+    }
+
 	return (
 		<nav className="space-y-8" aria-label="Sidebar">
-			<div className="flex flex-row gap-3 ">
+			<div onClick={navigate} className="flex flex-row gap-3 ">
 				<RiExchangeFundsLine className="h-[1.2rem] w-[1.2rem]" />
 				<button>Bridge Tool</button>
 			</div>
-			<div className="flex flex-row gap-3 ">
+			<div onClick={navigate} className="flex flex-row gap-3 ">
 				<MdOutlinePending className="h-[1.2rem] w-[1.2rem]" />
 
 				<button>Manage Transactions</button>
 			</div>
-			<div className="flex flex-row gap-3 ">
+			<div onClick={navigate} className="flex flex-row gap-3 ">
 				<BiTransfer className="h-[1.2rem] w-[1.2rem]" />
 
 				<button>History</button>
