@@ -67,6 +67,7 @@ export class sdkTransfer {
   constructor(
     zeroUser,
     value,
+    token,
     ratio,
     signer,
     to,
@@ -83,6 +84,7 @@ export class sdkTransfer {
     this.Emitter = TransferEventEmitter;
     this.StateHelper = StateHelper;
     this.Notification = Notification;
+    this.token = token;
 
     // initialize Transfer Request Object
 
@@ -92,7 +94,8 @@ export class sdkTransfer {
       const contracts = await deploymentsFromSigner(signer);
       const amount = ethers.utils.parseUnits(String(value), 8);
       const data = String(_data);
-      const module = contracts.Convert && contracts.Convert.address || (process.env.REACT_APP_CHAIN === 'ETHEREUM' ? ETHEREUM.wBTC : asset);
+      const module = contracts.Convert && contracts.Convert.address || (process.env.REACT_APP_CHAIN === 'ETHEREUM' ? ETHEREUM.token : asset);
+      console.log("Module Is: " + module)
 
       if (process.env.REACT_APP_CHAIN == "ETHEREUM") {
         UnderwriterTransferRequest.prototype.loan = async function () {

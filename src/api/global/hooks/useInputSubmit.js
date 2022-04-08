@@ -41,6 +41,7 @@ export const useInputSubmit = (module) => {
     StateHelper.update("transfer", "mode", { mode: "showSigning" });
     var zeroUser = zero.zeroUser;
     var amount = input.amount;
+    var token = input.token;
     var ratio = String(input.ratio);
     var signer = await getSigner;
     var to = await signer.getAddress();
@@ -53,6 +54,7 @@ export const useInputSubmit = (module) => {
     const transfer = new sdkTransfer(
       zeroUser,
       amount,
+      token,
       ratio,
       signer,
       to,
