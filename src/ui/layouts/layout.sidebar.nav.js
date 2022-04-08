@@ -40,7 +40,7 @@ export function LayoutSidebarNavigation({children, changeModule}) {
                 leaveTo="translate-x-full"
                 >
                 <div className="pointer-events-auto w-screen max-w-md">
-                    <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl rounded-l-lg dark:bg-main-green">
+                    <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl rounded-l-lg dark:bg-badger-yellow-500">
                     <div className="px-4 sm:px-6">
                         <div className="flex items-start justify-between">
                         <Dialog.Title className="text-lg font-medium text-gray-900"> Menu </Dialog.Title>
