@@ -52,11 +52,11 @@ export class sdkTransfer {
         // set correct module based on past in speed
         const transferRequest = await this.transferRequest
         transferRequest.module = this.isFast ? deployments.arbitrum.ArbitrumConvertQuick.address : deployments.arbitrum.Convert.address;
-        this.response.emit('signed')
+        this.response.emit('signing', { message: "please sign transaction", timeout: 5000})
         
         try {
             await transferRequest.sign(this.signer)
-            this.response.emit('dry', { error: false, message: null})
+            this.response.emit('signed', { error: false, message: null})
             // this.StateHelper.update("transfer", "mode", { mode: "waitingDry" })
         } catch (err) {
             this.response.emit('error', { message: "failed! must sign transaction"})
@@ -84,7 +84,7 @@ export class sdkTransfer {
             this.response.emit('published', {gateway: gatewayAddress, request: transferRequest, mintEmitter: mint})
             // this.Emitter.emit("transfer", mint, transferRequest)
             return
-        } catch (error) {
+        } catch (err) {
             this.response.emit('error', { message: `error publishing transaction ${err}`})
             // this.Notification.createCard(5000, "error", {message: `Error Publishing Transaction: ${err}`})
             // throw new Error('Error publishing transaction')
