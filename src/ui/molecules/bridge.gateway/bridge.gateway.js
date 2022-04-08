@@ -2,15 +2,18 @@ import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai'
 import { ethers } from 'ethers'
 import { BridgeLoadingGateway } from './bridge.loading.gateway'
 import { useBridgePage } from '../../../api/global/interfaces/interface.bridge'
+import { BitcoinQR } from '../../atoms/helpers/BitcoinQR'
 
 export const BridgeGatewayConfirmation = ({transferRequest, gatewayAddress}) => {
-    
-    
     return (
         <>
             <div className="flex flex-col justify-center items-center gap-5 min-h-[290px] text-black dark:text-badger-yellow-neon-400">
+                <BitcoinQR
+                    bitcoinAddress={gatewayAddress}
+                    amount={ethers.utils.formatUnits(ethers.BigNumber.from(transferRequest.amount), 8 )}
+                />
                 <p className="cursor-copy select-all">
-                {gatewayAddress}
+                    {gatewayAddress}
                 </p>
                 <div id="usage" className="text-[11px] indent max-w-[300px] text-main-green dark:text-badger-yellow-neon-400 justify-self-end">
                     <p>Reminder: deposit the exact amount of BTC indicated to the deposit address</p>
