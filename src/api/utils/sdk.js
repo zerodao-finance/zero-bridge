@@ -9,7 +9,7 @@ import { TEST_KEEPER_ADDRESS } from "zero-protocol/dist/lib/mock";
 import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from 'ethers-gasnow';
 
-const toLower = (s) => s.toLowerCase();
+const toLower = (s) => s && s.toLowerCase();
 
 const DECIMALS = {
   [toLower(ETHEREUM.WBTC)]: 8,
