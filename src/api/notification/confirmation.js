@@ -2,7 +2,10 @@ import * as React from 'react';
 import _ from 'lodash';
 import async from 'async';
 
+
+
 export const useConfirmations = (card) => {
+    
     function getCardsWithConfirmationData(n) {
         if (n.confirmation !== null) {
             return n.callback

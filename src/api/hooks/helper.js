@@ -70,14 +70,16 @@ class SDKHelper {
             this.Global.update(_type, 'mode', { mode: "showSigning"})
         })
 
-        response.on("signed", (data) => {
-            this.Global.update(_type, "mode", { mode: "waitingDry"})
-        })
+        if ( _type === "transfer") {
+            response.on("signed", (data) => {
+                this.Global.update(_type, "mode", { mode: "waitingDry"})
+            })
+        }
 
         response.on("published", async (data) => {
-            this.Global.update(_type, "mode", { mode: "showGateway", gatewayData: { address: data.gateway, requestData: data.request }})
             switch( _type ) {
                 case "transfer":
+                    this.Global.update(_type, "mode", { mode: "showGateway", gatewayData: { address: data.gateway, requestData: data.request }})
                     this.Queue.push({
                         type: _type,
                         mint: data.mintEmitter,
@@ -86,6 +88,11 @@ class SDKHelper {
                     }, this.processTransferRequest)
                     break
                 case "gateway":
+                    this.Queue.push({
+                        type: _type,
+                        request: data.request,
+                        this: this
+                    }, this.processBurnRequest)
                     break
             }
         })
@@ -95,12 +102,18 @@ class SDKHelper {
         })
     }
 
+    async processBurnRequest(error, task) {
+        task.this.Transaction.createRequest("burn", task.request)
+        //handle burn request
+    }
+
     async processTransferRequest(error, task) {
         const deposit = await new Promise(async resolve => 
             task.mint.on("deposit", async deposit => {
                 //recieve deposit object
                 task.this.Global.reset(task.type, "input")
                 task.this.Global.update(task.type, "mode", { mode: "input"})
+                task.this.Transaction.createRequest("transfer", task.request)
                 resolve(deposit)
                 //create a transaction in Transaction with data on deposit receieved
             })
@@ -108,7 +121,8 @@ class SDKHelper {
         
         console.log("confirmed")
         const confirmed = await deposit.confirmed()
-        task.this.Notify.createTXCard(true, task.type, { confirmed: confirmed, data: task.request })
+        task.this.Notify.createTXCard(true, task.type, { confirmed: confirmed, data: task.request, max: 6, current: 0 })
+
     }
 
     #clean(response) {

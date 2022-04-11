@@ -75,7 +75,7 @@ export class sdkTransfer {
 
 
         //handle publish transfer request
-        // emit transfer request        
+        // emit transfer r≈equest        
         try { 
             await this.zeroUser.publishTransferRequest(transferRequest)
             const mint = await transferRequest.submitToRenVM()
@@ -97,10 +97,11 @@ export class sdkTransfer {
 }
 
 export class sdkBurn {
-	constructor(zeroUser, amount, to, deadline, signer, destination, StateHelper) {
+    response = new EventEmitter({ captureRejections: true })
+
+	constructor(zeroUser, amount, to, deadline, signer, destination) {
 		console.log(destination);
 		this.signer = signer;
-		this.StateHelper = StateHelper;
 		this.zeroUser = zeroUser;
 		this.BurnRequest = (async function () {
 			const contracts = await deploymentsFromSigner(signer);
@@ -127,16 +128,20 @@ export class sdkBurn {
 		//sign burn request
 		try {
 			await BurnRequest.sign(this.signer, contracts.ZeroController.address);
+            this.response.emit("signed", { message: "transaction signed successfully"})
 		} catch (error) {
 			console.error(error);
+            this.response.emit('error', { message: "error signing transaction"})
 			//handle signature error
 		}
 
 		//publishBurnRequest
 		try {
 			this.zeroUser.publishBurnRequest(BurnRequest);
+            this.response.emit('published', {request: burnRequest})
 		} catch (error) {
 			console.error(error);
+            this.response.emit("error", { message: "error publishing transaction to network"})
 		}
 	}
 }

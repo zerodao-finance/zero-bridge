@@ -44,8 +44,10 @@ export class NotificationHelper {
         data.on('confirmation', (i, target) => {
             if (i >= target) {
                 this.dispatch({ type: "REMOVE", payload: { id: id}})
+                return
+            } else {
+                this.dispatch({ type: "UPDATE", payload: { id: id, update: { max: target, current: i + 1 }}})
             }
-
         })
     }
     _close(id) {
