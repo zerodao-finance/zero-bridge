@@ -12,17 +12,17 @@ export function MobileNavigationSidebar({ changeModule }) {
 		<nav className="space-y-8" aria-label="Sidebar">
 			<div onClick={navigate} className="flex flex-row gap-3 ">
 				<RiExchangeFundsLine className="h-[1.2rem] w-[1.2rem]" />
-				<button>Bridge Tool</button>
+				<button onClick={() => { changeModule('bridge') }}>Bridge Tool</button>
 			</div>
 			<div onClick={navigate} className="flex flex-row gap-3 ">
 				<MdOutlinePending className="h-[1.2rem] w-[1.2rem]" />
 
-				<button>Manage Transactions</button>
+				<button onClick={() => { changeModule("manage") }}>Manage Transactions</button>
 			</div>
 			<div onClick={navigate} className="flex flex-row gap-3 ">
 				<BiTransfer className="h-[1.2rem] w-[1.2rem]" />
 
-				<button>History</button>
+				<button onClick={() => { changeModule("history")}}>History</button>
 			</div>
 			<div className="flex flex-row gap-3 ">
 				<RiFileListLine className="h-[1.2rem] w-[1.2rem]" />

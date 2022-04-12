@@ -44,6 +44,7 @@ export const RequestTestingEnv = () => {
             }
             {
                 completed.transfer.map(d => {
+                    console.log(d)
                     return (
                         <div className="m-5 border border-black w-fit px-10 text-xs" key={d.id}>
                             <p>

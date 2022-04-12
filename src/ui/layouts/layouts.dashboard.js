@@ -9,6 +9,8 @@ import { NotificationTransferCard } from '../organisms/card.notif'
 import { useCheckWalletConnected } from '../../api/global/interfaces/interfaces.wallet'
 import { useBridgePage } from '../../api/global/interfaces/interface.bridge'
 import UnderConstruction from "../atoms/helpers/under-construction"
+import { ManageTransaction } from "../molecules/manage/manage.request"
+import { TransactionHistory } from "../molecules/history/history.request"
 
 export const DashboardLayout = () => {
     const { changeActiveModule, resetModule, currentModule, isLoading } = useActiveModuleSwitcher()
@@ -52,6 +54,18 @@ export const DashboardLayout = () => {
                             <BridgeModule {...getWalletConnectionProps()} {...getBridgePageProps()}/>
                         </>
                         )}
+                    <p className="pb-[.5rem] opacity-60 text-center font-bold dark:text-white">{getTitle()}</p>
+                    <div className="flex flex-row row-[span_8_/_span_8] justify-center items-center isolate" id="hero">
+                        {
+                            isLoading ?
+                                "Loading"
+                                :
+                                currentModule === 'bridge' ? <BridgeModule {...getWalletConnectionProps()} {...getBridgePageProps()}/> : 
+                                currentModule === 'manage' ? <ManageTransaction /> : 
+                                currentModule === 'history' ? <TransactionHistory /> : ''
+
+                        }
+                    </div>
                 </div>
                 
                 <div className="footer row-span-2 flex flex-col-reverse text-[13px] md:text-md">
