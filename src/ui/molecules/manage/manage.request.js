@@ -1,27 +1,24 @@
 import { useTransactionContext } from "../../../api/transaction"
+import { ManageTransactionCard } from "../../atoms/cards/card.manage.tx"
+import { ManageTransactionLayout } from "../../layouts/layout.manage"
+import _ from 'lodash'
 export const ManageTransaction = ({}) => {
-    const { pending, complete } = useTransactionContext()
+    const { pending, completed } = useTransactionContext()
     
     return (
-        <>
+        <ManageTransactionLayout title="Manage Transactions">
             {
                 pending.transfer.map(d => {
                     return (
-                        <div className="m-5 border border-black w-fit px-10 text-xs" key={d.id} onClick={() => completeTransferRequest(d)}>
-                            <p>
-                                Pending
-                            </p>
-                            <p>
-                                {d.id}
-                            </p>
-                            <br></br>
-                            <p>
-                                {d.type}
-                            </p>
-                        </div>
+                        <ManageTransactionCard data={d}/>
                     )
                 })
             }
-        </>
+            {
+                <div className="dark:text-gray-300">
+                    {_.isEmpty(pending.transfer) ? "No Pending Transactions" : ''}
+                </div>
+            }
+        </ManageTransactionLayout>
     )
 }

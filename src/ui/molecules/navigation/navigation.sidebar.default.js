@@ -29,10 +29,10 @@ export const  DefaultNavigationSidebar = ({changeModule}) => {
                             </div>
                         </div>
                     </div>
-                    <div className={"flex flex-row gap-3 w-full py-4 hover:underline decoration-2 decoration-main-green dark:decoration-white  cursor-pointer hover:bg-slate-100 dark:hover:bg-black/10 transition ease-in-out duration-150 "} onClick={action}>
+                    <div className={"flex flex-row gap-3 w-full py-4 hover:underline decoration-2 decoration-main-green dark:decoration-white  cursor-pointer hover:bg-slate-100 dark:hover:bg-black/10 transition ease-in-out duration-150 "} id="history" onClick={action}>
                         <div className="flex flex-row mx-auto">
                             <BiTransfer className="h-[1.2rem] w-[1.2rem]"/>
-                            <div className="hidden group-hover:block opacity-0 group-hover:opacity-100 pl-3">
+                            <div className="hidden group-hover:block opacity-0 group-hover:opacity-100 pl-3" id='history'>
                                 History
                             </div>
                         </div>

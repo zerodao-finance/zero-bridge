@@ -18,7 +18,7 @@ export function MobileNavigationSidebar({ changeModule }) {
 			<div className="flex flex-row gap-3 ">
 				<BiTransfer className="h-[1.2rem] w-[1.2rem]" />
 
-				<button>History</button>
+				<button onClick={() => { changeModule("history")}}>History</button>
 			</div>
 			<div className="flex flex-row gap-3 ">
 				<RiFileListLine className="h-[1.2rem] w-[1.2rem]" />
