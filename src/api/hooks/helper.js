@@ -113,7 +113,7 @@ class SDKHelper {
                 //recieve deposit object
                 task.this.Global.reset(task.type, "input")
                 task.this.Global.update(task.type, "mode", { mode: "input"})
-                task.this.Transaction.createRequest("transfer", task.request)
+                task.this.#tfRequestTransaction(task.this.Transaction, task.request, await deposit.confirmed())
                 resolve(deposit)
                 //create a transaction in Transaction with data on deposit receieved
             })
@@ -123,6 +123,15 @@ class SDKHelper {
         const confirmed = await deposit.confirmed()
         task.this.Notify.createTXCard(true, task.type, { confirmed: confirmed, data: task.request, max: 6, current: 0 })
 
+    }
+
+    #tfRequestTransaction(transaction, request, confirmed) {
+        let data = transaction.createRequest("transfer", request)
+        confirmed.on("confirmation", (i, target) => {
+            if (i >= target) {
+                data.payload.data.complete
+            }
+        })
     }
 
     #clean(response) {

@@ -2,21 +2,21 @@ import { useTransactionContext } from "../../../api/transaction"
 import { ManageTransactionCard } from "../../atoms/cards/card.manage.tx"
 import { ManageTransactionLayout } from "../../layouts/layout.manage"
 import _ from 'lodash'
-export const ManageTransaction = ({}) => {
+export const TransactionHistory = ({}) => {
     const { pending, completed } = useTransactionContext()
     
     return (
-        <ManageTransactionLayout title="Manage Transactions">
+        <ManageTransactionLayout title="Transaction History">
             {
-                pending.transfer.map(d => {
+                completed.transfer.map(d => {
                     return (
-                        <ManageTransactionCard data={d}/>
+                        <ManageTransactionCard data={d} type="pending"/>
                     )
                 })
             }
             {
                 <div className="dark:text-gray-300">
-                    {_.isEmpty(pending.transfer) ? "No Pending Transactions" : ''}
+                    {_.isEmpty(completed.transfer) ? "No Transactions" : ''}
                 </div>
             }
         </ManageTransactionLayout>
