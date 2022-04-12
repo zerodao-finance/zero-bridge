@@ -1,7 +1,34 @@
-import { ReactComponent as BTC } from '../../../assets/svg-coins/btc.svg'
+import { useEffect, useState } from 'react';
+import useTransferPrices from '../../../api/hooks/transfer-prices';
+import { ReactComponent as BTC } from '../../../assets/svg-coins/btc.svg';
 import { DefaultInput } from '../../atoms';
+import { ethers } from 'ethers';
 
-function BridgeTransferFrom() {
+function BridgeTransferFrom({ amount, effect, tokenPrice, setToken, token }) {
+    const [calculateWith, setCalculateWith] = useState(1);
+    const [calculateLoading, setCalculateLoading] = useState(false);
+    const { getRenBtcEthPair } = useTransferPrices();
+
+    useEffect(async () => {
+        setCalculateLoading(true)
+        if(token.toLowerCase() === 'eth'){
+            const pair = await getRenBtcEthPair();
+            setCalculateWith(pair);
+        }
+        else if(token.toLowerCase() === 'usdc'){
+            if(tokenPrice){
+                const btcPrice = ethers.utils.formatUnits(tokenPrice, 6);
+                setCalculateWith(1 / btcPrice)
+            }
+        }
+        else {
+            setCalculateWith(1);
+        }
+        setCalculateLoading(false);
+    }, [token]);
+
+    console.log(calculateLoading)
+
     return (
         <div className="w-100 flex items-center justify-between gap-5 dark:bg-badger-gray-500 bg-gray-100 px-2 rounded-2xl" style={{minHeight: "58px"}}>
             <div className="flex items-center pl-2">
@@ -15,8 +42,7 @@ function BridgeTransferFrom() {
                     </span>
                 </div>
             </div>
-            {/* TODO: Make this input dynamic to the other input field or delete the input completely */}
-            {/* <DefaultInput />  */}
+            <DefaultInput value={amount * calculateWith} onChange={effect} disabled loading={calculateLoading}  />
         </div>
     )
 }

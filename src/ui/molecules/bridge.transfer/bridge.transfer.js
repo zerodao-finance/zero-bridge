@@ -30,25 +30,25 @@ export const BridgeTransferModule = ({ mode }) => {
     if ( mode === "input") {
         return (
             <>
-                    <div className="container h-max flex flex-row place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around items-center px-1 md:px-8 z-10">
-                        <div className='flex flex-col w-full justify-center items-center'>
-                            <p className="animate-flip-in-hor-top text-[10px] text-black dark:text-white opacity-60 w-full whitespace-nowrap text-left"> transfer amount </p>
-                            <div className="flex flex-col gap-2 justify-center">
-                                <div className="animate-flip-in-hor-top [animation-delay:400ms]">
-                                    <BridgeTransferFrom />
-                                </div>
-                                <AiOutlineArrowDown className="animate-flip-in-hor-top [animation-delay:500ms] fill-white self-center" />
-                                <div className="animate-flip-in-hor-top [animation-delay:600ms]">
-                                    <BridgeTransferInput {...getTransferInputProps()}/>
-                                </div>
+                <div className="container h-max flex flex-row place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around items-center px-1 md:px-8 z-10">
+                    <div className='flex flex-col w-full justify-center items-center'>
+                        <p className="animate-flip-in-hor-top text-[10px] text-black dark:text-white opacity-60 w-full whitespace-nowrap text-left"> transfer amount </p>
+                        <div className="flex flex-col gap-2 justify-center">
+                            <div className="animate-flip-in-hor-top [animation-delay:400ms]">
+                                <BridgeTransferFrom {...getTransferInputProps()} />
+                            </div>
+                            <AiOutlineArrowDown className="animate-flip-in-hor-top [animation-delay:500ms] fill-white self-center" />
+                            <div className="animate-flip-in-hor-top [animation-delay:600ms]">
+                                <BridgeTransferInput {...getTransferInputProps()}/>
                             </div>
                         </div>
                     </div>
-                    
-                    <div className="animate-flip-in-hor-top [animation-delay:700ms] w-10/12 mt-4">
-                        <BridgeTransferSubmit {...getTransferSenderProps()}/>
-                    </div>
-                </>
+                </div>
+                
+                <div className="animate-flip-in-hor-top [animation-delay:700ms] w-10/12 mt-4">
+                    <BridgeTransferSubmit {...getTransferSenderProps()}/>
+                </div>
+            </>
         )
     } else if ( mode === "showSigning") {
         return <BridgeLoadingSignature />
