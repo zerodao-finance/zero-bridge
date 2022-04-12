@@ -14,7 +14,6 @@ export const DefaultInput = ({ value, onChange, type, onClick, disabled, loading
 					value={value}
 					onChange={onChange}
 					onClick={onClick}
-					style={{width: "130px"}}
 					disabled={true}
 				/>
 			</div>
@@ -30,7 +29,6 @@ export const DefaultInput = ({ value, onChange, type, onClick, disabled, loading
 					value={value}
 					onChange={onChange}
 					onClick={onClick}
-					style={{width: "130px"}}
 				/>
 			</div>
 		);

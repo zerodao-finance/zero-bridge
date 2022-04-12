@@ -36,17 +36,17 @@ function TokenDropdown({ token = "renBTC", setToken, tokensRemoved = [] }) {
     const determineIcon = () => {
         const icon = items.map((item, index) => {
             if(item.text === token){
-                return <item.icon key={index} className="w-max h-[2rem] fill-gray-400" />;
+                return <item.icon key={index} className="h-[2rem] fill-gray-400" />;
             }
         })
         return icon;
     }
 
   return (
-    <Menu as="div" className="relative inline-block text-left">
+    <Menu as="div" className="relative inline-block text-left max-w-[100%]">
       <div>
         <Menu.Button className="inline-flex justify-center w-full rounded-md px-4 py-2 bg-transparent text-sm font-medium text-white items-center focus:outline-none" style={{minWidth: "150px"}}>
-            <span className="flex items-center gap-2">
+            <span className="flex items-center gap-2 max-w-[100%]">
                 {determineIcon()}
                 <p className="dark:text-white text-gray-500">
                     {token}
