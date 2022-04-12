@@ -8,6 +8,7 @@ import { NotificationTransferCard } from '../organisms/card.notif'
 
 import { useCheckWalletConnected } from '../../api/global/interfaces/interfaces.wallet'
 import { useBridgePage } from '../../api/global/interfaces/interface.bridge'
+import { ManageTransaction } from "../molecules/manage/manage.request"
 
 export const DashboardLayout = () => {
     const { changeActiveModule, resetModule, currentModule, isLoading } = useActiveModuleSwitcher()
@@ -44,7 +45,8 @@ export const DashboardLayout = () => {
                             isLoading ?
                                 "Loading"
                                 :
-                                currentModule === 'bridge' ? <BridgeModule {...getWalletConnectionProps()} {...getBridgePageProps()}/> : ''
+                                currentModule === 'bridge' ? <BridgeModule {...getWalletConnectionProps()} {...getBridgePageProps()}/> : 
+                                currentModule === 'manage' ? <ManageTransaction /> : ''
 
                         }
                     </div>

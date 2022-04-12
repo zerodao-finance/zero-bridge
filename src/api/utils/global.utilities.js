@@ -9,6 +9,11 @@ export class GlobalStateHelper {
         return
     }
 
+    reset(module, effect) {
+        this.dispatch({ type: "RESET", module: module, effect: effect})
+        return
+    }
+
     getModuleModeState(module) {
         const { processing, signed, gatewayRecieved } = this.state[module].mode
 

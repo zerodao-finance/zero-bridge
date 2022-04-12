@@ -1658,6 +1658,10 @@ input:checked + .toggle-bg {
   white-space: nowrap;
 }
 
+.text-ellipsis {
+  text-overflow: ellipsis;
+}
+
 .whitespace-nowrap {
   white-space: nowrap;
 }
@@ -1832,19 +1836,14 @@ input:checked + .toggle-bg {
   background-color: rgb(241 245 249 / var(--tw-bg-opacity));
 }
 
-.bg-\[\#E4D4D4\] {
+.bg-\[\#D7E0DA\] {
   --tw-bg-opacity: 1;
-  background-color: rgb(228 212 212 / var(--tw-bg-opacity));
+  background-color: rgb(215 224 218 / var(--tw-bg-opacity));
 }
 
 .bg-\[\#CF6679\] {
   --tw-bg-opacity: 1;
   background-color: rgb(207 102 121 / var(--tw-bg-opacity));
-}
-
-.bg-\[\#D7E0DA\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(215 224 218 / var(--tw-bg-opacity));
 }
 
 .bg-\[\#59616D\] {
@@ -2683,11 +2682,6 @@ code {
 .dark .dark\:bg-hover-green {
   --tw-bg-opacity: 1;
   background-color: rgb(61 137 81 / var(--tw-bg-opacity));
-}
-
-.dark .dark\:bg-\[\#D32F2F\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(211 47 47 / var(--tw-bg-opacity));
 }
 
 .dark .dark\:bg-gray-500 {
