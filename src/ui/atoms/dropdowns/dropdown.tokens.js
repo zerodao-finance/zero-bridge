@@ -2,26 +2,31 @@ import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import { ReactComponent as ETH } from '../../../assets/svg-coins/eth.svg'
-import { ReactComponent as BTC } from '../../../assets/svg-coins/btc.svg'
+import { ReactComponent as renBTC } from '../../../assets/svg-coins/renbtc.svg'
+import { ReactComponent as wBTC } from '../../../assets/svg-coins/wbtc.svg'
+import { ReactComponent as ibBTC } from '../../../assets/svg-coins/ibbtc.svg'
 import { ReactComponent as USDC } from '../../../assets/svg-coins/usdc.svg'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-function TokenDropdown({ token = "renBTC", setToken, tokensRemoved = [] }) {
+function TokenDropdown({ token
+     = "renBTC", setToken, tokensRemoved = [] }) {
+         console.log("Token Selected:", token)
+         console.log('Set Token:', setToken)
     const items = [
         {
             text: "renBTC",
-            icon: BTC
+            icon: renBTC
         },
         {
-            text: "WBTC",
-            icon: BTC
+            text: "wBTC",
+            icon: wBTC
         },
         {
             text: "ibBTC",
-            icon: BTC
+            icon: ibBTC
         },
         {
             text: "ETH",
@@ -39,6 +44,17 @@ function TokenDropdown({ token = "renBTC", setToken, tokensRemoved = [] }) {
                 return <item.icon key={index} className="h-[2rem] fill-gray-400" />;
             }
         })
+        return icon;
+    }
+
+    const getItemIcon = (itemName) => {
+        console.log('item name: ', itemName)
+        const icon = items.map((item, index) => {
+            if(item.text.toLowerCase() === itemName.toLowerCase()) {
+                return <item.icon key={`${index}-${itemName}`} className="mr-3 h-5 w-5 group-hover:text-gray-500 text-gray-400" aria-hidden="true" />
+            }
+        }).filter(x => x !== undefined);
+        console.log('icon: ', icon)
         return icon;
     }
 
@@ -70,16 +86,15 @@ function TokenDropdown({ token = "renBTC", setToken, tokensRemoved = [] }) {
                 <div key={index} onClick={(e) => setToken(e.target.innerText)}>
                     <Menu.Item>
                         {({ active }) => (
-                        <a
-                            href="#"
+                        <div
                             className={classNames(
                             active ? 'bg-badger-yellow-200 text-gray-900' : 'text-gray-700',
-                                'group flex items-center px-4 py-2 text-sm'
+                                'group flex items-center px-4 py-2 text-sm cursor-pointer'
                             )}
                         >
-                            <item.icon className="mr-3 h-5 w-5 group-hover:text-gray-500 text-gray-400" aria-hidden="true" />
+                            {getItemIcon(item.text)}
                             {item.text}
-                        </a>
+                        </div>
                         )}
                     </Menu.Item>
                 </div>
