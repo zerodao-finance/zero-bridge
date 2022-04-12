@@ -45,7 +45,7 @@ function TokenDropdown({ token = "renBTC", setToken, tokensRemoved = [] }) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="inline-flex justify-center w-full rounded-md px-4 py-2 bg-transparent text-sm font-medium text-white items-center focus:outline-none">
+        <Menu.Button className="inline-flex justify-center w-full rounded-md px-4 py-2 bg-transparent text-sm font-medium text-white items-center focus:outline-none" style={{minWidth: "150px"}}>
             <span className="flex items-center gap-2">
                 {determineIcon()}
                 <p className="dark:text-white text-gray-500">

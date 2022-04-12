@@ -12,6 +12,7 @@ export const DefaultInput = ({ value, onChange, type, onClick }) => {
 				value={value}
 				onChange={onChange}
 				onClick={onClick}
+				style={{width: "130px"}}
 			/>
 		</div>
 	);
