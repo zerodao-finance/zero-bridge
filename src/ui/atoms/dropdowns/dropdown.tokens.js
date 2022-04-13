@@ -11,10 +11,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-function TokenDropdown({ token
-     = "renBTC", setToken, tokensRemoved = [] }) {
-         console.log("Token Selected:", token)
-         console.log('Set Token:', setToken)
+function TokenDropdown({ token = "renBTC", setToken, tokensRemoved = [] }) {
     const items = [
         {
             text: "renBTC",
@@ -38,39 +35,26 @@ function TokenDropdown({ token
         }
     ]
 
-    const determineIcon = () => {
+    const determineIcon = (_token) => {
         const icon = items.map((item, index) => {
-            if(item.text === token){
-                return <item.icon key={index} className="h-[2rem] fill-gray-400" />;
+            if(item.text.toLowerCase() === _token.toLowerCase()){
+                return <item.icon key={index} className="h-[2rem] fill-gray-400 w-fit mr-3" />;
             }
         })
         return icon;
     }
 
-    const getItemIcon = (itemName) => {
-        console.log('item name: ', itemName)
-        const icon = items.map((item, index) => {
-            if(item.text.toLowerCase() === itemName.toLowerCase()) {
-                return <item.icon key={`${index}-${itemName}`} className="mr-3 h-5 w-5 group-hover:text-gray-500 text-gray-400" aria-hidden="true" />
-            }
-        }).filter(x => x !== undefined);
-        console.log('icon: ', icon)
-        return icon;
-    }
-
   return (
     <Menu as="div" className="relative inline-block text-left max-w-[100%]">
-      <div>
-        <Menu.Button className="inline-flex justify-center w-full rounded-md px-4 py-2 bg-transparent text-sm font-medium text-white items-center focus:outline-none" style={{minWidth: "150px"}}>
-            <span className="flex items-center gap-2 max-w-[100%]">
-                {determineIcon()}
+        <Menu.Button className="inline-flex justify-center w-full rounded-md px-4 py-2 bg-transparent text-sm font-medium text-white items-center focus:outline-none justify-between" style={{minWidth: "150px"}}>
+            <span className="flex items-center max-w-[100%]">
+                {determineIcon(token)}
                 <p className="dark:text-white text-gray-500">
                     {token}
                 </p>
             </span>
             <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
         </Menu.Button>
-      </div>
 
       <Transition
         as={Fragment}
@@ -89,11 +73,11 @@ function TokenDropdown({ token
                         <div
                             className={classNames(
                             active ? 'bg-badger-yellow-200 text-gray-900' : 'text-gray-700',
-                                'group flex items-center px-4 py-2 text-sm cursor-pointer'
+                                'flex items-center px-4 py-2 text-sm cursor-pointer'
                             )}
                         >
-                            {getItemIcon(item.text)}
-                            {item.text}
+                            <item.icon key={`${index}-${item.text}`} className="mr-3 h-6 w-6 group-hover:text-gray-500 text-gray-400" aria-hidden="true" />
+                            <span>{item.text}</span>
                         </div>
                         )}
                     </Menu.Item>
