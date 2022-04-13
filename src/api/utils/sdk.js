@@ -8,6 +8,7 @@ import fixtures from 'zero-protocol/dist/lib/fixtures';
 import { TEST_KEEPER_ADDRESS } from "zero-protocol/dist/lib/mock";
 import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from 'ethers-gasnow';
+import EventEmitter from 'events'
 
 const toLower = (s) => s && s.toLowerCase();
 
@@ -74,6 +75,8 @@ export class sdkTransfer {
   getPNonce(address, timestamp) {
     return this.computeRandomValue('pNonce', address, timestamp);
   }
+
+  response = new EventEmitter({ captureRejections: true })
   constructor(
     zeroUser,
     value,
@@ -82,24 +85,19 @@ export class sdkTransfer {
     signer,
     to,
     isFast,
-    TransferEventEmitter,
-    StateHelper,
-    Notification,
     _data
   ) {
     this.isFast = isFast;
     this.ratio = ratio;
     this.zeroUser = zeroUser;
     this.signer = signer;
-    this.Emitter = TransferEventEmitter;
-    this.StateHelper = StateHelper;
-    this.Notification = Notification;
     this.token = token;
 
     // initialize Transfer Request Object
 
     const self = this;
     this.transferRequest = (async function () {
+      console.log("signer", signer)
       const asset = fixtures[process.env.REACT_APP_CHAIN].renBTC;
       const contracts = await deploymentsFromSigner(signer);
       const data = String(_data) || '0x';
@@ -131,7 +129,7 @@ export class sdkTransfer {
     })();
   }
 
-  async submitTX(asset = "renBTC") {
+  async call(asset = "renBTC") {
     const liveDeployments = await deploymentsFromSigner(this.signer);
     // set correct module based on past in speed
     const transferRequest = await this.transferRequest;
@@ -146,13 +144,15 @@ export class sdkTransfer {
       console.log("calling sign");
       await transferRequest.sign(this.signer);
       console.log("signed");
-      this.StateHelper.update("transfer", "mode", { mode: "waitingDry" });
+      this.response.emit("signed", { error: false, message: null })
+      // this.StateHelper.update("transfer", "mode", { mode: "waitingDry" });
     } catch (err) {
       // handle signing error
 	    console.error(err);
-      this.Notification.createCard(5000, "error", {
-        message: "Failed! Must sign Transaction",
-      });
+      this.response.emit("error", { message: "Failed! Must sign Transaction"})
+      // this.Notification.createCard(5000, "error", {
+      //   message: "Failed! Must sign Transaction",
+      // });
       throw new Error("Failed to sign transaction");
     }
     try {
@@ -163,12 +163,14 @@ export class sdkTransfer {
         mode: "showGateway",
         gatewayData: { address: gatewayAddress, requestData: transferRequest },
       });
-      this.Emitter.emit("transfer", mint, transferRequest);
+      this.response.emit("published", { gateway: gatewayAddress, request: transferRequest, mintEmitter: mint})
+      // this.Emitter.emit("transfer", mint, transferRequest);
       return;
     } catch (error) {
-      this.Notification.createCard(5000, "error", {
-        message: `Error Publishing Transaction: ${err}`,
-      });
+      this.response.emit("error", { message: "Error Publishing Transaction"})
+      // this.Notification.createCard(5000, "error", {
+      //   message: `Error Publishing Transaction: ${err}`,
+      // });
       throw new Error("Error publishing transaction");
     }
 
@@ -216,7 +218,7 @@ export class sdkBurn {
     const burnRequest = await this.BurnRequest;
     const asset = burnRequest.asset;
     console.log(burnRequest);
-    const contracts = await deploymentsFromSigner(this.signer);
+    console.log("signer". this.signer)
 
     //sign burn request
     if (process.env.REACT_APP_CHAIN === 'ETHEREUM') {

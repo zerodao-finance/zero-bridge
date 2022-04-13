@@ -28,6 +28,7 @@ export const useSDKTransactionSubmit = (module) => {
     async function sendTransferRequest() {
         var zeroUser = zero.zeroUser
         var amount = input.amount
+        var token = input.token
         var ratio = String(input.ratio)
         var signer = await getSigner
         var to = await signer.getAddress()
@@ -39,6 +40,7 @@ export const useSDKTransactionSubmit = (module) => {
         let requestData = [
             zeroUser,
             amount,
+            token,
             ratio,
             signer,
             to,
