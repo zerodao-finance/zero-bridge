@@ -1,18 +1,46 @@
+import { useEffect, useContext, useState } from "react";
+import { GlobalStateHelper } from "../../../api/utils/global.utilities"
+import { storeContext } from "../../../api/global/global";
+import { computeOutputBTC } from 'zero-protocol/lib/badger'
 import { BridgeLoadingWallet } from "../bridge.transfer/bridge.loading.wallet"
 import { BridgeLoadingSignature } from "./bridge.loading.signature"
 import { useCheckWalletConnected } from "../../../api/global/interfaces/interfaces.wallet"
 import { BridgeBurnInput } from './bridge.burn.amount'
 import { BridgeBurnSubmit } from './bridge.burn.submit'
 import { useBridgeBurnInput } from "../../../api/global/interfaces/interface.bridge.burn"
+import { ethers } from "ethers";
 
 export const BridgeBurnModule = () => {
+    const { state, dispatch } = useContext(storeContext);
+    const StateHelper = new GlobalStateHelper(state, dispatch)
     const { open } = useCheckWalletConnected()
     const { 
         getBridgeBurnInputProps,
         getBurnSenderProps
      } = useBridgeBurnInput() 
     const isLoading = false
-    const BTC = 0.0
+    const [ BTC, setBTC ]  = useState(0)
+
+    useEffect(() => {
+        var token = getBridgeBurnInputProps().token 
+        var amount = getBridgeBurnInputProps().amount
+        switch(token) {
+            case "renBTC":
+                amount = ethers.utils.parseUnits(".00000005", 8)
+            case "USDC":
+                amount = ethers.utils.parseUnits(".001", 6)
+        }
+        var tempBurnRequest = { amount: amount , asset: StateHelper.state.wallet.network[getBridgeBurnInputProps().token] }
+        const fetchBTC = async () => {
+            var aBTC = await computeOutputBTC(tempBurnRequest)
+            setBTC(aBTC.toNumber())
+            console.log("FOUND BTC: " + BTC)
+        }
+        fetchBTC()
+        console.log("BTC: " + BTC + ", Asset: " + getBridgeBurnInputProps().token)
+        console.log(getBridgeBurnInputProps().amount)
+    }, [getBridgeBurnInputProps().amount , getBridgeBurnInputProps().token])
+
     return (
         <>
         {
