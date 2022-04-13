@@ -35,7 +35,7 @@ export const BridgeTransferInput = ({ amount, effect, tokenPrice, setToken, toke
         setCalculateLoading(false);
     }, [token]);
 
-    const calculateAmount = () => (amount / calculateWith).toFixed(6);
+    const calculateAmount = () => amount == 0 ? amount : (amount / calculateWith).toFixed(6);
 
     var formatter = new Intl.NumberFormat('en-US', {
         style: "currency",
