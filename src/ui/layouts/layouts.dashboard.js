@@ -51,21 +51,13 @@ export const DashboardLayout = () => {
                         ) : (
                         <>
                             <p className="pb-[.5rem] text-center font-bold dark:text-badger-gray-300"> Bridge </p>
-                            <BridgeModule {...getWalletConnectionProps()} {...getBridgePageProps()}/>
+                            {
+                            currentModule === 'bridge' ? <BridgeModule {...getWalletConnectionProps()} {...getBridgePageProps()}/> : 
+                            currentModule === 'manage' ? <ManageTransaction /> : 
+                            currentModule === 'history' ? <TransactionHistory /> : ''
+                            }
                         </>
                         )}
-                    <p className="pb-[.5rem] opacity-60 text-center font-bold dark:text-white">{getTitle()}</p>
-                    <div className="flex flex-row row-[span_8_/_span_8] justify-center items-center isolate" id="hero">
-                        {
-                            isLoading ?
-                                "Loading"
-                                :
-                                currentModule === 'bridge' ? <BridgeModule {...getWalletConnectionProps()} {...getBridgePageProps()}/> : 
-                                currentModule === 'manage' ? <ManageTransaction /> : 
-                                currentModule === 'history' ? <TransactionHistory /> : ''
-
-                        }
-                    </div>
                 </div>
                 
                 <div className="footer row-span-2 flex flex-col-reverse text-[13px] md:text-md">

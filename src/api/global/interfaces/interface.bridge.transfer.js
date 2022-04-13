@@ -48,7 +48,7 @@ export const useBridgeInput = () => {
 
     const getTransferInputProps = ({...otherProps} = {}) => ({
         amount: amount,
-        token: token,
+        token: state.transfer.input.token,
         setToken: setToken,
         effect: updateAmount,
         tokenPrice: btc_usd
