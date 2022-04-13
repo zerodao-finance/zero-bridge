@@ -1301,10 +1301,6 @@ input:checked + .toggle-bg {
   min-height: 74px;
 }
 
-.min-h-\[65px\] {
-  min-height: 74px;
-}
-
 .min-h-full {
   min-height: 100%;
 }

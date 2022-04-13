@@ -9,8 +9,9 @@ import { BridgeGatewayConfirmation } from '../bridge.gateway/bridge.gateway'
 import { AiOutlineArrowDown } from 'react-icons/ai'
 import { useBridgeInput } from '../../../api/global/interfaces/interface.bridge.transfer'
 import { useCheckWalletConnected } from '../../../api/global/interfaces/interfaces.wallet'
-import TokenDropdown from '../../atoms/dropdowns/dropdown.tokens'
 import BridgeTransferFrom from './bridge.transfer.from'
+import useTransferFees from '../../../api/hooks/transfer-fees'
+import { useEffect } from 'react'
 
 export const BridgeTransferModule = ({ mode }) => {
     const { 
@@ -20,12 +21,16 @@ export const BridgeTransferModule = ({ mode }) => {
         getTransferResultsProps,
         getTransferModuleToggleProps,
         getGatewayData,
-    } = useBridgeInput()
+    } = useBridgeInput();
+
+    const { toRenBtcFee } = useTransferFees();
+    useEffect(() => {
+        toRenBtcFee();
+    }, [])
     
     const { 
         open
     } = useCheckWalletConnected()
-	console.log(mode);
 
     if ( mode === "input") {
         return (
@@ -40,6 +45,14 @@ export const BridgeTransferModule = ({ mode }) => {
                             <AiOutlineArrowDown className="animate-flip-in-hor-top [animation-delay:500ms] fill-white self-center" />
                             <div className="animate-flip-in-hor-top [animation-delay:600ms]">
                                 <BridgeTransferInput {...getTransferInputProps()}/>
+                            </div>
+                        </div>
+                        <div className="w-full shadow-inner flex justify-between px-5 py-2 mt-5 text-white rounded-xl dark:bg-badger-gray-500 bg-gray-100">
+                            <div>
+                                Fees
+                            </div>
+                            <div>
+                                0.02
                             </div>
                         </div>
                     </div>
