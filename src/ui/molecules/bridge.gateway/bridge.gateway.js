@@ -5,18 +5,19 @@ import { useBridgePage } from '../../../api/global/interfaces/interface.bridge'
 import { BitcoinQR } from '../../atoms/helpers/BitcoinQR'
 
 export const BridgeGatewayConfirmation = ({transferRequest, gatewayAddress}) => {
+    const transferAmount = ethers.utils.formatUnits(ethers.BigNumber.from(transferRequest.amount), 8 )
     return (
         <>
             <div className="flex flex-col justify-center items-center gap-5 min-h-[290px] text-black dark:text-badger-yellow-neon-400">
                 <BitcoinQR
                     bitcoinAddress={gatewayAddress}
-                    amount={ethers.utils.formatUnits(ethers.BigNumber.from(transferRequest.amount), 8 )}
+                    amount={transferAmount}
                 />
                 <p className="cursor-copy select-all">
                     {gatewayAddress}
                 </p>
                 <div id="usage" className="text-[11px] indent max-w-[300px] text-main-green dark:text-badger-yellow-neon-400 justify-self-end">
-                    <p>Reminder: deposit the exact amount of BTC indicated to the deposit address</p>
+                    <p>Reminder: deposit exactly {transferAmount} amount of BTC indicated to the deposit address</p>
                 </div>
                 <div id="fee_data" className="flex flex-row justify-center items-center gap-5 text-[13px] text-gray-700 dark:text-gray-300">
                     <p className="text-[14px] text-red-700 dark:text-badger-blue-400">Fees Breakdown</p> 
