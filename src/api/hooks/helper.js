@@ -60,7 +60,7 @@ class SDKHelper {
 
     handle(request, _type) {
         this.#listenForResponse(request.response, _type)
-        request.call()
+        request.call(this)
         this.#clean(request.response)
     }
 

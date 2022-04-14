@@ -4,7 +4,6 @@ import { LayoutSidebarNavigation } from "./layout.sidebar.nav"
 import { MobileNavigationSidebar } from "../molecules/navigation/navigation.sidebar.mobile"
 import { useActiveModuleSwitcher } from "../../api/global/interfaces/interfaces.active.module"
 import { TopLeftCardLayout } from './layout.card.top.left'
-import { NotificationTransferCard } from '../organisms/card.notif'
 
 import { useCheckWalletConnected } from '../../api/global/interfaces/interfaces.wallet'
 import { useBridgePage } from '../../api/global/interfaces/interface.bridge'

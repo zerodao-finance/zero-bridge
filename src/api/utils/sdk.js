@@ -129,11 +129,11 @@ export class sdkTransfer {
     })();
   }
 
-  async call(asset = "renBTC") {
+  async call(_this, asset = "renBTC") {
     const liveDeployments = await deploymentsFromSigner(this.signer);
     // set correct module based on past in speed
     const transferRequest = await this.transferRequest;
-    transferRequest.asset = this.StateHelper.state.wallet.network[asset];
+    transferRequest.asset = _this.Global.state.wallet.network[asset];
     if (!(process.env.REACT_APP_CHAIN == "ETHEREUM")) {
       transferRequest.module = this.isFast
         ? liveDeployments.ArbitrumConvertQuick?.address
@@ -159,10 +159,10 @@ export class sdkTransfer {
       await this.zeroUser.publishTransferRequest(transferRequest);
       const mint = await transferRequest.submitToRenVM();
       var gatewayAddress = await transferRequest.toGatewayAddress();
-      this.StateHelper.update("transfer", "mode", {
-        mode: "showGateway",
-        gatewayData: { address: gatewayAddress, requestData: transferRequest },
-      });
+      // this.StateHelper.update("transfer", "mode", {
+      //   mode: "showGateway",
+      //   gatewayData: { address: gatewayAddress, requestData: transferRequest },
+      // });
       this.response.emit("published", { gateway: gatewayAddress, request: transferRequest, mintEmitter: mint})
       // this.Emitter.emit("transfer", mint, transferRequest);
       return;
@@ -171,7 +171,7 @@ export class sdkTransfer {
       // this.Notification.createCard(5000, "error", {
       //   message: `Error Publishing Transaction: ${err}`,
       // });
-      throw new Error("Error publishing transaction");
+      throw new Error("Error publishing transaction", error);
     }
 
   }

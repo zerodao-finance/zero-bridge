@@ -4,7 +4,6 @@ import { useContext, useEffect, useState, useMemo } from 'react'
 import _ from 'lodash'
 import { useInputHooks } from '../hooks/useInputFunctions'
 import { useSDKTransactionSubmit } from '../../hooks/submit'
-import { useInputSubmit } from '../hooks/useInputSubmit'
 import { GlobalStateHelper } from '../../utils/global.utilities'
 
 // Bridge Input Hook
