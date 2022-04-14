@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { BridgeTransferInput } from './bridge.transfer.input'
 import { BridgeTransferResult } from './bridge.transfer.result'
 import { BridgeTransferRatio } from './bridge.transfer.ratio'
@@ -23,10 +24,20 @@ export const BridgeTransferModule = ({ mode }) => {
         getGatewayData,
     } = useBridgeInput();
 
-    const { toRenBtcFee } = useTransferFees();
-    useEffect(() => {
-        toRenBtcFee();
-    }, [])
+    // Getting Fees - START
+    const { getTransferOutput } = useTransferFees();
+    const { amount, token } = getTransferInputProps();
+    const [isFeeLoading, setIsFeeLoading] = useState(false);
+    const [fee, setFee] = useState();
+    useEffect(async () => {
+        if(amount > 0) {
+            setIsFeeLoading(true);
+            const output = await getTransferOutput({ amount, token });
+            setFee(output);
+            setIsFeeLoading(false);
+        }
+    }, [amount, token])
+    // Getting Fees - END
     
     const { 
         open
@@ -47,14 +58,19 @@ export const BridgeTransferModule = ({ mode }) => {
                                 <BridgeTransferInput {...getTransferInputProps()}/>
                             </div>
                         </div>
-                        <div className="w-full shadow-inner flex justify-between px-5 py-2 mt-5 text-white rounded-xl dark:bg-badger-gray-500 bg-gray-100">
-                            <div>
-                                Fees
+                        
+                        {amount > 0 && (
+                            <div className="w-full shadow-inner flex justify-between px-5 py-2 mt-5 text-white rounded-xl dark:bg-badger-gray-500 bg-gray-100">
+                                <div>
+                                    <span>Fee</span>
+                                </div>
+                                <div>
+                                    <span className={`${isFeeLoading && "animate-pulse"}`}>
+                                        {fee || 0}
+                                    </span>
+                                </div>
                             </div>
-                            <div>
-                                0.02
-                            </div>
-                        </div>
+                        )}
                     </div>
                 </div>
                 

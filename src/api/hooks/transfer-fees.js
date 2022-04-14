@@ -1,36 +1,19 @@
-import badgerBridgeJson from 'zero-protocol/deployments/localhost/BadgerBridgeZeroController.json';
+import { computeOutputWrappedBTC } from 'zero-protocol/lib/badger';
 import { ethers } from "ethers";
 
 function useTransferFees(){    
-    const badgerBridge = new ethers.Contract(badgerBridgeJson.address, badgerBridgeJson.abi);
-
-    async function toRenBtcFee(){
-        console.log(badgerBridge)
-
-    }
-
-    async function toUsdcFee(){
-        
-    }
-
-    async function toIBtcFee(){
-        
-    }
-
-    async function toEthFee(){
-        
-    }
-
-    async function toWBtcFee(){
-        
+    async function getTransferOutput({ amount, token }) {
+        const input = {
+            asset: token,
+            amount: ethers.utils.parseUnits(amount, 18)
+        }
+        let output = await computeOutputWrappedBTC(input);
+        output = ethers.utils.formatEther(output);
+        return output;
     }
 
     return {
-        toRenBtcFee,
-        toUsdcFee,
-        toIBtcFee,
-        toEthFee,
-        toWBtcFee
+        getTransferOutput
     }
 }
 
