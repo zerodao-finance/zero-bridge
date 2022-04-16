@@ -4,11 +4,12 @@ import { LayoutSidebarNavigation } from "./layout.sidebar.nav"
 import { MobileNavigationSidebar } from "../molecules/navigation/navigation.sidebar.mobile"
 import { useActiveModuleSwitcher } from "../../api/global/interfaces/interfaces.active.module"
 import { TopLeftCardLayout } from './layout.card.top.left'
-import { NotificationTransferCard } from '../organisms/card.notif'
 
 import { useCheckWalletConnected } from '../../api/global/interfaces/interfaces.wallet'
 import { useBridgePage } from '../../api/global/interfaces/interface.bridge'
 import UnderConstruction from "../atoms/helpers/under-construction"
+import { ManageTransaction } from "../molecules/manage/manage.request"
+import { TransactionHistory } from "../molecules/history/history.request"
 
 export const DashboardLayout = () => {
     const { changeActiveModule, resetModule, currentModule, isLoading } = useActiveModuleSwitcher()
@@ -49,7 +50,11 @@ export const DashboardLayout = () => {
                         ) : (
                         <>
                             <p className="pb-[.5rem] text-center font-bold dark:text-badger-gray-300"> Bridge </p>
-                            <BridgeModule {...getWalletConnectionProps()} {...getBridgePageProps()}/>
+                            {
+                            currentModule === 'bridge' ? <BridgeModule {...getWalletConnectionProps()} {...getBridgePageProps()}/> : 
+                            currentModule === 'manage' ? <ManageTransaction /> : 
+                            currentModule === 'history' ? <TransactionHistory /> : ''
+                            }
                         </>
                         )}
                 </div>
