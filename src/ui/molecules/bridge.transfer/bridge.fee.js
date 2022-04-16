@@ -39,7 +39,7 @@ export const BridgeTransferFee = ({ amount, effect, tokenPrice, setToken, token 
                   </div>
                   <div>
                       <span className={`${isFeeLoading && "animate-pulse"}`}>
-                          {fee || 0} {token}
+                          {fee || 0} BTC
                       </span>
                   </div>
               </div>
