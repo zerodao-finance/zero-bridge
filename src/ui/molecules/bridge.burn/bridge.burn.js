@@ -26,7 +26,7 @@ export const BridgeBurnModule = () => {
         var amount = getBridgeBurnInputProps().amount
         switch(token) {
             case "renBTC":
-                amount = ethers.utils.parseUnits(".00000005", 8)
+                amount = ethers.utils.parseUnits("10", 2)
             case "USDC":
                 amount = ethers.utils.parseUnits(".001", 6)
         }
