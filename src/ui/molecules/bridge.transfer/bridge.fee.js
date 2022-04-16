@@ -33,13 +33,13 @@ export const BridgeTransferFee = ({ amount, effect, tokenPrice, setToken, token 
       <>
         {amount > 0 && (
           <div className="self-center px-0 py-0 w-full">
-              <div className="w-full shadow-inner flex justify-between px-5 py-2 mt-5 text-white rounded-xl dark:bg-badger-gray-500 bg-gray-100">
+              <div className="w-full shadow-inner flex justify-between px-4 py-2 mt-5 text-white rounded-xl dark:bg-badger-gray-500 bg-gray-100">
                   <div className="flex items-center max-w-[100%]">
-                    <p className="text-[10px] text-gray-300 whitespace-nowrap">FEE</p>
+                    <p className="text-[10px] text-gray-300 whitespace-nowrap">AFTER FEES {'&'} GAS</p>
                   </div>
                   <div>
                       <span className={`${isFeeLoading && "animate-pulse"}`}>
-                          {fee || 0} BTC
+                          {fee || 0} {token}
                       </span>
                   </div>
               </div>
