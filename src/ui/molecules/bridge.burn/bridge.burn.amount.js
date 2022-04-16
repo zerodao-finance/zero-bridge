@@ -33,12 +33,17 @@ export const BridgeBurnInput = ({ destination, amount, setToken, token, updateDe
                 <div className=" xl:mr-5 italic tracking-wider w-full text-right text-[10px] text-badger-yellow-neon-400">
                     ~ { tokenPrice && formattedAmount() }
                 </div> 
-                {/* </div> 
-                    <div className="w-fit self-center px-0 py-0 scale-[0.8] md:scale-[1]">
-                    <div className="w-fit flex items-center justify-between gap-10 dark:bg-badger-gray-500 bg-gray-100 px-2 rounded-2xl">
-                        <DefaultInput value={destination} onChange={updateDestination} type={ 'text' }/>
+                <div className="w-full grid justify-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-badger-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                </div>
+                <div className="w-full py-1 mt-4 items-center justify-between gap-2 dark:bg-badger-gray-500 bg-gray-100 px-2 rounded-2xl">
+                    <div>
+                        <p className="text-[10px] text-gray-300 whitespace-nowrap mt-1">RECIPIENT BTC ADDRESS</p>
                     </div>
-                </div>  */}
+                    <DefaultInput value={destination} onChange={updateDestination} type={ 'text' }/>
+                </div> 
             </div>
         
         </>
