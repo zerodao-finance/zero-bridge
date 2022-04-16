@@ -3,7 +3,7 @@ import { useInputResults } from '../hooks/useInputResults'
 import { useContext, useEffect, useState, useMemo } from 'react'
 import _ from 'lodash'
 import { useInputHooks } from '../hooks/useInputFunctions'
-import { useInputSubmit } from '../hooks/useInputSubmit'
+import { useSDKTransactionSubmit } from '../../hooks/submit'
 import { GlobalStateHelper } from '../../utils/global.utilities'
 
 // Bridge Input Hook
@@ -13,10 +13,8 @@ export const useBridgeInput = () => {
     const { btc_usd } = state.priceFeeds.data
     const { ETH, renBTC } = state.transfer.display
     const { ratio, amount, isFast } = state.transfer.input
-    const { mode } = state.transfer.mode;
-    const { input } = state.transfer
-    const { token } = input
-    const { sendTransferRequest } = useInputSubmit("transfer")
+    const { mode } = state.transfer.mode
+    const { sendTransferRequest } = useSDKTransactionSubmit("transfer")
     const { updateRatio, updateAmount, updateModule } = useInputHooks("transfer")
     useInputResults(state.transfer.input, "transfer")
     
@@ -49,7 +47,7 @@ export const useBridgeInput = () => {
 
     const getTransferInputProps = ({...otherProps} = {}) => ({
         amount: amount,
-        token: token,
+        token: state.transfer.input.token,
         setToken: setToken,
         effect: updateAmount,
         tokenPrice: btc_usd

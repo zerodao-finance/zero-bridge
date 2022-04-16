@@ -7,18 +7,12 @@ import { TransactionHelper } from '../transaction/helper'
 import { NotificationHelper } from '../notification/helper'
 import { GlobalStateHelper } from "../utils/global.utilities"
 import { SDKHelperClass } from '../utils/sdkHelper'
+import { useRequestHelper } from './helper'
 
 export const useSDKTransactionSubmit = (module) => {
-    const { state, dispatch } = useContext(storeContext)
-    const { card, cardDispatch } = useNotificationContext()
-    const { transactions, txDispatch } = useContext(TransactionContext)
+    const { state, Helper } = useRequestHelper()
     const { wallet, zero } = state
     const { input } = state[module]
-
-    //helper classes
-    const StateHelper = new GlobalStateHelper(state, dispatch)
-    const Notification = new NotificationHelper(card, cardDispatch)
-    const Transaction = new TransactionHelper(transactions, txDispatch)
 
     //getSigner function
     const getSigner = useMemo(async () => {
@@ -34,6 +28,7 @@ export const useSDKTransactionSubmit = (module) => {
     async function sendTransferRequest() {
         var zeroUser = zero.zeroUser
         var amount = input.amount
+        var token = input.token
         var ratio = String(input.ratio)
         var signer = await getSigner
         var to = await signer.getAddress()
@@ -42,25 +37,19 @@ export const useSDKTransactionSubmit = (module) => {
             ['uint256'],
             [ethers.utils.parseEther(ratio).div(ethers.BigNumber.from('100'))]
         )
-
-        const transfer = SDKHelperClass.newTransfer( 
+        let requestData = [
             zeroUser,
             amount,
+            token,
             ratio,
             signer,
             to,
             isFast,
-            data,
-            StateHelper,
-            Notification,
-            Transaction
-        )
+            data
+        ]
 
-        try {
-            transfer.submitTX()
-        } catch (e) {
-            dispatch({ type: "RESET_REQUEST", effect: "transfer"})
-        }
+        Helper.request("transfer", requestData)
+        console.log(Helper)
 
     }   
     

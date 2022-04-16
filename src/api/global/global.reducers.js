@@ -6,7 +6,7 @@ import _ from 'lodash'
  * 
  * DONE: @input
  * DONE: @display
- * TODO: @transactions
+ * DONE: @transactions
  * DONE: @wallet
  * DONE: @zero
  */
