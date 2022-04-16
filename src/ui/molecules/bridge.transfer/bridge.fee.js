@@ -17,7 +17,9 @@ export const BridgeTransferFee = ({ amount, effect, tokenPrice, setToken, token 
     useEffect(async () => {
         if(amount > 0) {
             setIsFeeLoading(true);
-            const output = await getTransferOutput({ amount, token });
+            console.log("AMOUNT IS: " + amount);
+            
+            const output = await getTransferOutput({ amount: ethers.utils.parseUnits('1000', 6), token });
             setFee(output);
             setIsFeeLoading(false);
         }
