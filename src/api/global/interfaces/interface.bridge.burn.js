@@ -27,7 +27,7 @@ export const useBridgeBurnInput = () => {
         destination: destination,
         setToken,
         token,
-        tokenPrice: eth_usd,
+        tokenPrice: btc_usd,
         effect: updateAmount,
         updateAmount,
 	    updateDestination

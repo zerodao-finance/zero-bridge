@@ -5,7 +5,7 @@ function processAmount(amount, token) {
     switch(token) {
         case 'USDC':
             console.log("PROCESSING USDC")
-            return ethers.utils.parseUnits(amount, 5)
+            return ethers.utils.parseUnits(amount, 6)
         default:
             return ethers.utils.parseUnits(amount, 18)
     }
@@ -14,7 +14,7 @@ function processAmount(amount, token) {
 function formatOutput(output, token) {
     switch(token) {
         case 'USDC':
-            return ethers.utils.formatUnits(output, 6)
+            return ethers.utils.formatUnits(output, 8)
         default:
             return ethers.utils.formatUnits(output, 18)
     }
