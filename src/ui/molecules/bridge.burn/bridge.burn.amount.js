@@ -15,7 +15,7 @@ export const BridgeBurnInput = ({ destination, amount, setToken, token, updateDe
             case 'USDC':
                 return formatter.format(amount)
             default:
-                return formatter.format(amount * ethers.utils.formatUnits(tokenPrice, 6))
+                return formatter.format(amount * ethers.utils.formatUnits(tokenPrice, 5))
         }
     }
 
