@@ -22,6 +22,7 @@ function useTransferFees(){
             amount: processAmount(amount, token)
         }
         let output = await computeTransferOutput(input);
+        console.log("OUTPUT: " + output + " , AMOUNT: " + amount + " , TOKEN: " + token)
         output = formatOutput(output, token);
         return output;
     }

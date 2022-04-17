@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { BridgeTransferInput } from './bridge.transfer.input'
-import { BridgeBurnTransferFee } from '../bridge.burn/bridge.burn.fee'
+import { BridgeTransferFee } from './bridge.transfer.fee'
 import { BridgeTransferSubmit } from './bridge.transfer.submit'
 import { BridgeLoadingSignature } from './bridge.loading.signature'
 import { BridgeLoadingGateway } from './bridge.loading.gateway'
@@ -40,7 +40,7 @@ export const BridgeTransferModule = ({ mode }) => {
                             </div>
                         </div>
 
-                        <BridgeBurnTransferFee {...getTransferInputProps()}/>
+                        <BridgeTransferFee {...getTransferInputProps()}/>
                     </div>
                 </div>
                 
