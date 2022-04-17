@@ -194,11 +194,12 @@ export class sdkBurn {
     this.zeroUser = zeroUser;
     const self = this;
 	  console.log(self.StateHelper.state);
-    this.BurnRequest = (async function () {
+    this.burnRequest= (async function () {
       const contracts = await deploymentsFromSigner(signer);
 	    console.log(ETHEREUM);
       const asset = ETHEREUM[self.StateHelper.state.burn.input.token];
       const value = ethers.utils.hexlify(ethers.utils.parseUnits(String(amount), DECIMALS[asset.toLowerCase()]));
+      console.log("Destination is: " + destination)
 
       return new UnderwriterBurnRequest({
         owner: to,
@@ -206,19 +207,16 @@ export class sdkBurn {
         asset: asset,
         amount: value,
         deadline: ethers.utils.hexlify(deadline),
-        destination: ethers.utils.hexlify(
-          ethers.utils.base58.decode(destination)
-        ),
+        destination: destination,
         contractAddress: contracts.ZeroController.address,
       });
     });
   }
 
   async call() {
-    const burnRequest = await this.BurnRequest;
+    const burnRequest = await this.burnRequest();
     const asset = burnRequest.asset;
-    console.log(burnRequest);
-    console.log("signer". this.signer)
+    console.log("BurnRequest: " + burnRequest);
 
     //sign burn request
     if (process.env.REACT_APP_CHAIN === 'ETHEREUM') {

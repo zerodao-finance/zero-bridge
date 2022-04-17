@@ -8,8 +8,10 @@ import { NotificationHelper } from '../notification/helper'
 import { GlobalStateHelper } from "../utils/global.utilities"
 import { SDKHelperClass } from '../utils/sdkHelper'
 import { useRequestHelper } from './helper'
+import { sdkBurn } from '../utils/sdk'
 
 export const useSDKTransactionSubmit = (module) => {
+    const { dispatch } = useContext( storeContext )
     const { state, Helper } = useRequestHelper()
     const { wallet, zero } = state
     const { input } = state[module]

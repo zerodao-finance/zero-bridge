@@ -4,7 +4,6 @@ import { ethers } from "ethers";
 function processAmount(amount, token) {
     switch(token) {
         case 'USDC':
-            console.log("PROCESSING USDC")
             return ethers.utils.parseUnits(amount, 6)
         default:
             return ethers.utils.parseUnits(amount, 18)
