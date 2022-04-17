@@ -9,7 +9,6 @@ export const BridgeBurnSubmit = ({ action, destination }) => {
 	}
 
 	useEffect(async () => {
-		console.log(destination);
 	}, [destination])
 
 	return <PrimaryRoundedButton active={active()} label={active() ? 'Release Funds' : 'Enter Valid Recipient Address'} action={action} />;
