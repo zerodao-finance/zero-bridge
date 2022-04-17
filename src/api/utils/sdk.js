@@ -252,6 +252,7 @@ export class sdkBurn {
     }
 
     try {
+      const contracts = await deploymentsFromSigner(this.signer);
       await burnRequest.sign(this.signer, contracts.ZeroController.address);
     } catch (error) {
       console.error(error);
