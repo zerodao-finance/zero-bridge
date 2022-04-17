@@ -216,7 +216,6 @@ export class sdkBurn {
   async call() {
     const burnRequest = await this.burnRequest();
     const asset = burnRequest.asset;
-    console.log("BurnRequest: " + burnRequest);
 
     //sign burn request
     if (process.env.REACT_APP_CHAIN === 'ETHEREUM') {
