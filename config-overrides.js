@@ -1,3 +1,4 @@
+const webpack = require("webpack");
 module.exports = function override(config) {
   const fallback = config.resolve.fallback || {};
   Object.assign(fallback, {
@@ -8,9 +9,23 @@ module.exports = function override(config) {
     https: require.resolve("https-browserify"),
     os: require.resolve("os-browserify"),
     fs: false,
-    zlib: require.resolve('browserify-zlib'),
+    zlib: require.resolve("browserify-zlib"),
     url: require.resolve("url"),
+    buffer: require.resolve("buffer"),
   });
   config.resolve.fallback = fallback;
+  config.resolve.extensions = config.resolve.extensions || [];
+  config.plugins = config.plugins || [];
+  config.plugins.push(
+    new webpack.ProvidePlugin({
+      Buffer: ["buffer", "Buffer"],
+    })
+  );
+	/*
+  config.plugins.push(
+    new webpack.ProvidePlugin({
+      process: "process/browser",
+    })
+  ); */
   return config;
 };
