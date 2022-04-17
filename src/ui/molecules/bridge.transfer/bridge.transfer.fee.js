@@ -38,8 +38,13 @@ export const BridgeTransferFee = ({ amount, effect, tokenPrice, setToken, token 
           <div className="self-center px-0 py-0 w-full">
               <div className="w-full shadow-inner flex items-center justify-between px-4 py-2 mt-5 text-white rounded-xl dark:bg-badger-gray-500 bg-gray-100">
                   <div className="flex flex-col gap-2 max-w-[100%]">
-                    <p className="text-[10px] text-gray-300 whitespace-nowrap">FEES</p>
-                    <p className="text-[10px] text-gray-300 whitespace-nowrap">RESULT</p>
+                    <p className="text-[10px] text-gray-300 whitespace-nowrap">
+                        FEES   
+                        <span className="italic text-[10px] text-badger-yellow-neon-400"> ~ { tokenPrice && formatter.format((amount - fee) * ethers.utils.formatUnits(tokenPrice, 6)) }</span>
+                    </p>
+                    <p className="text-[10px] text-gray-300 whitespace-nowrap">
+                        RESULT
+                    </p>
                   </div>
                   <div className="flex flex-col max-w-[100%] text-sm">
                     <div className={`${isFeeLoading && "animate-pulse"} flex justify-between gap-1`}>
@@ -52,8 +57,8 @@ export const BridgeTransferFee = ({ amount, effect, tokenPrice, setToken, token 
                       </div>
                   </div>
               </div>
-              <div className=" xl:mr-5 italic tracking-wider w-full text-right text-[10px] text-badger-yellow-neon-400">
-                  ~ { tokenPrice && formatter.format(fee * ethers.utils.formatUnits(tokenPrice, 5)) }
+              <div className="xl:mr-5 italic tracking-wider w-full text-right text-[10px] text-badger-yellow-neon-400">
+                  ~ { tokenPrice && formatter.format(fee * ethers.utils.formatUnits(tokenPrice, 6)) }
               </div> 
           </div>
         )}
