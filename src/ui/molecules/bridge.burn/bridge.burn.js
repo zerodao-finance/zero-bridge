@@ -31,11 +31,7 @@ export const BridgeBurnModule = () => {
                             <BridgeBurnInput {...getBridgeBurnInputProps()}/>
                         </div>
                     </div>
-                    <div className={` animate-flip-in-hor-top [animation-delay:600ms] container h-max flex flex-col place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around items-center px-1 md:px-8  pt-8 pb-4`}>
-                        <div className="flex flex-col w-full">
-                            <BridgeTransferFee {...getBridgeBurnInputProps()}/>
-                        </div>
-                    </div>
+                    
                     <div className="animate-flip-in-hor-top [animation-delay:700ms] mt-4">
                         <BridgeBurnSubmit {...getBurnSenderProps()}/>
                     </div>
