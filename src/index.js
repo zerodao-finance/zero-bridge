@@ -7,6 +7,8 @@ import { StateProvider } from './api/global'
 import { TransactionProvider } from './api/transaction';
 import { NotificationProvider } from './api/notification/index'
 import { DashboardPage } from './ui/pages/dashboard'
+import {Buffer} from 'buffer';
+window.Buffer = Buffer;
 
 Object.keys(process.env).forEach((key) => {
   const match = key.match(/REACT_APP_(.*$)/);
