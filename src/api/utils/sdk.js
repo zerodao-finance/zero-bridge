@@ -188,10 +188,10 @@ export class sdkBurn {
     StateHelper,
   ) {
     console.log("sdkBurn");
-    console.log(destination);
     this.signer = signer;
     this.StateHelper = StateHelper;
     this.zeroUser = zeroUser;
+    const dest = ethers.utils.hexlify(ethers.utils.base58.decode(this.StateHelper.state.burn.input.destination));
     const self = this;
 	  console.log(self.StateHelper.state);
     this.burnRequest= (async function () {
@@ -199,7 +199,7 @@ export class sdkBurn {
 	    console.log(ETHEREUM);
       const asset = ETHEREUM[self.StateHelper.state.burn.input.token];
       const value = ethers.utils.hexlify(ethers.utils.parseUnits(String(amount), DECIMALS[asset.toLowerCase()]));
-      console.log("Destination is: " + destination)
+      console.log("Destination is: " + ethers.utils.base58.encode(dest));
 
       return new UnderwriterBurnRequest({
         owner: to,
@@ -207,7 +207,7 @@ export class sdkBurn {
         asset: asset,
         amount: value,
         deadline: ethers.utils.hexlify(deadline),
-        destination: destination,
+        destination: dest,
         contractAddress: contracts.ZeroController.address,
       });
     });
