@@ -14,7 +14,7 @@ export const BridgeBurnModule = () => {
         getBurnSenderProps
      } = useBridgeBurnInput() 
     const isLoading = false
-    const BTC = 0.0
+
     return (
         <>
         {

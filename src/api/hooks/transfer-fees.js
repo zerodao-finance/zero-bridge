@@ -1,29 +1,24 @@
 import { computeOutputBTC } from 'zero-protocol/lib/badger';
 import { ethers } from "ethers";
+import fixtures from 'zero-protocol/lib/fixtures';
 
 function processAmount(amount, token) {
     switch(token) {
         case 'USDC':
-            console.log("PROCESSING USDC")
-            return ethers.utils.parseUnits(amount, 5)
+            return ethers.utils.parseUnits(amount, 6)
         default:
-            return ethers.utils.parseUnits(amount, 18)
+            return ethers.utils.parseUnits(amount, 8);
     }
 }
 
 function formatOutput(output, token) {
-    switch(token) {
-        case 'USDC':
-            return ethers.utils.formatUnits(output, 6)
-        default:
-            return ethers.utils.formatUnits(output, 18)
-    }
+        return ethers.utils.formatUnits(output, 8)
 }
 
 function useTransferFees(){
     async function getTransferOutput({ amount, token }) {
         const input = {
-            asset: token,
+            asset: fixtures.ETHEREUM[token],
             amount: processAmount(amount, token)
         }
         let output = await computeOutputBTC(input);
