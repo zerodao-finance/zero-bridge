@@ -9,7 +9,7 @@ import { TEST_KEEPER_ADDRESS } from "zero-protocol/dist/lib/mock";
 import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from 'ethers-gasnow';
 import EventEmitter from 'events'
-import { bech32 } from 'bech32';
+import bech32 from 'bech32';
 
 const toLower = (s) => s && s.toLowerCase();
 
