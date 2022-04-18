@@ -42,7 +42,7 @@ export const BridgeTransferModule = ({ mode }) => {
                             </div>
                         </div>
                         {amount > 0 && (
-                            <div className="animate-flip-in-hor-top [animation-delay:500ms] w-full">
+                            <div className="animate-flip-in-hor-top [animation-delay:500ms] w-full -z-10">
                                 <BridgeTransferFee {...getTransferInputProps()}/>
                             </div>
                         )}

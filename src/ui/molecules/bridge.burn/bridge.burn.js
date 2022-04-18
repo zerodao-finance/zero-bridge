@@ -33,7 +33,7 @@ export const BridgeBurnModule = () => {
                         </div>
                     </div>
                     {amount > 0 && (
-                        <div className={` animate-flip-in-hor-top [animation-delay:500ms] container h-max flex flex-col place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around items-center px-1 md:px-8`}>
+                        <div className={`animate-flip-in-hor-top [animation-delay:500ms] container h-max flex flex-col place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around items-center px-1 md:px-8`}>
                             <div className="flex flex-col w-full">
                                 <BridgeBurnTransferFee {...getBridgeBurnInputProps()}/>
                             </div>
