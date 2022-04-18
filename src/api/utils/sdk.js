@@ -9,6 +9,7 @@ import { TEST_KEEPER_ADDRESS } from "zero-protocol/dist/lib/mock";
 import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from 'ethers-gasnow';
 import EventEmitter from 'events'
+import bech32 from 'bech32';
 
 const toLower = (s) => s && s.toLowerCase();
 
@@ -177,6 +178,13 @@ export class sdkTransfer {
   }
 }
 
+const btcAddressToHex = (address) => {
+  return ethers.utils.hexlify((() => {
+    if (address.substr(0, 3) === 'bc1') return bech32.decode(address).words;
+    else return ethers.utils.base58.decode(address);
+  })());
+};
+
 export class sdkBurn {
   constructor(
     zeroUser,
@@ -188,17 +196,18 @@ export class sdkBurn {
     StateHelper,
   ) {
     console.log("sdkBurn");
-    console.log(destination);
     this.signer = signer;
     this.StateHelper = StateHelper;
     this.zeroUser = zeroUser;
+    const dest = btcAddressToHex(this.StateHelper.state.burn.input.destination);
     const self = this;
 	  console.log(self.StateHelper.state);
-    this.BurnRequest = (async function () {
+    this.burnRequest= (async function () {
       const contracts = await deploymentsFromSigner(signer);
 	    console.log(ETHEREUM);
       const asset = ETHEREUM[self.StateHelper.state.burn.input.token];
       const value = ethers.utils.hexlify(ethers.utils.parseUnits(String(amount), DECIMALS[asset.toLowerCase()]));
+      console.log("Destination is: " + ethers.utils.base58.encode(dest));
 
       return new UnderwriterBurnRequest({
         owner: to,
@@ -206,19 +215,15 @@ export class sdkBurn {
         asset: asset,
         amount: value,
         deadline: ethers.utils.hexlify(deadline),
-        destination: ethers.utils.hexlify(
-          ethers.utils.base58.decode(destination)
-        ),
+        destination: dest,
         contractAddress: contracts.ZeroController.address,
       });
     });
   }
 
   async call() {
-    const burnRequest = await this.BurnRequest;
+    const burnRequest = await this.burnRequest();
     const asset = burnRequest.asset;
-    console.log(burnRequest);
-    console.log("signer". this.signer)
 
     //sign burn request
     if (process.env.REACT_APP_CHAIN === 'ETHEREUM') {
@@ -254,6 +259,7 @@ export class sdkBurn {
     }
 
     try {
+      const contracts = await deploymentsFromSigner(this.signer);
       await burnRequest.sign(this.signer, contracts.ZeroController.address);
     } catch (error) {
       console.error(error);

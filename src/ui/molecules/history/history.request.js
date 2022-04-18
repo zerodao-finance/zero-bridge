@@ -8,9 +8,9 @@ export const TransactionHistory = ({}) => {
     return (
         <ManageTransactionLayout title="Transaction History">
             {
-                completed.transfer.map(d => {
+                completed.transfer.map((d, index) => {
                     return (
-                        <ManageTransactionCard data={d} type="pending"/>
+                        <ManageTransactionCard data={d} key={index} type="pending"/>
                     )
                 })
             }
