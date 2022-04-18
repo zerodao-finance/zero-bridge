@@ -19,6 +19,8 @@ export const BridgeTransferModule = ({ mode }) => {
         getTransferModuleToggleProps,
         getGatewayData,
     } = useBridgeInput();
+
+    const { amount } = getTransferInputProps();
     
     const { 
         open
@@ -39,7 +41,11 @@ export const BridgeTransferModule = ({ mode }) => {
                                 <BridgeTransferInput {...getTransferInputProps()}/>
                             </div>
                         </div>
-                        <BridgeTransferFee {...getTransferInputProps()}/>
+                        {amount > 0 && (
+                            <div className="animate-flip-in-hor-top [animation-delay:500ms] w-full">
+                                <BridgeTransferFee {...getTransferInputProps()}/>
+                            </div>
+                        )}
                     </div>
                 </div>
                 

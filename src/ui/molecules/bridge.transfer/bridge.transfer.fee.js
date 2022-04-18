@@ -34,7 +34,6 @@ export const BridgeTransferFee = ({ amount, effect, tokenPrice, setToken, token 
 
     return (
       <>
-        {amount > 0 && (
           <div className="self-center px-0 py-0 w-full">
               <div className="w-full shadow-inner flex items-center justify-between px-4 py-2 mt-5 text-white rounded-xl dark:bg-badger-gray-500 bg-gray-100">
                   <div className="flex flex-col gap-2 max-w-[100%]">
@@ -61,7 +60,6 @@ export const BridgeTransferFee = ({ amount, effect, tokenPrice, setToken, token 
                   ~ { tokenPrice && formatter.format(fee * ethers.utils.formatUnits(tokenPrice, 6)) }
               </div> 
           </div>
-        )}
       </>
     )
 }
