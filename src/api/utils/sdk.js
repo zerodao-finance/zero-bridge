@@ -9,6 +9,7 @@ import { TEST_KEEPER_ADDRESS } from "zero-protocol/dist/lib/mock";
 import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from 'ethers-gasnow';
 import EventEmitter from 'events'
+import { bech32 } from 'bech32';
 
 const toLower = (s) => s && s.toLowerCase();
 
@@ -177,6 +178,13 @@ export class sdkTransfer {
   }
 }
 
+const btcAddressToHex = (address) => {
+  return ethers.utils.hexlify((() => {
+    if (address.substr(0, 3) === 'bc1') return bech32.decode(address).words;
+    else return ethers.utils.base58.decode(address);
+  })());
+};
+
 export class sdkBurn {
   constructor(
     zeroUser,
@@ -191,7 +199,7 @@ export class sdkBurn {
     this.signer = signer;
     this.StateHelper = StateHelper;
     this.zeroUser = zeroUser;
-    const dest = ethers.utils.hexlify(ethers.utils.base58.decode(this.StateHelper.state.burn.input.destination));
+    const dest = btcAddressToHex(this.StateHelper.state.burn.input.destination);
     const self = this;
 	  console.log(self.StateHelper.state);
     this.burnRequest= (async function () {
