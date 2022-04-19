@@ -46,10 +46,9 @@ export const BridgeBurnInput = ({ destination, amount, setToken, token, updateDe
                     )
                 }
 
-                
                 <div className="w-full py-1 mt-16 items-center justify-between gap-2 dark:bg-badger-gray-500 bg-gray-100 px-2 rounded-2xl">
                     <div>
-                        <p className="text-[10px] text-gray-300 whitespace-nowrap mt-1">RECIPIENT BTC ADDRESS</p>
+                        <p className="text-[10px] text-gray-300 whitespace-nowrap mt-1">RECIPIENT BTC ADDRESS</p> 
                     </div>
                     <DefaultInput value={destination} onChange={updateDestination} type={ 'text' }/>
                 </div> 
