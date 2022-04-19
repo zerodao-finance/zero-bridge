@@ -18,7 +18,7 @@ function TokenDropdown({ token = "renBTC", setToken, tokensRemoved = [] }) {
             icon: renBTC
         },
         {
-            text: "wBTC",
+            text: "WBTC",
             icon: wBTC
         },
         {

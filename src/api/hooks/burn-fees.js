@@ -1,4 +1,4 @@
-import { computeTransferOutput } from 'zero-protocol/lib/badger';
+import { computeOutputBTC } from 'zero-protocol/lib/badger';
 import { ethers } from "ethers";
 import fixtures from 'zero-protocol/lib/fixtures';
 
@@ -12,28 +12,23 @@ function processAmount(amount, token) {
 }
 
 function formatOutput(output, token) {
-    switch(token) {
-        case 'USDC':
-            return ethers.utils.formatUnits(output, 4)
-        default:
-            return ethers.utils.formatUnits(output, 8);
-    }
+    return ethers.utils.formatUnits(output, 8)
 }
 
-function useTransferFees(){
-    async function getTransferOutput({ token, amount }) {
+function useBurnFees() {
+    async function getBurnOutput({ amount, token }) {
         const input = {
-            module: fixtures.ETHEREUM[token],
+            asset: fixtures.ETHEREUM[token],
             amount: processAmount(amount, token)
         }
-        let output = await computeTransferOutput(input);
+        let output = await computeOutputBTC(input);
         output = formatOutput(output, token);
         return output;
     }
 
     return {
-        getTransferOutput
+        getBurnOutput
     }
 }
 
-export default useTransferFees;
+export default useBurnFees;
