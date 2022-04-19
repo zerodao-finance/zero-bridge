@@ -3,12 +3,6 @@ import { ethers } from 'ethers'
 import useTransferFees from '../../../api/hooks/transfer-fees'
 
 export const BridgeTransferFee = ({ amount, effect, tokenPrice, setToken, token }) => {
-    // How to use 'TokenDropdown' component
-    // Create 'useState' variables and pass it to 'TokenDropdown' 
-    // (props are 'token' and 'setToken' where 'token' is a string of the token symbol)
-
-    // Additional Props: 'tokensRemoved' which is an array of tokens you do not want in dropdown
-    // Default Dropdown Items: ETH, WBTC, ibBTC, renBTC, USDC
 
     // Getting Fees - START
     const { getTransferOutput } = useTransferFees();
@@ -30,6 +24,15 @@ export const BridgeTransferFee = ({ amount, effect, tokenPrice, setToken, token 
         currency: "USD"
     })
 
+    function formatConversionOutput() {
+        switch(token) {
+            case 'USDC':
+                return fee
+            default:
+                return fee * ethers.utils.formatUnits(tokenPrice, 6);
+        }
+    }
+
     return (
       <>
         {amount > 0 && (
@@ -40,12 +43,12 @@ export const BridgeTransferFee = ({ amount, effect, tokenPrice, setToken, token 
                   </div>
                   <div>
                       <span className={`${isFeeLoading && "animate-pulse"}`}>
-                          {fee || 0} BTC
+                          {fee || 0} {token}
                       </span>
                   </div>
               </div>
               <div className=" xl:mr-5 italic tracking-wider w-full text-right text-[10px] text-badger-yellow-neon-400">
-                  ~ { tokenPrice && formatter.format(fee * ethers.utils.formatUnits(tokenPrice, 5)) }
+                  ~ { tokenPrice && formatter.format(formatConversionOutput()) }
               </div> 
           </div>
         )}

@@ -12,17 +12,21 @@ function processAmount(amount, token) {
 }
 
 function formatOutput(output, token) {
-        return ethers.utils.formatUnits(output, 8)
+    switch(token) {
+        case 'USDC':
+            return ethers.utils.formatUnits(output, 4)
+        default:
+            return ethers.utils.formatUnits(output, 8);
+    }
 }
 
 function useTransferFees(){
     async function getTransferOutput({ token, amount }) {
         const input = {
-            asset: fixtures.ETHEREUM[token],
+            module: fixtures.ETHEREUM[token],
             amount: processAmount(amount, token)
         }
         let output = await computeTransferOutput(input);
-        console.log("OUTPUT: " + output + " , AMOUNT: " + amount + " , TOKEN: " + token)
         output = formatOutput(output, token);
         return output;
     }
