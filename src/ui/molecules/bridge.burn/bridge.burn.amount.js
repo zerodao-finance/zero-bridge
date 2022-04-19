@@ -15,7 +15,7 @@ export const BridgeBurnInput = ({ destination, amount, setToken, token, updateDe
             case 'USDC':
                 return formatter.format(amount)
             default:
-                return formatter.format(amount * ethers.utils.formatUnits(tokenPrice, 5))
+                return formatter.format(amount * ethers.utils.formatUnits(tokenPrice, 6))
         }
     }
 
@@ -33,12 +33,6 @@ export const BridgeBurnInput = ({ destination, amount, setToken, token, updateDe
                 <div className=" xl:mr-5 italic tracking-wider w-full text-right text-[10px] text-badger-yellow-neon-400">
                     ~ { tokenPrice && formattedAmount() }
                 </div> 
-                {/* </div> 
-                    <div className="w-fit self-center px-0 py-0 scale-[0.8] md:scale-[1]">
-                    <div className="w-fit flex items-center justify-between gap-10 dark:bg-badger-gray-500 bg-gray-100 px-2 rounded-2xl">
-                        <DefaultInput value={destination} onChange={updateDestination} type={ 'text' }/>
-                    </div>
-                </div>  */}
             </div>
         
         </>
