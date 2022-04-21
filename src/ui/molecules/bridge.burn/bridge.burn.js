@@ -5,7 +5,6 @@ import { BridgeBurnResult } from './bridge.burn.result'
 import { BridgeBurnInput } from './bridge.burn.amount'
 import { BridgeBurnSubmit } from './bridge.burn.submit'
 import { useBridgeBurnInput } from "../../../api/global/interfaces/interface.bridge.burn"
-import { BridgeTransferFee } from "../bridge.transfer/bridge.fee"
 
 export const BridgeBurnModule = () => {
     const { open } = useCheckWalletConnected()
@@ -14,7 +13,7 @@ export const BridgeBurnModule = () => {
         getBurnSenderProps
      } = useBridgeBurnInput() 
     const isLoading = false
-    const BTC = 0.0
+
     return (
         <>
         {
@@ -31,7 +30,6 @@ export const BridgeBurnModule = () => {
                             <BridgeBurnInput {...getBridgeBurnInputProps()}/>
                         </div>
                     </div>
-                    
                     <div className="animate-flip-in-hor-top [animation-delay:700ms] mt-4">
                         <BridgeBurnSubmit {...getBurnSenderProps()}/>
                     </div>
