@@ -25,6 +25,19 @@
   --tw-content: '';
 }
 
+input::-webkit-input-placeholder { /* WebKit browsers */
+  color:    #fff !important;
+}
+input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  color:    #fff !important;
+}
+input::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color:    #fff !important;
+}
+input:-ms-input-placeholder { /* Internet Explorer 10+ */
+  color:    #fff !important;
+}
+
 /*
 1. Use a consistent sensible line-height in all browsers.
 2. Prevent adjustments of font size after orientation changes in iOS.

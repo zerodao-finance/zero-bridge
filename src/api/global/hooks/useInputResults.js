@@ -51,7 +51,8 @@ export const useInputResults = (input, module) => {
 				dispatch({ type: 'FAIL_REQUEST', effect: 'display', payload: 'Cannot set ETHPrice,' });
 			}
 		};
-
-		call();
+		if(input.amount){
+			call();
+		}
 	}, [input.amount, input.ratio]);
 };

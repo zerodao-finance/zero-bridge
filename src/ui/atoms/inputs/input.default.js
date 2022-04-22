@@ -1,8 +1,4 @@
 export const DefaultInput = ({ value, onChange, type, onClick, disabled, loading, style, maxW }) => {
-	if (!value) {
-		value = 0;
-	}
-
 	return (
 		<div className="w-full text-right p-2">
 			<input
@@ -18,6 +14,7 @@ export const DefaultInput = ({ value, onChange, type, onClick, disabled, loading
 				onClick={onClick}
 				disabled={disabled}
 				style={style, {maxWidth: maxW}}
+				placeholder="0"
 			/>
 		</div>
 	);
