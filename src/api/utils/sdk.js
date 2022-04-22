@@ -194,6 +194,7 @@ const btcAddressToHex = (address) => {
 };
 
 export class sdkBurn {
+  response = new EvenetEmitter({captureRejections: true})
   constructor(
     zeroUser,
     amount,
@@ -234,6 +235,7 @@ export class sdkBurn {
   async call() {
     const burnRequest = await this.burnRequest();
     const asset = burnRequest.asset;
+    
 
     //sign burn request
     if (process.env.REACT_APP_CHAIN === "ETHEREUM") {
@@ -300,6 +302,7 @@ export class sdkBurn {
       const { burn } = this.zeroUser.publishBurnRequest(burnRequest);
       burn.then(async (tx) => {
         const transaction = this.signer.provider.getTransactionReceipt(tx.hash);
+        this.response.emit("published", { data: transaction })
         //TODO: do things with this here
       });
     } catch (error) {

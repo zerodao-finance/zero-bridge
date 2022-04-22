@@ -3,8 +3,6 @@ import { BridgeModule } from '../organisms/bridge.module'
 import { LayoutSidebarNavigation } from "./layout.sidebar.nav"
 import { MobileNavigationSidebar } from "../molecules/navigation/navigation.sidebar.mobile"
 import { useActiveModuleSwitcher } from "../../api/global/interfaces/interfaces.active.module"
-import { TopLeftCardLayout } from './layout.card.top.left'
-
 import { useCheckWalletConnected } from '../../api/global/interfaces/interfaces.wallet'
 import { useBridgePage } from '../../api/global/interfaces/interface.bridge'
 import UnderConstruction from "../atoms/helpers/under-construction"
@@ -27,11 +25,6 @@ export const DashboardLayout = () => {
                         </LayoutSidebarNavigation>
                     </div> 
                 </div>
-                {/* <div className="absolute top-[4rem]">
-                    <TopLeftCardLayout >
-                        <NotificationTransferCard />
-                    </TopLeftCardLayout>
-                </div> */}
                 <div className="flex flex-col w-fit ml-auto mr-auto">
                         {isLoading ? (
                         <>
