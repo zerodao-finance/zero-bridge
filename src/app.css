@@ -1559,16 +1559,16 @@ input:checked + .toggle-bg {
   cursor: pointer;
 }
 
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
 .cursor-copy {
   cursor: copy;
 }
 
 .cursor-default {
   cursor: default;
-}
-
-.cursor-not-allowed {
-  cursor: not-allowed;
 }
 
 .select-all {
