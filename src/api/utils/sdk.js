@@ -292,8 +292,10 @@ export class sdkBurn {
     try {
       const contracts = await deploymentsFromSigner(this.signer);
       await burnRequest.sign(this.signer, contracts.ZeroController.address);
+      this.response.emit("signed")
     } catch (error) {
       console.error(error);
+      this.response.emit("error", { message: "failed to sign request!"})
       //handle signature error
     }
 
@@ -307,6 +309,7 @@ export class sdkBurn {
       });
     } catch (error) {
       console.error(error);
+      this.response.emit("error", { message: `failed to publish transaction ${ error }`})
     }
   }
 }

@@ -65,20 +65,18 @@ class SDKHelper {
     }
 
     #listenForResponse(response, _type) {
-        response.on('signing', (data) => {
-            this.Notify.createCard(data.timeout, "success", { message: data.message})
-            this.Global.update(_type, 'mode', { mode: "showSigning"})
-        })
+            if ( _type === "transfer") {
+                // Transfer Requests
+                response.on('signing', (data) => {
+                    this.Notify.createCard(data.timeout, "success", { message: data.message})
+                    this.Global.update(_type, 'mode', { mode: "showSigning"})
+                })
 
-        if ( _type === "transfer") {
-            response.on("signed", (data) => {
-                this.Global.update(_type, "mode", { mode: "waitingDry"})
-            })
-        }
-
-        response.on("published", async (data) => {
-            switch( _type ) {
-                case "transfer":
+                response.on("signed", (data) => {
+                    this.Global.update(_type, "mode", { mode: "waitingDry"})
+                })
+            
+                response.on("published", async (data) => {
                     this.Global.update(_type, "mode", { mode: "showGateway", gatewayData: { address: data.gateway, requestData: data.request }})
                     this.Queue.push({
                         type: _type,
@@ -86,24 +84,32 @@ class SDKHelper {
                         request: data.request,
                         this: this
                     }, this.processTransferRequest)
-                    break
-                case "gateway":
+                })
+                   //end transfer request conditions     
+            }
+
+            if ( _type === "burn") {
+                response.on("signed", (data) => {
+                    this.Notify.createCard(3000, "success", { message: "successfully signed request"})
+                })
+
+                response.on("published", async ( data ) => {
                     this.Queue.push({
                         type: _type,
                         request: data.request,
                         this: this
                     }, this.processBurnRequest)
-                    break
-            }
-        })
+                })
 
-        response.on('error', (data) => {
+            }
+            response.on('error', (data) => {
             this.Notify.createCard(6000, "warning", { message: data.message})
         })
     }
 
     async processBurnRequest(error, task) {
         task.this.Transaction.createRequest("burn", task.request)
+        task.this.Notify.createTXCard(true, task.type, { data: task.request })
         //handle burn request
     }
 
