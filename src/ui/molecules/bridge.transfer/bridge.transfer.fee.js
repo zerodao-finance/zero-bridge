@@ -13,7 +13,6 @@ export const BridgeTransferFee = ({ amount, effect, tokenPrice, setToken, token 
             setIsFeeLoading(true);
             const output = await getTransferOutput({ amount, token });
             setFee(output);
-            console.log(output);
             setIsFeeLoading(false);
         }
     }, [amount, token])
