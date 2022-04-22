@@ -3,7 +3,6 @@ import { ethers } from 'ethers'
 import useBurnFees from '../../../api/hooks/burn-fees'
 
 export const BridgeBurnTransferFee = ({ amount, effect, tokenPrice, setToken, token }) => {
-    // Getting Fees - START
     const { getBurnOutput } = useBurnFees();
     const [isFeeLoading, setIsFeeLoading] = useState(false);
     const [fee, setFee] = useState();
@@ -15,7 +14,6 @@ export const BridgeBurnTransferFee = ({ amount, effect, tokenPrice, setToken, to
             setIsFeeLoading(false);
         }
     }, [amount, token])
-    // Getting Fees - END
 
     var formatter = new Intl.NumberFormat('en-US', {
         style: "currency",
