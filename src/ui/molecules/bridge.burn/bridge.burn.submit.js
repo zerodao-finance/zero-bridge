@@ -1,15 +1,34 @@
 import { PrimaryRoundedButton } from '../../atoms/buttons/button.rounded';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import useBurnFees from '../../../api/hooks/burn-fees'
 
 const btcRegex = /^(?:[13]{1}[a-km-zA-HJ-NP-Z1-9]{26,33}|bc1[a-z0-9]{39,59})$/
 
-export const BridgeBurnSubmit = ({ action, destination }) => {
-	const active = () => {
-		return destination.match(btcRegex);
-	}
+export const BridgeBurnSubmit = ({ action, destination, amount, token }) => {
+	const { getBurnOutput } = useBurnFees();
+  const [buttonLabel, setButtonLabel] = useState('Enter Valid Recipient Address');
+	const [active, setActive] = useState(false);
+	const [burnOutput, setBurnOutput] = useState();
 
 	useEffect(async () => {
-	}, [destination])
+			if(amount > 0) {
+				const output = await getBurnOutput({ amount, token });
+				setBurnOutput(output);
+			}
+	}, [amount, token])
 
-	return <PrimaryRoundedButton active={active()} label={active() ? 'Release Funds' : 'Enter Valid Recipient Address'} action={action} />;
+	useEffect(async () => {
+		setActive(false);
+		if(destination.match(btcRegex)) {
+			if(burnOutput > 0) {
+				setButtonLabel('Release Funds');
+				setActive(true);
+			}
+			else {
+				setButtonLabel('Result Must Be More Than Zero');
+			}
+		}
+	}, [destination, burnOutput])
+
+	return <PrimaryRoundedButton active={active} label={buttonLabel} action={action} />;
 };

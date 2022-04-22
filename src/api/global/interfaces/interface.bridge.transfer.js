@@ -34,7 +34,9 @@ export const useBridgeInput = () => {
     })
 
     const getTransferSenderProps = ({ ...otherProps } = {}) => ({
-        action: sendTransferRequest
+        action: sendTransferRequest,
+        amount: amount,
+        token: state.transfer.input.token
     })
 
     const getTransferMode = ({ ...otherProps } = {}) => ({

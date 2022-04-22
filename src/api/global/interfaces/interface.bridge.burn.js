@@ -35,7 +35,9 @@ export const useBridgeBurnInput = () => {
 
     const getBurnSenderProps = ({...otherProps} = {}) => ({
         action: sendBurnRequest,
-        destination: destination
+        destination: destination,
+        token,
+        amount: amount
     })
 
     return {
