@@ -11,11 +11,9 @@ export const BridgeBurnSubmit = ({ action, destination, amount, token }) => {
 	const [burnOutput, setBurnOutput] = useState();
 
 	useEffect(async () => {
-		console.log("Amount: " + amount);
 			if(amount > 0) {
-					const output = await getBurnOutput({ amount, token });
-					console.log(output);
-					setBurnOutput(output);
+				const output = await getBurnOutput({ amount, token });
+				setBurnOutput(output);
 			}
 	}, [amount, token])
 
