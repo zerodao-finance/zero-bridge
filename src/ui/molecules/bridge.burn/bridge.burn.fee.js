@@ -3,13 +3,6 @@ import { ethers } from 'ethers'
 import useBurnFees from '../../../api/hooks/burn-fees'
 
 export const BridgeBurnTransferFee = ({ amount, effect, tokenPrice, setToken, token }) => {
-    // How to use 'TokenDropdown' component
-    // Create 'useState' variables and pass it to 'TokenDropdown' 
-    // (props are 'token' and 'setToken' where 'token' is a string of the token symbol)
-
-    // Additional Props: 'tokensRemoved' which is an array of tokens you do not want in dropdown
-    // Default Dropdown Items: ETH, WBTC, ibBTC, renBTC, USDC
-
     // Getting Fees - START
     const { getBurnOutput } = useBurnFees();
     const [isFeeLoading, setIsFeeLoading] = useState(false);
