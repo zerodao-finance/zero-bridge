@@ -194,7 +194,7 @@ const btcAddressToHex = (address) => {
 };
 
 export class sdkBurn {
-  response = new EvenetEmitter({captureRejections: true})
+  response = new EventEmitter({captureRejections: true})
   constructor(
     zeroUser,
     amount,
@@ -208,7 +208,7 @@ export class sdkBurn {
     this.signer = signer;
     this.StateHelper = StateHelper;
     this.zeroUser = zeroUser;
-    const dest = btcAddressToHex(this.StateHelper.state.burn.input.destination);
+    const dest = btcAddressToHex(destination);
     const self = this;
     console.log(self.StateHelper.state);
     this.burnRequest = async function () {
@@ -301,7 +301,8 @@ export class sdkBurn {
 
     //publishBurnRequest
     try {
-      const { burn } = this.zeroUser.publishBurnRequest(burnRequest);
+      
+      const { burn } = await this.zeroUser.publishBurnRequest(burnRequest);
       burn.then(async (tx) => {
         const transaction = this.signer.provider.getTransactionReceipt(tx.hash);
         this.response.emit("published", { data: transaction })
