@@ -10,7 +10,7 @@ import { GlobalStateHelper } from '../../utils/global.utilities'
 export const useBridgeInput = () => {
     const { state, dispatch } = useContext( storeContext )
     const StateHelper = new GlobalStateHelper(state, dispatch)
-    const { btc_usd } = state.priceFeeds.data
+    const { tokenPrice } = state.priceFeeds.data
     const { ETH, renBTC } = state.transfer.display
     const { ratio, amount, isFast } = state.transfer.input
     const { mode } = state.transfer.mode
@@ -52,7 +52,7 @@ export const useBridgeInput = () => {
         token: state.transfer.input.token,
         setToken: setToken,
         effect: updateAmount,
-        tokenPrice: btc_usd
+        tokenPrice: tokenPrice
     })
 
     const getGatewayData = ({...otherProps} = {}) => ({...(StateHelper.getModuleGatewayProps('transfer'))})
