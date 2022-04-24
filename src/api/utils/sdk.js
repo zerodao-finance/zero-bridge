@@ -151,9 +151,10 @@ export class sdkTransfer {
       throw new Error("Failed to sign transaction");
     }
     try {
-      const { loan, repay } = await this.zeroUser.publishTransferRequest(
+      const { loan, repay } = this.zeroUser.publishTransferRequest(
         transferRequest
       );
+
       const mint = await transferRequest.submitToRenVM();
       var gatewayAddress = await transferRequest.toGatewayAddress();
       // this.StateHelper.update("transfer", "mode", {
@@ -165,7 +166,7 @@ export class sdkTransfer {
         request: transferRequest,
         mintEmitter: mint,
       });
-      // this.Emitter.emit("transfer", mint, transferRequest);
+
       repay.then(async (tx) => {
         // handle tx.hash here
         const transaction = await this.signer.provider.getTransactionReceipt(
@@ -301,16 +302,16 @@ export class sdkBurn {
 
     //publishBurnRequest
     try {
-      
-      const { burn } = await this.zeroUser.publishBurnRequest(burnRequest);
-      burn.then(async (tx) => {
-        const transaction = this.signer.provider.getTransactionReceipt(tx.hash);
-        this.response.emit("published", { data: transaction })
-        //TODO: do things with this here
-      });
+      const burn = await this.zeroUser.publishBurnRequest(burnRequest);
+      console.log(burn)
+      // burn.then(async (tx) => {
+      //   const transaction = this.signer.provider.getTransactionReceipt(tx.hash);
+      //   this.response.emit("published", { data: transaction })
+      //   //TODO: do things with this here
+      // });
     } catch (error) {
       console.error(error);
-      this.response.emit("error", { message: `failed to publish transaction ${ error }`})
+      this.response.emit("error", { message: `failed to publish transaction: ${ error }`})
     }
   }
 }

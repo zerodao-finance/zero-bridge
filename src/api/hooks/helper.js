@@ -102,6 +102,7 @@ class SDKHelper {
                 })
 
             }
+            
             response.on('error', (data) => {
             this.Notify.createCard(6000, "warning", { message: data.message})
         })
