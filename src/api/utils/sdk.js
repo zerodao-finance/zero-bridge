@@ -157,7 +157,9 @@ export class sdkTransfer {
       throw new Error("Failed to sign transaction");
     }
     try {
+      console.log("Starting Transfer Request");
       await this.zeroUser.publishTransferRequest(transferRequest);
+      console.log("Published Transfer Request");
       const mint = await transferRequest.submitToRenVM();
       var gatewayAddress = await transferRequest.toGatewayAddress();
       // this.StateHelper.update("transfer", "mode", {
