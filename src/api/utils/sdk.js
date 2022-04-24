@@ -4,6 +4,7 @@ import {
   UnderwriterTransferRequest,
   UnderwriterBurnRequest,
 } from "zero-protocol/dist/lib/zero";
+import { EIP712_TYPES } from "zero-protocol/dist/lib/config/constants";
 import fixtures from 'zero-protocol/dist/lib/fixtures';
 import { TEST_KEEPER_ADDRESS } from "zero-protocol/dist/lib/mock";
 import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
@@ -26,6 +27,7 @@ const toEIP712USDC = function (contractAddress, chainId) {
 		this.chainId = chainId || this.chainId;
 		return {
 			types: {
+				EIP712Domain: EIP712_TYPES.EIP712Domain,
 				Permit: [
 					{
 						name: 'owner',
