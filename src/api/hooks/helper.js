@@ -82,6 +82,7 @@ class SDKHelper {
                         type: _type,
                         mint: data.mintEmitter,
                         request: data.request,
+                        transactionHash: data.hashData,
                         this: this
                     }, this.processTransferRequest)
                 })
@@ -93,7 +94,7 @@ class SDKHelper {
                     this.Notify.createCard(3000, "success", { message: "successfully signed request"})
                 })
 
-                response.on("published", async ( data ) => {
+                response.on("hash", async ( data ) => {
                     this.Queue.push({
                         type: _type,
                         request: data.request,
@@ -109,8 +110,8 @@ class SDKHelper {
     }
 
     async processBurnRequest(error, task) {
-        task.this.Transaction.createRequest("burn", task.request)
-        task.this.Notify.createTXCard(true, task.type, { data: task.request })
+        task.this.Transaction.createRequest("burn", task.request.data)
+        task.this.Notify.createCard(20000, task.type, { data: task.request.data, hash: task.request.request })
         //handle burn request
     }
 
@@ -118,6 +119,7 @@ class SDKHelper {
         const deposit = await new Promise(async resolve => 
             task.mint.on("deposit", async deposit => {
                 //recieve deposit object
+                console.log(task.transactionHash)
                 task.this.Global.reset(task.type, "input")
                 task.this.Global.update(task.type, "mode", { mode: "input"})
                 task.this.#tfRequestTransaction(task.this.Transaction, task.request, await deposit.confirmed())
@@ -128,7 +130,7 @@ class SDKHelper {
         
         console.log("confirmed")
         const confirmed = await deposit.confirmed()
-        task.this.Notify.createTXCard(true, task.type, { confirmed: confirmed, data: task.request, max: 6, current: 0 })
+        task.this.Notify.createTXCard(true, task.type, { hash: task.transactionHash, confirmed: confirmed, data: task.request, max: 6, current: 0 })
 
     }
 

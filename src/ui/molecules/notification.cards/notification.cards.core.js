@@ -1,5 +1,7 @@
 import * as React from 'react'
 import { ProgressDots } from '../../atoms/progress/progress.dots'
+import { truncateAddress } from '../../../api/utils/textUtilities'
+
 export const getCard = (_ref) => {
     switch (_ref.type) {
         case "error":
@@ -19,14 +21,23 @@ export const getCard = (_ref) => {
     }
 }
 
-export const BurnCard = ({ id, close, data}) => {
+export const BurnCard = ({ id, close, hash, data}) => {
+    console.log(data)
     return (
         <div className="bg-[#D7E0DA] dark:bg-gray-500 shadow-md text-black min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] text-sm p-5 rounded-md shadow-md text-xs md:text-sm" key={id}>
             <span className="absolute top-1 right-1 text-md text-black dark:text-white cursor-pointer" onClick={close}>
                 &times;
             </span> 
             <div className="text-black dark:text-white">
-                {data.id}
+                {id}
+            </div>
+            <div className="text-black dark:text-white gap-2">
+                <span>View on Etherscan</span>
+                <span className="underline text-blue-100">
+                    <a href={`https://etherscan.io/tx/${hash}`}>
+                        {truncateAddress(hash)}
+                    </a>
+                </span>
             </div>
         </div>
     )
@@ -39,7 +50,7 @@ export const TransferCard = ({ id, close, data, max, current }) => {
                 &times;
             </span> 
             <div className="text-black dark:text-white">
-                {data.to}
+                {truncateAddress(data.to)}
             </div>
             <ProgressDots current={current} max={max} />
         </div>
