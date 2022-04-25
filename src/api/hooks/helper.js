@@ -116,31 +116,33 @@ class SDKHelper {
     }
 
     async processTransferRequest(error, task) {
-        const deposit = await new Promise(async resolve => 
+        const confirmed = await new Promise(async resolve => 
             task.mint.on("deposit", async deposit => {
                 //recieve deposit object
-                console.log(task.transactionHash)
+                console.log(deposit, deposit.depositDetails)
                 task.this.Global.reset(task.type, "input")
                 task.this.Global.update(task.type, "mode", { mode: "input"})
-                task.this.#tfRequestTransaction(task.this.Transaction, task.request, deposit)
-                resolve(deposit)
+                const confirmed = deposit.confirmed()
+                await task.this.#tfRequestTransaction(task.this.Transaction, task.request, confirmed)
+                resolve(confirmed)
+                
                 //create a transaction in Transaction with data on deposit receieved
             })
         )
         
-        console.log("confirmed")
-        const confirmed = await deposit.confirmed()
-        task.this.Notify.createTXCard(true, task.type, { hash: task.transactionHash, confirmed: confirmed, data: task.request, max: 6, current: 0 })
+        console.log(confirmed)
+        task.this.Notify.createTXCard(true, task.type, { confirmed: await confirmed, data: task.request, max: 6, current: 0 })
 
     }
 
-    #tfRequestTransaction(transaction, request, confirmed) {
+    async #tfRequestTransaction(transaction, request, confirmed) {
         let data = transaction.createRequest("transfer", request)
-        confirmed.on("confirmation", (i, target) => {
+        await confirmed.on("confirmation", (i, target) => {
             if (i >= target) {
                 data.payload.data.complete
             }
         })
+        return
     }
 
     #clean(response) {
