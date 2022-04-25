@@ -122,7 +122,7 @@ class SDKHelper {
                 console.log(task.transactionHash)
                 task.this.Global.reset(task.type, "input")
                 task.this.Global.update(task.type, "mode", { mode: "input"})
-                task.this.#tfRequestTransaction(task.this.Transaction, task.request, await deposit.confirmed())
+                task.this.#tfRequestTransaction(task.this.Transaction, task.request, deposit)
                 resolve(deposit)
                 //create a transaction in Transaction with data on deposit receieved
             })
