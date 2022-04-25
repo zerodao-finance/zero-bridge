@@ -120,14 +120,14 @@ class SDKHelper {
                 //recieve deposit object
                 task.this.Global.reset(task.type, "input")
                 task.this.Global.update(task.type, "mode", { mode: "input"})
-                task.this.#tfRequestTransaction(task.this.Transaction, task.request, await deposit.confirmed())
+                task.this.#tfRequestTransaction(task.this.Transaction, task.request, deposit)
                 resolve(deposit)
                 //create a transaction in Transaction with data on deposit receieved
             })
         )
         
         console.log("confirmed")
-        const confirmed = await deposit.confirmed()
+        const confirmed = deposit;
         task.this.Notify.createTXCard(true, task.type, { confirmed: confirmed, data: task.request, max: 6, current: 0 })
 
     }
