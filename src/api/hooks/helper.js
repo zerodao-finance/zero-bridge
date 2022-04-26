@@ -123,8 +123,6 @@ class SDKHelper {
     const deposit = await new Promise(async resolve =>
       task.mint.on("deposit", async deposit => {
         //recieve deposit object
-        console.log(task.transactionHash)
-        console.log(deposit)
         task.this.Global.reset(task.type, "input")
         task.this.Global.update(task.type, "mode", { mode: "input" })
         task.this.#tfRequestTransaction(deposit, task)
@@ -137,17 +135,14 @@ class SDKHelper {
   async #tfRequestTransaction(deposit, task) {
     let data = task.this.Transaction.createRequest("transfer", task.request)
     var forwarded = null
-    console.log("Entered requestTransaction")
 
     await deposit
       .confirmed()
       .on("target", (target) => {
-        console.log(`Waiting for ${target} confirmations`)
         const { id, dispatch } = task.this.Notify.createTXCard(true, task.type, { hash: task.transactionHash, confirmed: true, data: task.request, max: target, current: 0 })
         forwarded = { id: id, dispatch: dispatch }
       })
       .on("confirmation", (confs, target) => {
-        console.log(`${confs}/${target}`)
         // const { id, dispatch } = task.this.Notify.createTXCard(true, task.type, { hash: task.transactionHash, confirmed: true, data: task.request, max: target, current: confs })
         if (confs >= target) {
           forwarded.dispatch({ type: 'REMOVE', payload: { id: forwarded.id}})
