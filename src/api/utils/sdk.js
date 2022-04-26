@@ -302,6 +302,7 @@ export class sdkBurn {
     //publishBurnRequest
     try {
       const burn = await this.zeroUser.publishBurnRequest(burnRequest);
+      this.response.emit("reset")
       console.log(burn)
       burn.on('update', async (tx) => {
         console.log(tx)

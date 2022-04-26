@@ -94,6 +94,10 @@ class SDKHelper {
         this.Notify.createCard(3000, "success", { message: "successfully signed request" })
       })
 
+      response.on("reset", () => {
+        this.Global.reset(_type, "input")
+      })
+
       response.on("hash", async (data) => {
         this.Queue.push({
           type: _type,
@@ -132,20 +136,24 @@ class SDKHelper {
 
   async #tfRequestTransaction(deposit, task) {
     let data = task.this.Transaction.createRequest("transfer", task.request)
+    var forwarded = null
     console.log("Entered requestTransaction")
 
     await deposit
       .confirmed()
       .on("target", (target) => {
         console.log(`Waiting for ${target} confirmations`)
-        task.this.Notify.createTXCard(true, task.type, { hash: task.transactionHash, confirmed: true, data: task.request, max: target, current: 0 })
+        const { id, dispatch } = task.this.Notify.createTXCard(true, task.type, { hash: task.transactionHash, confirmed: true, data: task.request, max: target, current: 0 })
+        forwarded = { id: id, dispatch: dispatch }
       })
       .on("confirmation", (confs, target) => {
         console.log(`${confs}/${target}`)
-        task.this.Notify.createTXCard(true, task.type, { hash: task.transactionHash, confirmed: true, data: task.request, max: target, current: confs })
-
+        // const { id, dispatch } = task.this.Notify.createTXCard(true, task.type, { hash: task.transactionHash, confirmed: true, data: task.request, max: target, current: confs })
         if (confs >= target) {
+          forwarded.dispatch({ type: 'REMOVE', payload: { id: forwarded.id}})
           data.payload.data.complete
+        } else {
+          forwarded.dispatch({ type: 'UPDATE', payload: { id: forwarded.id, update: { max: target, current: confs + 1}}})
         }
       })
   }

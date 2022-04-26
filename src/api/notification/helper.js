@@ -35,16 +35,30 @@ export class NotificationHelper {
         timeout: null,
         content: getCard,
         confirmation: confirmation,
-        callback: () => this._timeout(id, 10000),
+        callback: () => this.voidCallback(),
         close: () => this._close(id),
         ...data
       }
     })
+
+    return { id: id, dispatch: this.dispatch }
   }
 
   //callbacks
 
-  _confirmation(id, data) {
+  voidCallback = () => {}
+
+  async _confirmation(id, data) {
+    await data.deposit
+      .confirmed()
+      .on('confirmation', (confs, target) => {
+        if (i >= target) {
+          this.dispatch ({ type: "REMOVE", payload: { id: id}})
+          return
+        } else {
+          this.dispatch({ type: "UPDATE", payload: { id: id, update: { max: target, current: i + 1}}})
+        }
+      })
     data.on('confirmation', (i, target) => {
       if (i >= target) {
         this.dispatch({ type: "REMOVE", payload: { id: id } })
