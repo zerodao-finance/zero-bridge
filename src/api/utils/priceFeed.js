@@ -1,7 +1,7 @@
 import * as UNISWAP from '@uniswap/sdk'
 import { ethers } from 'ethers'
-import { ETHEREUM, MATIC, ARBITRUM} from 'zero-protocol/dist/lib/fixtures'
-
+import { ETHEREUM, MATIC, ARBITRUM } from 'zero-protocol/dist/lib/fixtures'
+import _ from 'lodash'
 const tokenRouterTable = {
     get renBTC() {
         return {
@@ -44,7 +44,7 @@ const tokenRouterTable = {
 
 }
 
-// async function findRoute(token, network, provider){
+// async function findRoute(token, network, provider){network
 //     let renBTC = (tokenRouterTable.renBTC)[network]
 //     let USDC = (tokenRouterTable.USDC)[network]
 //     let renToUSD = await UNISWAP.Fetcher.fetchPairData(renBTC, USDC)
@@ -75,4 +75,65 @@ export async function calculateToUSDPrice(token, network, provider) {
     const ioPair = await UNISWAP.Fetcher.fetchPairData(inputToken, USDC)
     const route = new UNISWAP.Route([ioPair], inputToken)
     return ethers.utils.parseUnits(route.midPrice.toFixed(6), 6) 
+}
+
+export class PriceFeed {
+
+    constructor () {
+    }
+
+    /**
+     * 
+     * @param {token, network, decimals} from
+     * @param {token, network, decimals} to
+     * 
+     */
+    async getPrice(from, to) {
+        let a_token = Token.create(from.token, from.network, from.decimals)
+        let b_token = Token.create(to.token, to.network, to.decimals)
+        
+        try {
+            const pair = await UNISWAP.Fetcher.fetchPairData(a_token, b_token)
+            const route = new UNISWAP.Route([pair], a_token)
+            price = ethers.utils.parseUnits(route.midPrice.toFixed(6), 6)
+            return price
+        } catch (error) {
+            this.#errorHandler(error, {from, to})
+        }
+    }
+
+    #errorHandler(error, source) {
+        console.log(error, source)
+    }
+}
+
+export class Token {
+    static create(token, network, decimals) {
+        return Token(token, network, decimals)
+    }
+
+    static getChainID(network) {
+        switch (network) {
+            case 'ETHEREUM':
+                return 1
+                
+            case 'MATIC':
+                return 137
+            
+            case 'ARBITRUM':
+                return 42161
+        }
+    }
+
+    static getAddress(token, network) {
+        return fixtures[token][network]
+    }
+
+    
+    constructor(token, network, decimals = 8) {
+        this.chainID = Token.getChainID(network)
+        this.tokenAddress = Token.getAddress(token, network)
+        this.token = new UNISWAP.Token(this.chainID, this.tokenAddress, decimals)
+    }
+
 }

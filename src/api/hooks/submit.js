@@ -6,7 +6,6 @@ import { TransactionContext } from '../transaction'
 import { TransactionHelper } from '../transaction/helper'
 import { NotificationHelper } from '../notification/helper'
 import { GlobalStateHelper } from "../utils/global.utilities"
-import { SDKHelperClass } from '../utils/sdkHelper'
 import { useRequestHelper } from './helper'
 import { sdkBurn } from '../utils/sdk'
 
