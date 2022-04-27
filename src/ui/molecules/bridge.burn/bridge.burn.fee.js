@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import useBurnFees from '../../../api/hooks/burn-fees'
 
-export const BridgeBurnTransferFee = ({ amount, effect, tokenPrice, setToken, token }) => {
+export const BridgeBurnTransferFee = ({ amount, effect, tokenPrice, setToken, token, fee, setFee, isFeeLoading, setIsFeeLoading }) => {
     const { getBurnOutput } = useBurnFees();
-    const [isFeeLoading, setIsFeeLoading] = useState(false);
-    const [fee, setFee] = useState();
+    
     useEffect(async () => {
         if(amount > 0) {
             setIsFeeLoading(true);
