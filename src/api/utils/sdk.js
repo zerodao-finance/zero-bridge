@@ -276,7 +276,7 @@ export class sdkBurn {
             this.asset = assetAddress;
             this.tokenNonce = tokenNonce;
             this.assetName =
-              asset === "wBTC"
+              asset.toLowerCase() === "wbtc"
                 ? "WBTC"
                 : asset.toLowerCase() === "ibbtc"
                 ? "ibBTC"
