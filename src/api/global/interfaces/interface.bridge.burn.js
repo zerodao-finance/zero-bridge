@@ -7,7 +7,7 @@ import _ from 'lodash'
 
 export const useBridgeBurnInput = () => {
     const { state, dispatch } = useContext( storeContext )
-    const { eth_usd, btc_eth, btc_usd, tokenPrice} = state.priceFeeds.data
+    const { btc_usd } = state.priceFeeds.data
     const { sendBurnRequest } = useSDKTransactionSubmit('burn')
     const { input } = state.burn
     const { amount, destination, token } = input
@@ -27,7 +27,7 @@ export const useBridgeBurnInput = () => {
         destination: destination,
         setToken,
         token,
-        tokenPrice: tokenPrice,
+        tokenPrice: btc_usd,
         effect: updateAmount,
         updateAmount,
 	    updateDestination
