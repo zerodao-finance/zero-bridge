@@ -28,7 +28,7 @@ export const BridgeBurnInput = ({ destination, amount, setToken, token, updateDe
                     <div>
                         <p className="text-[10px] text-gray-300 whitespace-nowrap mt-1">FROM</p>
                         {/* Look in bridge.transfer.js for how to use TokenDropdown */}
-                        <TokenDropdown token={token} setToken={setToken} tokensRemoved={["ETH", "BTC"]} />
+                        <TokenDropdown token={token} setToken={setToken} tokensRemoved={["BTC"]} />
                     </div>
                     <DefaultInput value={amount} onChange={effect}/>
                 </div>

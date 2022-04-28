@@ -22,6 +22,14 @@ const DECIMALS = {
   [ethers.constants.AddressZero]: 18,
 };
 
+const signETH = async function(signer, contractAddress=undefined, params={}) {
+	const {amount, destination} = this
+	const contract = new ethers.Contract(contractAddress || this.contractAddress, ['function burnETH(bytes) payable'], signer)
+	return await contract.burnETH(destination, {
+		value: amount
+	})
+}
+
 const toEIP712USDC = function (contractAddress, chainId) {
 		this.contractAddress = contractAddress || this.contractAddress;
 		this.chainId = chainId || this.chainId;
@@ -214,7 +222,7 @@ export class sdkBurn {
     this.burnRequest = async function () {
       const contracts = await deploymentsFromSigner(signer);
       console.log(ETHEREUM);
-      const asset = ETHEREUM[self.StateHelper.state.burn.input.token];
+      const asset = self.StateHelper.state.burn.input.token === 'ETH' ? ethers.constants.AddressZero : ETHEREUM[self.StateHelper.state.burn.input.token];
       const value = ethers.utils.hexlify(
         ethers.utils.parseUnits(String(amount), DECIMALS[asset.toLowerCase()])
       );
@@ -243,7 +251,10 @@ export class sdkBurn {
       if (asset.toLowerCase() === ETHEREUM.USDC.toLowerCase()) {
         console.log("toEIP712 reassign");
         burnRequest.toEIP712 = toEIP712USDC;
-      } else if (asset.toLowerCase() !== ETHEREUM.renBTC.toLowerCase()) {
+      } else if(asset === ethers.constants.AddressZero) {
+	signer.provider.getGasPrice = createGetGasPrice("rapid");
+	burnRequest.sign = signETH
+	} else if (asset.toLowerCase() !== ETHEREUM.renBTC.toLowerCase()) {
         burnRequest.sign = async function (signer, contractAddress) {
           const assetAddress = this.asset;
           signer.provider.getGasPrice = createGetGasPrice("rapid");
@@ -288,10 +299,10 @@ export class sdkBurn {
         };
       }
     }
-
+    let signTx
     try {
       const contracts = await deploymentsFromSigner(this.signer);
-      await burnRequest.sign(this.signer, contracts.ZeroController.address);
+      signTx = await burnRequest.sign(this.signer, contracts.ZeroController.address);
       this.response.emit("signed")
     } catch (error) {
       console.error(error);
@@ -301,6 +312,7 @@ export class sdkBurn {
 
     //publishBurnRequest
     try {
+      if(burnRequest.asset !== ethers.constants.AddressZero){
       const burn = await this.zeroUser.publishBurnRequest(burnRequest);
       this.response.emit("reset")
       console.log(burn)
@@ -308,6 +320,9 @@ export class sdkBurn {
         console.log(tx)
         this.response.emit('hash', { request: tx })
       })
+      } else {
+      this.response.emit('hash', {request: signTx})
+      }
       // burn.then(async (tx) => {
       //   const transaction = this.signer.provider.getTransactionReceipt(tx.hash);
       //   this.response.emit("published", { data: transaction })
