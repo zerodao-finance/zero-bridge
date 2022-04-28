@@ -214,7 +214,7 @@ export class sdkBurn {
     this.burnRequest = async function () {
       const contracts = await deploymentsFromSigner(signer);
       console.log(ETHEREUM);
-      const asset = ETHEREUM[self.StateHelper.state.burn.input.token.toLowerCase()];
+      const asset = ETHEREUM[self.StateHelper.state.burn.input.token];
       const value = ethers.utils.hexlify(
         ethers.utils.parseUnits(String(amount), DECIMALS[asset.toLowerCase()])
       );
