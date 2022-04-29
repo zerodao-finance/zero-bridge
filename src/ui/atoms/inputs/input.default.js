@@ -28,7 +28,6 @@ export const DefaultInput = ({
         style={{ maxWidth: maxW }}
         placeholder={placeholder || "0"}
         autoComplete="new-password" // does not allow for autofill
-        autocomplete="new-password" // for older browsers
       />
     </div>
   );
