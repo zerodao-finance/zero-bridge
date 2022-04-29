@@ -184,7 +184,8 @@ export class sdkTransfer {
 const btcAddressToHex = (address) => {
   return ethers.utils.hexlify(
     (() => {
-      if (address.substr(0, 3) === "bc1") return bech32.decode(address).words;
+      if (address.substr(0, 3) === "bc1")
+        return bech32.fromWords(bech32.decode(address).words);
       else return ethers.utils.base58.decode(address);
     })()
   );
