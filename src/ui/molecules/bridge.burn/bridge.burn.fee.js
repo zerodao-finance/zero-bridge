@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import useBurnFees from "../../../api/hooks/burn-fees";
-import GenericCard from "../../atoms/cards/card.generic";
 
 export const BridgeBurnTransferFee = ({
   amount,
