@@ -1,10 +1,9 @@
-import { useState } from "react";
 import { DefaultInput } from "../../atoms/inputs/input.default";
 import { ArrowDownIcon } from "@heroicons/react/solid";
-import { FaEthereum } from "react-icons/fa";
 import { ethers } from "ethers";
 import TokenDropdown from "../../atoms/dropdowns/dropdown.tokens";
 import { BridgeBurnTransferFee } from "./bridge.burn.fee";
+import { useWalletBalances } from "../../../api/global/interfaces/interfaces.wallet";
 
 export const BridgeBurnInput = ({
   destination,
@@ -15,6 +14,8 @@ export const BridgeBurnInput = ({
   effect,
   tokenPrice,
 }) => {
+  const { balances } = useWalletBalances();
+  console.log(balances);
   var formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
@@ -46,12 +47,18 @@ export const BridgeBurnInput = ({
               tokensRemoved={["BTC"]}
             />
           </div>
-          <DefaultInput value={amount} onChange={effect} />
+          <div className="flex justify-between items-center py-1 px-2 dark:!border-white dark:focus:!border-badger-yellow-neon-400 border !border-gray-600 focus:!border-badger-yellow-neon-400 rounded-xl">
+            <button className="text-sm pl-2 h-fit hover:!text-badger-yellow-400">
+              MAX
+            </button>
+            <DefaultInput value={amount} onChange={effect} withBorder={false} />
+          </div>
         </div>
         <div className=" xl:mr-5 tracking-wider w-full flex justify-between text-[10px] text-badger-yellow-neon-400">
           <div>
-            {/* TODO: Add user's balances */}
-            {/* <span>Your Balance: {"0" + " " + token}</span> */}
+            <span>
+              Your Balance: {balances[token].toFixed(6) + " " + token}
+            </span>
           </div>
           <div>
             <span className="italic">~ {tokenPrice && formattedAmount()}</span>
