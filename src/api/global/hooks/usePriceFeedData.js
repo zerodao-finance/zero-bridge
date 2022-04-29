@@ -19,8 +19,6 @@ export const usePriceFeedContracts = () => {
 
   const setTokenPrice = (network, token) =>
     new Promise(async (resolve, reject) => {
-      console.log(network, token);
-
       try {
         let price = await calculateToUSDPrice(
           token,
@@ -44,7 +42,6 @@ export const usePriceFeedContracts = () => {
       if (_.isError(x)) {
         reject(new Error("failed to fetch price"));
       } else {
-        console.log(x);
         resolve(x.toString());
       }
     });
@@ -56,7 +53,6 @@ export const usePriceFeedContracts = () => {
         "ETHEREUM",
         network.provider
       );
-      console.log(price.toString());
       // resolve(price)
       let x = await _.attempt(
         network.priceFeedContract.get_dy,
@@ -67,7 +63,6 @@ export const usePriceFeedContracts = () => {
       if (_.isError(x)) {
         reject(new Error("failed to fetch price"));
       } else {
-        console.log(x.toString());
         resolve(price.toString());
       }
     });
