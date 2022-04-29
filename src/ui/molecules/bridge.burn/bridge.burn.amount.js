@@ -48,12 +48,13 @@ export const BridgeBurnInput = ({
           </div>
           <DefaultInput value={amount} onChange={effect} />
         </div>
-        <div className=" xl:mr-5 italic tracking-wider w-full flex text-[10px] text-badger-yellow-neon-400">
+        <div className=" xl:mr-5 tracking-wider w-full flex justify-between text-[10px] text-badger-yellow-neon-400">
           <div>
-            <span>Your Balance: {"0" + " " + token}</span>
+            {/* TODO: Add user's balances */}
+            {/* <span>Your Balance: {"0" + " " + token}</span> */}
           </div>
           <div>
-            <span>~ {tokenPrice && formattedAmount()}</span>
+            <span className="italic">~ {tokenPrice && formattedAmount()}</span>
           </div>
         </div>
         {amount > 0 && (

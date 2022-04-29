@@ -1,13 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import reportWebVitals from './reportWebVitals';
-import './app.css'
-import 'react-toastify/dist/ReactToastify.min.css';
-import { StateProvider } from './api/global'
-import { TransactionProvider } from './api/transaction';
-import { NotificationProvider } from './api/notification/index'
-import { DashboardPage } from './ui/pages/dashboard'
-import {Buffer} from 'buffer';
+import React from "react";
+import ReactDOM from "react-dom";
+import reportWebVitals from "./reportWebVitals";
+import "./app.css";
+import "react-toastify/dist/ReactToastify.min.css";
+import { StateProvider } from "./api/global";
+import { TransactionProvider } from "./api/transaction";
+import { NotificationProvider } from "./api/notification/index";
+import { DashboardPage } from "./ui/pages/dashboard";
+import { Buffer } from "buffer";
 window.Buffer = Buffer;
 
 Object.keys(process.env).forEach((key) => {
@@ -17,19 +17,17 @@ Object.keys(process.env).forEach((key) => {
   }
 });
 
-
-
 ReactDOM.render(
   <React.StrictMode className="">
-    <NotificationProvider >
+    <NotificationProvider>
       <TransactionProvider>
         <StateProvider>
-          <DashboardPage/>
-        </StateProvider>   
+          <DashboardPage />
+        </StateProvider>
       </TransactionProvider>
     </NotificationProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -5,9 +5,9 @@ module.exports = function override(config, env) {
     ...config.plugins,
     new webpack.ProvidePlugin({
       process: "process/browser.js",
-      Buffer: ["buffer", "Buffer"]
-    })
-  ]
+      Buffer: ["buffer", "Buffer"],
+    }),
+  ];
   config.resolve.fallback = {
     crypto: require.resolve("crypto-browserify"),
     stream: require.resolve("stream-browserify"),
