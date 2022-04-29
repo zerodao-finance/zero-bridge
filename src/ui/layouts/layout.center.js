@@ -1,7 +1,3 @@
-export const DefaultLayout = ({children}) => {
-    return (
-        <div>
-            
-        </div>
-    )
-}
+export const DefaultLayout = ({ children }) => {
+  return <div></div>;
+};

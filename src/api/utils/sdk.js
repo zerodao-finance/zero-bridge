@@ -5,7 +5,7 @@ import {
   UnderwriterBurnRequest,
 } from "zero-protocol/dist/lib/zero";
 import { EIP712_TYPES } from "zero-protocol/dist/lib/config/constants";
-import fixtures from 'zero-protocol/dist/lib/fixtures';
+import fixtures from "zero-protocol/dist/lib/fixtures";
 import { TEST_KEEPER_ADDRESS } from "zero-protocol/dist/lib/mock";
 import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from "ethers-gasnow";
@@ -23,50 +23,50 @@ const DECIMALS = {
 };
 
 const toEIP712USDC = function (contractAddress, chainId) {
-		this.contractAddress = contractAddress || this.contractAddress;
-		this.chainId = chainId || this.chainId;
-		return {
-			types: {
-				EIP712Domain: EIP712_TYPES.EIP712Domain,
-				Permit: [
-					{
-						name: 'owner',
-						type: 'address',
-					},
-					{
-						name: 'spender',
-						type: 'address',
-					},
-					{
-						name: 'value',
-						type: 'uint256'
-					},
-					{
-						name: 'nonce',
-						type: 'uint256',
-					},
-					{
-						name: 'deadline',
-						type: 'uint256',
-					},
-				],
-			},
-			domain: {
-				name: "USD Coin",
-				version: "2",
-				chainId: String(this.chainId) || '1',
-				verifyingContract: this.asset || ethers.constants.AddressZero,
-			},
-			message: {
-				owner: this.owner,
-				spender: contractAddress,
-				nonce: this.tokenNonce,
-				deadline: this.getExpiry(),
-				value: this.amount
-			},
-			primaryType: 'Permit',
-		};
-	};
+  this.contractAddress = contractAddress || this.contractAddress;
+  this.chainId = chainId || this.chainId;
+  return {
+    types: {
+      EIP712Domain: EIP712_TYPES.EIP712Domain,
+      Permit: [
+        {
+          name: "owner",
+          type: "address",
+        },
+        {
+          name: "spender",
+          type: "address",
+        },
+        {
+          name: "value",
+          type: "uint256",
+        },
+        {
+          name: "nonce",
+          type: "uint256",
+        },
+        {
+          name: "deadline",
+          type: "uint256",
+        },
+      ],
+    },
+    domain: {
+      name: "USD Coin",
+      version: "2",
+      chainId: String(this.chainId) || "1",
+      verifyingContract: this.asset || ethers.constants.AddressZero,
+    },
+    message: {
+      owner: this.owner,
+      spender: contractAddress,
+      nonce: this.tokenNonce,
+      deadline: this.getExpiry(),
+      value: this.amount,
+    },
+    primaryType: "Permit",
+  };
+};
 
 export class sdkTransfer {
   computeRandomValue(salt, address, timestamp) {
@@ -149,21 +149,20 @@ export class sdkTransfer {
       throw new Error("Failed to sign transaction");
     } //signing
 
-
     try {
       const published = await this.zeroUser.publishTransferRequest(
         transferRequest
       );
-      
+
       let txHash = new Promise((resolve, reject) => {
         published.on("update", async (tx) => {
-          resolve(tx.request)
-        })
+          resolve(tx.request);
+        });
 
         if (!published) {
-          reject("Couldn't get transaction hash")
+          reject("Couldn't get transaction hash");
         }
-      })
+      });
 
       const mint = await transferRequest.submitToRenVM();
       var gatewayAddress = await transferRequest.toGatewayAddress();
@@ -175,12 +174,10 @@ export class sdkTransfer {
         // hashData: txHash
       });
       return;
-
     } catch (error) {
       this.response.emit("error", { message: "Error Publishing Transaction" });
       throw new Error("Error publishing transaction", error);
     } //submitting
-
   }
 }
 
@@ -194,7 +191,7 @@ const btcAddressToHex = (address) => {
 };
 
 export class sdkBurn {
-  response = new EventEmitter({captureRejections: true})
+  response = new EventEmitter({ captureRejections: true });
   constructor(
     zeroUser,
     amount,
@@ -235,7 +232,6 @@ export class sdkBurn {
   async call() {
     const burnRequest = await this.burnRequest();
     const asset = burnRequest.asset;
-    
 
     //sign burn request
     if (process.env.REACT_APP_CHAIN === "ETHEREUM") {
@@ -276,7 +272,7 @@ export class sdkBurn {
             this.asset = assetAddress;
             this.tokenNonce = tokenNonce;
             this.assetName =
-              asset === "wBTC"
+              asset.toLowerCase() === "wbtc"
                 ? "WBTC"
                 : asset.toLowerCase() === "ibbtc"
                 ? "ibBTC"
@@ -292,22 +288,22 @@ export class sdkBurn {
     try {
       const contracts = await deploymentsFromSigner(this.signer);
       await burnRequest.sign(this.signer, contracts.ZeroController.address);
-      this.response.emit("signed")
+      this.response.emit("signed");
     } catch (error) {
       console.error(error);
-      this.response.emit("error", { message: "failed to sign request!"})
+      this.response.emit("error", { message: "failed to sign request!" });
       //handle signature error
     }
 
     //publishBurnRequest
     try {
       const burn = await this.zeroUser.publishBurnRequest(burnRequest);
-      this.response.emit("reset")
-      console.log(burn)
-      burn.on('update', async (tx) => {
-        console.log(tx)
-        this.response.emit('hash', { request: tx })
-      })
+      this.response.emit("reset");
+      console.log(burn);
+      burn.on("update", async (tx) => {
+        console.log(tx);
+        this.response.emit("hash", { request: tx });
+      });
       // burn.then(async (tx) => {
       //   const transaction = this.signer.provider.getTransactionReceipt(tx.hash);
       //   this.response.emit("published", { data: transaction })
@@ -315,7 +311,9 @@ export class sdkBurn {
       // });
     } catch (error) {
       console.error(error);
-      this.response.emit("error", { message: `failed to publish transaction: ${ error }`})
+      this.response.emit("error", {
+        message: `failed to publish transaction: ${error}`,
+      });
     }
   }
 }
