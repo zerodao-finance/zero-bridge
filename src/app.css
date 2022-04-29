@@ -25,23 +25,6 @@
   --tw-content: "";
 }
 
-input::-webkit-input-placeholder {
-  /* WebKit browsers */
-  color: rgb(180, 180, 180) !important;
-}
-input:-moz-placeholder {
-  /* Mozilla Firefox 4 to 18 */
-  color: rgb(180, 180, 180) !important;
-}
-input::-moz-placeholder {
-  /* Mozilla Firefox 19+ */
-  color: rgb(180, 180, 180) !important;
-}
-input:-ms-input-placeholder {
-  /* Internet Explorer 10+ */
-  color: rgb(180, 180, 180) !important;
-}
-
 /*
 1. Use a consistent sensible line-height in all browsers.
 2. Prevent adjustments of font size after orientation changes in iOS.
@@ -823,16 +806,16 @@ select {
 }
 
 [type="file"]:focus {
-  outline: 1px auto -webkit-focus-ring-color;
+  outline: 1px auto inherit;
 }
 
 input[type="file"]::-webkit-file-upload-button {
   color: white;
-  background: #374151;
+  background: #1f2937;
+  border: 0;
   font-weight: 500;
   font-size: 0.875rem;
   cursor: pointer;
-  border: 0;
   padding-top: 0.625rem;
   padding-bottom: 0.625rem;
   padding-left: 2rem;
@@ -845,11 +828,11 @@ input[type="file"]::-webkit-file-upload-button {
 
 input[type="file"]::file-selector-button {
   color: white;
-  background: #374151;
+  background: #1f2937;
+  border: 0;
   font-weight: 500;
   font-size: 0.875rem;
   cursor: pointer;
-  border: 0;
   padding-top: 0.625rem;
   padding-bottom: 0.625rem;
   padding-left: 2rem;
@@ -861,11 +844,11 @@ input[type="file"]::file-selector-button {
 }
 
 input[type="file"]::-webkit-file-upload-button:hover {
-  background: #4b5563;
+  background: #374151;
 }
 
 input[type="file"]::file-selector-button:hover {
-  background: #4b5563;
+  background: #374151;
 }
 
 .dark input[type="file"]::-webkit-file-upload-button {
@@ -884,6 +867,67 @@ input[type="file"]::file-selector-button:hover {
 
 .dark input[type="file"]::file-selector-button:hover {
   background: #6b7280;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  height: 1.25rem;
+  width: 1.25rem;
+  background: #1c64f2;
+  border-radius: 9999px;
+  border: 0;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+input[type="range"]:disabled::-webkit-slider-thumb {
+  background: #9ca3af;
+}
+
+.dark input[type="range"]:disabled::-webkit-slider-thumb {
+  background: #6b7280;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0
+    var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
+    calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
+    var(--tw-shadow, 0 0 #0000);
+  --tw-ring-opacity: 1px;
+  --tw-ring-color: rgb(164 202 254 / var(--tw-ring-opacity));
+}
+
+input[type="range"]::-moz-range-thumb {
+  height: 1.25rem;
+  width: 1.25rem;
+  background: #1c64f2;
+  border-radius: 9999px;
+  border: 0;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+input[type="range"]:disabled::-moz-range-thumb {
+  background: #9ca3af;
+}
+
+.dark input[type="range"]:disabled::-moz-range-thumb {
+  background: #6b7280;
+}
+
+input[type="range"]::-moz-range-progress {
+  background: #3f83f8;
+}
+
+input[type="range"]::-ms-fill-lower {
+  background: #3f83f8;
 }
 
 .toggle-bg:after {
@@ -1127,10 +1171,6 @@ input:checked + .toggle-bg {
   right: 0px;
 }
 
-.top-\[4rem\] {
-  top: 4rem;
-}
-
 .right-16 {
   right: 4rem;
 }
@@ -1280,6 +1320,10 @@ input:checked + .toggle-bg {
 
 .mt-1 {
   margin-top: 0.25rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
 }
 
 .mt-16 {
@@ -2265,16 +2309,16 @@ input:checked + .toggle-bg {
   padding-bottom: 1rem;
 }
 
+.pl-2 {
+  padding-left: 0.5rem;
+}
+
 .pr-5 {
   padding-right: 1.25rem;
 }
 
 .pr-2 {
   padding-right: 0.5rem;
-}
-
-.pl-2 {
-  padding-left: 0.5rem;
 }
 
 .pl-4 {
@@ -2492,6 +2536,11 @@ input:checked + .toggle-bg {
 .text-red-700 {
   --tw-text-opacity: 1;
   color: rgb(200 30 30 / var(--tw-text-opacity));
+}
+
+.text-blue-100 {
+  --tw-text-opacity: 1;
+  color: rgb(225 239 254 / var(--tw-text-opacity));
 }
 
 .text-blue-600 {
@@ -2848,6 +2897,11 @@ code {
 .hover\:bg-white:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.hover\:\!text-badger-yellow-400:hover {
+  --tw-text-opacity: 1 !important;
+  color: rgb(255 184 77 / var(--tw-text-opacity)) !important;
 }
 
 .hover\:text-gray-900:hover {

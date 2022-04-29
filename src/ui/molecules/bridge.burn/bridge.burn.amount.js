@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { storeContext } from "../../../api/global";
 import { DefaultInput } from "../../atoms/inputs/input.default";
 import { ArrowDownIcon } from "@heroicons/react/solid";
 import { ethers } from "ethers";
@@ -14,8 +16,8 @@ export const BridgeBurnInput = ({
   effect,
   tokenPrice,
 }) => {
+  const { dispatch } = useContext(storeContext);
   const { balances } = useWalletBalances();
-  console.log(balances);
   var formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
@@ -47,8 +49,18 @@ export const BridgeBurnInput = ({
               tokensRemoved={["BTC"]}
             />
           </div>
-          <div className="flex justify-between items-center py-1 px-2 dark:!border-white dark:focus:!border-badger-yellow-neon-400 border !border-gray-600 focus:!border-badger-yellow-neon-400 rounded-xl">
-            <button className="text-sm pl-2 h-fit hover:!text-badger-yellow-400">
+          <div className="flex justify-between items-center pl-2 dark:!border-white dark:focus:!border-badger-yellow-neon-400 border !border-gray-600 focus:!border-badger-yellow-neon-400 rounded-xl">
+            <button
+              className="text-sm pl-2 h-fit hover:!text-badger-yellow-400 mr-2"
+              onClick={() => {
+                dispatch({
+                  type: "UPDATE",
+                  module: "burn",
+                  effect: "input",
+                  data: { amount: balances[token].toString() },
+                });
+              }}
+            >
               MAX
             </button>
             <DefaultInput value={amount} onChange={effect} withBorder={false} />

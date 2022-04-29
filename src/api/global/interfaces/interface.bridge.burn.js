@@ -33,7 +33,7 @@ export const useBridgeBurnInput = () => {
       type: "UPDATE",
       module: "burn",
       effect: "input",
-      data: { destination, amount, token: e },
+      data: { destination, amount: "0", token: e },
     });
   };
 

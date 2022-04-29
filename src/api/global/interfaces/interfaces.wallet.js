@@ -128,10 +128,18 @@ export const useWalletBalances = () => {
 
   useEffect(async () => {
     // OTHER TOKEN BALANCES
-    await getBalance(token).then((bal) => {
+    getBalance(token).then(async (bal) => {
+      let tokenAmount = 0;
+      switch (token) {
+        case "USDC":
+          tokenAmount = ethers.utils.formatUnits(bal, 6);
+          break;
+        default:
+          tokenAmount = ethers.utils.formatUnits(bal, 8);
+      }
       setBalances({
         ...balances,
-        [token]: parseFloat(bal) || 0,
+        [token]: parseFloat(tokenAmount) || 0,
       });
     });
   }, [token]);
@@ -155,7 +163,7 @@ export const useWalletBalances = () => {
         balanceOfABI,
         provider
       );
-      const balance = await contract.balanceOf(address).toString();
+      const balance = await contract.balanceOf(address);
       return balance;
     }
   }
