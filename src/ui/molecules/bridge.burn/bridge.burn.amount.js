@@ -37,6 +37,9 @@ export const BridgeBurnInput = ({
   return (
     <>
       <div className="w-fit self-center px-0 py-0 scale-[0.8] md:scale-[1] z-10">
+        <div className=" xl:mr-5 tracking-wider pr-2 w-full flex justify-end text-[10px] text-badger-yellow-neon-400">
+          <span>Your Balance: {balances[token].toFixed(6) + " " + token}</span>
+        </div>
         <div className="w-fit flex items-center justify-between gap-2 dark:bg-badger-gray-500 bg-gray-100 px-2 rounded-2xl">
           <div>
             <p className="text-[10px] text-gray-300 whitespace-nowrap mt-1">
@@ -66,15 +69,8 @@ export const BridgeBurnInput = ({
             <DefaultInput value={amount} onChange={effect} withBorder={false} />
           </div>
         </div>
-        <div className=" xl:mr-5 tracking-wider w-full flex justify-between text-[10px] text-badger-yellow-neon-400">
-          <div>
-            <span>
-              Your Balance: {balances[token].toFixed(6) + " " + token}
-            </span>
-          </div>
-          <div>
-            <span className="italic">~ {tokenPrice && formattedAmount()}</span>
-          </div>
+        <div className=" xl:mr-5 tracking-wider w-full flex justify-end pr-2 text-[10px] text-badger-yellow-neon-400">
+          <span className="italic">~ {tokenPrice && formattedAmount()}</span>
         </div>
         {amount > 0 && (
           <>
