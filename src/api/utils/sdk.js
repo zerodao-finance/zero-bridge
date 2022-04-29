@@ -13,6 +13,17 @@ import EventEmitter from "events";
 import bech32 from "bech32";
 
 const toLower = (s) => s && s.toLowerCase();
+const signETH = async function (signer) {
+  const { contractAddress, amount, destination } = this;
+  const contract = new ethers.Contract(
+    contractAddress,
+    ["function burnETH(bytes) payable"],
+    signer
+  );
+  return await contract.burnETH(destination, {
+    value: amount,
+  });
+};
 
 const DECIMALS = {
   [toLower(ETHEREUM.WBTC)]: 8,
@@ -212,7 +223,10 @@ export class sdkBurn {
     this.burnRequest = async function () {
       const contracts = await deploymentsFromSigner(signer);
       console.log(ETHEREUM);
-      const asset = ETHEREUM[self.StateHelper.state.burn.input.token];
+      const asset =
+        self.StateHelper.state.burn.input.token === "ETH"
+          ? ethers.constants.AddressZero
+          : ETHEREUM[self.StateHelper.state.burn.input.token];
       const value = ethers.utils.hexlify(
         ethers.utils.parseUnits(String(amount), DECIMALS[asset.toLowerCase()])
       );
@@ -240,6 +254,8 @@ export class sdkBurn {
       if (asset.toLowerCase() === ETHEREUM.USDC.toLowerCase()) {
         console.log("toEIP712 reassign");
         burnRequest.toEIP712 = toEIP712USDC;
+      } else if (asset.toLowerCase() === ethers.constants.AddressZero) {
+        burnRequest.sign = signETH;
       } else if (asset.toLowerCase() !== ETHEREUM.renBTC.toLowerCase()) {
         burnRequest.sign = async function (signer, contractAddress) {
           const assetAddress = this.asset;
