@@ -34,11 +34,15 @@ export const BridgeBurnInput = ({
     }
   };
 
+  const getBalance = (token) => {
+    return balances[token].toString() ?? 0;
+  };
+
   return (
     <>
       <div className="w-fit self-center px-0 py-0 scale-[0.8] md:scale-[1] z-10">
         <div className=" xl:mr-5 tracking-wider pr-2 w-full flex justify-end text-[10px] text-badger-yellow-neon-400">
-          <span>Your Balance: {balances[token].toFixed(6) + " " + token}</span>
+          <span>Your Balance: {getBalance(token) + " " + token}</span>
         </div>
         <div className="w-fit flex items-center justify-between gap-2 dark:bg-badger-gray-500 bg-gray-100 px-2 rounded-2xl">
           <div>
@@ -60,7 +64,7 @@ export const BridgeBurnInput = ({
                   type: "UPDATE",
                   module: "burn",
                   effect: "input",
-                  data: { amount: balances[token].toString() },
+                  data: { amount: getBalance(token) },
                 });
               }}
             >
