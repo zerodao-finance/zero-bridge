@@ -1,6 +1,3 @@
 export const PriceFeedTest = () => {
-    return (
-        <>
-        </>
-    )
-}
+  return <></>;
+};
