@@ -38,9 +38,8 @@ export const CHAINS = {
     nativeCurrency: ETH,
     rpcUrls: [
       process.env.REACT_APP_JSONRPC
-        ? REACT_APP_JSONRPC
-        : undefined,
-      "https://main-light.eth.linkpool.io",
+        ? process.env.REACT_APP_JSONRPC
+        : "https://main-light.eth.linkpool.io",
     ].filter((url) => url !== undefined),
     blockExplorerUrls: ["https://etherscan.io"],
   },

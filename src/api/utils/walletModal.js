@@ -32,11 +32,8 @@ export default function wallet_modal() {
         walletconnect: {
           package: WalletConnectProvider,
           options: {
-            rpc: Object.keys(URLS).reduce((accumulator, chainId) => {
-              accumulator[chainId] = URLS[Number(chainId)][0];
-              return accumulator;
-            }, {}),
-            network: "arbitrum",
+            rpc: URLS,
+            network: "mainnet",
             qrcodeModalOptions: {
               mobileLinks: [
                 "rainbow",
