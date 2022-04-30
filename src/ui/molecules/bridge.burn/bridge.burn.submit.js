@@ -10,7 +10,7 @@ export const BridgeBurnSubmit = ({
   destination,
   amount,
   token,
-  tokenPrice,
+  btc_usd,
 }) => {
   const { getBurnOutput } = useBurnFees();
   const [buttonLabel, setButtonLabel] = useState(
@@ -29,7 +29,7 @@ export const BridgeBurnSubmit = ({
   useEffect(async () => {
     setActive(false);
     if (destination.match(btcRegex)) {
-      if (burnOutput * ethers.utils.formatUnits(tokenPrice, 6) > 15) {
+      if (burnOutput * ethers.utils.formatUnits(btc_usd, 6) > 15) {
         setButtonLabel("Release Funds");
         setActive(true);
       } else {

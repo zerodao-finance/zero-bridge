@@ -5,6 +5,8 @@ import wallet_modal from "../../utils/walletModal";
 import { NETWORK_ROUTER } from "../../utils/network";
 import { CHAINS } from "../../utils/chains";
 import _ from "lodash";
+import { tokenMapping } from "../../utils/tokenMapping";
+import { useBridgeBurnInput } from "./interface.bridge.burn";
 
 export const useWalletConnection = () => {
   const { state, dispatch } = useContext(storeContext);
@@ -94,5 +96,73 @@ export const useCheckWalletConnected = () => {
 
   return {
     getWalletConnectionProps,
+  };
+};
+
+export const useWalletBalances = () => {
+  // Global Wallet State
+  const { state, dispatch } = useContext(storeContext);
+  const { provider, address, network } = state.wallet;
+  // User Selected Token
+  const { getBridgeBurnInputProps } = useBridgeBurnInput();
+  const { token } = getBridgeBurnInputProps();
+  // Balance States
+  const [balances, setBalances] = useState({
+    ETH: 0,
+    renBTC: 0,
+    WBTC: 0,
+    ibBTC: 0,
+    USDC: 0,
+  });
+
+  useEffect(async () => {
+    // OTHER TOKEN BALANCES
+    getBalance(token).then(async (bal) => {
+      let tokenAmount = 0;
+      switch (token) {
+        case "USDC":
+          tokenAmount = ethers.utils.formatUnits(bal, 6);
+          break;
+        case "ETH":
+          tokenAmount = ethers.utils.formatEther(bal);
+          break;
+        default:
+          tokenAmount = ethers.utils.formatUnits(bal, 8);
+      }
+      setBalances({
+        ...balances,
+        [token]: parseFloat(tokenAmount) || 0,
+      });
+    });
+  }, [token, address, network, provider]);
+
+  const balanceOfABI = [
+    {
+      constant: true,
+      inputs: [{ name: "_owner", type: "address" }],
+      name: "balanceOf",
+      outputs: [{ name: "balance", type: "uint256" }],
+      type: "function",
+    },
+  ];
+
+  async function getBalance(tokenName) {
+    if (tokenName.toLowerCase() === "eth") {
+      const ethBalance = await provider.getBalance(address);
+      return ethBalance;
+    } else {
+      const contract = new ethers.Contract(
+        tokenMapping(tokenName),
+        balanceOfABI,
+        provider
+      );
+      const balance = await contract.balanceOf(address);
+      return balance;
+    }
+  }
+
+  return {
+    balances,
+    getBalance,
   };
 };

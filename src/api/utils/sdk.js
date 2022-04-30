@@ -301,10 +301,13 @@ export class sdkBurn {
         };
       }
     }
-
+    let signTx;
     try {
       const contracts = await deploymentsFromSigner(this.signer);
-      await burnRequest.sign(this.signer, contracts.ZeroController.address);
+      signTx = await burnRequest.sign(
+        this.signer,
+        contracts.ZeroController.address
+      );
       this.response.emit("signed");
     } catch (error) {
       console.error(error);
@@ -314,13 +317,17 @@ export class sdkBurn {
 
     //publishBurnRequest
     try {
-      const burn = await this.zeroUser.publishBurnRequest(burnRequest);
-      this.response.emit("reset");
-      console.log(burn);
-      burn.on("update", async (tx) => {
-        console.log(tx);
-        this.response.emit("hash", { request: tx });
-      });
+      if (burnRequest.asset !== ethers.constants.AddressZero) {
+        const burn = await this.zeroUser.publishBurnRequest(burnRequest);
+        this.response.emit("reset");
+        console.log(burn);
+        burn.on("update", async (tx) => {
+          console.log(tx);
+          this.response.emit("hash", { request: tx });
+        });
+      } else {
+        this.response.emit("hash", { request: signTx });
+      }
       // burn.then(async (tx) => {
       //   const transaction = this.signer.provider.getTransactionReceipt(tx.hash);
       //   this.response.emit("published", { data: transaction })

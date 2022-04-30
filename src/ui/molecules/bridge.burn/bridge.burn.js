@@ -1,7 +1,6 @@
 import { BridgeLoadingWallet } from "../bridge.transfer/bridge.loading.wallet";
 import { BridgeLoadingSignature } from "./bridge.loading.signature";
 import { useCheckWalletConnected } from "../../../api/global/interfaces/interfaces.wallet";
-import { BridgeBurnResult } from "./bridge.burn.result";
 import { BridgeBurnInput } from "./bridge.burn.amount";
 import { BridgeBurnSubmit } from "./bridge.burn.submit";
 import { useBridgeBurnInput } from "../../../api/global/interfaces/interface.bridge.burn";

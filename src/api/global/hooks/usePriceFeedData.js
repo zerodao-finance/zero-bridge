@@ -1,121 +1,79 @@
 import { storeContext } from "../global";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import { ChainId, Token, WETH, Fetcher, Route } from "@uniswap/sdk";
 import { ethers } from "ethers";
 import _ from "lodash";
-import { calculateToUSDPrice } from "../../utils/priceFeed";
 
 export const usePriceFeedContracts = () => {
   const { state, dispatch } = useContext(storeContext);
   const { network } = state;
-  const { priceFeedContract } = network;
   const {
     wallet: { address },
   } = state;
-  const {
-    bridge: { mode },
-    transfer,
-    burn,
-  } = state;
 
-  const setTokenPrice = (network, token) =>
-    new Promise(async (resolve, reject) => {
-      console.log(network, token);
+  const provider = new ethers.providers.InfuraProvider(
+    "mainnet",
+    "816df2901a454b18b7df259e61f92cd2"
+  );
+  const WBTC = new Token(
+    ChainId.MAINNET,
+    "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+    8
+  );
+  const USDC = new Token(
+    ChainId.MAINNET,
+    "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    6
+  );
 
-      try {
-        let price = await calculateToUSDPrice(
-          token,
-          "ETHEREUM",
-          network.provider
-        );
-        resolve(price.toString());
-      } catch (error) {
-        reject(error.message);
-      }
-    });
+  const getUniswapBtcUsdPrice = async () => {
+    const pair = await Fetcher.fetchPairData(WBTC, USDC, provider);
+    const route = new Route([pair], USDC);
 
-  const getBtcEthPrice = (network) =>
-    new Promise(async (resolve, reject) => {
-      let x = await _.attempt(
-        network.priceFeedContract.get_dy,
-        1,
-        2,
-        ethers.utils.parseUnits("1", 8)
-      );
-      if (_.isError(x)) {
-        reject(new Error("failed to fetch price"));
-      } else {
-        console.log(x);
-        resolve(x.toString());
-      }
-    });
+    const usdcForOneBTC = route.midPrice.invert().toSignificant(7);
+    return ethers.utils.parseUnits(usdcForOneBTC, 6).toString();
+  };
 
-  const getBtcUsdPrice = (network) =>
-    new Promise(async (resolve, reject) => {
-      let price = await calculateToUSDPrice(
-        "USDC",
-        "ETHEREUM",
-        network.provider
-      );
-      console.log(price.toString());
-      // resolve(price)
-      let x = await _.attempt(
-        network.priceFeedContract.get_dy,
-        1,
-        0,
-        ethers.utils.parseUnits("1", 8)
-      );
-      if (_.isError(x)) {
-        reject(new Error("failed to fetch price"));
-      } else {
-        console.log(x.toString());
-        resolve(price.toString());
-      }
-    });
-  const getEthUsdPrice = (network) =>
-    new Promise(async (resolve, reject) => {
-      let x = await _.attempt(
-        network.priceFeedContract.get_dy,
-        2,
-        0,
-        ethers.utils.parseUnits("1", 18)
-      );
-      if (_.isError(x)) {
-        reject(new Error("failed to fetch price"));
-      } else {
-        resolve(x.toString());
-      }
-    });
+  const getUniswapBtcETHPrice = async () => {
+    const pair = await Fetcher.fetchPairData(
+      WBTC,
+      WETH[WBTC.chainId],
+      provider
+    );
+    const route = new Route([pair], WETH[WBTC.chainId]);
+
+    const ethForOneBTC = route.midPrice.invert().toSignificant(18);
+    return ethers.utils.parseEther(ethForOneBTC).toString();
+  };
+
+  const getUniswapUsdcETHPrice = async () => {
+    const pair = await Fetcher.fetchPairData(
+      USDC,
+      WETH[USDC.chainId],
+      provider
+    );
+    const route = new Route([pair], WETH[USDC.chainId]);
+
+    const usdcForOneETH = route.midPrice.toSignificant(7);
+    return ethers.utils.parseUnits(usdcForOneETH, 6).toString();
+  };
 
   useEffect(() => {
-    const call = (token) => {
-      setTokenPrice(network, token).then((value) => {
-        dispatch({
-          type: "UPDATE",
-          module: "priceFeeds",
-          effect: "data",
-          data: { tokenPrice: value },
-        });
+    Promise.allSettled([
+      getUniswapBtcETHPrice(),
+      getUniswapBtcUsdPrice(),
+      getUniswapUsdcETHPrice(),
+    ]).then(async (result) => {
+      dispatch({
+        type: "UPDATE",
+        module: "priceFeeds",
+        effect: "data",
+        data: {
+          btc_usd: result[1].value,
+          eth_usd: result[2].value,
+          btc_eth: result[0].value,
+        },
       });
-      // Promise.allSettled([getBtcEthPrice(network), getBtcUsdPrice(network), getEthUsdPrice(network)])
-      //     .then(async result => {
-      //         dispatch({ type: "UPDATE", module: "priceFeeds", effect: "data", data: {btc_usd: result[1].value ,eth_usd: result[2].value, btc_eth: result[0].value,}})
-      //     })
-    };
-
-    // var invoke = _.throttle(call, 1000)
-    if (!network.provider) return;
-    if (mode.mode === "transfer") {
-      call("WBTC");
-      // priceFeedContract.provider.on("block", invoke)
-    } else if (mode.mode === "release") {
-      call(burn.input.token);
-    }
-
-    return () => {
-      // if ( priceFeedContract ) {
-      //     priceFeedContract.provider.removeListener( "block", invoke )
-      //     invoke.cancel()
-      // }
-    };
-  }, [mode.mode, network.provider]);
+    });
+  }, [address, network]);
 };

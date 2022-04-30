@@ -8,18 +8,20 @@ function processAmount(amount, token) {
       return ethers.utils.parseEther(amount);
     case "USDC":
       return ethers.utils.parseUnits(amount, 6);
+      break;
+    case "ETH":
+      return ethers.utils.parseEther(amount);
     default:
       return ethers.utils.parseUnits(amount, 8);
   }
 }
 
-function formatOutput(output, token) {
+function formatOutput(output) {
   return ethers.utils.formatUnits(output, 8);
 }
 
 function useBurnFees() {
   async function getBurnOutput({ amount, token }) {
-    console.log(token);
     const input = {
       asset:
         token === "ETH"
@@ -28,7 +30,7 @@ function useBurnFees() {
       amount: processAmount(amount, token),
     };
     let output = await computeOutputBTC(input);
-    output = formatOutput(output, token);
+    output = formatOutput(output);
     return output;
   }
 
