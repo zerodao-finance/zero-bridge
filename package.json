@@ -73,6 +73,7 @@
     "babel-plugin-optimize-clsx": "^2.6.2",
     "babel-plugin-react-remove-properties": "^0.3.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "bech32-buffer": "^0.2.0",
     "clean-css": "^5.2.2",
     "clipboard-copy": "^3.2.0",
     "clsx": "^1.1.1",

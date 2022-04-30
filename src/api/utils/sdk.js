@@ -10,7 +10,15 @@ import { TEST_KEEPER_ADDRESS } from "zero-protocol/dist/lib/mock";
 import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from "ethers-gasnow";
 import EventEmitter from "events";
-import bech32 from "bech32";
+import { BitcoinAddress } from "bech32-buffer";
+
+const bufferToHexString = (buffer) => {
+  return buffer.reduce((s, byte) => {
+    let hex = byte.toString(16);
+    if (hex.length === 1) hex = "0" + hex;
+    return s + hex;
+  }, "");
+};
 
 const toLower = (s) => s && s.toLowerCase();
 const signETH = async function (signer) {
@@ -195,9 +203,12 @@ export class sdkTransfer {
 const btcAddressToHex = (address) => {
   return ethers.utils.hexlify(
     (() => {
-      if (address.substr(0, 3) === "bc1")
-        return bech32.fromWords(bech32.decode(address).words);
-      else return ethers.utils.base58.decode(address);
+      if (address.substring(0, 3) === "bc1") {
+        const decoded = BitcoinAddress.decode(address);
+        return "0x" + bufferToHexString(decoded.data);
+      } else {
+        return ethers.utils.base58.decode(address);
+      }
     })()
   );
 };
