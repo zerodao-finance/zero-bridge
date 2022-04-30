@@ -22,7 +22,6 @@ function formatOutput(output) {
 
 function useBurnFees() {
   async function getBurnOutput({ amount, token }) {
-    console.log(token);
     const input = {
       asset:
         token === "ETH"

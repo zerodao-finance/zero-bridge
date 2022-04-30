@@ -15,6 +15,7 @@ export const BridgeBurnInput = ({
   updateDestination,
   effect,
   btc_usd,
+  eth_usd,
 }) => {
   const { dispatch } = useContext(storeContext);
   const { balances } = useWalletBalances();
@@ -27,6 +28,8 @@ export const BridgeBurnInput = ({
     switch (token) {
       case "USDC":
         return formatter.format(amount);
+      case "ETH":
+        return formatter.format(amount * ethers.utils.formatUnits(eth_usd, 6));
       default:
         return formatter.format(amount * ethers.utils.formatUnits(btc_usd, 6));
     }

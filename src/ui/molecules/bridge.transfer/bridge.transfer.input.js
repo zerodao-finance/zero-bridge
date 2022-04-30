@@ -7,7 +7,7 @@ import useTransferPrices from "../../../api/hooks/transfer-prices";
 export const BridgeTransferInput = ({
   amount,
   effect,
-  tokenPrice,
+  btc_usd,
   setToken,
   token,
 }) => {
@@ -29,8 +29,8 @@ export const BridgeTransferInput = ({
       const pair = await getRenBtcEthPair();
       setCalculateWith(pair);
     } else if (token.toLowerCase() === "usdc") {
-      if (tokenPrice) {
-        const btcPrice = ethers.utils.formatUnits(tokenPrice, 6);
+      if (btc_usd) {
+        const btcPrice = ethers.utils.formatUnits(btc_usd, 6);
         setCalculateWith(1 / btcPrice);
       }
     } else {
@@ -64,8 +64,8 @@ export const BridgeTransferInput = ({
       </div>
       <div className=" xl:mr-5 italic tracking-wider w-full text-right text-[10px] text-badger-yellow-neon-400">
         ~{" "}
-        {tokenPrice &&
-          formatter.format(amount * ethers.utils.formatUnits(tokenPrice, 6))}
+        {btc_usd &&
+          formatter.format(amount * ethers.utils.formatUnits(btc_usd, 6))}
       </div>
     </div>
   );

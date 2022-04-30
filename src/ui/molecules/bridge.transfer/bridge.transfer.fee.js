@@ -5,7 +5,7 @@ import useTransferFees from "../../../api/hooks/transfer-fees";
 export const BridgeTransferFee = ({
   amount,
   effect,
-  tokenPrice,
+  btc_usd,
   setToken,
   token,
 }) => {
@@ -33,7 +33,7 @@ export const BridgeTransferFee = ({
       case "USDC":
         return fee;
       default:
-        return fee * ethers.utils.formatUnits(tokenPrice, 6);
+        return fee * ethers.utils.formatUnits(btc_usd, 6);
     }
   }
 
@@ -54,7 +54,7 @@ export const BridgeTransferFee = ({
             </div>
           </div>
           <div className=" xl:mr-5 italic tracking-wider w-full text-right text-[10px] text-badger-yellow-neon-400">
-            ~ {tokenPrice && formatter.format(formatConversionOutput())}
+            ~ {btc_usd && formatter.format(formatConversionOutput())}
           </div>
         </div>
       )}

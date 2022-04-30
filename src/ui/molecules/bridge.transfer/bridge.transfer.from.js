@@ -4,7 +4,7 @@ import { ReactComponent as BTC } from "../../../assets/svg-coins/btc.svg";
 import { DefaultInput } from "../../atoms";
 import { ethers } from "ethers";
 
-function BridgeTransferFrom({ amount, effect, tokenPrice, setToken, token }) {
+function BridgeTransferFrom({ amount, effect, btc_usd, setToken, token }) {
   return (
     <div className="w-100 flex items-center justify-between gap-5 dark:bg-badger-gray-500 bg-gray-100 px-2 rounded-2xl">
       <div className="flex items-center pl-2 w-full">
