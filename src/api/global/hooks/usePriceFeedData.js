@@ -1,5 +1,6 @@
 import { storeContext } from "../global";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import { ChainId, Token, WETH, Fetcher, Route } from "@uniswap/sdk";
 import { ethers } from "ethers";
 import _ from "lodash";
 
@@ -10,94 +11,51 @@ export const usePriceFeedContracts = () => {
     wallet: { address },
   } = state;
 
+  const provider = new ethers.providers.InfuraProvider(
+    "mainnet",
+    "816df2901a454b18b7df259e61f92cd2"
+  );
+  const WBTC = new Token(
+    ChainId.MAINNET,
+    "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+    8
+  );
+  const USDC = new Token(
+    ChainId.MAINNET,
+    "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    6
+  );
+
   const getUniswapBtcUsdPrice = async () => {
-    const response = await fetch(
-      "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: `
-              {
-                pools(where:{id:"0x99ac8ca7087fa4a2a1fb6357269965a2014abc35"}) {
-                  token1Price
-                }
-              }
-            `,
-          variables: {},
-        }),
-      }
-    );
+    const pair = await Fetcher.fetchPairData(WBTC, USDC, provider);
+    const route = new Route([pair], USDC);
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const tokenPrice = parseFloat(data.data.pools[0].token1Price);
-    return ethers.utils.parseUnits(tokenPrice.toFixed(6), 6).toString();
+    const usdcForOneBTC = route.midPrice.invert().toSignificant(7);
+    return ethers.utils.parseUnits(usdcForOneBTC, 6).toString();
   };
 
   const getUniswapBtcETHPrice = async () => {
-    const response = await fetch(
-      "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: `
-              {
-                pools(where:{id:"0xcbcdf9626bc03e24f779434178a73a0b4bad62ed"}) {
-                  token1Price
-                }
-              }
-            `,
-          variables: {},
-        }),
-      }
+    const pair = await Fetcher.fetchPairData(
+      WBTC,
+      WETH[WBTC.chainId],
+      provider
     );
+    const route = new Route([pair], WETH[WBTC.chainId]);
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const tokenPrice = parseFloat(data.data.pools[0].token1Price);
-    return ethers.utils.parseEther(tokenPrice.toFixed(18)).toString();
+    const ethForOneBTC = route.midPrice.invert().toSignificant(18);
+    return ethers.utils.parseEther(ethForOneBTC).toString();
   };
 
   const getUniswapUsdcETHPrice = async () => {
-    const response = await fetch(
-      "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: `
-              {
-                pools(where:{id:"0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8"}) {
-                  token0Price
-                }
-              }
-            `,
-          variables: {},
-        }),
-      }
+    const pair = await Fetcher.fetchPairData(
+      USDC,
+      WETH[USDC.chainId],
+      provider
     );
+    const route = new Route([pair], WETH[USDC.chainId]);
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const tokenPrice = parseFloat(data.data.pools[0].token0Price);
-    return ethers.utils.parseUnits(tokenPrice.toFixed(6), 6).toString();
+    const usdcForOneETH = route.midPrice.toSignificant(7);
+    return ethers.utils.parseUnits(usdcForOneETH, 6).toString();
   };
 
   useEffect(() => {
