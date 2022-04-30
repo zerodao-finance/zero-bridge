@@ -4,6 +4,8 @@ import fixtures from "zero-protocol/lib/fixtures";
 
 function formatOutput(output, token) {
   switch (token) {
+    case "ETH":
+      return ethers.utils.formatEther(output);
     case "USDC":
       return ethers.utils.formatUnits(output, 6);
     default:
@@ -14,7 +16,10 @@ function formatOutput(output, token) {
 function useTransferFees() {
   async function getTransferOutput({ token, amount }) {
     const input = {
-      module: fixtures.ETHEREUM[token],
+      module:
+        token === "ETH"
+          ? ethers.constants.AddressZero
+          : fixtures.ETHEREUM[token],
       amount: ethers.utils.parseUnits(amount, 8),
     };
     let output = await computeTransferOutput(input);
