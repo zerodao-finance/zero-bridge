@@ -71,7 +71,6 @@ export const globalBridgeState = {
     },
     priceFeeds: {
       data: {
-        tokenPrice: 0,
         btc_usd: 0,
         eth_usd: 0,
         btc_eth: 0,

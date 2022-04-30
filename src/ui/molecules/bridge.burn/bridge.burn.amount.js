@@ -14,7 +14,7 @@ export const BridgeBurnInput = ({
   token,
   updateDestination,
   effect,
-  tokenPrice,
+  btc_usd,
 }) => {
   const { dispatch } = useContext(storeContext);
   const { balances } = useWalletBalances();
@@ -28,9 +28,7 @@ export const BridgeBurnInput = ({
       case "USDC":
         return formatter.format(amount);
       default:
-        return formatter.format(
-          amount * ethers.utils.formatUnits(tokenPrice, 6)
-        );
+        return formatter.format(amount * ethers.utils.formatUnits(btc_usd, 6));
     }
   };
 
@@ -74,7 +72,7 @@ export const BridgeBurnInput = ({
           </div>
         </div>
         <div className=" xl:mr-5 tracking-wider w-full flex justify-end pr-2 text-[10px] text-badger-yellow-neon-400">
-          <span className="italic">~ {tokenPrice && formattedAmount()}</span>
+          <span className="italic">~ {btc_usd && formattedAmount()}</span>
         </div>
         {amount > 0 && (
           <>
@@ -82,7 +80,7 @@ export const BridgeBurnInput = ({
               <ArrowDownIcon className="h-6 w-6 text-badger-yellow-400" />
             </div>
             <BridgeBurnTransferFee
-              {...{ amount: amount, token: token, tokenPrice: tokenPrice }}
+              {...{ amount: amount, token: token, btc_usd: btc_usd }}
             />
           </>
         )}

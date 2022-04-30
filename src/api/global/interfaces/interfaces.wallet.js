@@ -115,17 +115,6 @@ export const useWalletBalances = () => {
     USDC: 0,
   });
 
-  useEffect(() => {
-    // ETH TOKEN BALANCE
-    provider.getBalance(address).then((bal) => {
-      const balanceInEth = ethers.utils.formatEther(bal);
-      setBalances({
-        ...balances,
-        ETH: parseFloat(balanceInEth),
-      });
-    });
-  }, []);
-
   useEffect(async () => {
     // OTHER TOKEN BALANCES
     getBalance(token).then(async (bal) => {
@@ -133,6 +122,9 @@ export const useWalletBalances = () => {
       switch (token) {
         case "USDC":
           tokenAmount = ethers.utils.formatUnits(bal, 6);
+          break;
+        case "ETH":
+          tokenAmount = ethers.utils.formatEther(bal);
           break;
         default:
           tokenAmount = ethers.utils.formatUnits(bal, 8);
@@ -142,7 +134,7 @@ export const useWalletBalances = () => {
         [token]: parseFloat(tokenAmount) || 0,
       });
     });
-  }, [token]);
+  }, [token, address, network]);
 
   const balanceOfABI = [
     {
@@ -156,7 +148,8 @@ export const useWalletBalances = () => {
 
   async function getBalance(tokenName) {
     if (tokenName.toLowerCase() === "eth") {
-      return balances.ETH;
+      const ethBalance = await provider.getBalance(address);
+      return ethBalance;
     } else {
       const contract = new ethers.Contract(
         tokenMapping(tokenName),
