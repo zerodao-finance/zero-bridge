@@ -54,6 +54,7 @@ export const useBridgeBurnInput = () => {
     destination: destination,
     token,
     amount: amount,
+    tokenPrice: tokenPrice,
   });
 
   return {
