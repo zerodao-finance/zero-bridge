@@ -134,7 +134,7 @@ export const useWalletBalances = () => {
         [token]: parseFloat(tokenAmount) || 0,
       });
     });
-  }, [token, address, network]);
+  }, [token, address, network, provider]);
 
   const balanceOfABI = [
     {
