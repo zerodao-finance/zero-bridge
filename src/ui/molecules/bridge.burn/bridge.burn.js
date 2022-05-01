@@ -25,7 +25,7 @@ export const BridgeBurnModule = () => {
                   <BridgeBurnInput {...getBridgeBurnInputProps()} />
                 </div>
               </div>
-              <div className="animate-flip-in-hor-top [animation-delay:700ms] mt-4">
+              <div className="animate-flip-in-hor-top w-full [animation-delay:700ms] mt-4">
                 <BridgeBurnSubmit {...getBurnSenderProps()} />
               </div>
             </>
