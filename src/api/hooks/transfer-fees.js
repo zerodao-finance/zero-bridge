@@ -29,37 +29,10 @@ export async function getFeeBreakdown({ token, amount }) {
     token === "ETH" ? ethers.constants.AddressZero : fixtures.ETHEREUM[token];
 
   switch (tokenAddress) {
-    case fixtures.ETHEREUM.WBTC:
-      fees.gasFee = formatOutput(await toUSDC(fees.gasFee), token);
-      fees.mintFee = formatOutput(await toUSDC(fees.mintFee), token);
-      fees.totalFees = formatOutput(await toUSDC(fees.totalFees), token);
-      console.log("THEORY TOTAL FEE: " + fees.totalFees);
-      return fees;
-    case fixtures.ETHEREUM.WBTC:
-      fees.gasFee = formatOutput(
-        await renCrv.get_dy(0, 1, fees.gasFee, 1),
-        token
-      );
-      fees.mintFee = formatOutput(
-        await renCrv.get_dy(0, 1, fees.mintFee, 1),
-        token
-      );
-      fees.totalFees = formatOutput(
-        await renCrv.get_dy(0, 1, fees.totalFees, 1),
-        token
-      );
-      console.log("THEORY TOTAL FEE: " + fees.totalFees);
-      return fees;
-    case ethers.constants.AddressZero:
-      fees.gasFee = formatOutput(await renBTCToETH(fees.gasFee), token);
-      fees.mintFee = formatOutput(await renBTCToETH(fees.mintFee), token);
-      fees.totalFees = formatOutput(await renBTCToETH(fees.totalFees), token);
-      console.log("THEORY TOTAL FEE: " + fees.totalFees);
-      return fees;
     default:
-      fees.gasFee = formatOutput(fees.gasFee, token);
-      fees.mintFee = formatOutput(fees.mintFee, token);
-      fees.totalFees = formatOutput(fees.totalFees, token);
+      fees.gasFee = formatOutput(fees.gasFee, "renBTC");
+      fees.mintFee = formatOutput(fees.mintFee, "renBTC");
+      fees.totalFees = formatOutput(fees.totalFees, "renBTC");
       console.log("THEORY TOTAL FEE: " + fees.totalFees);
       return fees;
   }

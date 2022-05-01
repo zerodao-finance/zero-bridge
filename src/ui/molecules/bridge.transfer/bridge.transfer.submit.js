@@ -7,7 +7,7 @@ import {
 } from "../../../api/hooks/transfer-fees";
 import { BridgeTransferFeeInformation } from "./bridge.transfer.feeInformation";
 
-export const BridgeTransferSubmit = ({ action, amount, token }) => {
+export const BridgeTransferSubmit = ({ action, amount, token, btc_usd }) => {
   const { keeper } = useZero();
   const [buttonLabel, setButtonLabel] = useState("Input Valid Amount");
   const [active, setActive] = useState(false);
@@ -55,7 +55,7 @@ export const BridgeTransferSubmit = ({ action, amount, token }) => {
           (active ? "" : "hidden")
         }
       >
-        <BridgeTransferFeeInformation {...fees} token={token} />
+        <BridgeTransferFeeInformation {...fees} btc_usd={btc_usd} />
       </div>
     </>
   );

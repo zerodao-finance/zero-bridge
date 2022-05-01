@@ -1,13 +1,27 @@
 import { useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/solid";
+import { ethers } from "ethers";
 
 export const BridgeTransferFeeInformation = ({
   gasFee,
   mintFee,
   totalFees,
-  token,
+  btc_usd,
 }) => {
   const [feeDetailOpen, setFeeDetailOpen] = useState(false);
+
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
+  const getFormattedFiatPrice = (btcAmount) => {
+    if (btcAmount) {
+      return formatter.format(btcAmount * ethers.utils.formatUnits(btc_usd, 6));
+    } else {
+      return formatter.format(0);
+    }
+  };
 
   return (
     <div className="grid w-full py-4 text-sm px-3 space-y-1 font-semibold border border-badger-gray-500 rounded-lg">
@@ -33,44 +47,32 @@ export const BridgeTransferFeeInformation = ({
           </div>
         </div>
         <div className="grid">
-          <span>
-            {" "}
-            {mintFee} {token}{" "}
-          </span>
+          <span>{mintFee} BTC</span>
           <span
             className={
               "italic w-full text-right text-[10px] text-badger-yellow-neon-400 " +
               (feeDetailOpen ? "-mt-4" : "-mt-1")
             }
           >
-            {" "}
-            ~ $1.00{" "}
+            ~ {getFormattedFiatPrice(mintFee)}
           </span>
         </div>
       </div>
       <div className="flex justify-between">
         <span> Est. Gas Cost </span>
         <div className="grid">
-          <span>
-            {" "}
-            {gasFee} {token}{" "}
-          </span>
+          <span>{gasFee} BTC</span>
           <span className="italic w-full text-right text-[10px] -mt-1 text-badger-yellow-neon-400">
-            {" "}
-            ~ $1.00{" "}
+            ~ {getFormattedFiatPrice(gasFee)}
           </span>
         </div>
       </div>
       <div className="flex pt-4 justify-between">
         <span> Total Est. Fees </span>
         <div className="grid">
-          <span>
-            {" "}
-            {totalFees} {token}{" "}
-          </span>
+          <span>{totalFees} BTC</span>
           <span className="italic w-full text-right text-[10px] -mt-1 text-badger-yellow-neon-400">
-            {" "}
-            ~ $1.00{" "}
+            ~ {getFormattedFiatPrice(totalFees)}
           </span>
         </div>
       </div>
