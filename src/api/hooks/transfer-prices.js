@@ -4,7 +4,7 @@ function useTransferPrices() {
   async function getRenBtcEthPair() {
     const renBTC = new Token(
       ChainId.MAINNET,
-      "0xeb4c2781e4eba804ce9a9803c67d0893436bb27d", // renBTC Address
+      "0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D", // renBTC Address
       18
     );
 

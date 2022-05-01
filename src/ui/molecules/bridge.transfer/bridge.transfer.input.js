@@ -63,7 +63,6 @@ export const BridgeTransferInput = ({
         />
       </div>
       <div className=" xl:mr-5 italic tracking-wider w-full text-right text-[10px] text-badger-yellow-neon-400">
-        ~{" "}
         {btc_usd &&
           formatter.format(amount * ethers.utils.formatUnits(btc_usd, 6))}
       </div>

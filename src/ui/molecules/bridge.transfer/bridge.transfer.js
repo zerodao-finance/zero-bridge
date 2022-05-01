@@ -9,18 +9,11 @@ import { AiOutlineArrowDown } from "react-icons/ai";
 import { useBridgeInput } from "../../../api/global/interfaces/interface.bridge.transfer";
 import { useCheckWalletConnected } from "../../../api/global/interfaces/interfaces.wallet";
 import BridgeTransferFrom from "./bridge.transfer.from";
+import { BridgeTransferFeeInformation } from "./bridge.transfer.feeInformation";
 
 export const BridgeTransferModule = ({ mode }) => {
-  const {
-    getTransferSenderProps,
-    getTransferInputProps,
-    getTransferRatioProps,
-    getTransferResultsProps,
-    getTransferModuleToggleProps,
-    getGatewayData,
-  } = useBridgeInput();
-
-  const { open } = useCheckWalletConnected();
+  const { getTransferSenderProps, getTransferInputProps, getGatewayData } =
+    useBridgeInput();
 
   if (mode === "input") {
     return (
@@ -45,7 +38,7 @@ export const BridgeTransferModule = ({ mode }) => {
           </div>
         </div>
 
-        <div className="animate-flip-in-hor-top [animation-delay:700ms] w-10/12 mt-4 pb-2">
+        <div className="animate-flip-in-hor-top [animation-delay:700ms] w-full mt-4 pb-2">
           <BridgeTransferSubmit {...getTransferSenderProps()} />
         </div>
       </>

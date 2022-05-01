@@ -1,15 +1,8 @@
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import useBurnFees from "../../../api/hooks/burn-fees";
+import { getBurnOutput } from "../../../api/hooks/burn-fees";
 
-export const BridgeBurnTransferFee = ({
-  amount,
-  effect,
-  btc_usd,
-  setToken,
-  token,
-}) => {
-  const { getBurnOutput } = useBurnFees();
+export const BridgeBurnTransferFee = ({ amount, btc_usd, token }) => {
   const [isFeeLoading, setIsFeeLoading] = useState(false);
   const [fee, setFee] = useState();
   useEffect(async () => {
@@ -42,7 +35,7 @@ export const BridgeBurnTransferFee = ({
               </span>
             </div>
           </div>
-          <div className=" xl:mr-5 italic tracking-wider w-full pr-2 text-right text-[10px] text-badger-yellow-neon-400">
+          <div className="xl:mr-5 italic tracking-wider w-full pr-2 text-right text-[10px] text-badger-yellow-neon-400">
             ~{" "}
             {btc_usd &&
               formatter.format(fee * ethers.utils.formatUnits(btc_usd, 6))}

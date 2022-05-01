@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import useTransferFees from "../../../api/hooks/transfer-fees";
+import { getTransferOutput } from "../../../api/hooks/transfer-fees";
 
 export const BridgeTransferFee = ({
   amount,
   effect,
   btc_usd,
+  eth_usd,
   setToken,
   token,
 }) => {
   // Getting Fees - START
-  const { getTransferOutput } = useTransferFees();
   const [isFeeLoading, setIsFeeLoading] = useState(false);
   const [fee, setFee] = useState();
   useEffect(async () => {
@@ -32,6 +32,8 @@ export const BridgeTransferFee = ({
     switch (token) {
       case "USDC":
         return fee;
+      case "ETH":
+        return fee * ethers.utils.formatUnits(eth_usd, 6);
       default:
         return fee * ethers.utils.formatUnits(btc_usd, 6);
     }
