@@ -1613,10 +1613,6 @@ input:checked + .toggle-bg {
   max-width: 25rem;
 }
 
-.max-w-\[80px\] {
-  max-width: 80px;
-}
-
 .max-w-\[250px\] {
   max-width: 250px;
 }
@@ -2020,10 +2016,6 @@ input:checked + .toggle-bg {
   border-bottom-width: 1px;
 }
 
-.border-r-\[1px\] {
-  border-right-width: 1px;
-}
-
 .border-badger-yellow-neon-400 {
   --tw-border-opacity: 1;
   border-color: rgb(255 207 77 / var(--tw-border-opacity));
@@ -2343,10 +2335,6 @@ input:checked + .toggle-bg {
   padding-left: 0.5rem;
 }
 
-.pr-5 {
-  padding-right: 1.25rem;
-}
-
 .pt-4 {
   padding-top: 1rem;
 }
@@ -2440,10 +2428,6 @@ input:checked + .toggle-bg {
   font-size: 11px;
 }
 
-.text-\[14px\] {
-  font-size: 14px;
-}
-
 .text-\[9px\] {
   font-size: 9px;
 }
@@ -2470,6 +2454,10 @@ input:checked + .toggle-bg {
 
 .font-thin {
   font-weight: 100;
+}
+
+.font-normal {
+  font-weight: 400;
 }
 
 .capitalize {
@@ -2565,11 +2553,6 @@ input:checked + .toggle-bg {
 .text-badger-yellow-400 {
   --tw-text-opacity: 1;
   color: rgb(255 184 77 / var(--tw-text-opacity));
-}
-
-.text-red-700 {
-  --tw-text-opacity: 1;
-  color: rgb(200 30 30 / var(--tw-text-opacity));
 }
 
 .text-blue-100 {
@@ -3185,11 +3168,6 @@ code {
 .dark .dark\:text-gray-300 {
   --tw-text-opacity: 1;
   color: rgb(209 213 219 / var(--tw-text-opacity));
-}
-
-.dark .dark\:text-badger-blue-400 {
-  --tw-text-opacity: 1;
-  color: rgb(145 205 255 / var(--tw-text-opacity));
 }
 
 .dark .dark\:text-gray-100 {
