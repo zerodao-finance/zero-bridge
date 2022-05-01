@@ -27,39 +27,6 @@ export const BridgeGatewayConfirmation = ({
           </p>
         </div>
         <div
-          id="fee_data"
-          className="flex flex-row justify-center items-center gap-5 text-[13px] text-gray-700 dark:text-gray-300"
-        >
-          <p className="text-[14px] text-red-700 dark:text-badger-blue-400">
-            Fees Breakdown
-          </p>
-          <div className="flex flex-col items-end pr-5 border-r-[1px] border-black">
-            <span>RenVM Fee:</span>
-            <span>Zero Fee:</span>
-            <span>Curve Fee:</span>
-          </div>
-          <div className="flex flex-col items-start pr-2">
-            <span className="truncate max-w-[80px]">
-              {ethers.utils.formatUnits(
-                ethers.BigNumber.from(transferRequest.amount),
-                8
-              ) * 0.002}
-            </span>
-            <span className="truncate max-w-[80px]">
-              {+ethers.utils.formatUnits(
-                ethers.BigNumber.from(transferRequest.amount),
-                8
-              ) * 0.003}
-            </span>
-            <span className="truncate max-w-[80px]">
-              {ethers.utils.formatUnits(
-                ethers.BigNumber.from(transferRequest.amount),
-                8
-              ) * 0.0004}
-            </span>
-          </div>
-        </div>
-        <div
           id="disclaimer"
           className="text-[9px] max-w-[300px] text-gray-500 dark:text-gray-300 justify-self-end"
         >
