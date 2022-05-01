@@ -1,8 +1,5 @@
 import {
   computeTransferOutput,
-  toUSDC,
-  renBTCToETH,
-  renCrv,
   mintFee,
   applyFee,
   applyRenVMMintFee,
@@ -10,15 +7,8 @@ import {
 import { ethers } from "ethers";
 import fixtures from "zero-protocol/lib/fixtures";
 
-function formatOutput(output, token) {
-  switch (token) {
-    case "ETH":
-      return ethers.utils.formatEther(output);
-    case "USDC":
-      return ethers.utils.formatUnits(output, 6);
-    default:
-      return ethers.utils.formatUnits(output, 8);
-  }
+function formatOutput(output) {
+  return ethers.utils.formatUnits(output, 8);
 }
 
 export async function getFeeBreakdown({ token, amount }) {
@@ -30,9 +20,9 @@ export async function getFeeBreakdown({ token, amount }) {
 
   switch (tokenAddress) {
     default:
-      fees.gasFee = formatOutput(fees.gasFee, "renBTC");
-      fees.mintFee = formatOutput(fees.mintFee, "renBTC");
-      fees.totalFees = formatOutput(fees.totalFees, "renBTC");
+      fees.gasFee = formatOutput(fees.gasFee);
+      fees.mintFee = formatOutput(fees.mintFee);
+      fees.totalFees = formatOutput(fees.totalFees);
       console.log("THEORY TOTAL FEE: " + fees.totalFees);
       return fees;
   }

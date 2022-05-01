@@ -1,6 +1,6 @@
 import { PrimaryRoundedButton } from "../../atoms/buttons/button.rounded";
 import { useEffect, useState } from "react";
-import useBurnFees from "../../../api/hooks/burn-fees";
+import { getBurnOutput } from "../../../api/hooks/burn-fees";
 import { ethers } from "ethers";
 
 const btcRegex = /^(?:[13]{1}[a-km-zA-HJ-NP-Z1-9]{26,33}|bc1[a-z0-9]{39,59})$/;
@@ -12,7 +12,6 @@ export const BridgeBurnSubmit = ({
   token,
   btc_usd,
 }) => {
-  const { getBurnOutput } = useBurnFees();
   const [buttonLabel, setButtonLabel] = useState(
     "Enter Valid Recipient Address"
   );
