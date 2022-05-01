@@ -29,11 +29,14 @@ export const BridgeTransferFeeInformation = ({
             }
           >
             <span> 0.15% renVM Mint </span>
-            <span> 0.25% feedback to ZERO</span>
+            <span> 0.10% feedback to ZERO</span>
           </div>
         </div>
         <div className="grid">
-          <span> 0 {token} </span>
+          <span>
+            {" "}
+            {mintFee} {token}{" "}
+          </span>
           <span
             className={
               "italic w-full text-right text-[10px] text-badger-yellow-neon-400 " +
@@ -48,7 +51,10 @@ export const BridgeTransferFeeInformation = ({
       <div className="flex justify-between">
         <span> Est. Gas Cost </span>
         <div className="grid">
-          <span> 0 {token} </span>
+          <span>
+            {" "}
+            {gasFee} {token}{" "}
+          </span>
           <span className="italic w-full text-right text-[10px] -mt-1 text-badger-yellow-neon-400">
             {" "}
             ~ $1.00{" "}
@@ -58,7 +64,10 @@ export const BridgeTransferFeeInformation = ({
       <div className="flex pt-4 justify-between">
         <span> Total Est. Fees </span>
         <div className="grid">
-          <span> 0 {token} </span>
+          <span>
+            {" "}
+            {totalFees} {token}{" "}
+          </span>
           <span className="italic w-full text-right text-[10px] -mt-1 text-badger-yellow-neon-400">
             {" "}
             ~ $1.00{" "}

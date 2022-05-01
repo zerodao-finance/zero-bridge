@@ -1,19 +1,24 @@
 import { PrimaryRoundedButton } from "../../atoms/buttons/button.rounded";
 import { useZero } from "../../../api/global/interfaces/interfaces.zero";
 import { useEffect, useState } from "react";
-import useTransferFees from "../../../api/hooks/transfer-fees";
+import {
+  getTransferOutput,
+  getFeeBreakdown,
+} from "../../../api/hooks/transfer-fees";
 import { BridgeTransferFeeInformation } from "./bridge.transfer.feeInformation";
 
 export const BridgeTransferSubmit = ({ action, amount, token }) => {
   const { keeper } = useZero();
-  const { getTransferOutput } = useTransferFees();
   const [buttonLabel, setButtonLabel] = useState("Input Valid Amount");
   const [active, setActive] = useState(false);
   const [transferOutput, setTransferOutput] = useState();
+  const [fees, setFees] = useState({});
 
   useEffect(async () => {
     if (amount > 0) {
       const output = await getTransferOutput({ amount, token });
+      const feeAmounts = await getFeeBreakdown({ amount, token });
+      setFees(feeAmounts);
       setTransferOutput(output);
     }
   }, [amount, token]);
@@ -47,12 +52,10 @@ export const BridgeTransferSubmit = ({ action, amount, token }) => {
       <div
         className={
           "animate-flip-in-hor-top px-6 mt-6 [animation-delay:700ms] w-full " +
-          (amount > 0 && keeper.length > 0 && transferOutput > 0
-            ? ""
-            : "hidden")
+          (active ? "" : "hidden")
         }
       >
-        <BridgeTransferFeeInformation token={token} />
+        <BridgeTransferFeeInformation {...fees} token={token} />
       </div>
     </>
   );

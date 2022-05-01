@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import useTransferFees from "../../../api/hooks/transfer-fees";
+import { getTransferOutput } from "../../../api/hooks/transfer-fees";
 
 export const BridgeTransferFee = ({
   amount,
@@ -11,7 +11,6 @@ export const BridgeTransferFee = ({
   token,
 }) => {
   // Getting Fees - START
-  const { getTransferOutput } = useTransferFees();
   const [isFeeLoading, setIsFeeLoading] = useState(false);
   const [fee, setFee] = useState();
   useEffect(async () => {
