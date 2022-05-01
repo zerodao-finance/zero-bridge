@@ -42,7 +42,7 @@ export const BridgeBurnTransferFee = ({
               </span>
             </div>
           </div>
-          <div className=" xl:mr-5 italic tracking-wider w-full pr-2 text-right text-[10px] text-badger-yellow-neon-400">
+          <div className="xl:mr-5 italic tracking-wider w-full pr-2 text-right text-[10px] text-badger-yellow-neon-400">
             ~{" "}
             {btc_usd &&
               formatter.format(fee * ethers.utils.formatUnits(btc_usd, 6))}

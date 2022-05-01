@@ -2,6 +2,7 @@ import { PrimaryRoundedButton } from "../../atoms/buttons/button.rounded";
 import { useZero } from "../../../api/global/interfaces/interfaces.zero";
 import { useEffect, useState } from "react";
 import useTransferFees from "../../../api/hooks/transfer-fees";
+import { BridgeTransferFeeInformation } from "./bridge.transfer.feeInformation";
 
 export const BridgeTransferSubmit = ({ action, amount, token }) => {
   const { keeper } = useZero();
@@ -34,6 +35,25 @@ export const BridgeTransferSubmit = ({ action, amount, token }) => {
   }, [keeper, transferOutput, amount]);
 
   return (
-    <PrimaryRoundedButton active={active} label={buttonLabel} action={action} />
+    <>
+      <div className="px-8">
+        <PrimaryRoundedButton
+          active={active}
+          label={buttonLabel}
+          action={action}
+        />
+      </div>
+
+      <div
+        className={
+          "animate-flip-in-hor-top px-6 mt-6 [animation-delay:700ms] w-full " +
+          (amount > 0 && keeper.length > 0 && transferOutput > 0
+            ? ""
+            : "hidden")
+        }
+      >
+        <BridgeTransferFeeInformation token={token} />
+      </div>
+    </>
   );
 };

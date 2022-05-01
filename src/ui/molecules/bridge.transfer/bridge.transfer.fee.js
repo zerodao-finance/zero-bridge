@@ -6,6 +6,7 @@ export const BridgeTransferFee = ({
   amount,
   effect,
   btc_usd,
+  eth_usd,
   setToken,
   token,
 }) => {
@@ -32,6 +33,8 @@ export const BridgeTransferFee = ({
     switch (token) {
       case "USDC":
         return fee;
+      case "ETH":
+        return fee * ethers.utils.formatUnits(eth_usd, 6);
       default:
         return fee * ethers.utils.formatUnits(btc_usd, 6);
     }
