@@ -1,6 +1,8 @@
 import {
   computeOutputBTC,
   getConvertedAmount,
+  applyRenVMFee,
+  burnFee,
   applyFee,
 } from "zero-protocol/lib/badger";
 import { ethers } from "ethers";
@@ -21,6 +23,24 @@ function processAmount(amount, token) {
 
 function formatOutput(output) {
   return ethers.utils.formatUnits(output, 8);
+}
+
+export async function getFeeBreakdown({ amount, token }) {
+  const tokenAddress =
+    token === "ETH" ? ethers.constants.AddressZero : fixtures.ETHEREUM[token];
+  const convertedAmount = await getConvertedAmount(
+    tokenAddress,
+    processAmount(amount, token)
+  );
+  const baseFee = applyRenVMFee(convertedAmount);
+  var fees = await applyFee(baseFee, burnFee, 0);
+  console.log("AFTER SUB: " + baseFee.sub(fees.totalFees));
+
+  fees.gasFee = formatOutput(fees.gasFee);
+  fees.opFee = formatOutput(fees.opFee);
+  fees.totalFees = formatOutput(fees.totalFees);
+  console.log("THEORY TOTAL FEE: " + fees.totalFees);
+  return fees;
 }
 
 export async function getBurnOutput({ amount, token }) {

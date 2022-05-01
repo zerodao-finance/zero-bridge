@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 
 export const BridgeTransferFeeInformation = ({
   gasFee,
-  mintFee,
+  opFee,
   totalFees,
   btc_usd,
 }) => {
@@ -47,14 +47,14 @@ export const BridgeTransferFeeInformation = ({
           </div>
         </div>
         <div className="grid">
-          <span>{mintFee} BTC</span>
+          <span>{opFee} BTC</span>
           <span
             className={
               "italic w-full text-right text-[10px] text-badger-yellow-neon-400 " +
               (feeDetailOpen ? "-mt-4" : "-mt-1")
             }
           >
-            ~ {getFormattedFiatPrice(mintFee)}
+            ~ {getFormattedFiatPrice(opFee)}
           </span>
         </div>
       </div>

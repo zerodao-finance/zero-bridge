@@ -15,17 +15,12 @@ export async function getFeeBreakdown({ token, amount }) {
   const baseFee = applyRenVMMintFee(ethers.utils.parseUnits(amount, 8));
   var fees = await applyFee(baseFee, mintFee, 0);
   console.log("AFTER SUB: " + baseFee.sub(fees.totalFees));
-  const tokenAddress =
-    token === "ETH" ? ethers.constants.AddressZero : fixtures.ETHEREUM[token];
 
-  switch (tokenAddress) {
-    default:
-      fees.gasFee = formatOutput(fees.gasFee);
-      fees.mintFee = formatOutput(fees.mintFee);
-      fees.totalFees = formatOutput(fees.totalFees);
-      console.log("THEORY TOTAL FEE: " + fees.totalFees);
-      return fees;
-  }
+  fees.gasFee = formatOutput(fees.gasFee);
+  fees.opFee = formatOutput(fees.opFee);
+  fees.totalFees = formatOutput(fees.totalFees);
+  console.log("THEORY TOTAL FEE: " + fees.totalFees);
+  return fees;
 }
 
 export async function getTransferOutput({ token, amount }) {
