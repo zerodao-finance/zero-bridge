@@ -8,7 +8,7 @@ export const DashboardPage = () => {
   const { getBridgePageProps } = useBridgePage();
   const { tcSigned } = getBridgePageProps();
   return (
-    <div className="fixed h-full w-full dark:bg-badger-black-800">
+    <div className="h-screen w-full overflow-y-auto overflow-x-hidden scrollbar-hide dark:bg-badger-black-800">
       {!tcSigned ? <Disclaimer /> : <DashboardLayout />}
     </div>
   );

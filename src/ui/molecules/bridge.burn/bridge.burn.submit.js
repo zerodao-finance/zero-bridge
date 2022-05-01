@@ -24,8 +24,10 @@ export const BridgeBurnSubmit = ({
     if (amount > 0) {
       const output = await getBurnOutput({ amount, token });
       const feeAmounts = await getFeeBreakdown({ amount, token });
-      setFees(feeAmounts);
       setBurnOutput(output);
+      setFees(feeAmounts);
+    } else {
+      setBurnOutput(0);
     }
   }, [amount, token]);
 
