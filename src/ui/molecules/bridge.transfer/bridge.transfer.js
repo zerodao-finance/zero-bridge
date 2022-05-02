@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BridgeTransferInput } from "./bridge.transfer.input";
 import { BridgeTransferFee } from "./bridge.transfer.fee";
 import { BridgeTransferSubmit } from "./bridge.transfer.submit";
@@ -7,9 +6,7 @@ import { BridgeLoadingGateway } from "./bridge.loading.gateway";
 import { BridgeGatewayConfirmation } from "../bridge.gateway/bridge.gateway";
 import { AiOutlineArrowDown } from "react-icons/ai";
 import { useBridgeInput } from "../../../api/global/interfaces/interface.bridge.transfer";
-import { useCheckWalletConnected } from "../../../api/global/interfaces/interfaces.wallet";
 import BridgeTransferFrom from "./bridge.transfer.from";
-import { BridgeTransferFeeInformation } from "./bridge.transfer.feeInformation";
 
 export const BridgeTransferModule = ({ mode }) => {
   const { getTransferSenderProps, getTransferInputProps, getGatewayData } =

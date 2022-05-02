@@ -50,10 +50,10 @@ export const BridgeModule = ({ wallet, mode, toggleMode }) => {
       ) : (
         <Routes>
           <Route
-            path="/transfer"
+            path="/transfer/*"
             element={<BridgeTransferModule {...getTransferMode()} />}
           />
-          <Route path="/release" element={<BridgeBurnModule />} />
+          <Route path="/release/*" element={<BridgeBurnModule />} />
         </Routes>
       )}
     </div>

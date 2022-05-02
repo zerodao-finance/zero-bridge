@@ -58,6 +58,19 @@ function TokenDropdown({ token = "renBTC", setToken, tokensRemoved = [] }) {
     return icon;
   };
 
+  // For Routing
+  const navigate = useNavigate();
+  const resolved = useResolvedPath(window.location.pathname);
+  useEffect(() => {
+    if (resolved.pathname === "/transfer" || resolved.pathname === "/release") {
+      navigate(resolved.pathname + "/" + token);
+    } else {
+      const splitPath = resolved.pathname.split("/");
+      setToken(splitPath[2]);
+      navigate("/" + splitPath[1] + "/" + splitPath[2]);
+    }
+  }, [token]);
+
   return (
     <Menu as="div" className="relative inline-block text-left max-w-[100%]">
       <Menu.Button
@@ -84,7 +97,18 @@ function TokenDropdown({ token = "renBTC", setToken, tokensRemoved = [] }) {
           {items
             .filter((el) => !tokensRemoved.includes(el.text))
             .map((item, index) => (
-              <div key={index} onClick={(e) => setToken(e.target.innerText)}>
+              <div
+                key={index}
+                onClick={(e) => {
+                  setToken(e.target.innerText);
+                  navigate(
+                    "/" +
+                      resolved.pathname.split("/")[1] +
+                      "/" +
+                      e.target.innerText
+                  );
+                }}
+              >
                 <Menu.Item>
                   {({ active }) => (
                     <div
