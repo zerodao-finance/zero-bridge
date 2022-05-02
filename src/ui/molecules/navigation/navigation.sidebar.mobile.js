@@ -2,31 +2,38 @@
 import { RiFileListLine, RiExchangeFundsLine } from "react-icons/ri";
 import { MdOutlinePending } from "react-icons/md";
 import { BiTransfer } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
-export function MobileNavigationSidebar({ changeModule }) {
-  function navigate(e) {
-    changeModule(e.target.id);
+export function MobileNavigationSidebar() {
+  const navigate = useNavigate();
+
+  function action(e) {
+    if (e.target.id === "bridge") {
+      navigate(`/transfer`);
+    } else {
+      navigate(`/${e.target.id}`);
+    }
   }
 
   return (
     <nav className="space-y-8" aria-label="Sidebar">
-      <div onClick={navigate} className="flex flex-row gap-3 " id="bridge">
+      <div onClick={action} className="flex flex-row gap-3 " id="bridge">
         <RiExchangeFundsLine className="h-[1.2rem] w-[1.2rem]" />
-        <button onClick={navigate} id="bridge">
+        <button onClick={action} id="bridge">
           Bridge Tool
         </button>
       </div>
-      <div onClick={navigate} className="flex flex-row gap-3 " id="manage">
+      <div onClick={action} className="flex flex-row gap-3 " id="manage">
         <MdOutlinePending className="h-[1.2rem] w-[1.2rem]" />
 
-        <button onClick={navigate} id="manage">
+        <button onClick={action} id="manage">
           Manage Transactions
         </button>
       </div>
-      <div onClick={navigate} className="flex flex-row gap-3 " id="history">
+      <div onClick={action} className="flex flex-row gap-3 " id="history">
         <BiTransfer className="h-[1.2rem] w-[1.2rem]" />
 
-        <button onClick={navigate} id="history">
+        <button onClick={action} id="history">
           History
         </button>
       </div>

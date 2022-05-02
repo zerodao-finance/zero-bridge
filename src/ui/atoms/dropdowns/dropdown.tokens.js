@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { ReactComponent as ETH } from "../../../assets/svg-coins/eth.svg";
@@ -6,6 +6,7 @@ import { ReactComponent as renBTC } from "../../../assets/svg-coins/renbtc.svg";
 import { ReactComponent as WBTC } from "../../../assets/svg-coins/wbtc.svg";
 import { ReactComponent as ibBTC } from "../../../assets/svg-coins/ibbtc.svg";
 import { ReactComponent as USDC } from "../../../assets/svg-coins/usdc.svg";
+import { useNavigate, useResolvedPath } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");

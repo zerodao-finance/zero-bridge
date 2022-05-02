@@ -8,12 +8,22 @@ import { useBridgePage } from "../../api/global/interfaces/interface.bridge";
 import UnderConstruction from "../atoms/helpers/under-construction";
 import { ManageTransaction } from "../molecules/manage/manage.request";
 import { TransactionHistory } from "../molecules/history/history.request";
+import { Route, Routes, useNavigate, useResolvedPath } from "react-router-dom";
+import { useEffect } from "react";
 
 export const DashboardLayout = () => {
-  const { changeActiveModule, resetModule, currentModule, isLoading } =
-    useActiveModuleSwitcher();
+  const { changeActiveModule, isLoading } = useActiveModuleSwitcher();
   const { getWalletConnectionProps } = useCheckWalletConnected();
   const { getBridgePageProps } = useBridgePage();
+
+  // For Routing
+  const navigate = useNavigate();
+  const resolved = useResolvedPath(window.location.pathname);
+  useEffect(() => {
+    if (resolved.pathname === "/") {
+      navigate("/transfer", { replace: true });
+    }
+  }, []);
 
   return (
     <>
@@ -29,40 +39,25 @@ export const DashboardLayout = () => {
         <div className="flex flex-col w-fit ml-auto mr-auto">
           {isLoading ? (
             <>Loading</>
-          ) : currentModule.includes("Transactions") ? (
-            <>
-              <p className="pb-[.5rem] text-center font-bold dark:text-badger-gray-300">
-                {" "}
-                Transactions{" "}
-              </p>
-              <UnderConstruction />
-            </>
-          ) : currentModule.includes("History") ? (
-            <>
-              <p className="pb-[.5rem] text-center font-bold dark:text-badger-gray-300">
-                {" "}
-                History{" "}
-              </p>
-              <UnderConstruction />
-            </>
           ) : (
             <>
               <p className="pb-[.5rem] text-center font-bold dark:text-badger-gray-300">
                 {" "}
                 Bridge{" "}
               </p>
-              {currentModule === "bridge" ? (
-                <BridgeModule
-                  {...getWalletConnectionProps()}
-                  {...getBridgePageProps()}
+              <Routes>
+                <Route
+                  path="*"
+                  element={
+                    <BridgeModule
+                      {...getWalletConnectionProps()}
+                      {...getBridgePageProps()}
+                    />
+                  }
                 />
-              ) : currentModule === "manage" ? (
-                <ManageTransaction />
-              ) : currentModule === "history" ? (
-                <TransactionHistory />
-              ) : (
-                ""
-              )}
+                <Route path="/manage" element={<ManageTransaction />} />
+                <Route path="/history" element={<TransactionHistory />} />
+              </Routes>
             </>
           )}
         </div>
