@@ -18,7 +18,7 @@ export const useSDKTransactionSubmit = (module) => {
   //getSigner function
   const getSigner = useMemo(async () => {
     try {
-      await wallet.provider.send("eth_requestAccounts", []);
+      await wallet.provider.send("eth_accounts", []);
       const signer = await wallet.provider.getSigner();
       return signer;
     } catch (err) {

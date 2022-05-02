@@ -32,6 +32,17 @@ export const chainFromHexString = (_hex) => {
 };
 
 export const CHAINS = {
+  1: {
+    chainId: ethers.utils.hexValue(1),
+    chainName: "mainnet",
+    nativeCurrency: ETH,
+    rpcUrls: [
+      process.env.REACT_APP_JSONRPC
+        ? process.env.REACT_APP_JSONRPC
+        : "https://main-light.eth.linkpool.io",
+    ].filter((url) => url !== undefined),
+    blockExplorerUrls: ["https://etherscan.io"],
+  },
   42161: {
     chainId: ethers.utils.hexValue(42161),
     chainName: "Arbitrum",
