@@ -39,6 +39,15 @@ export const BridgeBurnInput = ({
     return balances[token].toString() ?? 0;
   };
 
+  const getMax = () => {
+    dispatch({
+      type: "UPDATE",
+      module: "burn",
+      effect: "input",
+      data: { amount: getBalance(token) },
+    });
+  };
+
   return (
     <>
       <div className="w-fit self-center px-0 py-0 scale-[0.8] md:scale-[1] z-10">
@@ -50,7 +59,6 @@ export const BridgeBurnInput = ({
             <p className="text-[10px] text-gray-300 whitespace-nowrap mt-1">
               FROM
             </p>
-            {/* Look in bridge.transfer.js for how to use TokenDropdown */}
             <TokenDropdown
               token={token}
               setToken={setToken}
@@ -59,15 +67,8 @@ export const BridgeBurnInput = ({
           </div>
           <div className="flex justify-between items-center pl-2 dark:!border-white dark:focus:!border-badger-yellow-neon-400 border !border-gray-600 focus:!border-badger-yellow-neon-400 rounded-xl">
             <button
-              className="text-sm pl-2 h-fit hover:!text-badger-yellow-400 mr-2"
-              onClick={() => {
-                dispatch({
-                  type: "UPDATE",
-                  module: "burn",
-                  effect: "input",
-                  data: { amount: getBalance(token) },
-                });
-              }}
+              className="text-sm pl-1 pr-3 h-fit hover:!text-badger-yellow-neon-400"
+              onClick={getMax}
             >
               MAX
             </button>

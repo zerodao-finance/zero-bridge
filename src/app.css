@@ -1326,10 +1326,6 @@ input:checked + .toggle-bg {
   margin-top: 0.25rem;
 }
 
-.mr-2 {
-  margin-right: 0.5rem;
-}
-
 .mt-10 {
   margin-top: 2.5rem;
 }
@@ -1977,6 +1973,11 @@ input:checked + .toggle-bg {
   border-top-right-radius: 8px;
 }
 
+.rounded-r-xl {
+  border-top-right-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
+}
+
 .rounded-l-\[2rem\] {
   border-top-left-radius: 2rem;
   border-bottom-left-radius: 2rem;
@@ -2335,6 +2336,14 @@ input:checked + .toggle-bg {
   padding-left: 0.5rem;
 }
 
+.pl-1 {
+  padding-left: 0.25rem;
+}
+
+.pr-3 {
+  padding-right: 0.75rem;
+}
+
 .pt-4 {
   padding-top: 1rem;
 }
@@ -2656,6 +2665,10 @@ input:checked + .toggle-bg {
   outline-width: 1px !important;
 }
 
+.\!outline-2 {
+  outline-width: 2px !important;
+}
+
 .\!outline-offset-0 {
   outline-offset: 0px !important;
 }
@@ -2932,9 +2945,9 @@ code {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.hover\:\!text-badger-yellow-400:hover {
+.hover\:\!text-badger-yellow-neon-400:hover {
   --tw-text-opacity: 1 !important;
-  color: rgb(255 184 77 / var(--tw-text-opacity)) !important;
+  color: rgb(255 207 77 / var(--tw-text-opacity)) !important;
 }
 
 .hover\:text-gray-900:hover {
