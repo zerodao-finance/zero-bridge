@@ -5,11 +5,16 @@ import { BridgeLoadingWallet } from "../molecules/bridge.transfer/bridge.loading
 import { useBridgeInput } from "../../api/global/interfaces/interface.bridge.transfer";
 import { useBridgePage } from "../../api/global/interfaces/interface.bridge";
 import Disclaimer from "./Disclaimer";
+import { Route, Routes, useNavigate, useResolvedPath } from "react-router-dom";
 
 export const BridgeModule = ({ wallet, mode, toggleMode }) => {
   const { getTransferMode } = useBridgeInput();
   const { getBridgePageProps } = useBridgePage();
   const { tcSigned } = getBridgePageProps();
+  const navigate = useNavigate();
+
+  const resolved = useResolvedPath(window.location.pathname);
+
   return !tcSigned ? (
     <Disclaimer />
   ) : (
@@ -20,31 +25,36 @@ export const BridgeModule = ({ wallet, mode, toggleMode }) => {
       >
         <div
           className={`py-[10px] rounded-tl-[8px] cursor-pointer ${
-            mode === "transfer"
+            resolved.pathname.includes("/transfer")
               ? "transition ease-in-out duration-150 text-black border-b-2 border-badger-yellow-neon-400 dark:text-badger-yellow-neon-400 font-bold"
               : "transition ease-in-out duration-150 text-black hover:bg-badger-yellow-400/10 dark:text-white"
           }`}
-          onClick={() => toggleMode("transfer")}
+          onClick={() => navigate("/transfer")}
         >
           Transfer
         </div>
         <div
           className={`py-[10px] rounded-tr-[8px] cursor-pointer ${
-            mode === "release"
+            resolved.pathname.includes("/release")
               ? "transition ease-in-out duration-150 text-black border-b-2 border-badger-yellow-neon-400 dark:text-badger-yellow-neon-400 font-bold"
               : "transition ease-in-out duration-150 text-black hover:bg-badger-yellow-400/10 dark:text-white"
           }`}
-          onClick={() => toggleMode("release")}
+          onClick={() => navigate("/release")}
         >
           Release
         </div>
       </div>
+
       {wallet ? (
         <BridgeLoadingWallet />
-      ) : mode === "transfer" ? (
-        <BridgeTransferModule {...getTransferMode()} />
       ) : (
-        <BridgeBurnModule />
+        <Routes>
+          <Route
+            path="/transfer/*"
+            element={<BridgeTransferModule {...getTransferMode()} />}
+          />
+          <Route path="/release/*" element={<BridgeBurnModule />} />
+        </Routes>
       )}
     </div>
   );

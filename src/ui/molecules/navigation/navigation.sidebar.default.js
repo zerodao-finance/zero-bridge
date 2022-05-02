@@ -1,12 +1,17 @@
 import { RiFileListLine, RiExchangeFundsLine } from "react-icons/ri";
 import { MdOutlinePending } from "react-icons/md";
 import { BiTransfer } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
-export const DefaultNavigationSidebar = ({ changeModule }) => {
-  const active = " bg-slate-100 dark:bg-hover-green";
+export const DefaultNavigationSidebar = () => {
+  const navigate = useNavigate();
 
   function action(e) {
-    changeModule(e.target.id);
+    if (e.target.id === "bridge") {
+      navigate(`/transfer`);
+    } else {
+      navigate(`/${e.target.id}`);
+    }
   }
 
   return (
