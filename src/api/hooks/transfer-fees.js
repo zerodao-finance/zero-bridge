@@ -7,17 +7,24 @@ import {
 import { ethers } from "ethers";
 import fixtures from "zero-protocol/lib/fixtures";
 
-function formatOutput(output) {
-  return ethers.utils.formatUnits(output, 8);
+function formatOutput(token, output) {
+  switch (token) {
+    case "USDC":
+      return ethers.utils.formatUnits(output, 6);
+    case "ETH":
+      return ethers.utils.formatEther(output);
+    default:
+      return ethers.utils.formatUnits(output, 8);
+  }
 }
 
 export async function getFeeBreakdown({ token, amount }) {
   const baseFee = applyRenVMMintFee(ethers.utils.parseUnits(amount, 8));
   var fees = await applyFee(baseFee, mintFee, 0);
 
-  fees.gasFee = formatOutput(fees.gasFee);
-  fees.opFee = formatOutput(fees.opFee);
-  fees.totalFees = formatOutput(fees.totalFees);
+  fees.gasFee = formatOutput("WBTC", fees.gasFee);
+  fees.opFee = formatOutput("WBTC", fees.opFee);
+  fees.totalFees = formatOutput("WBTC", fees.totalFees);
   return fees;
 }
 
@@ -28,6 +35,6 @@ export async function getTransferOutput({ token, amount }) {
     amount: ethers.utils.parseUnits(amount, 8),
   };
   let output = await computeTransferOutput(input);
-  output = formatOutput(output, token);
+  output = formatOutput(token, output);
   return output;
 }
