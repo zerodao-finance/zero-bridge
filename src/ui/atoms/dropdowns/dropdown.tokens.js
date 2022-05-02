@@ -93,7 +93,7 @@ function TokenDropdown({ token = "renBTC", setToken, tokensRemoved = [] }) {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="origin-top-right py-1 absolute right-16 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
+        <Menu.Items className="origin-top-right py-1 absolute right-24 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
           {items
             .filter((el) => !tokensRemoved.includes(el.text))
             .map((item, index) => (
