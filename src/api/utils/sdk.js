@@ -205,7 +205,11 @@ const btcAddressToHex = (address) => {
   return ethers.utils.hexlify(
     (() => {
       if (address.substring(0, 3) === "bc1") {
-        return bech32.fromWords(bech32.decode(address).words.slice(1));
+        const [type, ...words] = bech32.decode(address).words;
+        return Buffer.concat([
+          Buffer.from([type]),
+          Buffer.from(bech32.fromWords(words)),
+        ]);
       } else {
         return ethers.utils.base58.decode(address);
       }
