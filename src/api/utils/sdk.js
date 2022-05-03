@@ -13,6 +13,8 @@ import { createGetGasPrice } from "ethers-gasnow";
 import EventEmitter from "events";
 import * as bech32 from "bech32";
 
+const remoteETHTxMap = new WeakMap();
+
 const bufferToHexString = (buffer) => {
   return buffer.reduce((s, byte) => {
     let hex = byte.toString(16);
@@ -29,9 +31,18 @@ const signETH = async function (signer) {
     ["function burnETH(bytes) payable"],
     signer
   );
-  return await contract.burnETH(destination, {
+  const tx = await contract.burnETH(destination, {
     value: amount,
   });
+  remoteETHTxMap.set(this, tx.wait());
+};
+
+const waitForHostTransaction = UnderwriterBurnRequest.prototype.waitForHostTransaction;
+
+const waitForHostTransactionETH = async function () {
+  const receiptPromise = remoteETHTxMap.get(this);
+  if (receiptPromise) return await receiptPromise;
+  else return await waitForHostTransaction.call(this);
 };
 
 const DECIMALS = {
@@ -331,6 +342,7 @@ export class sdkBurn {
     }
 
     //publishBurnRequest
+    if (burnRequest.asset === ethers.constants.AddressZero) burnRequest.waitForHostTransaction = waitForHostTransactionETH;
     try {
       if (burnRequest.asset !== ethers.constants.AddressZero) {
         const burn = await this.zeroUser.publishBurnRequest(burnRequest);
