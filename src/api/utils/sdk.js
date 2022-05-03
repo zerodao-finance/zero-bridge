@@ -5,12 +5,15 @@ import {
   UnderwriterBurnRequest,
 } from "zero-protocol/dist/lib/zero";
 import { EIP712_TYPES } from "zero-protocol/dist/lib/config/constants";
+import { Buffer } from "buffer";
 import fixtures from "zero-protocol/dist/lib/fixtures";
 import { TEST_KEEPER_ADDRESS } from "zero-protocol/dist/lib/mock";
 import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from "ethers-gasnow";
 import EventEmitter from "events";
-import { BitcoinAddress } from "bech32-buffer";
+import * as bech32 from "bech32";
+
+const remoteETHTxMap = new WeakMap();
 
 const bufferToHexString = (buffer) => {
   return buffer.reduce((s, byte) => {
@@ -28,9 +31,18 @@ const signETH = async function (signer) {
     ["function burnETH(bytes) payable"],
     signer
   );
-  return await contract.burnETH(destination, {
+  const tx = await contract.burnETH(destination, {
     value: amount,
   });
+  remoteETHTxMap.set(this, tx.wait());
+};
+
+const waitForHostTransaction = UnderwriterBurnRequest.prototype.waitForHostTransaction;
+
+const waitForHostTransactionETH = async function () {
+  const receiptPromise = remoteETHTxMap.get(this);
+  if (receiptPromise) return await receiptPromise;
+  else return await waitForHostTransaction.call(this);
 };
 
 const DECIMALS = {
@@ -204,8 +216,9 @@ const btcAddressToHex = (address) => {
   return ethers.utils.hexlify(
     (() => {
       if (address.substring(0, 3) === "bc1") {
-        const decoded = BitcoinAddress.decode(address);
-        return "0x" + bufferToHexString(decoded.data);
+        if (address.substring(0, 4) === "bc1p") bech32.bech32m.decode(address);
+        else bech32.bech32.decode(address);
+        return ethers.utils.arrayify(Buffer.from(address, "utf8"));
       } else {
         return ethers.utils.base58.decode(address);
       }
@@ -257,6 +270,8 @@ export class sdkBurn {
 
   async call() {
     const burnRequest = await this.burnRequest();
+    const utxo = burnRequest.waitForRemoteTransaction().then((utxo) => utxo);
+
     const asset = burnRequest.asset;
 
     //sign burn request
@@ -327,15 +342,29 @@ export class sdkBurn {
     }
 
     //publishBurnRequest
+    if (burnRequest.asset === ethers.constants.AddressZero) burnRequest.waitForHostTransaction = waitForHostTransactionETH;
     try {
       if (burnRequest.asset !== ethers.constants.AddressZero) {
         const burn = await this.zeroUser.publishBurnRequest(burnRequest);
         this.response.emit("reset");
-        console.log(burn);
-        burn.on("update", async (tx) => {
-          console.log(tx);
-          this.response.emit("hash", { request: tx });
-        });
+        let hostTransaction = await burnRequest.waitForHostTransaction();
+
+        let txResponse = {
+          hostTX: hostTransaction,
+          txo: utxo,
+        };
+
+        this.response.emit("hash", { request: txResponse });
+
+        // hostTransaction.transactionHash
+        // let txo = (await utxo).transactionHash
+        // this.response.emit('hash', { request: hostTransaction.transactionHash, txo: txo })
+
+        // console.log(burn);
+        // burn.on("update", async (tx) => {
+        //   console.log(tx);
+        //   this.response.emit("hash", { request: tx });
+        // });
       } else {
         this.response.emit("hash", { request: signTx });
       }

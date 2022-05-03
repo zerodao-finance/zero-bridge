@@ -45,6 +45,24 @@ export class NotificationHelper {
     return { id: id, dispatch: this.dispatch };
   }
 
+  createBurnCard(type = "burn", data) {
+    var id = uuidv4();
+    this.dispatch({
+      type: "ADD",
+      payload: {
+        id: id,
+        type: type,
+        timeout: null,
+        content: getCard,
+        callback: () => this.voidCallback(),
+        close: () => this._close(id),
+        ...data,
+      },
+    });
+
+    return { id: id, dispatch: this.dispatch };
+  }
+
   //callbacks
 
   voidCallback = () => {};
