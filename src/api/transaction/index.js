@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { TransactionReducer } from "./reducer";
+import { PersistanceStore } from "../storage/storage";
 
 /**
  * Transaction Logic
@@ -33,6 +34,11 @@ export const TransactionProvider = ({ children }) => {
     initialState
   );
   const providerValue = { transactions, txDispatch };
+
+  React.useEffect(async () => {
+    // await PersistanceStore.put_data({test: "this is test data 2"}, "pending")
+    console.log(await PersistanceStore.get_all_data());
+  }, [PersistanceStore]);
 
   return <Provider value={providerValue}>{children}</Provider>;
 };

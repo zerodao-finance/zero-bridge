@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import async from "async";
+import { PersistanceStore } from "../storage/storage";
 
 export class TransactionHelper {
   static ADD = "ADD";
@@ -41,6 +42,8 @@ export class TransactionHelper {
         },
       },
     };
+
+    PersistanceStore.add_data(id, data, "pending");
     this.dispatch(data);
     return data;
   }
@@ -56,5 +59,7 @@ export class TransactionHelper {
         data: _data,
       },
     });
+    PersistanceStore.add_data(_id, _data, "complete");
+    // PersitanceStore
   }
 }

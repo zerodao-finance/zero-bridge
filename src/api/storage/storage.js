@@ -1,10 +1,24 @@
 import hash from "object-hash";
+import { TransactionHistory } from "../../ui/molecules/history/history.request";
 class IndexedDBPeristanceStrategy {
   strategy = window.indexedDB;
   objectStore = "Transactions";
   db = undefined;
+
+  _loading = true;
+
+  get loading() {
+    return this._loading;
+  }
+
+  set loading(value) {
+    if (value == this._loading) return;
+
+    this._loading = value;
+  }
+
   constructor(store_name, _version = undefined) {
-    (async () => this.open_store(store_name, _version))();
+    (async () => await this.open_store(store_name, _version))();
   }
 
   promiseReq(req) {
@@ -31,7 +45,10 @@ class IndexedDBPeristanceStrategy {
       };
     }
 
-    this.db = await this.promiseReq(dbReq);
+    this.db = this.promiseReq(dbReq).then((value) => {
+      this.loading = false;
+      return value;
+    });
   }
 
   async close_store() {
@@ -50,13 +67,28 @@ class IndexedDBPeristanceStrategy {
     await tx.complete;
   }
 
+  async add_data(id, data, status) {
+    let tx = (await this.db).transaction([this.objectStore], "readwrite");
+    let store = tx.objectStore(this.objectStore);
+
+    await store.put({
+      tx: id,
+      data: JSON.stringify(data),
+      date: Date.now(),
+      status: status,
+    });
+
+    await tx.complete;
+  }
+
   async put_data(data, status) {
-    let tx = await this.db.transaction([this.objectStore], "readwrite");
+    let tx = await this.db;
+    // let tx = await this.db.transaction([this.objectStore], "readwrite");
     let store = tx.objectStore(this.objectStore);
 
     await store.put({
       tx: hash(data),
-      data: data,
+      data: JSON.stringify(data),
       date: Date.now(),
       status: status,
     });
@@ -95,7 +127,7 @@ class IndexedDBPeristanceStrategy {
 
   async get_all_data() {
     if (this.db) {
-      let tx = await this.db.transaction([this.objectStore], "readwrite");
+      let tx = (await this.db).transaction([this.objectStore], "readwrite");
       let store = tx.objectStore(this.objectStore);
 
       return await this.promiseReq(await store.getAll());
