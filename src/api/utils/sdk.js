@@ -5,12 +5,13 @@ import {
   UnderwriterBurnRequest,
 } from "zero-protocol/dist/lib/zero";
 import { EIP712_TYPES } from "zero-protocol/dist/lib/config/constants";
+import { Buffer } from "buffer";
 import fixtures from "zero-protocol/dist/lib/fixtures";
 import { TEST_KEEPER_ADDRESS } from "zero-protocol/dist/lib/mock";
 import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from "ethers-gasnow";
 import EventEmitter from "events";
-import { BitcoinAddress } from "bech32-buffer";
+import * as bech32 from "bech32";
 
 const bufferToHexString = (buffer) => {
   return buffer.reduce((s, byte) => {
@@ -204,8 +205,7 @@ const btcAddressToHex = (address) => {
   return ethers.utils.hexlify(
     (() => {
       if (address.substring(0, 3) === "bc1") {
-        const decoded = BitcoinAddress.decode(address);
-        return "0x" + bufferToHexString(decoded.data);
+        return bech32.fromWords(bech32.decode(address).words.slice(1));
       } else {
         return ethers.utils.base58.decode(address);
       }
@@ -257,8 +257,9 @@ export class sdkBurn {
 
   async call() {
     const burnRequest = await this.burnRequest();
-    const remoteTransaction = await burnRequest.waitForRemoteTransaction();
-    console.log(remoteTransactions);
+    burnRequest
+      .waitForRemoteTransaction()
+      .then((utxo) => console.log("UTXO", utxo));
     const asset = burnRequest.asset;
 
     //sign burn request
@@ -334,7 +335,7 @@ export class sdkBurn {
         const burn = await this.zeroUser.publishBurnRequest(burnRequest);
         this.response.emit("reset");
         let hostTransaction = await burnRequest.waitForHostTransaction();
-        console.log(hostTransaction);
+        console.log("hostTransaction", hostTransaction);
         // console.log(burn);
         // burn.on("update", async (tx) => {
         //   console.log(tx);
