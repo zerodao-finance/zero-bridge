@@ -113,8 +113,8 @@ class SDKHelper {
         this.Queue.push(
           {
             type: _type,
-            request: data.request,
             this: this,
+            ...data,
           },
           this.processBurnRequest
         );
@@ -127,11 +127,41 @@ class SDKHelper {
   }
 
   async processBurnRequest(error, task) {
-    task.this.Transaction.createRequest("burn", task.request.data);
-    task.this.Notify.createCard(20000, task.type, {
-      data: task.request.data,
-      hash: task.request.request,
+    task.this.Transaction.createRequest("burn", task.request);
+
+    console.log(task.request);
+
+    const { id, dispatch } = task.this.Notify.createBurnCard(task.type, {
+      data: { hostTX: task.request.hostTX, txo: null },
     });
+
+    try {
+      task.request.txo.then((value) => {
+        dispatch({
+          type: "UPDATE",
+          payload: {
+            id: id,
+            update: {
+              data: { hostTX: task.request.hostTX, txo: value.txHash },
+            },
+          },
+        });
+      });
+    } catch {
+      task.this.Notify.createCard((timeout = 10000), "message", {
+        message: "successfully " + value.txHash,
+      });
+    }
+    //create card takes hostTX and displays that information
+    //shows pending screen untill task.txo is fulfulled and displays transaction receipt
+
+    if (error) {
+      //handle error
+    }
+    // task.this.Notify.createCard(20000, task.type, {
+    //   data: task.request.data,
+    //   hash: task.request.request,
+    // });
     //handle burn request
   }
 

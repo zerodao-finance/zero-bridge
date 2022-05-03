@@ -3,6 +3,7 @@ import { ProgressDots } from "../../atoms/progress/progress.dots";
 import { truncateAddress } from "../../../api/utils/textUtilities";
 
 export const getCard = (_ref) => {
+  console.log("recived", _ref);
   switch (_ref.type) {
     case "error":
       return ErrorCard({ ..._ref });
@@ -21,7 +22,7 @@ export const getCard = (_ref) => {
   }
 };
 
-export const BurnCard = ({ id, close, hash, data }) => {
+export const BurnCard = ({ id, close, data }) => {
   console.log(data);
   return (
     <div
@@ -34,13 +35,25 @@ export const BurnCard = ({ id, close, hash, data }) => {
       >
         &times;
       </span>
-      <div className="text-black dark:text-white">{id}</div>
-      <div className="text-black dark:text-white gap-2">
+      <div className="text-black dark:text-white">Release Transaction:</div>
+      <div className="text-black dark:text-white flex flex-row gap-2">
         <span>View on Etherscan</span>
-        <span className="underline text-blue-100">
-          <a href={`https://etherscan.io/tx/${hash}`}>
-            {truncateAddress(hash)}
+        <span className="underline text-orange-500">
+          <a href={`https://etherscan.io/tx/${data.hostTX.transactionHash}`}>
+            {truncateAddress(data.hostTX.transactionHash)}
           </a>
+        </span>
+      </div>
+      <div className="text-black dark:text-white flex flew-row gap-2">
+        <span>Progress:</span>
+        <span>
+          {data.txo ? (
+            <a href={`https://mempool.space/tx/${data.txo}`}>
+              {truncateAddress(data.txo)}
+            </a>
+          ) : (
+            <p className="animate-pulse">pending</p>
+          )}
         </span>
       </div>
     </div>

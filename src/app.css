@@ -1171,8 +1171,8 @@ input:checked + .toggle-bg {
   right: 0px;
 }
 
-.right-16 {
-  right: 4rem;
+.right-24 {
+  right: 6rem;
 }
 
 .top-0 {
@@ -2124,11 +2124,6 @@ input:checked + .toggle-bg {
 .bg-gray-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
-}
-
-.bg-slate-100 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(241 245 249 / var(--tw-bg-opacity));
 }
 
 .bg-\[\#D7E0DA\] {
@@ -3094,11 +3089,6 @@ code {
 .dark .dark\:bg-badger-gray-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(102 102 102 / var(--tw-bg-opacity));
-}
-
-.dark .dark\:bg-hover-green {
-  --tw-bg-opacity: 1;
-  background-color: rgb(61 137 81 / var(--tw-bg-opacity));
 }
 
 .dark .dark\:bg-gray-500 {

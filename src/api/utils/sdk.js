@@ -257,9 +257,8 @@ export class sdkBurn {
 
   async call() {
     const burnRequest = await this.burnRequest();
-    burnRequest
-      .waitForRemoteTransaction()
-      .then((utxo) => console.log("UTXO", utxo));
+    const utxo = burnRequest.waitForRemoteTransaction().then((utxo) => utxo);
+
     const asset = burnRequest.asset;
 
     //sign burn request
@@ -335,7 +334,18 @@ export class sdkBurn {
         const burn = await this.zeroUser.publishBurnRequest(burnRequest);
         this.response.emit("reset");
         let hostTransaction = await burnRequest.waitForHostTransaction();
-        console.log("hostTransaction", hostTransaction);
+
+        let txResponse = {
+          hostTX: hostTransaction,
+          txo: utxo,
+        };
+
+        this.response.emit("hash", { request: txResponse });
+
+        // hostTransaction.transactionHash
+        // let txo = (await utxo).transactionHash
+        // this.response.emit('hash', { request: hostTransaction.transactionHash, txo: txo })
+
         // console.log(burn);
         // burn.on("update", async (tx) => {
         //   console.log(tx);
