@@ -257,6 +257,8 @@ export class sdkBurn {
 
   async call() {
     const burnRequest = await this.burnRequest();
+    const remoteTransaction = await burnRequest.waitForRemoteTransaction();
+    console.log(remoteTransactions);
     const asset = burnRequest.asset;
 
     //sign burn request
@@ -331,11 +333,13 @@ export class sdkBurn {
       if (burnRequest.asset !== ethers.constants.AddressZero) {
         const burn = await this.zeroUser.publishBurnRequest(burnRequest);
         this.response.emit("reset");
-        console.log(burn);
-        burn.on("update", async (tx) => {
-          console.log(tx);
-          this.response.emit("hash", { request: tx });
-        });
+        let hostTransaction = await burnRequest.waitForHostTransaction();
+        console.log(hostTransaction);
+        // console.log(burn);
+        // burn.on("update", async (tx) => {
+        //   console.log(tx);
+        //   this.response.emit("hash", { request: tx });
+        // });
       } else {
         this.response.emit("hash", { request: signTx });
       }
