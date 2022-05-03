@@ -20237,7 +20237,7 @@ zepto@^1.2.0:
 
 "zero-protocol@https://github.com/zerodao-finance/zero-protocol":
   version "0.1.0"
-  resolved "https://github.com/zerodao-finance/zero-protocol#d007f00dbf36fb3a100d541d1392c67f2189385b"
+  resolved "https://github.com/zerodao-finance/zero-protocol#7b73c71d9c4104a4d71386fbf8603d6de4fde0f5"
   dependencies:
     "@0x/utils" "^6.4.3"
     "@ethersproject/bytes" "^5.4.0"
