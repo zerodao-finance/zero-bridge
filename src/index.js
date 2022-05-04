@@ -23,7 +23,7 @@ ReactDOM.render(
     <NotificationProvider>
       <TransactionProvider>
         <StateProvider>
-          <HashRouter hashType="hashbang">
+          <HashRouter>
             <DashboardPage />
           </HashRouter>
         </StateProvider>
