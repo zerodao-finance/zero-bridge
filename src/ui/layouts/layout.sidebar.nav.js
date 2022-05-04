@@ -1,16 +1,16 @@
-/* This example requires Tailwind CSS v2.0+ */
 import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { FaRegWindowClose } from "react-icons/fa";
 import { AiOutlineMenu } from "react-icons/ai";
 import { DefaultNavigationSidebar } from "../molecules/navigation/navigation.sidebar.default";
 
-export function LayoutSidebarNavigation({ children, changeModule }) {
+export function LayoutSidebarNavigation({ children, changeModule, module }) {
   const [open, setOpen] = useState(false);
 
+  // Close mobile nav after click
   useEffect(() => {
     setTimeout(() => setOpen(false), 200);
-  }, [children]);
+  }, [children, module]);
 
   return (
     <>

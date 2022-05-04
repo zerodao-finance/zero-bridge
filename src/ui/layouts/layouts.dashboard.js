@@ -5,25 +5,15 @@ import { MobileNavigationSidebar } from "../molecules/navigation/navigation.side
 import { useActiveModuleSwitcher } from "../../api/global/interfaces/interfaces.active.module";
 import { useCheckWalletConnected } from "../../api/global/interfaces/interfaces.wallet";
 import { useBridgePage } from "../../api/global/interfaces/interface.bridge";
-import UnderConstruction from "../atoms/helpers/under-construction";
 import { ManageTransaction } from "../molecules/manage/manage.request";
 import { TransactionHistory } from "../molecules/history/history.request";
-import { Route, Routes, useNavigate, useResolvedPath } from "react-router-dom";
-import { useEffect } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 export const DashboardLayout = () => {
-  const { changeActiveModule, isLoading } = useActiveModuleSwitcher();
+  const { changeActiveModule, isLoading, currentModule } =
+    useActiveModuleSwitcher();
   const { getWalletConnectionProps } = useCheckWalletConnected();
   const { getBridgePageProps } = useBridgePage();
-
-  // For Routing
-  const navigate = useNavigate();
-  const resolved = useResolvedPath(window.location.pathname);
-  useEffect(() => {
-    if (resolved.pathname === "/") {
-      navigate("/transfer", { replace: true });
-    }
-  }, []);
 
   return (
     <>
@@ -31,7 +21,10 @@ export const DashboardLayout = () => {
         <div className="row-span-1" id="navigation">
           <NavigationTopBar />
           <div className="w-1/2 md:w-1/4 right-0 absolute mx-2">
-            <LayoutSidebarNavigation changeModule={changeActiveModule}>
+            <LayoutSidebarNavigation
+              changeModule={changeActiveModule}
+              module={currentModule}
+            >
               <MobileNavigationSidebar changeModule={changeActiveModule} />
             </LayoutSidebarNavigation>
           </div>
@@ -57,6 +50,7 @@ export const DashboardLayout = () => {
                 />
                 <Route path="/manage" element={<ManageTransaction />} />
                 <Route path="/history" element={<TransactionHistory />} />
+                <Route path="/" element={<Navigate replace to="/transfer" />} />
               </Routes>
             </>
           )}
