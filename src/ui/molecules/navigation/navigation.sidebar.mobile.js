@@ -2,42 +2,43 @@
 import { RiFileListLine, RiExchangeFundsLine } from "react-icons/ri";
 import { MdOutlinePending } from "react-icons/md";
 import { BiTransfer } from "react-icons/bi";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export function MobileNavigationSidebar() {
-  const navigate = useNavigate();
-
-  function action(e) {
-    if (e.target.id === "bridge") {
-      navigate(`/transfer`);
-    } else {
-      navigate(`/${e.target.id}`);
-    }
-  }
-
+export function MobileNavigationSidebar({ changeModule }) {
   return (
-    <nav className="space-y-8" aria-label="Sidebar">
-      <div onClick={action} className="flex flex-row gap-3 " id="bridge">
-        <RiExchangeFundsLine className="h-[1.2rem] w-[1.2rem]" />
-        <button onClick={action} id="bridge">
-          Bridge Tool
-        </button>
-      </div>
-      <div onClick={action} className="flex flex-row gap-3 " id="manage">
-        <MdOutlinePending className="h-[1.2rem] w-[1.2rem]" />
+    <nav aria-label="Sidebar">
+      <Link to="/transfer">
+        <div
+          className="flex flex-row gap-3 py-3"
+          id="bridge"
+          onClick={(e) => changeModule(e.currentTarget.id)}
+        >
+          <RiExchangeFundsLine className="h-[1.2rem] w-[1.2rem]" />
+          <button id="bridge">Bridge Tool</button>
+        </div>
+      </Link>
+      <Link to="/manage">
+        <div
+          className="flex flex-row gap-3 py-3"
+          id="manage"
+          onClick={(e) => changeModule(e.currentTarget.id)}
+        >
+          <MdOutlinePending className="h-[1.2rem] w-[1.2rem]" />
+          <button id="manage">Manage Transactions</button>
+        </div>
+      </Link>
+      <Link to="/history">
+        <div
+          className="flex flex-row gap-3 py-3"
+          id="history"
+          onClick={(e) => changeModule(e.currentTarget.id)}
+        >
+          <BiTransfer className="h-[1.2rem] w-[1.2rem]" />
 
-        <button onClick={action} id="manage">
-          Manage Transactions
-        </button>
-      </div>
-      <div onClick={action} className="flex flex-row gap-3 " id="history">
-        <BiTransfer className="h-[1.2rem] w-[1.2rem]" />
-
-        <button onClick={action} id="history">
-          History
-        </button>
-      </div>
-      <div className="flex flex-row gap-3 ">
+          <button id="history">History</button>
+        </div>
+      </Link>
+      <div className="flex flex-row gap-3 py-3">
         <RiFileListLine className="h-[1.2rem] w-[1.2rem]" />
         <a href="https://docs.zerodao.com" target="_blank">
           <button>Documentation</button>

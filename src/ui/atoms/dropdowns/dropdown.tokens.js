@@ -6,7 +6,7 @@ import { ReactComponent as renBTC } from "../../../assets/svg-coins/renbtc.svg";
 import { ReactComponent as WBTC } from "../../../assets/svg-coins/wbtc.svg";
 import { ReactComponent as ibBTC } from "../../../assets/svg-coins/ibbtc.svg";
 import { ReactComponent as USDC } from "../../../assets/svg-coins/usdc.svg";
-import { useNavigate, useResolvedPath } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -21,6 +21,8 @@ function classNames(...classes) {
 * Default Dropdown Items: ETH, WBTC, ibBTC, renBTC, USDC
 */
 function TokenDropdown({ token = "renBTC", setToken, tokensRemoved = [] }) {
+  const location = useLocation();
+
   const items = [
     {
       text: "renBTC",
@@ -59,17 +61,24 @@ function TokenDropdown({ token = "renBTC", setToken, tokensRemoved = [] }) {
   };
 
   // For Routing
-  const navigate = useNavigate();
-  const resolved = useResolvedPath(window.location.pathname);
   useEffect(() => {
-    if (resolved.pathname === "/transfer" || resolved.pathname === "/release") {
-      navigate(resolved.pathname + "/" + token);
+    if (
+      window.location.hash === "#/transfer" ||
+      window.location.hash === "#/release"
+    ) {
+      window.location.hash = window.location.hash + "/" + token;
     } else {
-      const splitPath = resolved.pathname.split("/");
-      setToken(splitPath[2]);
-      navigate("/" + splitPath[1] + "/" + splitPath[2]);
+      const base = window.location.hash.split("/");
+      window.location.hash = base[0] + "/" + base[1] + "/" + token;
     }
   }, [token]);
+
+  useEffect(() => {
+    const base = window.location.hash.split("/");
+    if (base.length === 3) {
+      setToken(base[2]);
+    }
+  }, [location]);
 
   return (
     <Menu as="div" className="relative inline-block text-left max-w-[100%]">
@@ -97,18 +106,7 @@ function TokenDropdown({ token = "renBTC", setToken, tokensRemoved = [] }) {
           {items
             .filter((el) => !tokensRemoved.includes(el.text))
             .map((item, index) => (
-              <div
-                key={index}
-                onClick={(e) => {
-                  setToken(e.target.innerText);
-                  navigate(
-                    "/" +
-                      resolved.pathname.split("/")[1] +
-                      "/" +
-                      e.target.innerText
-                  );
-                }}
-              >
+              <div key={index} onClick={(e) => setToken(e.target.innerText)}>
                 <Menu.Item>
                   {({ active }) => (
                     <div
