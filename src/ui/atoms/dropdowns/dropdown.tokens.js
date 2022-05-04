@@ -20,7 +20,12 @@ function classNames(...classes) {
 * Additional Props: 'tokensRemoved' which is an array of tokens you do not want in dropdown
 * Default Dropdown Items: ETH, WBTC, ibBTC, renBTC, USDC
 */
-function TokenDropdown({ token = "renBTC", setToken, tokensRemoved = [] }) {
+function TokenDropdown({
+  token = "renBTC",
+  setToken,
+  tokensRemoved = [],
+  tokensDisabled = [],
+}) {
   const location = useLocation();
 
   const items = [
@@ -102,19 +107,29 @@ function TokenDropdown({ token = "renBTC", setToken, tokensRemoved = [] }) {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="origin-top-right py-1 absolute right-24 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
+        <Menu.Items className="origin-top-right py-1 absolute w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
           {items
             .filter((el) => !tokensRemoved.includes(el.text))
             .map((item, index) => (
-              <div key={index} onClick={(e) => setToken(e.target.innerText)}>
+              <div
+                key={index}
+                onClick={(e) => {
+                  if (!tokensDisabled.includes(e.target.innerText)) {
+                    setToken(e.target.innerText);
+                  }
+                }}
+              >
                 <Menu.Item>
                   {({ active }) => (
                     <div
                       className={classNames(
-                        active
-                          ? "bg-badger-yellow-200 text-gray-900"
+                        active && !tokensDisabled.includes(item.text)
+                          ? "bg-badger-yellow-200 text-black font-medium"
                           : "text-gray-700",
-                        "flex items-center px-4 py-2 text-sm cursor-pointer"
+                        tokensDisabled.includes(item.text)
+                          ? "opacity-50 cursor-not-allowed"
+                          : "cursor-pointer",
+                        "flex items-center px-4 py-2 text-sm transition duration-300"
                       )}
                     >
                       <item.icon
