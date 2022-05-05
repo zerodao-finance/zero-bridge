@@ -5,9 +5,6 @@ import _ from "lodash";
 
 export const TransactionHistory = () => {
   const { pending, completed } = useTransactionContext();
-
-  console.log(completed);
-
   return (
     <ManageTransactionLayout title="Transaction History">
       {completed.transfer.map((d, index) => {

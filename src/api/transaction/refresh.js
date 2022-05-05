@@ -21,7 +21,6 @@ export function usePersistanceRefresh(dispatch) {
         result[key == "pending" ? key : "completed"] = tx;
       }, {})
       .value();
-    console.log(transformedData);
     dispatch({ type: "INIT", payload: transformedData });
     setInitialState(transformedData);
   }, []);
