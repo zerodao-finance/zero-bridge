@@ -128,7 +128,7 @@ class SDKHelper {
   }
 
   async processBurnRequest(error, task) {
-    task.this.Transaction.createRequest("burn", task.request);
+    let data = task.this.Transaction.createRequest("burn", task.request);
 
     console.log(task.request);
 
@@ -147,6 +147,8 @@ class SDKHelper {
             },
           },
         });
+
+        data.payload.data.complete();
       });
     } catch {
       task.this.Notify.createCard((timeout = 10000), "message", {
