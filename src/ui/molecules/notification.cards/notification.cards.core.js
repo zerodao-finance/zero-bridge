@@ -79,6 +79,7 @@ export const TransferCard = ({ id, close, data, max, current }) => {
     </div>
   );
 };
+
 export const ErrorCard = ({ type, message, id, callback, close }) => {
   console.error(message);
   return (
