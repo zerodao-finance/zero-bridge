@@ -4,7 +4,7 @@ import { ManageTransactionLayout } from "../../layouts/layout.manage";
 import _ from "lodash";
 export const ManageTransaction = ({}) => {
   const { pending, completed } = useTransactionContext();
-
+  console.log(pending);
   return (
     <ManageTransactionLayout title="Manage Transactions">
       {pending.transfer.map((d) => {

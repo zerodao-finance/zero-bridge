@@ -226,8 +226,12 @@ class SDKHelper {
       confirmed.on("confirmation", (confs, target) => {
         initiate(target);
         if (confs >= target) {
-          forwarded.dispatch({ type: "REMOVE", payload: { id: forwarded.id } });
+          console.log(
+            "complete function interface",
+            data.payload.data.complete
+          );
           data.payload.data.complete();
+          forwarded.dispatch({ type: "REMOVE", payload: { id: forwarded.id } });
         } else {
           forwarded.dispatch({
             type: "UPDATE",

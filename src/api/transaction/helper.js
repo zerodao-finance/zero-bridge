@@ -36,6 +36,7 @@ export class TransactionHelper {
                 data: this,
               },
             });
+            PersistanceStore.add_data(this.id, this, "completed");
             return id;
           },
           _data,
@@ -44,7 +45,7 @@ export class TransactionHelper {
     };
 
     console.log("creating transaction with id:", id);
-    PersistanceStore.add_data(id, data, "pending");
+    PersistanceStore.add_data(id, data.payload.data, "pending");
     this.dispatch(data);
     return data;
   }

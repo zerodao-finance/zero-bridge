@@ -59,5 +59,7 @@ export const TransactionReducer = (state, action) => {
           ],
         },
       };
+    case "INIT":
+      return action.payload;
   }
 };
