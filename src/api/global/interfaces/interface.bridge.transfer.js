@@ -50,7 +50,7 @@ export const useBridgeInput = () => {
       type: "UPDATE",
       module: "transfer",
       effect: "input",
-      data: { token: e, amount: "0" },
+      data: { token: e, amount: "" },
     });
   };
 

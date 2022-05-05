@@ -12,11 +12,12 @@ export const useInputHooks = (module) => {
   };
 
   const updateAmount = (e) => {
+    const amount = e.target.value !== "" ? e.target.value : "";
     dispatch({
       type: "UPDATE",
       module: module,
       effect: "input",
-      data: { amount: e.target.value },
+      data: { amount: amount },
     });
   };
 

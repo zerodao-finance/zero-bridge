@@ -34,10 +34,6 @@ export const DashboardLayout = () => {
             <>Loading</>
           ) : (
             <>
-              <p className="pb-[.5rem] text-center font-bold dark:text-badger-gray-300">
-                {" "}
-                Bridge{" "}
-              </p>
               <Routes>
                 <Route
                   path="*"

@@ -17,7 +17,7 @@ export const useBridgeBurnInput = () => {
       type: "UPDATE",
       module: "burn",
       effect: "input",
-      data: { token, amount: e.target.value, destination },
+      data: { token, amount: amount, destination },
     });
   };
   const updateDestination = (e) => {
@@ -33,7 +33,7 @@ export const useBridgeBurnInput = () => {
       type: "UPDATE",
       module: "burn",
       effect: "input",
-      data: { destination, amount: "0", token: e },
+      data: { destination, amount: "", token: e },
     });
   };
 

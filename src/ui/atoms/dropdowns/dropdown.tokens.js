@@ -88,12 +88,12 @@ function TokenDropdown({
   return (
     <Menu as="div" className="relative inline-block text-left max-w-[100%]">
       <Menu.Button
-        className="inline-flex justify-center w-full rounded-md px-4 py-2 bg-transparent text-sm font-medium text-white items-center focus:outline-none justify-between"
+        className="inline-flex justify-center w-full rounded-md px-4 py-2 bg-transparent text-sm font-medium text-badger-white-400 items-center focus:outline-none justify-between"
         style={{ minWidth: "150px" }}
       >
         <span className="flex items-center max-w-[100%]">
           {determineIcon(token)}
-          <p className="dark:text-white text-gray-500">{token}</p>
+          <p className="dark:text-badger-white-400 text-gray-500">{token}</p>
         </span>
         <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
       </Menu.Button>

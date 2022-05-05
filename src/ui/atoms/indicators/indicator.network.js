@@ -13,7 +13,7 @@ export const NetworkIndicator = ({ keeper }) => {
       <div
         id="tooltip-keepers"
         role="tooltip"
-        className="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+        className="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-badger-white-400 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
       >
         {keeper.length > 0 ? "Keeper Connected" : "Searching For Keepers"}
         <div className="tooltip-arrow" data-popper-arrow></div>
