@@ -2,14 +2,10 @@ import { PrimaryRoundedButton } from "../../atoms";
 import { NetworkIndicator } from "../../atoms/indicators/indicator.network";
 import { useWalletConnection } from "../../../api/global/interfaces/interfaces.wallet";
 import { useZero } from "../../../api/global/interfaces/interfaces.zero";
-import { useScreenMode } from "../../../api/global/interfaces/interfaces.screenmode";
-import { FaSun } from "react-icons/fa";
-import { FaMoon } from "react-icons/fa";
 
 export const NavigationTopBar = ({}) => {
   const { connect, disconnect, wallet, isLoading } = useWalletConnection();
   const { keeper } = useZero();
-  const { themeMode, toggleScreenMode } = useScreenMode();
 
   function truncateAddress(address) {
     return address.slice(0, 6) + "..." + address.slice(-4);

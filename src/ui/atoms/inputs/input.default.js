@@ -10,7 +10,6 @@ export const DefaultInput = ({
   placeholder,
   withBorder = true,
 }) => {
-  console.log("value: ", type, value);
   return (
     <div className={`w-full text-right ${withBorder && "p-2"}`}>
       <input
