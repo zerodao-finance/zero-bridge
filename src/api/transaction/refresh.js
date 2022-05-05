@@ -22,7 +22,6 @@ export function usePersistanceRefresh(dispatch) {
       }, {})
       .value();
 
-    console.log(transformedData);
     dispatch({ type: "INIT", payload: transformedData });
     setInitialState(transformedData);
   }, []);
