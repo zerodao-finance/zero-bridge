@@ -16,7 +16,7 @@ export const NavigationTopBar = ({}) => {
   }
 
   return (
-    <nav className="w-screen flex flex-row justify-between items-center sticky top-0 px-2 py-2">
+    <nav className="w-screen flex flex-row justify-between items-center bg-white dark:bg-badger-black-500 mb-8 sticky top-0 px-8 py-2">
       <div id="logo">
         <img
           src="/badger-logo.svg"
