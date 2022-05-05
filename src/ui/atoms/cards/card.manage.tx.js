@@ -8,19 +8,21 @@ export const ManageTransactionCard = ({ data, type }) => {
       className="bg-gray-300 rounded-md shadow-md text-xs max-w-[300px] px-4 py-1 flex flex-col gap-1"
     >
       <div className="grid grid-cols-2 justify-items-center">
-        <p className="text-md font-bold">{data.type} :</p>
+        <p className="text-md font-bold">{type} :</p>
         <p className="text-emerald-500">
-          {truncateAddress(data._data.contractAddress).toUpperCase()}
+          {truncateAddress(
+            data._data ? data._data.contractAddress : data.contractAddress
+          ).toUpperCase()}
         </p>
       </div>
       <hr className="border-black" />
       <div className="grid grid-cols-2">
         <span>to:</span>
         <span className="text-xs">
-          {truncateAddress(data._data.to).toUpperCase()}
+          {truncateAddress(data._data ? data._data.to : data.to).toUpperCase()}
         </span>
         <span> amount </span>
-        <span> {data._data.amount} </span>
+        <span> {data._data ? data._data.amount : data.amount} </span>
       </div>
     </div>
   );
