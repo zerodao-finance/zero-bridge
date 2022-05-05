@@ -17,7 +17,7 @@ export const useBridgeBurnInput = () => {
       type: "UPDATE",
       module: "burn",
       effect: "input",
-      data: { token, amount: amount, destination },
+      data: { token, amount: e.target.value, destination },
     });
   };
   const updateDestination = (e) => {
