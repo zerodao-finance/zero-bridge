@@ -130,8 +130,6 @@ class SDKHelper {
   async processBurnRequest(error, task) {
     task.this.Transaction.createRequest("burn", task.request);
 
-    console.log(task.request);
-
     const { id, dispatch } = task.this.Notify.createBurnCard(task.type, {
       data: { hostTX: task.request.hostTX, txo: null },
     });
@@ -182,10 +180,7 @@ class SDKHelper {
       //testing
 
       const confirmed = await deposit.confirmed();
-      console.log(confirmed);
-
       function _initiate(target) {
-        console.log("target hit");
         const { id, dispatch } = task.this.Notify.createTXCard(
           true,
           task.type,
@@ -205,10 +200,6 @@ class SDKHelper {
       confirmed.on("confirmation", (confs, target) => {
         initiate(target);
         if (confs >= target) {
-          console.log(
-            "complete function interface",
-            data.payload.data.complete
-          );
           data.payload.data.complete();
           forwarded.dispatch({ type: "REMOVE", payload: { id: forwarded.id } });
         } else {
