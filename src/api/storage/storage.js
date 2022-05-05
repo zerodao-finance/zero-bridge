@@ -1,5 +1,5 @@
 import hash from "object-hash";
-import { TransactionHistory } from "../../ui/molecules/history/history.request";
+
 class IndexedDBPeristanceStrategy {
   strategy = window.indexedDB;
   objectStore = "Transactions";

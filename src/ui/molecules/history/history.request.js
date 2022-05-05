@@ -2,7 +2,8 @@ import { useTransactionContext } from "../../../api/transaction";
 import { ManageTransactionCard } from "../../atoms/cards/card.manage.tx";
 import { ManageTransactionLayout } from "../../layouts/layout.manage";
 import _ from "lodash";
-export const TransactionHistory = ({}) => {
+
+export const TransactionHistory = () => {
   const { pending, completed } = useTransactionContext();
 
   return (
