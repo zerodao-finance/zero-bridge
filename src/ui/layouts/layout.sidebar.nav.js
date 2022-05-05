@@ -15,7 +15,7 @@ export function LayoutSidebarNavigation({ children, changeModule, module }) {
   return (
     <>
       <div
-        className={`w-min dark:text-white right-0 absolute md:hidden items-center gap-2 capitalize font-light text-lg z-[50] ${
+        className={`w-min dark:text-badger-white-400 right-0 absolute md:hidden items-center gap-2 capitalize font-light text-lg z-[50] ${
           open ? "hidden" : "flex"
         }`}
         onClick={() => setOpen(true)}

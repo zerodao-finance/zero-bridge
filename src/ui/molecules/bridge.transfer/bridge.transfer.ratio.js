@@ -3,7 +3,7 @@ import { SliderInput } from "../../atoms/inputs/input.slider";
 
 export const BridgeTransferRatio = ({ ratio, effect }) => {
   return (
-    <div className="flex flex-col gap-2 self-center text-black dark:text-white scale-[0.8] md:scale-[1]">
+    <div className="flex flex-col gap-2 self-center text-black dark:text-badger-white-400 scale-[0.8] md:scale-[1]">
       <div className="flex flex-row w-full justify-between items-center px-5">
         <span className="flex w-[55px] justify-start">
           <FaEthereum className="fill-gray-900 dark:fill-gray-300 h-[1.3rem] w-max text-xs pr-[0.5rem]" />

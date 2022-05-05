@@ -50,7 +50,7 @@ export const BridgeTransferFeeInformation = ({
           <span>{opFee} BTC</span>
           <span
             className={
-              "italic w-full text-right font-normal text-[10px] text-badger-yellow-neon-400 " +
+              "italic w-full text-right font-normal text-[12px] text-badger-yellow-neon-400 " +
               (feeDetailOpen ? "-mt-4" : "-mt-1")
             }
           >
@@ -62,7 +62,7 @@ export const BridgeTransferFeeInformation = ({
         <span> Est. Gas Cost </span>
         <div className="grid">
           <span>{gasFee} BTC</span>
-          <span className="italic w-full text-right font-normal text-[10px] -mt-1 text-badger-yellow-neon-400">
+          <span className="italic w-full text-right font-normal text-[12px] -mt-1 text-badger-yellow-neon-400">
             ~ {getFormattedFiatPrice(gasFee)}
           </span>
         </div>
@@ -71,7 +71,7 @@ export const BridgeTransferFeeInformation = ({
         <span> Total Est. Fees </span>
         <div className="grid">
           <span>{totalFees} BTC</span>
-          <span className="italic w-full text-right font-normal text-[10px] -mt-1 text-badger-yellow-neon-400">
+          <span className="italic w-full text-right font-normal text-[12px] -mt-1 text-badger-yellow-neon-400">
             ~ {getFormattedFiatPrice(totalFees)}
           </span>
         </div>

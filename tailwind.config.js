@@ -32,13 +32,28 @@ module.exports = {
           600: "#83b9e6",
         },
         "badger-white": {
-          400: "#e2e2e2",
+          400: "#e6e6e6",
+        },
+        "badger-text-secondary": {
+          400: "#FFFFFF99",
         },
       },
       fontFamily: {
-        header: ["Open Sans", "Helvetica", "Arial", "sans-serif"],
-        caption: ["Open Sans", "Helvetica", "Arial", "sans-serif"],
-        sans: ["Open Sans", "Helvetica", "Arial", "sans-serif"],
+        header: [
+          "Satoshi",
+          "IBM Plex Sans",
+          "Helvetica",
+          "Arial",
+          "sans-serif",
+        ],
+        caption: [
+          "Satoshi",
+          "IBM Plex Sans",
+          "Helvetica",
+          "Arial",
+          "sans-serif",
+        ],
+        sans: ["Satoshi", "IBM Plex Sans", "Helvetica", "Arial", "sans-serif"],
       },
       animation: {
         "jello-horizontal": "jello-horizontal 0.8s ease   both",
