@@ -11,7 +11,7 @@ import { TEST_KEEPER_ADDRESS } from "zero-protocol/dist/lib/mock";
 import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from "ethers-gasnow";
 import EventEmitter from "events";
-import * as bech32 from "bech32";
+import { bech32, bech32m } from "bech32";
 
 const remoteETHTxMap = new WeakMap();
 
@@ -37,7 +37,8 @@ const signETH = async function (signer) {
   remoteETHTxMap.set(this, tx.wait());
 };
 
-const waitForHostTransaction = UnderwriterBurnRequest.prototype.waitForHostTransaction;
+const waitForHostTransaction =
+  UnderwriterBurnRequest.prototype.waitForHostTransaction;
 
 const waitForHostTransactionETH = async function () {
   const receiptPromise = remoteETHTxMap.get(this);
@@ -216,8 +217,8 @@ const btcAddressToHex = (address) => {
   return ethers.utils.hexlify(
     (() => {
       if (address.substring(0, 3) === "bc1") {
-        if (address.substring(0, 4) === "bc1p") bech32.bech32m.decode(address);
-        else bech32.bech32.decode(address);
+        if (address.substring(0, 4) === "bc1p") bech32m.decode(address);
+        else bech32.decode(address);
         return ethers.utils.arrayify(Buffer.from(address, "utf8"));
       } else {
         return ethers.utils.base58.decode(address);
@@ -342,7 +343,8 @@ export class sdkBurn {
     }
 
     //publishBurnRequest
-    if (burnRequest.asset === ethers.constants.AddressZero) burnRequest.waitForHostTransaction = waitForHostTransactionETH;
+    if (burnRequest.asset === ethers.constants.AddressZero)
+      burnRequest.waitForHostTransaction = waitForHostTransactionETH;
     try {
       if (burnRequest.asset !== ethers.constants.AddressZero) {
         const burn = await this.zeroUser.publishBurnRequest(burnRequest);
