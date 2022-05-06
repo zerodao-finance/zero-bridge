@@ -2,6 +2,7 @@ import { usePopup } from "../../../api/transaction/status";
 import * as React from "react";
 import { defaultTo } from "lodash";
 import { getStatus } from "../../../api/transaction/status";
+import { AiOutlineConsoleSql } from "react-icons/ai";
 
 export const ManageTransactionCard = ({ data, type }) => {
   const [details, toggle] = React.useState(false);
@@ -40,7 +41,7 @@ export const ManageTransactionCard = ({ data, type }) => {
 
 function Details({ data, toggle }) {
   const { passed } = getStatus(data);
-
+  console.log(passed ? passed : "no function available");
   return (
     <div
       onClick={() => toggle(false)}
@@ -53,7 +54,13 @@ function Details({ data, toggle }) {
             <p>target: {passed.target}</p>
             <p>current: {passed.confs}</p>
           </span>
-          <button onClick={() => passed.fallbackMint()}>Fallback Mint</button>
+          <button
+            onClick={() => {
+              passed.fallbackMint();
+            }}
+          >
+            Fallback Mint
+          </button>
         </div>
       ) : (
         <div>loading</div>

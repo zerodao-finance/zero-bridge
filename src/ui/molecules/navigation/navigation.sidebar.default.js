@@ -26,7 +26,10 @@ export const DefaultNavigationSidebar = () => {
             onClick={action}
           >
             <div className="flex flex-row mx-auto">
-              <RiExchangeFundsLine className="h-[1.2rem] w-[1.2rem]" />
+              <RiExchangeFundsLine
+                className="h-[1.2rem] w-[1.2rem]"
+                id="bridge"
+              />
               <div
                 className="hidden group-hover:block opacity-0 group-hover:opacity-100 pl-3"
                 id="bridge"
@@ -43,7 +46,7 @@ export const DefaultNavigationSidebar = () => {
             onClick={action}
           >
             <div className="flex flex-row mx-auto">
-              <MdOutlinePending className="h-[1.2rem] w-[1.2rem]" />
+              <MdOutlinePending className="h-[1.2rem] w-[1.2rem]" id="manage" />
               <div
                 className="hidden group-hover:block opacity-0 group-hover:opacity-100 pl-3"
                 id="manage"
@@ -60,7 +63,7 @@ export const DefaultNavigationSidebar = () => {
             onClick={action}
           >
             <div className="flex flex-row mx-auto">
-              <BiTransfer className="h-[1.2rem] w-[1.2rem]" />
+              <BiTransfer className="h-[1.2rem] w-[1.2rem]" id="history" />
               <div
                 className="hidden group-hover:block opacity-0 group-hover:opacity-100 pl-3"
                 id="history"

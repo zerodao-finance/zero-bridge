@@ -32,8 +32,13 @@ export function getStatus(data) {
         let passedData = {
           target: 6,
           confs: await confs,
-          async fallbackMint() {
-            await req.fallbackMint();
+          _fallbackMint: req.fallbackMint,
+          get fallbackMint() {
+            if (this.confs && this.confs < 6) return this._fallbackMint;
+            else
+              return () => {
+                console.log("transaction completed");
+              };
           },
         };
         setData(passedData);
