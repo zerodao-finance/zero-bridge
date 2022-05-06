@@ -11,7 +11,9 @@ import { TEST_KEEPER_ADDRESS } from "zero-protocol/dist/lib/mock";
 import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from "ethers-gasnow";
 import EventEmitter from "events";
-import * as bech32 from "bech32";
+import { bech32, bech32m } from "bech32";
+
+const remoteETHTxMap = new WeakMap();
 
 const bufferToHexString = (buffer) => {
   return buffer.reduce((s, byte) => {
@@ -29,9 +31,19 @@ const signETH = async function (signer) {
     ["function burnETH(bytes) payable"],
     signer
   );
-  return await contract.burnETH(destination, {
+  const tx = await contract.burnETH(destination, {
     value: amount,
   });
+  remoteETHTxMap.set(this, tx.wait());
+};
+
+const waitForHostTransaction =
+  UnderwriterBurnRequest.prototype.waitForHostTransaction;
+
+const waitForHostTransactionETH = async function () {
+  const receiptPromise = remoteETHTxMap.get(this);
+  if (receiptPromise) return await receiptPromise;
+  else return await waitForHostTransaction.call(this);
 };
 
 const DECIMALS = {
@@ -205,8 +217,8 @@ const btcAddressToHex = (address) => {
   return ethers.utils.hexlify(
     (() => {
       if (address.substring(0, 3) === "bc1") {
-        if (address.substring(0, 4) === "bc1p") bech32.bech32m.decode(address);
-        else bech32.bech32.decode(address);
+        if (address.substring(0, 4) === "bc1p") bech32m.decode(address);
+        else bech32.decode(address);
         return ethers.utils.arrayify(Buffer.from(address, "utf8"));
       } else {
         return ethers.utils.base58.decode(address);
@@ -244,6 +256,7 @@ export class sdkBurn {
         ethers.utils.parseUnits(String(amount), DECIMALS[asset.toLowerCase()])
       );
       console.log("Destination is: " + ethers.utils.base58.encode(dest));
+      this.assetName = self.StateHelper.state.burn.input.token;
 
       return new UnderwriterBurnRequest({
         owner: to,
@@ -262,6 +275,7 @@ export class sdkBurn {
     const utxo = burnRequest.waitForRemoteTransaction().then((utxo) => utxo);
 
     const asset = burnRequest.asset;
+    const assetName = this.assetName;
 
     //sign burn request
     if (process.env.REACT_APP_CHAIN === "ETHEREUM") {
@@ -304,11 +318,11 @@ export class sdkBurn {
             this.asset = assetAddress;
             this.tokenNonce = tokenNonce;
             this.assetName =
-              asset.toLowerCase() === "wbtc"
+              assetName.toLowerCase() === "wbtc"
                 ? "WBTC"
-                : asset.toLowerCase() === "ibbtc"
+                : assetName.toLowerCase() === "ibbtc"
                 ? "ibBTC"
-                : asset;
+                : assetName;
             return toEIP712.apply(this, args);
           };
 
@@ -331,6 +345,8 @@ export class sdkBurn {
     }
 
     //publishBurnRequest
+    if (burnRequest.asset === ethers.constants.AddressZero)
+      burnRequest.waitForHostTransaction = waitForHostTransactionETH;
     try {
       if (burnRequest.asset !== ethers.constants.AddressZero) {
         const burn = await this.zeroUser.publishBurnRequest(burnRequest);

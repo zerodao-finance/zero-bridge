@@ -130,8 +130,6 @@ class SDKHelper {
   async processBurnRequest(error, task) {
     let data = task.this.Transaction.createRequest("burn", task.request);
 
-    console.log(task.request);
-
     const { id, dispatch } = task.this.Notify.createBurnCard(task.type, {
       data: { hostTX: task.request.hostTX, txo: null },
     });
@@ -159,13 +157,8 @@ class SDKHelper {
     //shows pending screen untill task.txo is fulfulled and displays transaction receipt
 
     if (error) {
-      //handle error
+      console.error(error);
     }
-    // task.this.Notify.createCard(20000, task.type, {
-    //   data: task.request.data,
-    //   hash: task.request.request,
-    // });
-    //handle burn request
   }
 
   async processTransferRequest(error, task) {
@@ -189,26 +182,7 @@ class SDKHelper {
       //testing
 
       const confirmed = await deposit.confirmed();
-      console.log(confirmed);
-
-      // confirmed.on("target", (target) => {
-      //   console.log('target hit')
-      //   const { id, dispatch } = task.this.Notify.createTXCard(
-      //     true,
-      //     task.type,
-      //     {
-      //       hash: task.transactionHash,
-      //       confirmed: true,
-      //       data: task.request,
-      //       mask: target,
-      //       current: 0
-      //     }
-      //   )
-      //   forwarded = { id: id, dispatch: dispatch }
-      // })
-
       function _initiate(target) {
-        console.log("target hit");
         const { id, dispatch } = task.this.Notify.createTXCard(
           true,
           task.type,
@@ -228,10 +202,6 @@ class SDKHelper {
       confirmed.on("confirmation", (confs, target) => {
         initiate(target);
         if (confs >= target) {
-          console.log(
-            "complete function interface",
-            data.payload.data.complete
-          );
           data.payload.data.complete();
           forwarded.dispatch({ type: "REMOVE", payload: { id: forwarded.id } });
         } else {
@@ -264,7 +234,6 @@ class SDKHelper {
         forwarded = { id: id, dispatch: dispatch };
       })
       .on("confirmation", (confs, target) => {
-        // const { id, dispatch } = task.this.Notify.createTXCard(true, task.type, { hash: task.transactionHash, confirmed: true, data: task.request, max: target, current: confs })
         if (confs >= target) {
           forwarded.dispatch({ type: "REMOVE", payload: { id: forwarded.id } });
           data.payload.data.complete();

@@ -53,6 +53,7 @@ function Details({ data, toggle }) {
       className="bg-gray-300 rounded-md shadow-md text-xs max-w-[300px] px-4 py-1 flex flex-col gap-1 relative"
       key={data.id}
     >
+
       <p
         className="absolute -top-1 right-2 text-lg text-orange-600 cursor-pointer"
         onClick={() => toggle(false)}

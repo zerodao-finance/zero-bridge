@@ -23,7 +23,7 @@ function UnderConstruction({
           }}
         />
       </div>
-      {text && <p className="text-white text-center">{text}</p>}
+      {text && <p className="text-badger-white-400 text-center">{text}</p>}
     </>
   );
 }

@@ -36,7 +36,7 @@ export const BridgeBurnInput = ({
   };
 
   const getBalance = (token) => {
-    return balances[token].toString() ?? 0;
+    return balances[token]?.toString() ?? 0;
   };
 
   const getMax = () => {
@@ -51,21 +51,22 @@ export const BridgeBurnInput = ({
   return (
     <>
       <div className="self-center px-0 py-0 z-10">
-        <div className=" xl:mr-5 tracking-wider pr-2 w-full flex justify-end text-[10px] text-badger-yellow-neon-400">
+        <div className=" xl:mr-5 tracking-wider pr-2 w-full flex justify-end text-[12px] text-badger-yellow-neon-400">
           <span>Your Balance: {getBalance(token) + " " + token}</span>
         </div>
         <div className="w-fit flex items-center justify-between gap-2 dark:bg-badger-gray-500 bg-gray-100 px-2 py-1 rounded-2xl">
           <div>
-            <p className="text-[10px] text-gray-300 whitespace-nowrap mt-1">
+            <p className="text-[12px] text-secondary-400 whitespace-nowrap mt-1">
               FROM
             </p>
             <TokenDropdown
               token={token}
               setToken={setToken}
               tokensRemoved={["BTC"]}
+              tokensDisabled={["ibBTC", "WBTC"]}
             />
           </div>
-          <div className="flex justify-between items-center pl-2 dark:!border-white dark:focus:!border-badger-yellow-neon-400 border !border-gray-600 focus:!border-badger-yellow-neon-400 rounded-xl">
+          <div className="flex justify-between items-center pl-2 dark:!border-white dark:focus:!border-badger-yellow-400 border !border-gray-600 focus:!border-badger-yellow-400 rounded-xl">
             <button
               className="text-sm pl-1 pr-3 h-fit hover:!text-badger-yellow-neon-400"
               onClick={getMax}
@@ -75,7 +76,7 @@ export const BridgeBurnInput = ({
             <DefaultInput value={amount} onChange={effect} withBorder={false} />
           </div>
         </div>
-        <div className=" xl:mr-5 tracking-wider w-full flex justify-end pr-2 text-[10px] text-badger-yellow-neon-400">
+        <div className=" xl:mr-5 tracking-wider w-full flex justify-end pr-2 text-[12px] text-badger-yellow-neon-400">
           <span className="italic">~ {btc_usd && formattedAmount()}</span>
         </div>
         {amount > 0 && (
@@ -91,7 +92,7 @@ export const BridgeBurnInput = ({
 
         <div className="w-full py-1 mt-10 items-center justify-between gap-2 dark:bg-badger-gray-500 bg-gray-100 px-2 rounded-2xl">
           <div>
-            <p className="text-[10px] text-gray-300 whitespace-nowrap mt-1">
+            <p className="text-[12px] text-gray-300 whitespace-nowrap mt-1">
               RECIPIENT BTC ADDRESS
             </p>
           </div>

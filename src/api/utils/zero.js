@@ -4,8 +4,6 @@ import { mapValues } from "lodash";
 import { ethers } from "ethers";
 import deployments from "zero-protocol/deployments/deployments.json";
 
-console.log(deployments);
-
 export const test = {
   TEST_KEEPER_ADDRESS: "0x4A423AB37d70c00e8faA375fEcC4577e3b376aCa",
   SIGNALING_MULTIADDR: "/dns4/p2p.zerodao.com/tcp/443/wss/p2p-webrtc-star/",

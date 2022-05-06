@@ -4,11 +4,11 @@ import { ManageTransactionLayout } from "../../layouts/layout.manage";
 import _ from "lodash";
 export const ManageTransaction = ({}) => {
   const { pending, completed } = useTransactionContext();
-  console.log(pending);
+
   return (
     <ManageTransactionLayout title="Manage Transactions">
-      {pending.transfer.map((d) => {
-        return <ManageTransactionCard data={d} />;
+      {pending.transfer.map((d, index) => {
+        return <ManageTransactionCard data={d} key={index} />;
       })}
       {
         <div className="dark:text-gray-300">

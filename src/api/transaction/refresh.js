@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { PersistanceStore } from "../storage/storage";
 import _ from "lodash";
 import async from "async";
@@ -8,25 +8,26 @@ import {
 } from "zero-protocol/dist/lib/zero";
 
 export function usePersistanceRefresh(dispatch) {
+
   let [initialState, setInitialState] = React.useState();
   let queue = async.queue(function (task, callback) {
     callback(null, task);
   });
 
-  React.useEffect(async () => {
+  useEffect(async () => {
     let fetchedData = await PersistanceStore.get_all_data();
     let transformedData = _.chain(fetchedData)
       .groupBy((i) => i.status)
       .transform((result, value, key) => {
         let t = _.transform(
           value,
-          (result, i) => {
-            result.push(JSON.parse(i.data));
+          (result, key) => {
+            result.push(JSON.parse(key.data));
           },
           []
         );
-        let tx = _.groupBy(t, (i) => i.type);
-        result[key] = tx;
+        let tx = _.groupBy(t, (i) => (i.type ? i.type : i.requestType));
+        result[key == "pending" ? key : "completed"] = tx;
       }, {})
       .value();
 
@@ -51,6 +52,7 @@ export function usePersistanceRefresh(dispatch) {
       }
       dispatch({ type: "INIT", payload: merged });
     }
+
   }, []);
 }
 

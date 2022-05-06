@@ -5,25 +5,15 @@ import { MobileNavigationSidebar } from "../molecules/navigation/navigation.side
 import { useActiveModuleSwitcher } from "../../api/global/interfaces/interfaces.active.module";
 import { useCheckWalletConnected } from "../../api/global/interfaces/interfaces.wallet";
 import { useBridgePage } from "../../api/global/interfaces/interface.bridge";
-import UnderConstruction from "../atoms/helpers/under-construction";
 import { ManageTransaction } from "../molecules/manage/manage.request";
 import { TransactionHistory } from "../molecules/history/history.request";
-import { Route, Routes, useNavigate, useResolvedPath } from "react-router-dom";
-import { useEffect } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 export const DashboardLayout = () => {
-  const { changeActiveModule, isLoading } = useActiveModuleSwitcher();
+  const { changeActiveModule, isLoading, currentModule } =
+    useActiveModuleSwitcher();
   const { getWalletConnectionProps } = useCheckWalletConnected();
   const { getBridgePageProps } = useBridgePage();
-
-  // For Routing
-  const navigate = useNavigate();
-  const resolved = useResolvedPath(window.location.pathname);
-  useEffect(() => {
-    if (resolved.pathname === "/") {
-      navigate("/transfer", { replace: true });
-    }
-  }, []);
 
   return (
     <>
@@ -31,7 +21,10 @@ export const DashboardLayout = () => {
         <div className="row-span-1" id="navigation">
           <NavigationTopBar />
           <div className="w-1/2 md:w-1/4 right-0 absolute mx-2">
-            <LayoutSidebarNavigation changeModule={changeActiveModule}>
+            <LayoutSidebarNavigation
+              changeModule={changeActiveModule}
+              module={currentModule}
+            >
               <MobileNavigationSidebar changeModule={changeActiveModule} />
             </LayoutSidebarNavigation>
           </div>
@@ -41,10 +34,6 @@ export const DashboardLayout = () => {
             <>Loading</>
           ) : (
             <>
-              <p className="pb-[.5rem] text-center font-bold dark:text-badger-gray-300">
-                {" "}
-                Bridge{" "}
-              </p>
               <Routes>
                 <Route
                   path="*"
@@ -57,6 +46,7 @@ export const DashboardLayout = () => {
                 />
                 <Route path="/manage" element={<ManageTransaction />} />
                 <Route path="/history" element={<TransactionHistory />} />
+                <Route path="/" element={<Navigate replace to="/transfer" />} />
               </Routes>
             </>
           )}
@@ -64,8 +54,11 @@ export const DashboardLayout = () => {
 
         <div className="footer row-span-2 flex mt-8 flex-col-reverse text-[13px] md:text-md">
           <p className="text-gray-400 ml-2">
-            Powered By ZeroDAO - Copyright (the "zeroDAO Site"). Z DAO, LLC
-            ("ZD") <a href="ZeroDao.com">ZeroDao.com</a>
+            Powered By{" "}
+            <a href="https://zerodao.com" target="_blank">
+              zeroDAO
+            </a>
+            - Copyright &copy; 2022 Z DAO LLC
           </p>
         </div>
       </div>

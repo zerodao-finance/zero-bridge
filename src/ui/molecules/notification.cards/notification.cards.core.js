@@ -30,13 +30,15 @@ export const BurnCard = ({ id, close, data }) => {
       key={id}
     >
       <span
-        className="absolute top-1 right-1 text-md text-black dark:text-white cursor-pointer"
+        className="absolute top-1 right-1 text-md text-black dark:text-badger-white-400 cursor-pointer"
         onClick={close}
       >
         &times;
       </span>
-      <div className="text-black dark:text-white">Release Transaction:</div>
-      <div className="text-black dark:text-white flex flex-row gap-2">
+      <div className="text-black dark:text-badger-white-400">
+        Release Transaction:
+      </div>
+      <div className="text-black dark:text-badger-white-400 flex flex-row gap-2">
         <span>View on Etherscan</span>
         <span className="underline text-orange-500">
           <a href={`https://etherscan.io/tx/${data.hostTX.transactionHash}`}>
@@ -44,7 +46,7 @@ export const BurnCard = ({ id, close, data }) => {
           </a>
         </span>
       </div>
-      <div className="text-black dark:text-white flex flew-row gap-2">
+      <div className="text-black dark:text-badger-white-400 flex flew-row gap-2">
         <span>Progress:</span>
         <span>
           {data.txo ? (
@@ -67,18 +69,19 @@ export const TransferCard = ({ id, close, data, max, current }) => {
       key={id}
     >
       <span
-        className="absolute top-1 right-1 text-md text-black dark:text-white cursor-pointer"
+        className="absolute top-1 right-1 text-md text-black dark:text-badger-white-400 cursor-pointer"
         onClick={close}
       >
         &times;
       </span>
-      <div className="text-black dark:text-white">
+      <div className="text-black dark:text-badger-white-400">
         {truncateAddress(data.to)}
       </div>
       <ProgressDots current={current} max={max} />
     </div>
   );
 };
+
 export const ErrorCard = ({ type, message, id, callback, close }) => {
   console.error(message);
   return (
@@ -87,12 +90,14 @@ export const ErrorCard = ({ type, message, id, callback, close }) => {
       key={id}
     >
       <span
-        className="absolute top-1 right-1 text-md text-black dark:text-white cursor-pointer"
+        className="absolute top-1 right-1 text-md text-black dark:text-badger-white-400 cursor-pointer"
         onClick={close}
       >
         &times;
       </span>
-      <div className="text-black dark:text-white text-ellipsis">{message}</div>
+      <div className="text-black dark:text-badger-white-400 text-ellipsis">
+        {message}
+      </div>
       <div className="bg-[#CF6679] h-[6px] w-full absolute bottom-0 left-0 rounded-b-md" />
     </div>
   );
@@ -106,12 +111,12 @@ export const MessageCard = ({ type, message, id, callback, close }) => {
       key={id}
     >
       <span
-        className="absolute top-1 right-1 text-md dark:text-white cursor-pointer"
+        className="absolute top-1 right-1 text-md dark:text-badger-white-400 cursor-pointer"
         onClick={close}
       >
         &times;
       </span>
-      <div className="text-black dark:text-white">{message}</div>
+      <div className="text-black dark:text-badger-white-400">{message}</div>
       <div className="bg-[#59616D] dark:bg-gray-300 h-[6px] w-full absolute bottom-0 left-0 rounded-b-md" />
     </div>
   );
