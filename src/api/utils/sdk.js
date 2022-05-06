@@ -256,6 +256,7 @@ export class sdkBurn {
         ethers.utils.parseUnits(String(amount), DECIMALS[asset.toLowerCase()])
       );
       console.log("Destination is: " + ethers.utils.base58.encode(dest));
+      this.assetName = self.StateHelper.state.burn.input.token;
 
       return new UnderwriterBurnRequest({
         owner: to,
@@ -274,6 +275,7 @@ export class sdkBurn {
     const utxo = burnRequest.waitForRemoteTransaction().then((utxo) => utxo);
 
     const asset = burnRequest.asset;
+    const assetName = this.assetName;
 
     //sign burn request
     if (process.env.REACT_APP_CHAIN === "ETHEREUM") {
@@ -316,11 +318,11 @@ export class sdkBurn {
             this.asset = assetAddress;
             this.tokenNonce = tokenNonce;
             this.assetName =
-              asset.toLowerCase() === "wbtc"
+              assetName.toLowerCase() === "wbtc"
                 ? "WBTC"
-                : asset.toLowerCase() === "ibbtc"
+                : assetName.toLowerCase() === "ibbtc"
                 ? "ibBTC"
-                : asset;
+                : assetName;
             return toEIP712.apply(this, args);
           };
 
