@@ -23,6 +23,14 @@ export function getStatus(data) {
     const req = new UnderwriterTransferRequest({
       ...data._data,
     });
+
+    // try {
+    //   let checkHasMinted = await req.hasMinted()
+    //   // await console.log(checkHasMinted)
+    // } catch (error) {
+    //   console.log(error)
+    // }
+
     const mint = await req.submitToRenVM();
 
     if (!process.env.REACT_APP_TEST) {
@@ -34,11 +42,8 @@ export function getStatus(data) {
           confs: await confs,
           _fallbackMint: req.fallbackMint,
           get fallbackMint() {
-            if (this.confs && this.confs < 6) return this._fallbackMint;
-            else
-              return () => {
-                console.log("transaction completed");
-              };
+            if (this.confs && this.confs > 6) return this._fallbackMint;
+            else return null;
           },
         };
         setData(passedData);
