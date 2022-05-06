@@ -7,11 +7,9 @@ import {
 import { EIP712_TYPES } from "zero-protocol/dist/lib/config/constants";
 import { Buffer } from "buffer";
 import fixtures from "zero-protocol/dist/lib/fixtures";
-import { TEST_KEEPER_ADDRESS } from "zero-protocol/dist/lib/mock";
 import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from "ethers-gasnow";
 import EventEmitter from "events";
-import { bech32, bech32m } from "bech32";
 
 const remoteETHTxMap = new WeakMap();
 
@@ -217,8 +215,6 @@ const btcAddressToHex = (address) => {
   return ethers.utils.hexlify(
     (() => {
       if (address.substring(0, 3) === "bc1") {
-        if (address.substring(0, 4) === "bc1p") bech32m.decode(address);
-        else bech32.decode(address);
         return ethers.utils.arrayify(Buffer.from(address, "utf8"));
       } else {
         return ethers.utils.base58.decode(address);
