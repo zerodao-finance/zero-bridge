@@ -41,7 +41,10 @@ export const BurnCard = ({ id, close, data }) => {
       <div className="text-black dark:text-badger-white-400 flex flex-row gap-2">
         <span>View on Etherscan</span>
         <span className="underline text-orange-500">
-          <a href={`https://etherscan.io/tx/${data.hostTX.transactionHash}`}>
+          <a
+            href={`https://etherscan.io/tx/${data.hostTX.transactionHash}`}
+            target="_blank"
+          >
             {truncateAddress(data.hostTX.transactionHash)}
           </a>
         </span>
@@ -50,7 +53,7 @@ export const BurnCard = ({ id, close, data }) => {
         <span>Progress:</span>
         <span>
           {data.txo ? (
-            <a href={`https://mempool.space/tx/${data.txo}`}>
+            <a href={`https://mempool.space/tx/${data.txo}`} target="_blank">
               {truncateAddress(data.txo)}
             </a>
           ) : (
