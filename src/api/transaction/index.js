@@ -1,6 +1,6 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { useContext, createContext, useReducer } from "react";
 import { TransactionReducer } from "./reducer";
+import { usePersistanceRefresh } from "./refresh";
 
 /**
  * Transaction Logic
@@ -9,7 +9,7 @@ import { TransactionReducer } from "./reducer";
  * Handle Transfer Request Refresh
  */
 
-export const TransactionContext = React.createContext();
+export const TransactionContext = createContext();
 
 /**
  * initial state should be derived from indexedDB
@@ -28,17 +28,19 @@ const initialState = {
 export const { Provider, Consumer } = TransactionContext;
 
 export const TransactionProvider = ({ children }) => {
-  const [transactions, txDispatch] = React.useReducer(
+  const [transactions, txDispatch] = useReducer(
     TransactionReducer,
     initialState
   );
+
   const providerValue = { transactions, txDispatch };
+  usePersistanceRefresh(txDispatch);
 
   return <Provider value={providerValue}>{children}</Provider>;
 };
 
 export const useTransactionContext = () => {
-  const { transactions, txDispatch } = React.useContext(TransactionContext);
+  const { transactions, txDispatch } = useContext(TransactionContext);
 
   return { ...transactions, txDispatch };
 };

@@ -7,8 +7,8 @@ export const ManageTransaction = ({}) => {
 
   return (
     <ManageTransactionLayout title="Manage Transactions">
-      {pending.transfer.map((d) => {
-        return <ManageTransactionCard data={d} />;
+      {pending.transfer.map((d, index) => {
+        return <ManageTransactionCard data={d} key={index} />;
       })}
       {
         <div className="dark:text-gray-300">

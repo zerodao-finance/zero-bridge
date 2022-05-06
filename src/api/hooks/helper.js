@@ -7,6 +7,7 @@ import { TransactionHelper } from "../transaction/helper";
 import { GlobalStateHelper } from "../utils/global.utilities";
 import { sdkBurn, sdkTransfer } from "../utils/sdk";
 import async from "async";
+import _ from "lodash";
 
 export const useRequestHelper = () => {
   const { state, dispatch } = useContext(storeContext);
@@ -129,8 +130,6 @@ class SDKHelper {
   async processBurnRequest(error, task) {
     task.this.Transaction.createRequest("burn", task.request);
 
-    console.log(task.request);
-
     const { id, dispatch } = task.this.Notify.createBurnCard(task.type, {
       data: { hostTX: task.request.hostTX, txo: null },
     });
@@ -156,13 +155,8 @@ class SDKHelper {
     //shows pending screen untill task.txo is fulfulled and displays transaction receipt
 
     if (error) {
-      //handle error
+      console.error(error);
     }
-    // task.this.Notify.createCard(20000, task.type, {
-    //   data: task.request.data,
-    //   hash: task.request.request,
-    // });
-    //handle burn request
   }
 
   async processTransferRequest(error, task) {
@@ -182,6 +176,45 @@ class SDKHelper {
     let data = task.this.Transaction.createRequest("transfer", task.request);
     var forwarded = null;
 
+    if (process.env.REACT_APP_TEST) {
+      //testing
+
+      const confirmed = await deposit.confirmed();
+      function _initiate(target) {
+        const { id, dispatch } = task.this.Notify.createTXCard(
+          true,
+          task.type,
+          {
+            hash: task.transactionHash,
+            confirmed: true,
+            data: task.request,
+            mask: target,
+            current: 0,
+          }
+        );
+        forwarded = { id: id, dispatch: dispatch };
+      }
+
+      let initiate = _.once(_initiate);
+
+      confirmed.on("confirmation", (confs, target) => {
+        initiate(target);
+        if (confs >= target) {
+          data.payload.data.complete();
+          forwarded.dispatch({ type: "REMOVE", payload: { id: forwarded.id } });
+        } else {
+          forwarded.dispatch({
+            type: "UPDATE",
+            payload: {
+              id: forwarded.id,
+              update: { max: target, current: confs + 1 },
+            },
+          });
+        }
+      });
+    }
+
+    //production code
     await deposit
       .confirmed()
       .on("target", (target) => {
@@ -199,10 +232,9 @@ class SDKHelper {
         forwarded = { id: id, dispatch: dispatch };
       })
       .on("confirmation", (confs, target) => {
-        // const { id, dispatch } = task.this.Notify.createTXCard(true, task.type, { hash: task.transactionHash, confirmed: true, data: task.request, max: target, current: confs })
         if (confs >= target) {
           forwarded.dispatch({ type: "REMOVE", payload: { id: forwarded.id } });
-          data.payload.data.complete;
+          data.payload.data.complete();
         } else {
           forwarded.dispatch({
             type: "UPDATE",

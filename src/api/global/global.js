@@ -66,13 +66,6 @@ const StateProvider = ({ children }) => {
     document.documentElement.classList.add("dark");
   }, []);
 
-  // useEffect(async () => {
-  //     console.log(state.transactions)
-  //     console.log(await PersistanceStore.get_all_data())
-  //     if (!_.isEmpty(state.transactions))
-  //         await PersistanceStore.put_data(state.transactions[0], 'complete')
-  // }, [state.transactions])
-
   return <Provider value={{ state, dispatch }}>{children}</Provider>;
 };
 
