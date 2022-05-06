@@ -29,7 +29,7 @@ export const DashboardLayout = () => {
             </LayoutSidebarNavigation>
           </div>
         </div>
-        <div className="flex flex-col w-fit ml-auto mr-auto">
+        <div className="flex flex-col w-fit min-w-[350px] md:min-w-[460px] md:max-w-full ml-auto mr-auto">
           {isLoading ? (
             <>Loading</>
           ) : (

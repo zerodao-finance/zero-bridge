@@ -24,7 +24,7 @@ export const BridgeTransferFeeInformation = ({
   };
 
   return (
-    <div className="grid w-full py-4 text-sm px-3 space-y-1 font-semibold border border-badger-gray-500 rounded-lg">
+    <div className="grid w-full py-4 text-sm px-3 space-y-1 font-semibold border text-badger-white-400 border-badger-gray-500 rounded-lg">
       <div className="flex justify-between">
         <div>
           <div
