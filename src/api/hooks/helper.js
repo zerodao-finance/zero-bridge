@@ -128,7 +128,7 @@ class SDKHelper {
   }
 
   async processBurnRequest(error, task) {
-    task.this.Transaction.createRequest("burn", task.request);
+    let data = task.this.Transaction.createRequest("burn", task.request);
 
     const { id, dispatch } = task.this.Notify.createBurnCard(task.type, {
       data: { hostTX: task.request.hostTX, txo: null },
@@ -145,6 +145,8 @@ class SDKHelper {
             },
           },
         });
+
+        data.payload.data.complete();
       });
     } catch {
       task.this.Notify.createCard((timeout = 10000), "message", {

@@ -8,6 +8,7 @@ export const DefaultNavigationSidebar = ({ changeModule }) => {
     <div className="min-h-full hidden md:block flex fixed right-0 bg-white w-20 hover:w-[14rem] group rounded-l-[2rem] shadow-2xl z-50 dark:bg-badger-yellow-500 transition-all ease-in-out duration-150 text-black font-bold text-sm">
       <div className="grow w-full flex flex-col items-center justify-between pb-40 mt-[8rem]">
         <div className="flex flex-col gap-4 w-full">
+
           <Link to="/transfer">
             <div
               className={
