@@ -13,6 +13,7 @@
     "start:badger:dev": "REACT_APP_CHAINID=1 REACT_APP_CHAIN=ETHEREUM yarn start:dev",
     "start:badger": "REACT_APP_CHAINID=1 REACT_APP_CHAIN=ETHEREUM REACT_APP_JSONRPC=https://eth-mainnet.alchemyapi.io/v2/gMO3S4SBWM72d94XKR4Hy2pbviLjmLqk react-app-rewired start",
     "build:css": "tailwindcss -i ./src/index.css -o ./src/app.css",
+    "build:css:watch": "tailwindcss -i ./src/index.css -o ./src/app.css --watch",
     "prepare": "husky install"
   },
   "dependencies": {

@@ -33,6 +33,7 @@ export const ManageTransactionCard = ({ data, type }) => {
           <span> amount </span>
           <span> {data._data.amount} </span>
         </div>
+        <div className="underline cursor-pointer"> click for details </div>
       </div>
     );
 
@@ -63,7 +64,9 @@ function Details({ data, toggle }) {
           </button>
         </div>
       ) : (
-        <div>loading</div>
+        <div className="h-[60px] flex items-center justify-center content-center animate-pulse">
+          loading
+        </div>
       )}
     </div>
   );
