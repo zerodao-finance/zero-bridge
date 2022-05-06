@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import * as React from "react";
 import { PersistanceStore } from "../storage/storage";
 import _ from "lodash";
 import async from "async";
@@ -8,7 +9,6 @@ import {
 } from "zero-protocol/dist/lib/zero";
 
 export function usePersistanceRefresh(dispatch) {
-
   let [initialState, setInitialState] = React.useState();
   let queue = async.queue(function (task, callback) {
     callback(null, task);
@@ -52,7 +52,6 @@ export function usePersistanceRefresh(dispatch) {
       }
       dispatch({ type: "INIT", payload: merged });
     }
-
   }, []);
 }
 
