@@ -32,8 +32,6 @@ export function usePersistanceRefresh(dispatch) {
       .value();
 
     if (!_.isEmpty(transformedData)) {
-      // console.log(transformedData)
-      console.log(transformedData);
       let dataSettled = {
         pending: {
           burn: [],
@@ -46,7 +44,6 @@ export function usePersistanceRefresh(dispatch) {
       };
 
       let merged = _.merge(dataSettled, transformedData);
-      console.log(merged);
       if (!_.isEmpty(merged.pending.transfer)) {
         getPendingRequestStatus(merged.pending.transfer, queue, dispatch);
       }
@@ -61,7 +58,6 @@ export async function getPendingRequestStatus(array, queue, dispatch) {
   }
 
   async function callback(error, task) {
-    console.log(task);
     const req = new UnderwriterTransferRequest({
       ...task._data,
     });
@@ -74,14 +70,7 @@ export async function getPendingRequestStatus(array, queue, dispatch) {
         confirmed.on("status");
       });
     } else {
-      // console.log(mint.processDeposit())
       mint.on("deposit", async (deposit) => {
-        console.log(
-          "transaction id:",
-          task.id,
-          "confirmations:",
-          deposit.depositDetails.transaction.confirmations
-        );
         if (deposit.depositDetails.transaction.confirmations === 6) {
           dispatch({
             type: "COMPLETE",
@@ -106,9 +95,7 @@ export async function getPendingRequestStatus(array, queue, dispatch) {
             });
           }
         });
-        await deposit
-          .signed()
-          .on("status", (status) => console.log("status", status));
+        await deposit.signed();
       });
     }
   }

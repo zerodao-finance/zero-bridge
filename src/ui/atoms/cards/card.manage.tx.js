@@ -18,25 +18,30 @@ export const ManageTransactionCard = ({ data, type }) => {
     return (
       <div
         key={data.id}
-        className="bg-gray-300 rounded-md shadow-md text-xs max-w-[300px] px-4 py-1 flex flex-col gap-1"
+        className="bg-badger-gray-500 rounded-md shadow-md text-xs max-w-[300px] px-4 py-1 grid gap-1"
         onClick={(e) => toggle(true)}
       >
-        <div className="grid grid-cols-2 justify-items-center">
-          <p className="text-md font-bold">{data.type} :</p>
-          <p className="text-emerald-500">
+        <div className="grid grid-cols-2">
+          <p className="text-md text-badger-white-400 justify-self-start font-semibold">
+            {data.type} :
+          </p>
+          <p className="text-badger-yellow-300 justify-self-end">
             {truncateAddress(data._data.contractAddress).toUpperCase()}
           </p>
         </div>
-        <hr className="border-black" />
-        <div className="grid grid-cols-2">
-          <span>to:</span>
-          <span className="text-xs">
+        <hr className="border-badger-black-800" />
+        <div className="grid text-badger-white-400 grid-cols-2">
+          <span className="justify-self-start"> to: </span>
+          <span className="text-xs justify-self-end">
             {truncateAddress(data._data.to).toUpperCase()}
           </span>
-          <span> amount </span>
-          <span> {data._data.amount} </span>
+          <span className="justify-self-start"> amount: </span>
+          <span className="justify-self-end"> {data._data.amount} </span>
         </div>
-        <div className="underline cursor-pointer"> click for details </div>
+        <div className="underline justify-self-center text-badger-yellow-neon-400 mt-px cursor-pointer">
+          {" "}
+          click for details{" "}
+        </div>
       </div>
     );
 
@@ -53,7 +58,6 @@ function Details({ data, toggle }) {
       className="bg-gray-300 rounded-md shadow-md text-xs max-w-[300px] px-4 py-1 flex flex-col gap-1 relative"
       key={data.id}
     >
-
       <p
         className="absolute -top-1 right-2 text-lg text-orange-600 cursor-pointer"
         onClick={() => toggle(false)}

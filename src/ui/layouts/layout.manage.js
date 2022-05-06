@@ -1,10 +1,15 @@
 export const ManageTransactionLayout = ({ children, title }) => {
   return (
-    <div className="bg-slate-600 rounded-md flex flex-col min-h-[350px] min-w-[360px]">
-      <span className="self-center dark:text-emerald-300 bg-slate-500 w-full text-center rounded-t-md">
-        {title}
-      </span>
-      <div className="grid grid-cols-2  gap-1 py-3 px-1 overflow-scroll">
+    <div className="w-full">
+      <div
+        className={`w-full rounded-t-[8px] grid grid-cols-1 dark:bg-badger-gray-400 align-center font-light tracking-wider text-sm text-center`}
+        style={{ maxHeight: "42px" }}
+      >
+        <div className="py-[10px] w-full rounded-tl-[8px] transition ease-in-out duration-150 text-black border-b-2 border-transparent dark:text-badger-yellow-400 font-bold">
+          {title}
+        </div>
+      </div>
+      <div className="grid grid-cols-1 w-full md:grid-cols-2 rounded-b-[8px] bg-badger-black-500 gap-1 py-6 px-8 overflow-auto">
         {children}
       </div>
     </div>
