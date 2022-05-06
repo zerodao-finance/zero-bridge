@@ -2662,15 +2662,14 @@ input:checked + .toggle-bg {
   color: rgb(255 90 31 / var(--tw-text-opacity));
 }
 
-
 .text-orange-500 {
   --tw-text-opacity: 1;
   color: rgb(255 90 31 / var(--tw-text-opacity));
+}
 
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-
 }
 
 .text-blue-600 {
@@ -2920,7 +2919,6 @@ input:checked + .toggle-bg {
 .duration-300 {
   transition-duration: 300ms;
 }
-
 
 .duration-200 {
   transition-duration: 200ms;
