@@ -3,8 +3,8 @@ import { NetworkIndicator } from "../../atoms/indicators/indicator.network";
 import { useWalletConnection } from "../../../api/global/interfaces/interfaces.wallet";
 import { useZero } from "../../../api/global/interfaces/interfaces.zero";
 
-export const NavigationTopBar = ({}) => {
-  const { connect, disconnect, wallet, isLoading } = useWalletConnection();
+export const NavigationTopBar = () => {
+  const { connect, disconnect, wallet } = useWalletConnection();
   const { keeper } = useZero();
 
   function truncateAddress(address) {

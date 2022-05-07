@@ -1,5 +1,5 @@
 import { BsArrowRightShort } from "react-icons/bs";
-export const TransferCardTitle = ({}) => {
+export const TransferCardTitle = () => {
   return (
     <>
       <div className="text-black dark:text-badger-white-400 text-[13px]">

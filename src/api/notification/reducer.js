@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
 export const NotificationReducer = (state, action) => {
   switch (action.type) {
@@ -9,7 +8,6 @@ export const NotificationReducer = (state, action) => {
           ...action.payload,
         },
       ];
-      break;
     case "UPDATE":
       var t = _.find(state, function (i) {
         return i.id == action.payload.id;
@@ -22,15 +20,11 @@ export const NotificationReducer = (state, action) => {
       return [...l, updated];
     case "REMOVE":
       return state.filter((t) => t.id != action.payload.id);
-      break;
     case "REMOVE_ALL":
       return [];
-      break;
     case "REMOVE_LAST":
       return _.initial(state);
-      break;
     default:
       return state;
-      break;
   }
 };

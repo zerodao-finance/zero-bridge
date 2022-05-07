@@ -107,21 +107,16 @@ class IndexedDBPeristanceStrategy {
         return await this.promiseReq(await store.getAll("status")).filter(
           (obj) => obj.status === "completed"
         );
-        break;
       case "status:pending":
         return await this.promiseReq(await store.getAll("status")).filter(
           (obj) => obj.status === "pending"
         );
-        return await this.promiseReq();
-        break;
       case "recent":
         return await this.promiseReq(await store.getAll("status")).filter(
           (obj) => obj.Date === "pending"
         );
-        break;
       default:
         return await this.promiseReq(await store.getAll());
-        break;
     }
   }
 
