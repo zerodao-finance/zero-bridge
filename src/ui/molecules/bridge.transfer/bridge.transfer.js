@@ -17,7 +17,7 @@ export const BridgeTransferModule = ({ mode }) => {
       <>
         <div className="container h-max flex flex-row place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around items-center px-1 md:px-8 z-10">
           <div className="flex flex-col w-full justify-center items-center">
-            <p className="animate-flip-in-hor-top text-[12px] text-black dark:text-badger-text-secondary-400 opacity-60 w-full whitespace-nowrap text-left">
+            <p className="animate-flip-in-hor-top text-xs pl-2 text-black dark:text-badger-text-secondary-400 opacity-60 w-full whitespace-nowrap text-left">
               {" "}
               transfer amount{" "}
             </p>

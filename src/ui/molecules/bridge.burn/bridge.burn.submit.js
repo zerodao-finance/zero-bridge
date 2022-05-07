@@ -45,7 +45,7 @@ export const BridgeBurnSubmit = ({
 
   return (
     <>
-      <div className="px-8">
+      <div className="px-8 mt-4">
         <PrimaryRoundedButton
           active={active}
           label={buttonLabel}
