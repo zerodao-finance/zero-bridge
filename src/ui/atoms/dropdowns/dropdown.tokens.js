@@ -54,12 +54,7 @@ function TokenDropdown({
   const determineIcon = (_token) => {
     const icon = items.map((item, index) => {
       if (item.text.toLowerCase() === _token.toLowerCase()) {
-        return (
-          <item.icon
-            key={index}
-            className="h-[2rem] fill-gray-400 w-fit mr-3"
-          />
-        );
+        return <item.icon key={index} className="h-8 w-8 fill-gray-400 mr-3" />;
       }
     });
     return icon;
