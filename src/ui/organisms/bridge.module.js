@@ -14,7 +14,7 @@ export const BridgeModule = ({ wallet, mode, toggleMode }) => {
   return !tcSigned ? (
     <Disclaimer />
   ) : (
-    <div className="h-fit w-full pb-8 grid bg-badger-black-500 rounded-lg justify-center text-badger-white-400 min-w-[370px]">
+    <div className="h-fit w-fit pb-8 grid bg-badger-black-500 rounded-lg justify-center text-badger-white-400 min-w-[370px]">
       <div
         className={`w-full rounded-t-lg grid grid-cols-2 mb-8 bg-badger-gray-400 align-center font-light text-sm text-center max-h-11 min-w-[370px]`}
       >
