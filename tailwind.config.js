@@ -14,6 +14,7 @@ module.exports = {
         },
         "badger-yellow-neon": {
           400: "#ffcf4d",
+          500: "#e6ba45",
         },
         "badger-yellow": {
           300: "#f2bc1b",

@@ -63,7 +63,7 @@ export const BridgeBurnInput = ({
               token={token}
               setToken={setToken}
               tokensRemoved={["BTC"]}
-              tokensDisabled={["ibBTC", "WBTC"]}
+              tokensDisabled={["ibBTC"]}
             />
           </div>
           <div className="flex justify-between items-center pl-2 dark:!border-white dark:focus:!border-badger-yellow-400 border !border-gray-600 focus:!border-badger-yellow-400 rounded-xl">
