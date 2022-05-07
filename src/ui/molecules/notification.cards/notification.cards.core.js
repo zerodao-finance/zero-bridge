@@ -44,6 +44,7 @@ export const BurnCard = ({ id, close, data }) => {
           <a
             href={`https://etherscan.io/tx/${data.hostTX.transactionHash}`}
             target="_blank"
+            rel="noreferrer"
           >
             {truncateAddress(data.hostTX.transactionHash)}
           </a>
@@ -53,7 +54,11 @@ export const BurnCard = ({ id, close, data }) => {
         <span>Progress:</span>
         <span>
           {data.txo ? (
-            <a href={`https://mempool.space/tx/${data.txo}`} target="_blank">
+            <a
+              href={`https://mempool.space/tx/${data.txo}`}
+              target="_blank"
+              rel="noreferrer"
+            >
               {truncateAddress(data.txo)}
             </a>
           ) : (

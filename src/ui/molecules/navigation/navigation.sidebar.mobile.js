@@ -40,7 +40,7 @@ export function MobileNavigationSidebar({ changeModule }) {
       </Link>
       <div className="flex flex-row gap-3 py-3">
         <RiFileListLine className="h-[1.2rem] w-[1.2rem]" />
-        <a href="https://docs.zerodao.com" target="_blank">
+        <a href="https://docs.zerodao.com" target="_blank" rel="noreferrer">
           <button>Documentation</button>
         </a>
       </div>

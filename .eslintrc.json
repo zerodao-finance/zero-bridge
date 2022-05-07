@@ -13,6 +13,7 @@
     "sourceType": "module"
   },
   "plugins": ["react"],
+  "ignorePatterns": ["**/__tests__/*", "**/*.css", "**/*.svg", "**/*.woff2"],
   "rules": {
     "react/react-in-jsx-scope": "off",
     "no-case-declarations": "off",
