@@ -20,7 +20,7 @@ export const BridgeBurnModule = () => {
             <BridgeLoadingSignature />
           ) : (
             <>
-              <div className="animate-flip-in-hor-top [animation-delay:400ms] container h-max flex flex-row place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around items-center px-1 md:px-8">
+              <div className="animate-flip-in-hor-top [animation-delay:400ms] container h-max flex flex-row place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around items-center px-1 md:px-8 z-10">
                 <div className="flex flex-col">
                   <BridgeBurnInput {...getBridgeBurnInputProps()} />
                 </div>

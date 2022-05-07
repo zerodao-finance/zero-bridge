@@ -1843,10 +1843,6 @@ input:checked + .toggle-bg {
   place-content: center;
 }
 
-.place-items-center {
-  place-items: center;
-}
-
 .content-center {
   align-content: center;
 }
@@ -2123,6 +2119,11 @@ input:checked + .toggle-bg {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.bg-badger-black-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(54 54 54 / var(--tw-bg-opacity));
 }
 
 .bg-gray-200 {
@@ -2477,10 +2478,6 @@ input:checked + .toggle-bg {
   line-height: 1.5rem;
 }
 
-.text-\[12px\] {
-  font-size: 12px;
-}
-
 .text-\[17px\] {
   font-size: 17px;
 }
@@ -2822,6 +2819,11 @@ input:checked + .toggle-bg {
     var(--tw-backdrop-sepia);
 }
 
+.backdrop-filter-none {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
 .transition-opacity {
   transition-property: opacity;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -2997,10 +2999,6 @@ code {
     monospace; */
 
 /* } */
-
-.first\:gap-0:first-child {
-  gap: 0px;
-}
 
 .hover\:w-\[14rem\]:hover {
   width: 14rem;
@@ -3194,11 +3192,6 @@ code {
   background-color: rgb(230 166 69 / var(--tw-bg-opacity));
 }
 
-.dark .dark\:bg-badger-black-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(54 54 54 / var(--tw-bg-opacity));
-}
-
 .dark .dark\:bg-badger-gray-400 {
   --tw-bg-opacity: 1;
   background-color: rgb(64 64 64 / var(--tw-bg-opacity));
@@ -3217,6 +3210,11 @@ code {
 .dark .dark\:bg-badger-gray-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(102 102 102 / var(--tw-bg-opacity));
+}
+
+.dark .dark\:bg-badger-black-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(54 54 54 / var(--tw-bg-opacity));
 }
 
 .dark .dark\:bg-gray-500 {
@@ -3543,10 +3541,6 @@ code {
       scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   }
 
-  .md\:gap-3 {
-    gap: 0.75rem;
-  }
-
   .md\:gap-4 {
     gap: 1rem;
   }
@@ -3568,8 +3562,14 @@ code {
     font-size: 15px;
   }
 
-  .md\:text-\[12px\] {
-    font-size: 12px;
+  .md\:text-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  .md\:text-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
   }
 
   .md\:text-\[14px\] {

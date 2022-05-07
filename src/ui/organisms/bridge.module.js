@@ -14,9 +14,9 @@ export const BridgeModule = ({ wallet, mode, toggleMode }) => {
   return !tcSigned ? (
     <Disclaimer />
   ) : (
-    <div className="h-full w-full flex flex-col container h-fit bg-white shadow-xl rounded-lg justify-center place-items-center gap-1 md:gap-3  first:gap-0 w-fit dark:bg-badger-black-500 text-badger-white-400 min-w-[370px]">
+    <div className="h-fit w-fit pb-8 grid bg-badger-black-500 rounded-lg justify-center text-badger-white-400 min-w-[370px]">
       <div
-        className={`h-full w-full overflow-hidden rounded-t-lg grid grid-cols-2 grid-flow-rows mb-8 bg-gray-200 dark:bg-badger-gray-400 align-center font-light tracking-wider text-sm text-center`}
+        className={`w-full rounded-t-lg grid grid-cols-2 mb-8 bg-gray-200 dark:bg-badger-gray-400 align-center font-light tracking-wider text-sm text-center`}
         style={{ maxHeight: "42px" }}
       >
         <Link to="/transfer">
@@ -42,8 +42,7 @@ export const BridgeModule = ({ wallet, mode, toggleMode }) => {
           </div>
         </Link>
       </div>
-
-      <div className="px-8 pb-8">
+      <span className="grid px-8">
         {wallet ? (
           <BridgeLoadingWallet />
         ) : (
@@ -55,7 +54,7 @@ export const BridgeModule = ({ wallet, mode, toggleMode }) => {
             <Route path="/release/*" element={<BridgeBurnModule />} />
           </Routes>
         )}
-      </div>
+      </span>
     </div>
   );
 };
