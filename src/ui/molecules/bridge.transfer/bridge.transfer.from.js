@@ -8,7 +8,7 @@ function BridgeTransferFrom({ amount, effect, btc_usd, setToken, token }) {
   return (
     <div className="w-100 flex items-center justify-between gap-5 dark:bg-badger-gray-500 bg-gray-100 px-2 rounded-2xl">
       <div className="flex items-center pl-2 w-full">
-        <p className="text-[12px] text-gray-300 whitespace-nowrap">FROM</p>
+        <p className="text-xs text-gray-300 whitespace-nowrap">FROM</p>
         <div className="inline-flex justify-center max-w-[100%] rounded-md pl-4 py-2 bg-transparent text-sm font-medium text-badger-white-400 justify-between w-full focus:outline-none">
           <span className="flex items-center gap-2 max-w-[100%] w-full">
             <BTC className="w-[4rem] h-[2rem] fill-gray-400" />

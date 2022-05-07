@@ -27,6 +27,7 @@ module.exports = {
           300: "#afafaf",
           400: "#404040",
           500: "#666666",
+          600: "#8a8a8a",
         },
         "badger-blue": {
           400: "#91cdff",
