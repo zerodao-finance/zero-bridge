@@ -1443,7 +1443,7 @@ input:checked + .toggle-bg {
   height: 1.5rem;
 }
 
-.h-\[2rem\] {
+.h-8 {
   height: 2rem;
 }
 
@@ -1465,6 +1465,10 @@ input:checked + .toggle-bg {
 
 .h-4 {
   height: 1rem;
+}
+
+.h-\[2rem\] {
+  height: 2rem;
 }
 
 .h-\[1\.3rem\] {
@@ -1554,6 +1558,10 @@ input:checked + .toggle-bg {
 
 .w-6 {
   width: 1.5rem;
+}
+
+.w-8 {
+  width: 2rem;
 }
 
 .w-5 {
@@ -3220,6 +3228,10 @@ code {
   border-color: rgb(63 131 248 / var(--tw-border-opacity));
 }
 
+.dark .dark\:border-transparent {
+  border-color: transparent;
+}
+
 .dark .dark\:border-gray-700 {
   --tw-border-opacity: 1;
   border-color: rgb(55 65 81 / var(--tw-border-opacity));
@@ -3393,9 +3405,9 @@ code {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.dark .dark\:hover\:text-blue-400:hover {
+.dark .dark\:hover\:text-blue-500:hover {
   --tw-text-opacity: 1;
-  color: rgb(118 169 250 / var(--tw-text-opacity));
+  color: rgb(63 131 248 / var(--tw-text-opacity));
 }
 
 .dark .dark\:hover\:text-gray-300:hover {
