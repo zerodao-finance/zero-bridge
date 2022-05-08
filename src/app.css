@@ -1479,6 +1479,10 @@ input:checked + .toggle-bg {
   height: 1.2rem;
 }
 
+.h-\[30px\] {
+  height: 30px;
+}
+
 .h-\[40px\] {
   height: 40px;
 }
@@ -3540,6 +3544,10 @@ code {
 
   .md\:h-5\/6 {
     height: 83.333333%;
+  }
+
+  .md\:h-\[60px\] {
+    height: 60px;
   }
 
   .md\:h-\[70px\] {
