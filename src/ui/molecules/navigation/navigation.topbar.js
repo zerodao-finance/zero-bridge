@@ -15,7 +15,7 @@ export const NavigationTopBar = ({}) => {
     <nav className="w-screen flex flex-row justify-between items-center bg-white dark:bg-badger-black-500 mb-8 sticky top-0 px-8 py-2">
       <div id="logo">
         <img
-          src="/zero_orange_logo.jpg"
+          src="/ZDBeta_logo-02-Dark.svg"
           alt="image"
           className="h-[30px] md:h-[60px] hidden dark:flex"
         />
