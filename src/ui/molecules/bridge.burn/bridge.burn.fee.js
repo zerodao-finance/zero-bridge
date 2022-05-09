@@ -25,7 +25,9 @@ export const BridgeBurnTransferFee = ({ amount, btc_usd, token }) => {
         <div className="self-center px-0 py-0 w-full">
           <div className="w-full shadow-inner flex justify-between px-4 py-2 mt-5 text-badger-white-400 rounded-xl dark:bg-badger-gray-500 bg-gray-100">
             <div className="flex items-center max-w-[100%]">
-              <p className="text-xs text-gray-300 whitespace-nowrap">RESULT</p>
+              <p className="text-xs text-gray-300 whitespace-nowrap">
+                EST. RESULT
+              </p>
             </div>
             <div>
               <span className={`${isFeeLoading && "animate-pulse"}`}>
