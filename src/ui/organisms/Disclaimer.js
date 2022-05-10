@@ -50,7 +50,7 @@ export const Disclaimer = () => {
           className="gap-3 flex flex-col overflow-scroll overflow-x-hidden md:p-8"
           id="disclaimer"
         >
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             Welcome to bridge.zerodao.com (the "zeroDAO Site"). Z DAO, LLC
             ("ZD"), a Wyoming limited liability company, provides the zeroDAO
             Site and any files available thereon, as well as the Service (as
@@ -66,7 +66,7 @@ export const Disclaimer = () => {
               USE IT AT YOUR OWN RISK.
             </span>
           </p>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             zeroDAO is an Ethereum Blockchain layer 2 solution enabling
             cross-chain liquidity through various means, including the RenVM.
             zeroDAO is a decentralized community of zeroDAO users holding the
@@ -90,7 +90,7 @@ export const Disclaimer = () => {
             services offered from time to time are referred to here as the
             “Service”.
           </p>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             Your use of the Service is at your own risk, and without any
             involvement or warranties of ZD. You acknowledge that the zeroDAO
             protocol and Software as well as Voting Contracts are subject to
@@ -102,7 +102,7 @@ export const Disclaimer = () => {
             that it is your responsibility to utilize appropriate cyber security
             practices and software in your networks and on your devices.
           </p>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             ZD is a group of volunteer developers who are committed to
             furthering the usability of cryptocurrency. ZD operates educational
             and user resources in furtherance of the cross-chain liquidity
@@ -112,11 +112,11 @@ export const Disclaimer = () => {
             media accounts. ZD receives no funding or support from zeroDAO users
             for these services.
           </p>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             ZD does not own or lead the zeroDAO protocol, but rather supports
             and develops the free, open-source protocol.
           </p>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             ZD has no role in the operation of markets or liquidity pools
             created on zeroDAO, and has no ability to spend funds that are held
             in proxy or escrow wallets, does not control how markets resolve or
@@ -128,7 +128,7 @@ export const Disclaimer = () => {
             more control over the zeroDAO protocol than anyone else using
             Ethereum.
           </p>
-          <p className="indent-10 text-black snap-center font-bold">
+          <p className="text-black snap-center font-bold">
             PLEASE READ THIS TERMS CAREFULLY. THIS WEBSITE AND ANY OTHER
             WEBSITES OF ZD, ITS AFFILIATES OR AGENTS (ALSO THE "ZERODAO SITE")
             AND THE INFORMATION ON IT ARE CONTROLLED BY ZD. THESE TERMS OF USE
@@ -146,7 +146,7 @@ export const Disclaimer = () => {
             ZERODAO SITE. IF YOU DO NOT AGREE TO BE BOUND BY THE TERMS OF USE,
             YOU MAY NOT ACCESS OR USE THE ZERODAO SITE OR THE SERVICES.
           </p>
-          <p className="indent-10 text-black snap-center font-bold">
+          <p className="text-black snap-center font-bold">
             PLEASE BE AWARE THAT THE DISPUTE RESOLUTION SECTION OF THIS
             AGREEMENT, BELOW, CONTAINS PROVISIONS GOVERNING HOW CLAIMS THAT YOU
             AND WE HAVE AGAINST EACH OTHER ARE RESOLVED, INCLUDING, WITHOUT
@@ -161,7 +161,7 @@ export const Disclaimer = () => {
             WAIVING YOUR RIGHT TO SEEK RELIEF IN A COURT OF LAW AND TO HAVE A
             JURY TRIAL ON YOUR CLAIMS.
           </p>
-          <p className="indent-10 text-black snap-center font-bold">
+          <p className="text-black snap-center font-bold">
             ANY DISPUTE OR CLAIM RELATING IN ANY WAY TO YOUR USE OF THE ZERODAO
             SITE WILL BE GOVERNED AND INTERPRETED BY AND UNDER THE LAWS OF
             WYOMING, CONSISTENT WITH THE FEDERAL ARBITRATION ACT, WITHOUT GIVING
@@ -174,7 +174,7 @@ export const Disclaimer = () => {
             {" "}
             NOT BOILERPLATE{" "}
           </h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             These terms are not boilerplate. If you disagree with any of them,
             believe that any should not apply to you, or wish to negotiate these
             terms or the arbitration clause, please contact us at
@@ -185,7 +185,7 @@ export const Disclaimer = () => {
           <h1 className="text-lg text-black font-bold">
             Electronic Communications
           </h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             Visiting the zeroDAO Site constitutes electronic communications. You
             consent to receive electronic communications and you agree that all
             agreements, notices, disclosures and other communications that we
@@ -193,7 +193,7 @@ export const Disclaimer = () => {
             legal requirement that such communications be in writing. The
             foregoing does not affect your statutory rights.
           </p>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             ZD does not knowingly collect, either online or offline, personal
             information from any persons, including those under the age of
             eighteen. If you are under 18, you may not use the zeroDAO Site or
@@ -201,7 +201,7 @@ export const Disclaimer = () => {
             parent or guardian.
           </p>
           <h1 className="text-lg text-black font-bold"> Updates </h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             You understand that the zeroDAO Site and the related services are
             evolving. As a result, ZD may require you to accept updates to the
             zeroDAO Site and the related Service that you have previously
@@ -211,7 +211,7 @@ export const Disclaimer = () => {
             Site.
           </p>
           <h1 className="text-lg text-black font-bold">Third Party Services</h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             The zeroDAO Site may contain links to other websites ("Linked
             Sites"). The Linked Sites are not under the control of ZD and ZD is
             not responsible for the contents of any Linked Site, including
@@ -229,14 +229,14 @@ export const Disclaimer = () => {
             whatever investigation you feel necessary or appropriate before
             proceeding with any transaction with any third party.
           </p>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             Certain services made available via the zeroDAO Site are delivered
             by third party sites and organizations.
           </p>
           <h1 className="text-lg text-black font-bold">
             Prohibited Uses and Intellectual Property
           </h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             You are granted a non-exclusive, non-transferable, revocable license
             to access and use zeroDAO Site strictly in accordance with these
             terms of use. As a condition of your use of the zeroDAO Site, you
@@ -257,7 +257,7 @@ export const Disclaimer = () => {
             information through any means not intentionally made available or
             provided for through the zeroDAO Site.
           </p>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             All content included on the zeroDAO Site, such as text, graphics,
             logos, images, as well as the compilation thereof, and any software
             used on the zeroDAO Site, is the property of ZD or its suppliers and
@@ -267,7 +267,7 @@ export const Disclaimer = () => {
             other restrictions contained in any such content and will not make
             any changes thereto.
           </p>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             {" "}
             You will not modify, publish, transmit, reverse engineer,
             participate in the transfer or sale, create derivative works, or in
@@ -281,7 +281,7 @@ export const Disclaimer = () => {
             permission of ZD and the copyright owner. You agree that you do not
             acquire any ownership rights in any protected content.
           </p>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             {" "}
             Unless otherwise indicated, all ZD content is the property of the ZD
             or third-party licensors and, subject to the terms and conditions of
@@ -292,12 +292,12 @@ export const Disclaimer = () => {
             the terms of the MIT license.
           </p>
           <h1 className="text-lg text-black font-bold">Materials</h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             ZD does not immediately claim ownership to any feedback or
             suggestions ("Feedback") you provide to ZD via the zeroDAO Site.
           </p>
           <h1 className="text-lg text-black font-bold">International Users</h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             ZD may be accessed from countries around the world and may contain
             references to Services and content that are not available in your
             country. The zeroDAO Site is controlled and offered by ZD from its
@@ -308,7 +308,7 @@ export const Disclaimer = () => {
             law.
           </p>
           <h1 className="text-lg text-black font-bold">Indemnification</h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             {" "}
             You agree to indemnify, defend and hold harmless ZD, its officers,
             directors, employees, agents and third parties, for any losses,
@@ -326,14 +326,14 @@ export const Disclaimer = () => {
           <h1 className="text-lg text-black font-bold">
             Disclaimer of Certain Liabilities
           </h1>
-          <p className="indent-10 text-black snap-center font-bold">
+          <p className="text-black snap-center font-bold">
             THE INFORMATION, SOFTWARE, PRODUCTS, AND SERVICES INCLUDED IN OR
             AVAILABLE THROUGH THE ZERODAO SITE MAY INCLUDE INACCURACIES OR
             TYPOGRAPHICAL ERRORS. CHANGES ARE PERIODICALLY ADDED TO THE
             INFORMATION HEREIN. ZD AND/OR ITS SUPPLIERS MAY MAKE IMPROVEMENTS
             AND/OR CHANGES IN THE ZERODAO SITE AT ANY TIME.
           </p>
-          <p className="indent-10 text-black snap-center font-bold">
+          <p className="text-black snap-center font-bold">
             ZD AND/OR ITS SUPPLIERS MAKE NO REPRESENTATIONS ABOUT THE
             SUITABILITY, RELIABILITY, AVAILABILITY, TIMELINESS, AND ACCURACY OF
             THE INFORMATION, SOFTWARE, PRODUCTS, SERVICES AND RELATED GRAPHICS
@@ -348,7 +348,7 @@ export const Disclaimer = () => {
             WORKMANSHIP AS TO TECHNICAL CODING, ABSENCE OF DEFECTS, AND
             NON-INFRINGEMENT.
           </p>
-          <p className="indent-10 text-black snap-center font-bold">
+          <p className="text-black snap-center font-bold">
             TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL
             ZD AND/OR ITS SUPPLIERS BE LIABLE FOR ANY DIRECT, INDIRECT,
             PUNITIVE, INCIDENTAL, SPECIAL, CONSEQUENTIAL DAMAGES OR ANY DAMAGES
@@ -367,7 +367,7 @@ export const Disclaimer = () => {
             YOU ARE DISSATISFIED WITH ANY PORTION OF THE ZERODAO SITE, YOUR SOLE
             AND EXCLUSIVE REMEDY IS TO DISCONTINUE USING THE ZERODAO SITE.
           </p>
-          <p className="indent-10 text-black snap-center font-bold">
+          <p className="text-black snap-center font-bold">
             TO THE FULLEST EXTENT PERMITTED BY LAW AND NOTWITHSTANDING ANY OTHER
             PROVISION OF THIS AGREEMENT OR ANY OTHER AGREEMENT CONTEMPLATED
             HEREIN OR APPLICABLE PROVISIONS OF LAW OR EQUITY OR OTHERWISE, THE
@@ -385,13 +385,13 @@ export const Disclaimer = () => {
           <h1 className="text-lg text-black font-bold">
             Termination/Access Restriction
           </h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             ZD reserves the right, in its sole discretion, to terminate your
             access to the zeroDAO Site and its related services or any portion
             thereof at any time, without notice. This agreement is governed by
             the laws of Wyoming.
           </p>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             You agree that no joint venture, partnership, employment, or agency
             relationship exists between you and ZD as a result of this agreement
             or use of the zeroDAO Site. ZD's performance of this agreement is
@@ -408,7 +408,7 @@ export const Disclaimer = () => {
             the original provision and the remainder of the agreement shall
             continue in effect.
           </p>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             Unless otherwise specified herein, this agreement constitutes the
             entire agreement between the user and ZD with respect to the zeroDAO
             Site and it supersedes all prior or contemporaneous communications
@@ -423,7 +423,7 @@ export const Disclaimer = () => {
             in English.
           </p>
           <h1 className="text-lg text-black font-bold"> Dispute Resolution </h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             Please read the following arbitration agreement in this Section
             ("Arbitration Agreement") carefully. It requires you to arbitrate
             disputes with ZD and limits the manner in which you can seek relief
@@ -432,7 +432,7 @@ export const Disclaimer = () => {
           <h1 className="text-lg text-black font-bold">
             Applicability of Arbitration Agreement
           </h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             You agree that any dispute or claim relating in any way to your
             access or use of the zeroDAO Site, to any products sold or
             distributed through the zeroDAO Site, or to any aspect of your
@@ -449,7 +449,7 @@ export const Disclaimer = () => {
           <h1 className="text-lg text-black font-bold">
             Arbitration Rules and Forum
           </h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             The Federal Arbitration Act governs the interpretation and
             enforcement of this Arbitration Agreement. To begin an arbitration
             proceeding, you must send a letter requesting arbitration and
@@ -474,7 +474,7 @@ export const Disclaimer = () => {
             than $10,000 unless the arbitrator determines the claims are
             frivolous.
           </p>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             You may choose to have the arbitration conducted by telephone, based
             on written submissions, or in person in the country where you live
             or at another mutually agreed location. Any judgment on the award
@@ -484,7 +484,7 @@ export const Disclaimer = () => {
           <h1 className="text-lg text-black font-bold">
             Authority of Arbitrator
           </h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             {" "}
             The arbitrator shall have exclusive authority to (a) determine the
             scope and enforceability of this Arbitration Agreement and (b)
@@ -508,7 +508,7 @@ export const Disclaimer = () => {
             award of the arbitrator is final and binding upon you and us.
           </p>
           <h1 className="text-lg text-black font-bold">Waiver of Jury Trial</h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             <span className="font-bold">
               YOU AND COMPANY HEREBY WAIVE ANY CONSTITUTIONAL AND STATUTORY
               RIGHTS TO SUE IN COURT AND HAVE A TRIAL IN FRONT OF A JUDGE OR A
@@ -526,7 +526,7 @@ export const Disclaimer = () => {
           <h1 className="text-lg text-black font-bold">
             Waiver of Class or Other Non-Individualized Relief
           </h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             <span className="font-bold">
               ALL CLAIMS AND DISPUTES WITHIN THE SCOPE OF THIS ARBITRATION
               AGREEMENT MUST BE ARBITRATED ON AN INDIVIDUAL BASIS AND NOT ON A
@@ -540,13 +540,13 @@ export const Disclaimer = () => {
             arbitration and brought into the State or Federal Courts located in
             Wyoming.
           </p>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             All other claims shall be arbitrated.
           </p>
           <h1 className="text-lg text-black font-bold">
             30-Day Right to Opt Out
           </h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             You have the right to opt out of the provisions of this Arbitration
             Agreement by sending written notice of your decision to opt out to
             the following address: Z DAO LLC, 312 W. 2nd St #2108 Casper, WY
@@ -563,7 +563,7 @@ export const Disclaimer = () => {
             with us.
           </p>
           <h1 className="text-lg text-black font-bold">Severability</h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             Except as provided in the Waiver of Class or Other
             Non-Individualized Relief subsection, if any part or parts of this
             Arbitration Agreement are found under the law to be invalid or
@@ -574,12 +574,12 @@ export const Disclaimer = () => {
           <h1 className="text-lg text-black font-bold">
             Survival of Agreement
           </h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             This Arbitration Agreement will survive the termination of your
             relationship with ZD.
           </p>
           <h1 className="font-bold text-black text-lg">Modification</h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             Notwithstanding any provision in this Agreement to the contrary, you
             agree that if ZD makes any future material change to this
             Arbitration Agreement, you may reject that change within thirty (30)
@@ -591,7 +591,7 @@ export const Disclaimer = () => {
             Agreement as modified.
           </p>
           <h1 className="font-bold text-black text-lg">Assignment</h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             The Terms, and your rights and obligations hereunder, may not be
             assigned, subcontracted, delegated or otherwise transferred by you
             without ZD’s prior written consent, and any attempted assignment,
@@ -601,12 +601,12 @@ export const Disclaimer = () => {
           <h1 className="font-bold text-black text-lg">
             No Third Party Beneficiaries
           </h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             You agree that other than as explicitly provided herein, there are
             no third-party beneficiaries of this Agreement.
           </p>
           <h1 className="font-bold-text-lg text-black">Contact Us</h1>
-          <p className="indent-10 text-black snap-center">
+          <p className="text-black snap-center">
             ZD welcomes your questions or comments regarding the Terms via email
             at support@zdao.group.
           </p>
