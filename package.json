@@ -14,7 +14,9 @@
     "start:badger": "REACT_APP_CHAINID=1 REACT_APP_CHAIN=ETHEREUM REACT_APP_JSONRPC=https://eth-mainnet.alchemyapi.io/v2/gMO3S4SBWM72d94XKR4Hy2pbviLjmLqk react-app-rewired start",
     "build:css": "tailwindcss -i ./src/index.css -o ./src/app.css",
     "build:css:watch": "tailwindcss -i ./src/index.css -o ./src/app.css --watch",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "jest",
+    "lint": "eslint 'src/**'"
   },
   "dependencies": {
     "@babel/core": "^7.16.0",
@@ -143,6 +145,7 @@
     "zero-protocol": "https://github.com/zerodao-finance/zero-protocol"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.17.0",
     "@babel/plugin-transform-react-constant-elements": "^7.16.0",
     "@babel/preset-typescript": "^7.16.0",
     "@types/marked": "^3.0.3",
@@ -153,11 +156,14 @@
     "buffer": "^6.0.3",
     "cross-fetch": "^3.1.4",
     "crypto-browserify": "^3.12.0",
+    "eslint": "^8.15.0",
+    "eslint-plugin-react": "^7.29.4",
     "ethers": "^5.5.2",
     "ethers-gasnow": "https://github.com/kungfuflex/ethers-gasnow",
     "gm": "^1.23.1",
     "https-browserify": "^1.0.0",
     "husky": "^7.0.0",
+    "jest-cucumber": "^3.0.1",
     "moment": "^2.29.1",
     "npm-run-all": "^4.1.5",
     "os-browserify": "^0.3.0",
@@ -174,7 +180,7 @@
     "url": "^0.11.0",
     "web-vitals": "^2.1.2",
     "webpack": "^5.72.0",
-    "yarn": "^1.22.17"
+    "yarn": "^1.22.18"
   },
   "browserslist": {
     "production": [
