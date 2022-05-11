@@ -44,23 +44,33 @@ export const BridgeBurnSubmit = ({
   }, [destination, burnOutput]);
 
   return (
-    <>
-      <div className="px-8 mt-4">
-        <PrimaryRoundedButton
-          active={active}
-          label={buttonLabel}
-          action={action}
-        />
-      </div>
-
-      <div
-        className={
-          "animate-flip-in-hor-top px-6 mt-6 [animation-delay:700ms] w-full " +
-          (active ? "" : "hidden")
-        }
-      >
-        <BridgeTransferFeeInformation {...fees} btc_usd={btc_usd} />
-      </div>
-    </>
+    <div className="px-8 mt-4">
+      <PrimaryRoundedButton
+        active={false}
+        label={"Under Maintenance"}
+        action={() => {}}
+      />
+    </div>
   );
+
+  // return (
+  //   <>
+  //     <div className="px-8 mt-4">
+  //       <PrimaryRoundedButton
+  //         active={active}
+  //         label={buttonLabel}
+  //         action={action}
+  //       />
+  //     </div>
+
+  //     <div
+  //       className={
+  //         "animate-flip-in-hor-top px-6 mt-6 [animation-delay:700ms] w-full " +
+  //         (active ? "" : "hidden")
+  //       }
+  //     >
+  //       <BridgeTransferFeeInformation {...fees} btc_usd={btc_usd} />
+  //     </div>
+  //   </>
+  // );
 };
