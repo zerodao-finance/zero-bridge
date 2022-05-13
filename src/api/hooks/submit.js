@@ -4,6 +4,7 @@ import { storeContext } from "../global";
 import { GlobalStateHelper } from "../utils/global.utilities";
 import { useRequestHelper } from "./helper";
 import fixtures from "zero-protocol/lib/fixtures";
+import { useSlippageFetchers } from "../global/interfaces/interfaces.slippage";
 
 export const useSDKTransactionSubmit = (module) => {
   const { dispatch } = useContext(storeContext);
@@ -11,6 +12,8 @@ export const useSDKTransactionSubmit = (module) => {
   const { wallet, zero } = state;
   const { slippage } = state.transfer;
   const { input } = state[module];
+  const { getWbtcQuote, getUsdcWbtcQuote, getWbtcWethQuote } =
+    useSlippageFetchers();
 
   //getSigner function
   const getSigner = useMemo(async () => {

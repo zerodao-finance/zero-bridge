@@ -7,8 +7,6 @@ import fixtures from "zero-protocol/lib/fixtures";
 
 export const SlippageInput = ({ amount, token, slippage, setSlippage }) => {
   const [openSettings, setOpenSettings] = useState(false);
-  const { getWbtcQuote, getUsdcWbtcQuote, getWbtcWethQuote } =
-    useSlippageFetchers();
 
   const autoSlippage = async () => {
     const tokenAddr = fixtures.ETHEREUM[token];
