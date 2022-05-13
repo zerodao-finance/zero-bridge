@@ -47,17 +47,17 @@ export const useSDKTransactionSubmit = (module) => {
         break;
       case fixtures.ETHEREUM["WBTC"]:
         quote = getWbtcQuote(true, ethers.utils.parseUnits(amount, 8));
-        quote = ethers.parseUnits(quote, 8);
+        quote = ethers.utils.parseUnits(quote, 8);
         break;
       case fixtures.ETHEREUM["USDC"]:
         let wbtcQuote = getWbtcQuote(true, ethers.utils.parseUnits(amount, 8));
         quote = getUsdcWbtcQuote(false, ethers.utils.parseUnits(wbtcQuote, 8));
-        quote = ethers.parseUnits(quote, 6);
+        quote = ethers.utils.parseUnits(quote, 6);
         break;
       case fixtures.ETHEREUM["ETH"]:
         wbtcQuote = getWbtcQuote(true, ethers.utils.parseUnits(amount, 8));
         quote = getWbtcWethQuote(true, ethers.utils.parseUnits(wbtcQuote, 8));
-        quote = ethers.parseEther(quote);
+        quote = ethers.utils.parseEther(quote);
         break;
     }
 
@@ -98,7 +98,7 @@ export const useSDKTransactionSubmit = (module) => {
         break;
       case fixtures.ETHEREUM["WBTC"]:
         quote = getWbtcQuote(false, ethers.utils.parseUnits(amount, 8));
-        quote = ethers.parseUnits(quote, 8);
+        quote = ethers.utils.parseUnits(quote, 8);
         break;
       case fixtures.ETHEREUM["USDC"]:
         let wbtcQuote = getUsdcWbtcQuote(
@@ -106,12 +106,12 @@ export const useSDKTransactionSubmit = (module) => {
           ethers.utils.parseUnits(amount, 6)
         );
         quote = getWbtcQuote(false, ethers.utils.parseUnits(wbtcQuote, 8));
-        quote = ethers.parseUnits(quote, 8);
+        quote = ethers.utils.parseUnits(quote, 8);
         break;
       case fixtures.ETHEREUM["ETH"]:
         wbtcQuote = getWbtcWethQuote(false, ethers.utils.parseEther(amount));
         quote = getWbtcQuote(false, ethers.utils.parseUnits(wbtcQuote, 8));
-        quote = ethers.parseUnits(quote, 8);
+        quote = ethers.utils.parseUnits(quote, 8);
         break;
     }
 
