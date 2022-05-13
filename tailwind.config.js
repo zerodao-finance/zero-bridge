@@ -8,6 +8,7 @@ module.exports = {
         "hover-green": "#3D8951",
         "alert-red": "#CF6679",
         "badger-black": {
+          400: "#4a4a4a",
           500: "#363636",
           700: "#1e1e1e",
           800: "#121212",

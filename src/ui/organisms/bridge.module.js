@@ -2,12 +2,15 @@ import { BridgeTransferModule } from "../molecules/bridge.transfer";
 import { BridgeBurnModule } from "../molecules/bridge.burn/bridge.burn";
 import { BridgeLoadingWallet } from "../molecules/bridge.transfer/bridge.loading.wallet";
 import { useBridgeInput } from "../../api/global/interfaces/interface.bridge.transfer";
+import { useBridgeBurnInput } from "../../api/global/interfaces/interface.bridge.burn";
 import { useBridgePage } from "../../api/global/interfaces/interface.bridge";
 import Disclaimer from "./Disclaimer";
 import { Route, Routes, Link } from "react-router-dom";
+import { SlippageInput } from "../molecules/bridge.gateway/slippage.input.gateway";
 
-export const BridgeModule = ({ wallet, mode, toggleMode }) => {
-  const { getTransferMode } = useBridgeInput();
+export const BridgeModule = ({ wallet }) => {
+  const { getTransferMode, getTransferSlippageProps } = useBridgeInput();
+  const { getBurnSlippageProps } = useBridgeBurnInput();
   const { getBridgePageProps } = useBridgePage();
   const { tcSigned } = getBridgePageProps();
 
@@ -45,13 +48,32 @@ export const BridgeModule = ({ wallet, mode, toggleMode }) => {
         {wallet ? (
           <BridgeLoadingWallet />
         ) : (
-          <Routes>
-            <Route
-              path="/transfer/*"
-              element={<BridgeTransferModule {...getTransferMode()} />}
-            />
-            <Route path="/release/*" element={<BridgeBurnModule />} />
-          </Routes>
+          <>
+            <Routes>
+              <Route
+                path="/transfer/*"
+                element={
+                  <div className="grid">
+                    <span className="w-full select-none">
+                      <SlippageInput {...getTransferSlippageProps()} />
+                    </span>
+                    <BridgeTransferModule {...getTransferMode()} />
+                  </div>
+                }
+              />
+              <Route
+                path="/release/*"
+                element={
+                  <div className="grid">
+                    <span className="w-full select-none">
+                      <SlippageInput {...getBurnSlippageProps()} />
+                    </span>
+                    <BridgeBurnModule />
+                  </div>
+                }
+              />
+            </Routes>
+          </>
         )}
       </span>
     </div>

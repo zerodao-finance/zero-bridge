@@ -41,6 +41,22 @@ export const useBridgeInput = () => {
     eth_usd: eth_usd,
   });
 
+  const setTransferSlippage = (e) => {
+    dispatch({
+      type: "UPDATE",
+      module: "transfer",
+      effect: "input",
+      data: { slippage: e },
+    });
+  };
+
+  const getTransferSlippageProps = ({ ...otherProps } = {}) => ({
+    amount: amount,
+    token: state.transfer.input.token,
+    slippage: state.transfer.input.slippage,
+    setSlippage: setTransferSlippage,
+  });
+
   const getTransferMode = ({ ...otherProps } = {}) => ({
     mode: mode,
   });
@@ -61,6 +77,8 @@ export const useBridgeInput = () => {
     effect: updateAmount,
     btc_usd: btc_usd,
     eth_usd: eth_usd,
+    slippage: state.transfer.input.slippage,
+    setSlippage: setTransferSlippage,
   });
 
   const getGatewayData = ({ ...otherProps } = {}) => ({
@@ -69,6 +87,8 @@ export const useBridgeInput = () => {
 
   return {
     getTransferSenderProps,
+    setTransferSlippage,
+    getTransferSlippageProps,
     getTransferInputProps,
     getTransferRatioProps,
     getTransferResultsProps,

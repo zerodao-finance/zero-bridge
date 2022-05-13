@@ -1,19 +1,19 @@
 import { useMemo, useContext } from "react";
 import { ethers } from "ethers";
 import { storeContext } from "../global";
-import { useNotificationContext } from "../notification";
-import { TransactionContext } from "../transaction";
-import { TransactionHelper } from "../transaction/helper";
-import { NotificationHelper } from "../notification/helper";
 import { GlobalStateHelper } from "../utils/global.utilities";
 import { useRequestHelper } from "./helper";
-import { sdkBurn } from "../utils/sdk";
+import fixtures from "zero-protocol/lib/fixtures";
+import { useSlippageFetchers } from "../global/interfaces/interfaces.slippage";
 
 export const useSDKTransactionSubmit = (module) => {
   const { dispatch } = useContext(storeContext);
   const { state, Helper } = useRequestHelper();
   const { wallet, zero } = state;
+  const { slippage } = state.transfer;
   const { input } = state[module];
+  const { getWbtcQuote, getUsdcWbtcQuote, getWbtcWethQuote } =
+    useSlippageFetchers();
 
   //getSigner function
   const getSigner = useMemo(async () => {
@@ -38,9 +38,36 @@ export const useSDKTransactionSubmit = (module) => {
       ["uint256"],
       [ethers.utils.parseEther(ratio).div(ethers.BigNumber.from("100"))]
     );
+
+    let tokenAddr = fixtures.ETHEREUM[token];
+    let quote = 0;
+    switch (tokenAddr) {
+      case fixtures.ETHEREUM["renBTC"]:
+        quote = ethers.utils.parseUnits(amount, 8);
+        break;
+      case fixtures.ETHEREUM["WBTC"]:
+        quote = getWbtcQuote(true, ethers.utils.parseUnits(amount, 8));
+        quote = ethers.utils.parseUnits(quote, 8);
+        break;
+      case fixtures.ETHEREUM["USDC"]:
+        let wbtcQuote = getWbtcQuote(true, ethers.utils.parseUnits(amount, 8));
+        quote = getUsdcWbtcQuote(false, ethers.utils.parseUnits(wbtcQuote, 8));
+        quote = ethers.utils.parseUnits(quote, 6);
+        break;
+      case fixtures.ETHEREUM["ETH"]:
+        wbtcQuote = getWbtcQuote(true, ethers.utils.parseUnits(amount, 8));
+        quote = getWbtcWethQuote(true, ethers.utils.parseUnits(wbtcQuote, 8));
+        quote = ethers.utils.parseEther(quote);
+        break;
+    }
+
+    const inverseSlippage = ethers.BigNumber.from(1 - slippage);
+    const minOut = inverseSlippage.mul(quote);
+
     let requestData = [
       zeroUser,
       amount,
+      minOut,
       token,
       ratio,
       signer,
@@ -62,11 +89,39 @@ export const useSDKTransactionSubmit = (module) => {
     var amount = input.amount;
     var destination = input.destination;
     var deadline = ethers.constants.MaxUint256;
-    // var destination = ethers.utils.hexlify(ethers.utils.base58.decode('36c5pSLZ4J11EiyaXuYfJypNzrufYVJ5Qd'))
+
+    let tokenAddr = fixtures.ETHEREUM[destination];
+    let quote = 0;
+    switch (tokenAddr) {
+      case fixtures.ETHEREUM["renBTC"]:
+        quote = ethers.utils.parseUnits(amount, 8);
+        break;
+      case fixtures.ETHEREUM["WBTC"]:
+        quote = getWbtcQuote(false, ethers.utils.parseUnits(amount, 8));
+        quote = ethers.utils.parseUnits(quote, 8);
+        break;
+      case fixtures.ETHEREUM["USDC"]:
+        let wbtcQuote = getUsdcWbtcQuote(
+          true,
+          ethers.utils.parseUnits(amount, 6)
+        );
+        quote = getWbtcQuote(false, ethers.utils.parseUnits(wbtcQuote, 8));
+        quote = ethers.utils.parseUnits(quote, 8);
+        break;
+      case fixtures.ETHEREUM["ETH"]:
+        wbtcQuote = getWbtcWethQuote(false, ethers.utils.parseEther(amount));
+        quote = getWbtcQuote(false, ethers.utils.parseUnits(wbtcQuote, 8));
+        quote = ethers.utils.parseUnits(quote, 8);
+        break;
+    }
+
+    const inverseSlippage = ethers.BigNumber.from(1 - slippage);
+    const minOut = inverseSlippage.mul(quote);
 
     let requestData = [
       zeroUser,
       amount,
+      minOut,
       to,
       deadline,
       signer,
@@ -75,9 +130,6 @@ export const useSDKTransactionSubmit = (module) => {
     ];
 
     Helper.request("burn", requestData);
-
-    // const transfer = new sdkBurn(zeroUser, amount, to, deadline, signer, destination, StateHelper)
-    // await transfer.call(input.token)
   }
 
   return {

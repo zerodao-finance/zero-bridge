@@ -23,13 +23,13 @@ const bufferToHexString = (buffer) => {
 
 const toLower = (s) => s && s.toLowerCase();
 const signETH = async function (signer) {
-  const { contractAddress, amount, destination } = this;
+  const { contractAddress, amount, destination, minOut } = this;
   const contract = new ethers.Contract(
     contractAddress,
-    ["function burnETH(bytes) payable"],
+    ["function burnETH(uint256, bytes) payable"],
     signer
   );
-  const tx = await contract.burnETH(destination, {
+  const tx = await contract.burnETH(minOut, destination, {
     value: amount,
   });
   remoteETHTxMap.set(this, tx.wait());
@@ -113,12 +113,23 @@ export class sdkTransfer {
   }
 
   response = new EventEmitter({ captureRejections: true });
-  constructor(zeroUser, value, token, ratio, signer, to, isFast, _data) {
+  constructor(
+    zeroUser,
+    minOut,
+    value,
+    token,
+    ratio,
+    signer,
+    to,
+    isFast,
+    _data
+  ) {
     this.isFast = isFast;
     this.ratio = ratio;
     this.zeroUser = zeroUser;
     this.signer = signer;
     this.token = token;
+    this.minOut = minOut;
 
     // initialize Transfer Request Object
 
@@ -160,6 +171,10 @@ export class sdkTransfer {
     const liveDeployments = await deploymentsFromSigner(this.signer);
     // set correct module based on past in speed
     const transferRequest = await this.transferRequest;
+    transferRequest.data = ethers.utils.defaultAbiCoder.encode(
+      ["uint256"],
+      [this.minOut]
+    );
     transferRequest.asset = _this.Global.state.wallet.network[asset];
     if (!(process.env.REACT_APP_CHAIN == "ETHEREUM")) {
       transferRequest.module = this.isFast
@@ -227,6 +242,7 @@ export class sdkBurn {
   response = new EventEmitter({ captureRejections: true });
   constructor(
     zeroUser,
+    minOut,
     amount,
     to,
     deadline,
@@ -238,6 +254,7 @@ export class sdkBurn {
     this.signer = signer;
     this.StateHelper = StateHelper;
     this.zeroUser = zeroUser;
+    this.minOut = minOut;
     const dest = btcAddressToHex(destination);
     const self = this;
     console.log(self.StateHelper.state);
@@ -269,7 +286,11 @@ export class sdkBurn {
   async call() {
     const burnRequest = await this.burnRequest();
     const utxo = burnRequest.waitForRemoteTransaction().then((utxo) => utxo);
-
+    burnRequest.minOut = this.minOut;
+    burnRequest.data = ethers.utils.defaultAbiCoder.encode(
+      ["uint256"],
+      [minOut]
+    );
     const asset = burnRequest.asset;
     const assetName = this.assetName;
 
