@@ -46,13 +46,18 @@ export const useSDKTransactionSubmit = (module) => {
         quote = ethers.utils.parseUnits(amount, 8);
         break;
       case fixtures.ETHEREUM["WBTC"]:
-        quote = 0;
+        quote = getWbtcQuote(true, ethers.utils.parseUnits(amount, 8));
+        quote = ethers.parseUnits(quote, 8);
         break;
       case fixtures.ETHEREUM["USDC"]:
-        quote = 0;
+        let wbtcQuote = getWbtcQuote(true, ethers.utils.parseUnits(amount, 8));
+        quote = getUsdcWbtcQuote(false, ethers.utils.parseUnits(wbtcQuote, 8));
+        quote = ethers.parseUnits(quote, 6);
         break;
       case fixtures.ETHEREUM["ETH"]:
-        quote = 0;
+        wbtcQuote = getWbtcQuote(true, ethers.utils.parseUnits(amount, 8));
+        quote = getWbtcWethQuote(true, ethers.utils.parseUnits(wbtcQuote, 8));
+        quote = ethers.parseEther(quote);
         break;
     }
 
