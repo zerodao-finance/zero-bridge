@@ -43,7 +43,6 @@ export const BridgeModule = ({ wallet }) => {
         </Link>
       </div>
       <span className="grid px-8">
-        {console.log({ ...getTransferSlippageProps() })}
         {wallet ? (
           <BridgeLoadingWallet />
         ) : (
