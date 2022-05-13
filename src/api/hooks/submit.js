@@ -89,11 +89,39 @@ export const useSDKTransactionSubmit = (module) => {
     var amount = input.amount;
     var destination = input.destination;
     var deadline = ethers.constants.MaxUint256;
-    // var destination = ethers.utils.hexlify(ethers.utils.base58.decode('36c5pSLZ4J11EiyaXuYfJypNzrufYVJ5Qd'))
+
+    let tokenAddr = fixtures.ETHEREUM[destination];
+    let quote = 0;
+    switch (tokenAddr) {
+      case fixtures.ETHEREUM["renBTC"]:
+        quote = ethers.utils.parseUnits(amount, 8);
+        break;
+      case fixtures.ETHEREUM["WBTC"]:
+        quote = getWbtcQuote(false, ethers.utils.parseUnits(amount, 8));
+        quote = ethers.parseUnits(quote, 8);
+        break;
+      case fixtures.ETHEREUM["USDC"]:
+        let wbtcQuote = getUsdcWbtcQuote(
+          true,
+          ethers.utils.parseUnits(amount, 6)
+        );
+        quote = getWbtcQuote(false, ethers.utils.parseUnits(wbtcQuote, 8));
+        quote = ethers.parseUnits(quote, 8);
+        break;
+      case fixtures.ETHEREUM["ETH"]:
+        wbtcQuote = getWbtcWethQuote(false, ethers.utils.parseEther(amount));
+        quote = getWbtcQuote(false, ethers.utils.parseUnits(wbtcQuote, 8));
+        quote = ethers.parseUnits(quote, 8);
+        break;
+    }
+
+    const inverseSlippage = ethers.BigNumber.from(1 - slippage);
+    const minOut = inverseSlippage.mul(quote);
 
     let requestData = [
       zeroUser,
       amount,
+      minOut,
       to,
       deadline,
       signer,
@@ -102,9 +130,6 @@ export const useSDKTransactionSubmit = (module) => {
     ];
 
     Helper.request("burn", requestData);
-
-    // const transfer = new sdkBurn(zeroUser, amount, to, deadline, signer, destination, StateHelper)
-    // await transfer.call(input.token)
   }
 
   return {
