@@ -40,7 +40,7 @@ export const useSDKTransactionSubmit = (module) => {
     let quote = 0;
     switch (tokenAddr) {
       case fixtures.ETHEREUM["renBTC"]:
-        quote = amount;
+        quote = ethers.utils.parseUnits(amount, 8);
         break;
       case fixtures.ETHEREUM["WBTC"]:
         quote = 0;
