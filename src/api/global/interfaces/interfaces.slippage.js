@@ -4,6 +4,14 @@ import { useContext, useCallback } from "react";
 import { WETH } from "@uniswap/sdk";
 import { tokenAddressTable } from "../global.reducers";
 
+const RENCRV_BY_NETWORK = {
+  ETHEREUM: "0x93054188d876f558f4a66B2EF1d97d16eDf0895B",
+  ARBITRUM: "0x3E01dD8a5E1fb3481F0F589056b428Fc308AF0Fb",
+  MATIC: "0xC2d95EEF97Ec6C17551d45e77B590dc1F9117C67",
+};
+
+const RENCRV = RENCRV_BY_NETWORK[process.env.REACT_APP_CHAIN || "ETHEREUM"];
+
 export const useSlippageFetchers = () => {
   const { state } = useContext(storeContext);
   const quoter = new ethers.Contract(
@@ -18,7 +26,7 @@ export const useSlippageFetchers = () => {
   // direction = true ? renbtc -> wbtc
   const getWbtcQuote = useCallback(
     async (direction, amount) => {
-      const rencrv = state.network.priceFeedContract;
+      const rencrv = state.network.priceFeedContract.attach(RENCRV);
       if (rencrv) {
         const path = [0, 1];
         return rencrv.get_dy(
