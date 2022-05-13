@@ -289,7 +289,7 @@ export class sdkBurn {
     burnRequest.minOut = this.minOut;
     burnRequest.data = ethers.utils.defaultAbiCoder.encode(
       ["uint256"],
-      [minOut]
+      [this.minOut]
     );
     const asset = burnRequest.asset;
     const assetName = this.assetName;
