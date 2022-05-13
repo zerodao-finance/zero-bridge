@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import { useState } from "react";
 import { CogIcon } from "@heroicons/react/outline";
 import OutsideClickHandler from "react-outside-click-handler";
@@ -11,14 +12,25 @@ export const SlippageInput = ({ amount, token, slippage, setSlippage }) => {
 
   const autoSlippage = async () => {
     const tokenAddr = fixtures.ETHEREUM[token];
+    let quote = 0;
 
     switch (tokenAddr) {
       case fixtures.ETHEREUM["renBTC"]:
         setSlippage(0.1);
         break;
       case fixtures.ETHEREUM["WBTC"]:
-        const quote = await getWbtcQuote(true, amount);
-        console.log(quote);
+        console.log("Amount: " + amount);
+        quote = await getWbtcQuote(true, ethers.utils.parseUnits(amount, 8));
+        console.log(ethers.utils.formatUnits(quote, 8));
+        setSlippage(1);
+        break;
+      case fixtures.ETHEREUM["USDC"]:
+        console.log("Amount: " + amount);
+        quote = await getUsdcWbtcQuote(
+          false,
+          ethers.utils.parseUnits(amount, 8)
+        );
+        console.log(ethers.utils.formatUnits(quote, 8));
         setSlippage(1);
         break;
     }
