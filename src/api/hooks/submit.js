@@ -10,7 +10,7 @@ export const useSDKTransactionSubmit = (module) => {
   const { dispatch } = useContext(storeContext);
   const { state, Helper } = useRequestHelper();
   const { wallet, zero } = state;
-  const { slippage } = state.transfer;
+  const { slippage } = state.transfer.input;
   const { input } = state[module];
   const { getWbtcQuote, getUsdcWbtcQuote, getWbtcWethQuote } =
     useSlippageFetchers();
@@ -64,6 +64,7 @@ export const useSDKTransactionSubmit = (module) => {
     const inverseSlippage = ethers.utils
       .parseEther("1")
       .sub(ethers.utils.parseEther(String(Number(slippage) / 100)));
+
     const minOut = inverseSlippage.mul(quote).div(ethers.utils.parseEther("1"));
 
     let requestData = [
@@ -117,8 +118,11 @@ export const useSDKTransactionSubmit = (module) => {
         break;
     }
 
-    const inverseSlippage = ethers.BigNumber.from(1 - slippage);
-    const minOut = inverseSlippage.mul(quote);
+    const inverseSlippage = ethers.utils
+      .parseEther("1")
+      .sub(ethers.utils.parseEther(String(Number(slippage) / 100)));
+
+    const minOut = inverseSlippage.mul(quote).div(ethers.utils.parseEther("1"));
 
     let requestData = [
       zeroUser,
