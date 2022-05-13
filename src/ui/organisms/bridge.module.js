@@ -5,6 +5,7 @@ import { useBridgeInput } from "../../api/global/interfaces/interface.bridge.tra
 import { useBridgePage } from "../../api/global/interfaces/interface.bridge";
 import Disclaimer from "./Disclaimer";
 import { Route, Routes, Link } from "react-router-dom";
+import { SlippageInput } from "../molecules/bridge.gateway/slippage.input.gateway";
 
 export const BridgeModule = ({ wallet, mode, toggleMode }) => {
   const { getTransferMode } = useBridgeInput();
@@ -45,13 +46,16 @@ export const BridgeModule = ({ wallet, mode, toggleMode }) => {
         {wallet ? (
           <BridgeLoadingWallet />
         ) : (
-          <Routes>
-            <Route
-              path="/transfer/*"
-              element={<BridgeTransferModule {...getTransferMode()} />}
-            />
-            <Route path="/release/*" element={<BridgeBurnModule />} />
-          </Routes>
+          <>
+            <SlippageInput />
+            <Routes>
+              <Route
+                path="/transfer/*"
+                element={<BridgeTransferModule {...getTransferMode()} />}
+              />
+              <Route path="/release/*" element={<BridgeBurnModule />} />
+            </Routes>
+          </>
         )}
       </span>
     </div>

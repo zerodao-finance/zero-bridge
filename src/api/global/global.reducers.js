@@ -106,6 +106,7 @@ export const globalBridgeState = {
       currentTX: null,
       isLoading: false,
       error: null,
+      slippage: 0.1,
     },
     wallet: {
       address: null,
