@@ -1,18 +1,15 @@
 import { useMemo, useContext } from "react";
 import { ethers } from "ethers";
 import { storeContext } from "../global";
-import { useNotificationContext } from "../notification";
-import { TransactionContext } from "../transaction";
-import { TransactionHelper } from "../transaction/helper";
-import { NotificationHelper } from "../notification/helper";
 import { GlobalStateHelper } from "../utils/global.utilities";
 import { useRequestHelper } from "./helper";
-import { sdkBurn } from "../utils/sdk";
+import fixtures from "zero-protocol/lib/fixtures";
 
 export const useSDKTransactionSubmit = (module) => {
   const { dispatch } = useContext(storeContext);
   const { state, Helper } = useRequestHelper();
   const { wallet, zero } = state;
+  const { slippage } = state.transfer;
   const { input } = state[module];
 
   //getSigner function
@@ -38,9 +35,31 @@ export const useSDKTransactionSubmit = (module) => {
       ["uint256"],
       [ethers.utils.parseEther(ratio).div(ethers.BigNumber.from("100"))]
     );
+
+    let tokenAddr = fixtures.ETHEREUM[token];
+    let quote = 0;
+    switch (tokenAddr) {
+      case fixtures.ETHEREUM["renBTC"]:
+        quote = amount;
+        break;
+      case fixtures.ETHEREUM["WBTC"]:
+        quote = 0;
+        break;
+      case fixtures.ETHEREUM["USDC"]:
+        quote = 0;
+        break;
+      case fixtures.ETHEREUM["ETH"]:
+        quote = 0;
+        break;
+    }
+
+    const inverseSlippage = ethers.BigNumber.from(1 - slippage);
+    const minOut = inverseSlippage.mul(quote);
+
     let requestData = [
       zeroUser,
       amount,
+      minOut,
       token,
       ratio,
       signer,
