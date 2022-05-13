@@ -7,8 +7,8 @@ import Disclaimer from "./Disclaimer";
 import { Route, Routes, Link } from "react-router-dom";
 import { SlippageInput } from "../molecules/bridge.gateway/slippage.input.gateway";
 
-export const BridgeModule = ({ wallet, mode, toggleMode }) => {
-  const { getTransferMode } = useBridgeInput();
+export const BridgeModule = ({ wallet }) => {
+  const { getTransferMode, getTransferSlippageProps } = useBridgeInput();
   const { getBridgePageProps } = useBridgePage();
   const { tcSigned } = getBridgePageProps();
 
@@ -43,11 +43,12 @@ export const BridgeModule = ({ wallet, mode, toggleMode }) => {
         </Link>
       </div>
       <span className="grid px-8">
+        {console.log({ ...getTransferSlippageProps() })}
         {wallet ? (
           <BridgeLoadingWallet />
         ) : (
           <>
-            <SlippageInput />
+            <SlippageInput {...getTransferSlippageProps()} />
             <Routes>
               <Route
                 path="/transfer/*"

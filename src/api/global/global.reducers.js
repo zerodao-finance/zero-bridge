@@ -43,6 +43,7 @@ export const globalBridgeState = {
         ratio: 0,
         amount: "",
         token: "renBTC",
+        slippage: 0.1,
         isFast: false,
         isLoading: false,
         error: null,
@@ -106,7 +107,6 @@ export const globalBridgeState = {
       currentTX: null,
       isLoading: false,
       error: null,
-      slippage: 0.1,
     },
     wallet: {
       address: null,
