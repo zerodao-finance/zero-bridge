@@ -47,13 +47,29 @@ export const BridgeModule = ({ wallet }) => {
           <BridgeLoadingWallet />
         ) : (
           <>
-            <SlippageInput {...getTransferSlippageProps()} />
             <Routes>
               <Route
                 path="/transfer/*"
-                element={<BridgeTransferModule {...getTransferMode()} />}
+                element={
+                  <div>
+                    <span className="w-full select-none">
+                      <SlippageInput {...getTransferSlippageProps()} />
+                    </span>
+                    <BridgeTransferModule {...getTransferMode()} />
+                  </div>
+                }
               />
-              <Route path="/release/*" element={<BridgeBurnModule />} />
+              <Route
+                path="/release/*"
+                element={
+                  <div>
+                    <span className="w-full select-none">
+                      <SlippageInput {...getTransferSlippageProps()} />
+                    </span>
+                    <BridgeBurnModule />
+                  </div>
+                }
+              />
             </Routes>
           </>
         )}
