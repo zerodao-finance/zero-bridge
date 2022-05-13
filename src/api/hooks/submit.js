@@ -61,8 +61,10 @@ export const useSDKTransactionSubmit = (module) => {
         break;
     }
 
-    const inverseSlippage = ethers.BigNumber.from(1 - slippage);
-    const minOut = inverseSlippage.mul(quote);
+    const inverseSlippage = ethers.utils
+      .parseEther("1")
+      .sub(ethers.utils.parseEther(String(Number(slippage) / 100)));
+    const minOut = inverseSlippage.mul(quote).div(ethers.utils.parseEther("1"));
 
     let requestData = [
       zeroUser,
