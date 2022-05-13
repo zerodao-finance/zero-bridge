@@ -19,7 +19,7 @@
     "lint": "eslint 'src/**'"
   },
   "dependencies": {
-    "@babel/core": "^7.16.0",
+    "@babel/core": "^7.17.10",
     "@babel/plugin-transform-object-assign": "^7.16.0",
     "@babel/runtime-corejs2": "^7.16.3",
     "@date-io/core": "^2.11.0",

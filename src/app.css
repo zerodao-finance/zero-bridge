@@ -1227,12 +1227,12 @@ input:checked + .toggle-bg {
   z-index: 40;
 }
 
-.z-\[1\] {
-  z-index: 1;
-}
-
 .z-20 {
   z-index: 20;
+}
+
+.z-\[1\] {
+  z-index: 1;
 }
 
 .row-span-1 {
@@ -1817,6 +1817,12 @@ input:checked + .toggle-bg {
   cursor: default;
 }
 
+.select-none {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
 .select-all {
   -webkit-user-select: all;
   -moz-user-select: all;
@@ -2216,6 +2222,11 @@ input:checked + .toggle-bg {
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
+.bg-badger-black-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(74 74 74 / var(--tw-bg-opacity));
+}
+
 .bg-\[\#D7E0DA\] {
   --tw-bg-opacity: 1;
   background-color: rgb(215 224 218 / var(--tw-bg-opacity));
@@ -2352,6 +2363,11 @@ input:checked + .toggle-bg {
   padding-bottom: 0.5rem;
 }
 
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
 .px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -2385,11 +2401,6 @@ input:checked + .toggle-bg {
 .px-6 {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
-}
-
-.py-4 {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
 }
 
 .px-5 {
@@ -2480,10 +2491,6 @@ input:checked + .toggle-bg {
 
 .text-right {
   text-align: right;
-}
-
-.indent-10 {
-  text-indent: 2.5rem;
 }
 
 .align-bottom {
