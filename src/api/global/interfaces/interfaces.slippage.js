@@ -17,8 +17,8 @@ export const useSlippageFetchers = () => {
   const quoter = new ethers.Contract(
     "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6",
     [
-      "function quoteExactInputSingle(address tokenIn, address tokenOut, uint24 fee, uint256 amountIn, uint160 sqrtPriceLimitX96) public returns (uint256 amountOut)",
-      "function quoteExactInput(bytes path, uint256 amountIn) external returns (uint256 amountOut)",
+      "function quoteExactInputSingle(address tokenIn, address tokenOut, uint24 fee, uint256 amountIn, uint160 sqrtPriceLimitX96) public view returns (uint256 amountOut)",
+      "function quoteExactInput(bytes path, uint256 amountIn) public view returns (uint256 amountOut)",
     ],
     state.wallet.provider
   );
