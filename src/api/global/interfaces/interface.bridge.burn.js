@@ -1,9 +1,7 @@
 import { storeContext } from "../global";
-import { useContext, useEffect, useState, useMemo } from "react";
-import { useBridgeDisplay } from "./interface.bridge";
+import { useContext } from "react";
 import { useSDKTransactionSubmit } from "../../hooks/submit";
-import { ethers } from "ethers";
-import _ from "lodash";
+import { useBridgeInput } from "./interface.bridge.transfer";
 
 export const useBridgeBurnInput = () => {
   const { state, dispatch } = useContext(storeContext);
@@ -11,6 +9,7 @@ export const useBridgeBurnInput = () => {
   const { sendBurnRequest } = useSDKTransactionSubmit("burn");
   const { input } = state.burn;
   const { amount, destination, token } = input;
+  const { setTransferSlippage } = useBridgeInput();
 
   const updateAmount = (e) => {
     dispatch({
@@ -37,6 +36,13 @@ export const useBridgeBurnInput = () => {
     });
   };
 
+  const getBurnSlippageProps = ({ ...otherProps } = {}) => ({
+    amount: amount,
+    token,
+    slippage: state.transfer.input.slippage,
+    setSlippage: setTransferSlippage,
+  });
+
   const getBridgeBurnInputProps = ({ ...otherProps } = {}) => ({
     amount: amount,
     destination: destination,
@@ -59,6 +65,7 @@ export const useBridgeBurnInput = () => {
 
   return {
     getBridgeBurnInputProps,
+    getBurnSlippageProps,
     getBurnSenderProps,
   };
 };

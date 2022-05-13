@@ -2,6 +2,7 @@ import { BridgeTransferModule } from "../molecules/bridge.transfer";
 import { BridgeBurnModule } from "../molecules/bridge.burn/bridge.burn";
 import { BridgeLoadingWallet } from "../molecules/bridge.transfer/bridge.loading.wallet";
 import { useBridgeInput } from "../../api/global/interfaces/interface.bridge.transfer";
+import { useBridgeBurnInput } from "../../api/global/interfaces/interface.bridge.burn";
 import { useBridgePage } from "../../api/global/interfaces/interface.bridge";
 import Disclaimer from "./Disclaimer";
 import { Route, Routes, Link } from "react-router-dom";
@@ -9,6 +10,7 @@ import { SlippageInput } from "../molecules/bridge.gateway/slippage.input.gatewa
 
 export const BridgeModule = ({ wallet }) => {
   const { getTransferMode, getTransferSlippageProps } = useBridgeInput();
+  const { getBurnSlippageProps } = useBridgeBurnInput();
   const { getBridgePageProps } = useBridgePage();
   const { tcSigned } = getBridgePageProps();
 
@@ -64,7 +66,7 @@ export const BridgeModule = ({ wallet }) => {
                 element={
                   <div className="grid">
                     <span className="w-full select-none">
-                      <SlippageInput {...getTransferSlippageProps()} />
+                      <SlippageInput {...getBurnSlippageProps()} />
                     </span>
                     <BridgeBurnModule />
                   </div>

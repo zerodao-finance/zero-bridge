@@ -12,27 +12,13 @@ export const SlippageInput = ({ amount, token, slippage, setSlippage }) => {
 
   const autoSlippage = async () => {
     const tokenAddr = fixtures.ETHEREUM[token];
-    let quote = 0;
 
     switch (tokenAddr) {
       case fixtures.ETHEREUM["renBTC"]:
-        setSlippage(0.1);
+        setSlippage(0.0);
         break;
-      case fixtures.ETHEREUM["WBTC"]:
-        console.log("Amount: " + amount);
-        quote = await getWbtcQuote(true, ethers.utils.parseUnits(amount, 8));
-        console.log(ethers.utils.formatUnits(quote, 8));
-        setSlippage(1);
-        break;
-      case fixtures.ETHEREUM["USDC"]:
-        console.log("Amount: " + amount);
-        quote = await getUsdcWbtcQuote(
-          false,
-          ethers.utils.parseUnits(amount, 8)
-        );
-        console.log(ethers.utils.formatUnits(quote, 8));
-        setSlippage(1);
-        break;
+      default:
+        setSlippage(2.0);
     }
   };
 
@@ -68,7 +54,7 @@ export const SlippageInput = ({ amount, token, slippage, setSlippage }) => {
               id="slipTolerance"
               className="block rounded-lg ml-2 text-right focus:border-badger-gray-200 focus:ring-1 focus:ring-badger-gray-200 text-badger-black-800 pr-7 font-semibold"
               placeholder="0.1"
-              value={slippage}
+              value={slippage.toFixed(1)}
               onChange={(e) => setSlippage(e.target.value)}
             />
             <div className="absolute pt-3 right-3 pr-3 flex items-center pointer-events-none text-badger-black-800 font-bold">
