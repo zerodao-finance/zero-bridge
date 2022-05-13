@@ -1,9 +1,28 @@
 import { useState } from "react";
 import { CogIcon } from "@heroicons/react/outline";
 import OutsideClickHandler from "react-outside-click-handler";
+import { useSlippageFetchers } from "../../../api/global/interfaces/interfaces.slippage";
+import fixtures from "zero-protocol/lib/fixtures";
 
 export const SlippageInput = ({ amount, token, slippage, setSlippage }) => {
   const [openSettings, setOpenSettings] = useState(false);
+  const { getWbtcQuote, getUsdcWbtcQuote, getWbtcWethQuote } =
+    useSlippageFetchers();
+
+  const autoSlippage = async () => {
+    const tokenAddr = fixtures.ETHEREUM[token];
+
+    switch (tokenAddr) {
+      case fixtures.ETHEREUM["renBTC"]:
+        setSlippage(0.1);
+        break;
+      case fixtures.ETHEREUM["WBTC"]:
+        const quote = await getWbtcQuote(true, amount);
+        console.log(quote);
+        setSlippage(1);
+        break;
+    }
+  };
 
   return (
     <OutsideClickHandler onOutsideClick={() => setOpenSettings(false)}>
@@ -25,7 +44,10 @@ export const SlippageInput = ({ amount, token, slippage, setSlippage }) => {
             Slippage tolerance ?
           </label>
           <div className="flex mt-1 text-sm">
-            <button className="hover:bg-badger-yellow-400/40 bg-badger-yellow-400 rounded-lg p-2 font-bold text-badger-black-700">
+            <button
+              className="hover:bg-badger-yellow-400/40 bg-badger-yellow-400 rounded-lg p-2 font-bold text-badger-black-700"
+              onClick={() => autoSlippage()}
+            >
               Auto
             </button>
             <input

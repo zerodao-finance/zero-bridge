@@ -87,6 +87,7 @@ export const useBridgeInput = () => {
 
   return {
     getTransferSenderProps,
+    setTransferSlippage,
     getTransferSlippageProps,
     getTransferInputProps,
     getTransferRatioProps,

@@ -51,7 +51,7 @@ export const BridgeModule = ({ wallet }) => {
               <Route
                 path="/transfer/*"
                 element={
-                  <div>
+                  <div className="grid">
                     <span className="w-full select-none">
                       <SlippageInput {...getTransferSlippageProps()} />
                     </span>
@@ -62,7 +62,7 @@ export const BridgeModule = ({ wallet }) => {
               <Route
                 path="/release/*"
                 element={
-                  <div>
+                  <div className="grid">
                     <span className="w-full select-none">
                       <SlippageInput {...getTransferSlippageProps()} />
                     </span>

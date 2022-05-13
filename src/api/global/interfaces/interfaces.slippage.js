@@ -1,4 +1,4 @@
-import ethers from "ethers";
+import { ethers } from "ethers";
 import { storeContext } from "../global";
 import { useContext, useCallback } from "react";
 import { WETH } from "@uniswap/sdk";
