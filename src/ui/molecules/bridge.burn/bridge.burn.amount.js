@@ -36,7 +36,7 @@ export const BridgeBurnInput = ({
   };
 
   const getBalance = (token) => {
-    return balances[token]?.toString() ?? 0;
+    return balances[token] ?? 0;
   };
 
   const getMax = () => {

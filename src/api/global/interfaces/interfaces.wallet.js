@@ -105,7 +105,7 @@ export const useCheckWalletConnected = () => {
 
 export const useWalletBalances = () => {
   // Global Wallet State
-  const { state, dispatch } = useContext(storeContext);
+  const { state } = useContext(storeContext);
   const { provider, address, network } = state.wallet;
   // User Selected Token
   const { getBridgeBurnInputProps } = useBridgeBurnInput();
@@ -122,7 +122,7 @@ export const useWalletBalances = () => {
   useEffect(async () => {
     // OTHER TOKEN BALANCES
     getBalance(token).then(async (bal) => {
-      let tokenAmount = 0;
+      let tokenAmount = "0";
       switch (token) {
         case "USDC":
           tokenAmount = ethers.utils.formatUnits(bal, 6);
@@ -135,7 +135,7 @@ export const useWalletBalances = () => {
       }
       setBalances({
         ...balances,
-        [token]: parseFloat(tokenAmount) || 0,
+        [token]: tokenAmount,
       });
     });
   }, [token, address, network, provider]);
