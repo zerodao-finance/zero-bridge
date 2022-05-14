@@ -26,7 +26,11 @@ export const useSlippageFetchers = () => {
   // direction = true ? renbtc -> wbtc
   const getWbtcQuote = useCallback(
     async (direction, amount) => {
-      const rencrv = state.network.priceFeedContract.attach(RENCRV);
+      const rencrv = new ethers.Contract(
+        RENCRV,
+        ["function get_dy(int128, int128, uint256) view returns (uint256)"],
+        state.network.priceFeedContract.provider
+      );
       if (rencrv) {
         const path = [0, 1];
         return rencrv.get_dy(

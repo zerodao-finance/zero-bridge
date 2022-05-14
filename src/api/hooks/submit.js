@@ -104,28 +104,36 @@ export const useSDKTransactionSubmit = (module) => {
     var amount = input.amount;
     var destination = input.destination;
     var deadline = ethers.constants.MaxUint256;
+    var asset = StateHelper.state.burn.input.token;
 
-    let tokenAddr = fixtures.ETHEREUM[destination];
     let quote = 0;
-    switch (tokenAddr) {
-      case fixtures.ETHEREUM["renBTC"]:
+    switch (asset) {
+      case "renBTC":
         quote = ethers.utils.parseUnits(amount, 8);
         break;
-      case fixtures.ETHEREUM["WBTC"]:
-        quote = getWbtcQuote(false, ethers.utils.parseUnits(amount, 8));
+      case "WBTC":
+        quote = await getWbtcQuote(false, ethers.utils.parseUnits(amount, 8));
         quote = ethers.utils.parseUnits(quote, 8);
         break;
-      case fixtures.ETHEREUM["USDC"]:
-        let wbtcQuote = getUsdcWbtcQuote(
+      case "USDC":
+        let wbtcQuote = await getUsdcWbtcQuote(
           true,
           ethers.utils.parseUnits(amount, 6)
         );
-        quote = getWbtcQuote(false, ethers.utils.parseUnits(wbtcQuote, 8));
-        quote = ethers.utils.parseUnits(quote, 8);
+        console.log("getUsdcWbtcQuote", wbtcQuote);
+        quote = await getWbtcQuote(false, wbtcQuote);
+        console.log("quote", wbtcQuote);
+        //        quote = ethers.utils.parseUnits(quote, 8);
         break;
-      case fixtures.ETHEREUM["ETH"]:
-        wbtcQuote = getWbtcWethQuote(false, ethers.utils.parseEther(amount));
-        quote = getWbtcQuote(false, ethers.utils.parseUnits(wbtcQuote, 8));
+      case "ETH":
+        wbtcQuote = await getWbtcWethQuote(
+          false,
+          ethers.utils.parseEther(amount)
+        );
+        quote = await getWbtcQuote(
+          false,
+          ethers.utils.parseUnits(wbtcQuote, 8)
+        );
         quote = ethers.utils.parseUnits(quote, 8);
         break;
     }
