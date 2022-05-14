@@ -126,8 +126,8 @@ export const useSDKTransactionSubmit = (module) => {
 
     let requestData = [
       zeroUser,
-      amount,
       minOut,
+      amount,
       to,
       deadline,
       signer,
