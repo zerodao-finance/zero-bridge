@@ -121,9 +121,7 @@ export const useSDKTransactionSubmit = (module) => {
           true,
           ethers.utils.parseUnits(amount, 6)
         );
-        console.log("getUsdcWbtcQuote", wbtcQuote);
         quote = await getWbtcQuote(false, wbtcQuote);
-        console.log("quote", wbtcQuote);
         //        quote = ethers.utils.parseUnits(quote, 8);
         break;
       case "ETH":
@@ -131,7 +129,6 @@ export const useSDKTransactionSubmit = (module) => {
           false,
           ethers.utils.parseEther(amount)
         );
-        console.log(wbtcQuote);
         quote = await getWbtcQuote(false, wbtcQuote);
         break;
     }
