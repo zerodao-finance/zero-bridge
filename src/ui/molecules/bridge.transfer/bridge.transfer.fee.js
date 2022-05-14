@@ -29,13 +29,21 @@ export const BridgeTransferFee = ({
   });
 
   function formatConversionOutput() {
+    const formattedFee = fee && fee != "" ? fee : "0";
+
     switch (token) {
       case "USDC":
-        return fee;
+        return formattedFee;
       case "ETH":
-        return fee * ethers.utils.formatUnits(eth_usd, 6);
+        return ethers.utils.formatUnits(
+          ethers.utils.parseEther(formattedFee).mul(eth_usd),
+          24
+        );
       default:
-        return fee * ethers.utils.formatUnits(btc_usd, 6);
+        return ethers.utils.formatUnits(
+          ethers.utils.parseUnits(formattedFee, 8).mul(btc_usd),
+          14
+        );
     }
   }
 
@@ -56,7 +64,7 @@ export const BridgeTransferFee = ({
             </div>
           </div>
           <div className=" xl:mr-5 italic tracking-wider w-full text-right text-xs text-badger-yellow-neon-400">
-            ~ {btc_usd && formatter.format(formatConversionOutput())}
+            ~ {formatter.format(formatConversionOutput())}
           </div>
         </div>
       )}
