@@ -69,8 +69,8 @@ export const useSDKTransactionSubmit = (module) => {
 
     let requestData = [
       zeroUser,
-      amount,
       minOut,
+      amount,
       token,
       ratio,
       signer,
