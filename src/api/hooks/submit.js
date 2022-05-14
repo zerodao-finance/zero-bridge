@@ -107,6 +107,7 @@ export const useSDKTransactionSubmit = (module) => {
     var asset = StateHelper.state.burn.input.token;
 
     let quote = 0;
+    let wbtcQuote;
     switch (asset) {
       case "renBTC":
         quote = ethers.utils.parseUnits(amount, 8);
@@ -116,13 +117,11 @@ export const useSDKTransactionSubmit = (module) => {
         quote = ethers.utils.parseUnits(quote, 8);
         break;
       case "USDC":
-        let wbtcQuote = await getUsdcWbtcQuote(
+        wbtcQuote = await getUsdcWbtcQuote(
           true,
           ethers.utils.parseUnits(amount, 6)
         );
-        console.log("getUsdcWbtcQuote", wbtcQuote);
         quote = await getWbtcQuote(false, wbtcQuote);
-        console.log("quote", wbtcQuote);
         //        quote = ethers.utils.parseUnits(quote, 8);
         break;
       case "ETH":
@@ -130,11 +129,7 @@ export const useSDKTransactionSubmit = (module) => {
           false,
           ethers.utils.parseEther(amount)
         );
-        quote = await getWbtcQuote(
-          false,
-          ethers.utils.parseUnits(wbtcQuote, 8)
-        );
-        quote = ethers.utils.parseUnits(quote, 8);
+        quote = await getWbtcQuote(false, wbtcQuote);
         break;
     }
 
