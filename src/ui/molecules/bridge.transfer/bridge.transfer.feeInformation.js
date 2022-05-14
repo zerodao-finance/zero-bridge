@@ -17,7 +17,12 @@ export const BridgeTransferFeeInformation = ({
 
   const getFormattedFiatPrice = (btcAmount) => {
     if (btcAmount) {
-      return formatter.format(btcAmount * ethers.utils.formatUnits(btc_usd, 6));
+      return formatter.format(
+        ethers.utils.formatUnits(
+          ethers.utils.parseUnits(btcAmount, 8).mul(btc_usd),
+          14
+        )
+      );
     } else {
       return formatter.format(0);
     }

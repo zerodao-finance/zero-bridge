@@ -23,6 +23,12 @@ export const BridgeTransferFee = ({
   }, [amount, token]);
   // Getting Fees - END
 
+  useEffect(() => {
+    if (fee) {
+      setFee(null);
+    }
+  }, [token]);
+
   var formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
@@ -30,6 +36,7 @@ export const BridgeTransferFee = ({
 
   function formatConversionOutput() {
     const formattedFee = fee && fee != "" ? fee : "0";
+    console.log("Formatted FEE: " + formattedFee);
 
     switch (token) {
       case "USDC":
