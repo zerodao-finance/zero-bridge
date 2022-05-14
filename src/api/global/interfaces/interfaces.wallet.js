@@ -12,17 +12,7 @@ export const useWalletConnection = () => {
   const { state, dispatch } = useContext(storeContext);
   const { wallet } = state;
   const { isLoading } = wallet;
-  const { web3Loading, getweb3 } = wallet_modal();
-  const getSigner = useMemo(async () => {
-    try {
-      await wallet.provider.send("eth_accounts", []);
-      const signer = await wallet.provider.getSigner();
-      return signer;
-    } catch (err) {
-      dispatch({ type: "RESET_REQUEST", effect: "wallet" });
-      return new Error("Cannot get Provider | Reconnect Wallet");
-    }
-  }, [wallet.provider]);
+  const { getweb3 } = wallet_modal();
 
   useEffect(async () => {
     const provider = localStorage.getItem("WEB3_CONNECT_CACHED_PROVIDER");
@@ -82,7 +72,7 @@ export const useWalletConnection = () => {
 };
 
 export const useCheckWalletConnected = () => {
-  const { state, dispatch } = useContext(storeContext);
+  const { state } = useContext(storeContext);
   const { address } = state.wallet;
   const [walletConnected, toggle] = useState(true);
 

@@ -25,13 +25,22 @@ export const BridgeBurnInput = ({
   });
 
   const formattedAmount = () => {
+    let bigNumberAmount = "0";
+    let formattedAmount = amount == "" ? "0" : amount;
+
     switch (token) {
       case "USDC":
-        return formatter.format(amount);
+        return formatter.format(formattedAmount);
       case "ETH":
-        return formatter.format(amount * ethers.utils.formatUnits(eth_usd, 6));
+        bigNumberAmount = ethers.utils.parseEther(formattedAmount);
+        return formatter.format(
+          ethers.utils.formatUnits(bigNumberAmount.mul(eth_usd), 24)
+        );
       default:
-        return formatter.format(amount * ethers.utils.formatUnits(btc_usd, 6));
+        bigNumberAmount = ethers.utils.parseUnits(formattedAmount, 8);
+        return formatter.format(
+          ethers.utils.formatUnits(bigNumberAmount.mul(btc_usd), 14)
+        );
     }
   };
 
