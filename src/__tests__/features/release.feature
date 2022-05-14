@@ -12,7 +12,7 @@ Scenario: Releasing a small amount less than $30
 
 Scenario: Releasing a large amount over $100K
     Given I am on the bridge release module
-    When I enter a small amount that results to over $100K
+    When I enter an amount that results to over $100K
     Then I am warned by the bridge that I could lose my funds
 
 Scenario: Releasing a valid amount with invalid bitcoin address

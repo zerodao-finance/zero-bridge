@@ -149,6 +149,7 @@
     "@babel/eslint-parser": "^7.17.0",
     "@babel/plugin-transform-react-constant-elements": "^7.16.0",
     "@babel/preset-typescript": "^7.16.0",
+    "@testing-library/react": "12.1.2",
     "@types/marked": "^3.0.3",
     "@types/recharts": "^2.0.0",
     "add": "^2.0.6",

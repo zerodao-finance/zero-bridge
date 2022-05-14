@@ -1,3 +1,5 @@
+import React from "react";
+
 export const PrimaryRoundedButton = ({ active, label, action }) => {
   const getClass = () => {
     if (active) {
@@ -16,6 +18,7 @@ export const PrimaryRoundedButton = ({ active, label, action }) => {
               }
         }
         className={getClass()}
+        data-testid="rounded-button"
       >
         {label}
       </button>

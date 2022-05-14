@@ -1,3 +1,5 @@
+import React from "react";
+
 export const DefaultInput = ({
   value,
   onChange,
@@ -40,6 +42,7 @@ export const DefaultInput = ({
         style={{ maxWidth: maxW }}
         placeholder={placeholder || "0"}
         autoComplete="new-password" // does not allow for autofill
+        data-testid="default-input"
       />
     </div>
   );

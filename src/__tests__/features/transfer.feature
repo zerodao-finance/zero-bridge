@@ -12,7 +12,7 @@ Scenario: Transfering a small amount less than $30
 
 Scenario: Transfering a large amount over $100K
     Given I am on the bridge transfer module
-    When I enter a small amount that results to over $100K
+    When I enter an amount that results to over $100K
     Then I am warned by the bridge that I could lose my funds
 
 Scenario: Transfering an an amount more than $30 and less than $100K
