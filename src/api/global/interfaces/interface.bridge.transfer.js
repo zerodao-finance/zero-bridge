@@ -51,7 +51,6 @@ export const useBridgeInput = () => {
   };
 
   const getTransferSlippageProps = ({ ...otherProps } = {}) => ({
-    amount: amount,
     token: state.transfer.input.token,
     slippage: state.transfer.input.slippage,
     setSlippage: setTransferSlippage,
