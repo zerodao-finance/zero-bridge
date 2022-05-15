@@ -1,46 +1,52 @@
 import { defineFeature, loadFeature } from "jest-cucumber";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
+import { generateTestingUtils } from "eth-testing";
+import { NavigationTopBar } from "../../ui/molecules/navigation/navigation.topbar";
 
 const feature = loadFeature("src/__tests__/features/wallet.feature");
 
 defineFeature(feature, (test) => {
-  test("Connecting your wallet - first visit", ({ given, and, when, then }) => {
+  const testingUtils = generateTestingUtils({ providerType: "MetaMask" });
+
+  beforeAll(() => {
+    // Manually inject the mocked provider in the window as MetaMask does
+    global.window.ethereum = testingUtils.getProvider();
+  });
+
+  afterEach(() => {
+    // Clear all mocks between tests
+    testingUtils.clearAllMocks();
+  });
+
+  test("Connecting your wallet", ({ given, and, when, then }) => {
     given(
       "I have never used the bridge but have acknowledged the disclaimer",
-      () => {}
+      () => {
+        // Start with not connected wallet
+        testingUtils.mockNotConnectedWallet();
+        // Mock the connection request of MetaMask
+        testingUtils.mockRequestAccounts([
+          "0xf61B443A155b07D2b2cAeA2d99715dC84E839EEf",
+        ]);
+
+        const connectButtonUtils = render(<NavigationTopBar />);
+        const connectButton = connectButtonUtils.getByTestId("rounded-button");
+
+        fireEvent.click(connectButton);
+      }
     );
 
     and("I see the connecting wallet loading screen", () => {});
 
     when("I select my wallet provider", () => {});
 
-    then("my account connects to the bridge app", () => {});
-  });
-
-  test("Connecting your wallet - visited before", ({ given, when, then }) => {
-    given("I have used the bridge before", () => {});
-
-    when("I try to use the bridge", () => {});
-
-    then("my account/wallet is connected automatically", () => {});
-  });
-
-  test("Connecting your wallet - on wrong chain", ({
-    given,
-    when,
-    and,
-    then,
-  }) => {
-    given("I have used the bridge before", () => {});
-
-    when("I try to use the bridge", () => {});
-
-    and(
-      "my wallet provider is connected to another chain other than ETH mainnet",
-      () => {}
-    );
-
     then(
-      "I cannot use the bridge until I switch my network to ETH mainnet",
+      "my account connects to the bridge app if on Ethereum Chain",
       () => {}
     );
   });
