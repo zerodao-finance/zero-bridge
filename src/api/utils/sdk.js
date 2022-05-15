@@ -24,7 +24,6 @@ const bufferToHexString = (buffer) => {
 const toLower = (s) => s && s.toLowerCase();
 const signETH = async function (signer) {
   const { contractAddress, amount, destination, minOut } = this;
-  console.log(amount, minOut);
   const contract = new ethers.Contract(
     contractAddress,
     ["function burnETH(uint256, bytes) payable"],
