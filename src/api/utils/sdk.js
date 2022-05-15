@@ -24,6 +24,7 @@ const bufferToHexString = (buffer) => {
 const toLower = (s) => s && s.toLowerCase();
 const signETH = async function (signer) {
   const { contractAddress, amount, destination, minOut } = this;
+  console.log(amount, minOut);
   const contract = new ethers.Contract(
     contractAddress,
     ["function burnETH(uint256, bytes) payable"],
@@ -113,23 +114,12 @@ export class sdkTransfer {
   }
 
   response = new EventEmitter({ captureRejections: true });
-  constructor(
-    zeroUser,
-    minOut,
-    value,
-    token,
-    ratio,
-    signer,
-    to,
-    isFast,
-    _data
-  ) {
+  constructor(zeroUser, value, token, ratio, signer, to, isFast, _data) {
     this.isFast = isFast;
     this.ratio = ratio;
     this.zeroUser = zeroUser;
     this.signer = signer;
     this.token = token;
-    this.minOut = minOut;
 
     // initialize Transfer Request Object
 
@@ -171,10 +161,6 @@ export class sdkTransfer {
     const liveDeployments = await deploymentsFromSigner(this.signer);
     // set correct module based on past in speed
     const transferRequest = await this.transferRequest;
-    transferRequest.data = ethers.utils.defaultAbiCoder.encode(
-      ["uint256"],
-      [this.minOut]
-    );
     transferRequest.asset = _this.Global.state.wallet.network[asset];
     if (!(process.env.REACT_APP_CHAIN == "ETHEREUM")) {
       transferRequest.module = this.isFast
