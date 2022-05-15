@@ -6,12 +6,17 @@ import {
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import { generateTestingUtils } from "eth-testing";
-import { NavigationTopBar } from "../../ui/molecules/navigation/navigation.topbar";
 
 const feature = loadFeature("src/__tests__/features/wallet.feature");
 
 defineFeature(feature, (test) => {
   const testingUtils = generateTestingUtils({ providerType: "MetaMask" });
+
+  const connect = () => {
+    testingUtils.mockConnectedWallet([
+      "0xf61B443A155b07D2b2cAeA2d99715dC84E839EEf",
+    ]);
+  };
 
   beforeAll(() => {
     // Manually inject the mocked provider in the window as MetaMask does
@@ -34,10 +39,7 @@ defineFeature(feature, (test) => {
           "0xf61B443A155b07D2b2cAeA2d99715dC84E839EEf",
         ]);
 
-        const connectButtonUtils = render(<NavigationTopBar />);
-        const connectButton = connectButtonUtils.getByTestId("rounded-button");
-
-        fireEvent.click(connectButton);
+        // TODO: Mock a button click on NavigationTopBar - error "TextEncoder" is not defined
       }
     );
 
