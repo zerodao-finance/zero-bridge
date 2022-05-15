@@ -34,10 +34,6 @@ export const useSDKTransactionSubmit = (module) => {
     var signer = await getSigner;
     var to = await signer.getAddress();
     var isFast = input.isFast;
-    var data = ethers.utils.defaultAbiCoder.encode(
-      ["uint256"],
-      [ethers.utils.parseEther(ratio).div(ethers.BigNumber.from("100"))]
-    );
 
     let tokenAddr = fixtures.ETHEREUM[token];
     let quote = 0;
@@ -71,9 +67,9 @@ export const useSDKTransactionSubmit = (module) => {
 
     const minOut = inverseSlippage.mul(quote).div(ethers.utils.parseEther("1"));
 
+    const data = ethers.utils.defaultAbiCoder.encode(["uint256"], [minOut]);
     let requestData = [
       zeroUser,
-      minOut,
       amount,
       token,
       ratio,
@@ -120,6 +116,7 @@ export const useSDKTransactionSubmit = (module) => {
           false,
           ethers.utils.parseEther(amount)
         );
+        console.log(wbtcQuote.toString());
         quote = await getWbtcQuote(false, wbtcQuote);
         break;
     }
@@ -130,6 +127,7 @@ export const useSDKTransactionSubmit = (module) => {
 
     const minOut = inverseSlippage.mul(quote).div(ethers.utils.parseEther("1"));
 
+    console.log(minOut.toString());
     let requestData = [
       zeroUser,
       minOut,
