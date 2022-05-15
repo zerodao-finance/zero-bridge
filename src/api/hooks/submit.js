@@ -66,8 +66,8 @@ export const useSDKTransactionSubmit = (module) => {
       .sub(ethers.utils.parseEther(String(Number(slippage) / 100)));
 
     const minOut = inverseSlippage.mul(quote).div(ethers.utils.parseEther("1"));
-
     const data = ethers.utils.defaultAbiCoder.encode(["uint256"], [minOut]);
+
     let requestData = [
       zeroUser,
       amount,
