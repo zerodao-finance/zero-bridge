@@ -15,12 +15,6 @@ Scenario: Releasing a large amount over $100K
     When I enter an amount that results to over $100K
     Then I am warned by the bridge that I could lose my funds
 
-Scenario: Releasing a valid amount with invalid bitcoin address
-    Given I am on the bridge release module
-    When I enter a positive number in the input box
-    And I enter an invalid bitcoin address in the second input box
-    Then I am warned that my funds may be lost because the receiving address is invalid
-
 Scenario: Releasing an an amount more than $30 and less than $100K
     Given I am on the bridge release module
     When I enter an amount resulting between $30 and $100K

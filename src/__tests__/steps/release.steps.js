@@ -1,15 +1,17 @@
+import React from "react";
 import { defineFeature, loadFeature } from "jest-cucumber";
-import { fireEvent } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import { useMockComponents } from "../mockComponents";
+import { PrimaryRoundedButton } from "../../ui/atoms";
 
 const feature = loadFeature("src/__tests__/features/release.feature");
 
 defineFeature(feature, (test) => {
-  const { input, button } = useMockComponents();
+  const { input, btcInput } = useMockComponents();
 
   beforeEach(() => {
     window.history.pushState({}, "Release", "/#/release");
-    fireEvent.change(input, { target: { value: "0" } });
+    fireEvent.change(input, { target: { value: 0 } });
   });
 
   test("Releasing a negative amount", ({ given, when, then }) => {
@@ -23,7 +25,12 @@ defineFeature(feature, (test) => {
     });
 
     then("I cannot release the funds", () => {
-      expect(button.className).toContain("cursor-not-allowed");
+      // Button Submit Mocked Component
+      const buttonUtils = render(
+        <PrimaryRoundedButton active={parseFloat(input.value) >= 0} />
+      );
+      const button = buttonUtils.getByTestId("rounded-button");
+      expect(button.disabled).toBe(true);
     });
   });
 
@@ -60,33 +67,6 @@ defineFeature(feature, (test) => {
     });
   });
 
-  test("Releasing a valid amount with invalid bitcoin address", ({
-    given,
-    when,
-    and,
-    then,
-  }) => {
-    given("I am on the bridge release module", () => {
-      expect(window.location.hash).toContain("release");
-    });
-
-    when("I enter a positive number in the input box", () => {
-      fireEvent.change(input, { target: { value: "1" } });
-      expect(input.value).toBe("1");
-    });
-
-    and("I enter an invalid bitcoin address in the second input box", () => {
-      // TODO: implement this on the FE
-    });
-
-    then(
-      "I am warned that my funds may be lost because the receiving address is invalid",
-      () => {
-        // TODO: implement this on the FE
-      }
-    );
-  });
-
   test("Releasing an an amount more than $30 and less than $100K", ({
     given,
     when,
@@ -106,15 +86,25 @@ defineFeature(feature, (test) => {
     );
 
     and("I enter my recieving bitcoin address", () => {
-      // TODO
+      // BTC Random Address
+      fireEvent.change(btcInput, {
+        target: { value: "19BY2XCgbDe6WtTVbTyzM9eR3LYr6VitWK" },
+      });
+      expect(btcInput.value).toBe("19BY2XCgbDe6WtTVbTyzM9eR3LYr6VitWK");
     });
 
     then("I am able to release my funds to the bitcoin chain", () => {
-      // TODO
+      // Button Submit Mocked Component
+      const buttonUtils = render(
+        <PrimaryRoundedButton active={parseFloat(input.value) >= 0} />
+      );
+      const button = buttonUtils.getByTestId("rounded-button");
+
+      expect(button.disabled).toBe(false);
     });
 
     and("I am shown the fees for executing the transaction", () => {
-      // TODO
+      expect(parseFloat(input.value)).toBeGreaterThan(0);
     });
 
     and("I am shown the amount I will receive after fees", () => {

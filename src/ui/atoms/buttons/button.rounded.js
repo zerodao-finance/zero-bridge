@@ -10,6 +10,7 @@ export const PrimaryRoundedButton = ({ active, label, action }) => {
   return (
     <>
       <button
+        data-testid="rounded-button"
         onClick={
           active
             ? action
@@ -18,7 +19,7 @@ export const PrimaryRoundedButton = ({ active, label, action }) => {
               }
         }
         className={getClass()}
-        data-testid="rounded-button"
+        disabled={!active}
       >
         {label}
       </button>

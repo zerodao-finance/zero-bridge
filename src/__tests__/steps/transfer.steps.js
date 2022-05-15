@@ -1,15 +1,17 @@
+import React from "react";
 import { defineFeature, loadFeature } from "jest-cucumber";
-import { fireEvent } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import { useMockComponents } from "../mockComponents";
+import { PrimaryRoundedButton } from "../../ui/atoms";
 
 const feature = loadFeature("src/__tests__/features/transfer.feature");
 
 defineFeature(feature, (test) => {
-  const { input, button, setInputValue, inputValue } = useMockComponents();
+  const { input } = useMockComponents();
 
   beforeEach(() => {
     window.history.pushState({}, "Transfer", "/#/transfer");
-    fireEvent.change(input, { target: { value: "0" } });
+    fireEvent.change(input, { target: { value: 0 } });
   });
 
   test("Transfering a negative amount", ({ given, when, then }) => {
@@ -18,12 +20,17 @@ defineFeature(feature, (test) => {
     });
 
     when("I enter a negative amount into the input", () => {
-      setInputValue("-1");
-      expect(inputValue).toBe("-1");
+      fireEvent.change(input, { target: { value: "-1" } });
+      expect(input.value).toBe("-1");
     });
 
     then("I cannot transfer the funds", () => {
-      expect(button.className).toContain("cursor-not-allowed");
+      // Button Submit Mocked Component
+      const buttonUtils = render(
+        <PrimaryRoundedButton active={parseFloat(input.value) >= 0} />
+      );
+      const button = buttonUtils.getByTestId("rounded-button");
+      expect(button.disabled).toBe(true);
     });
   });
 
@@ -80,10 +87,18 @@ defineFeature(feature, (test) => {
 
     then("I am able to transfer my funds to ETH mainnet", () => {
       // TODO: integration tests to do a mock transfer
-      console.log(button.className);
+      // Button Submit Mocked Component
+      const buttonUtils = render(
+        <PrimaryRoundedButton active={parseFloat(input.value) >= 0} />
+      );
+      const button = buttonUtils.getByTestId("rounded-button");
+
+      expect(button.disabled).toBe(false);
     });
 
-    and("I am shown the fees for executing the transaction", () => {});
+    and("I am shown the fees for executing the transaction", () => {
+      expect(parseFloat(input.value)).toBeGreaterThan(0);
+    });
 
     and("I am shown the amount I will receive after fees", () => {});
   });
