@@ -24,7 +24,8 @@ export const BridgeTransferFee = ({
   // Getting Fees - END
 
   useEffect(() => {
-    if (fee && amount) {
+    if (fee) {
+      console.log("TOKEN: " + token);
       setFee(null);
     }
   }, [token]);
