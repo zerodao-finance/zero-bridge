@@ -1,24 +1,23 @@
-import { ethers } from "ethers";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CogIcon } from "@heroicons/react/outline";
 import OutsideClickHandler from "react-outside-click-handler";
-import { useSlippageFetchers } from "../../../api/global/interfaces/interfaces.slippage";
-import fixtures from "zero-protocol/lib/fixtures";
 
-export const SlippageInput = ({ amount, token, slippage, setSlippage }) => {
+export const SlippageInput = ({ token, slippage, setSlippage }) => {
   const [openSettings, setOpenSettings] = useState(false);
 
-  const autoSlippage = async () => {
-    const tokenAddr = fixtures.ETHEREUM[token];
-
-    switch (tokenAddr) {
-      case fixtures.ETHEREUM["renBTC"]:
+  const autoSlippage = () => {
+    switch (token) {
+      case "renBTC":
         setSlippage(0.0);
         break;
       default:
         setSlippage(2.0);
     }
   };
+
+  useEffect(() => {
+    autoSlippage();
+  }, [token]);
 
   return (
     <OutsideClickHandler onOutsideClick={() => setOpenSettings(false)}>
