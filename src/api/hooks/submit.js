@@ -80,7 +80,6 @@ export const useSDKTransactionSubmit = (module) => {
     ];
 
     Helper.request("transfer", requestData);
-    console.log(Helper);
   }
 
   async function sendBurnRequest() {
@@ -116,7 +115,6 @@ export const useSDKTransactionSubmit = (module) => {
           false,
           ethers.utils.parseEther(amount)
         );
-        console.log(wbtcQuote.toString());
         quote = await getWbtcQuote(false, wbtcQuote);
         break;
     }
@@ -127,7 +125,6 @@ export const useSDKTransactionSubmit = (module) => {
 
     const minOut = inverseSlippage.mul(quote).div(ethers.utils.parseEther("1"));
 
-    console.log(minOut.toString());
     let requestData = [
       zeroUser,
       minOut,
