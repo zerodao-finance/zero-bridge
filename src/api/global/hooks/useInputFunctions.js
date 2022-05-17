@@ -2,14 +2,6 @@ import { storeContext } from "../global";
 import { useContext } from "react";
 export const useInputHooks = (module) => {
   const { state, dispatch } = useContext(storeContext);
-  const updateRatio = (e) => {
-    dispatch({
-      type: "UPDATE",
-      module: module,
-      effect: "input",
-      data: { ratio: e.target.value },
-    });
-  };
 
   const updateAmount = (e) => {
     dispatch({
@@ -30,7 +22,6 @@ export const useInputHooks = (module) => {
   };
 
   return {
-    updateRatio,
     updateAmount,
     updateModule,
   };
