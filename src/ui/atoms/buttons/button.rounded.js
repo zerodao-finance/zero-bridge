@@ -1,3 +1,5 @@
+import React from "react";
+
 export const PrimaryRoundedButton = ({ active, label, action }) => {
   const getClass = () => {
     if (active) {
@@ -8,6 +10,7 @@ export const PrimaryRoundedButton = ({ active, label, action }) => {
   return (
     <>
       <button
+        data-testid="rounded-button"
         onClick={
           active
             ? action
@@ -16,6 +19,7 @@ export const PrimaryRoundedButton = ({ active, label, action }) => {
               }
         }
         className={getClass()}
+        disabled={!active}
       >
         {label}
       </button>
