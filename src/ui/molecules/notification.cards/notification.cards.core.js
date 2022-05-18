@@ -96,14 +96,12 @@ export const ErrorCard = ({ message, id, close }) => {
       key={id}
     >
       <span
-        className="absolute top-1 right-1 text-md text-black dark:text-badger-white-400 cursor-pointer"
+        className="absolute top-1 right-1 text-md text-badger-white-400 cursor-pointer"
         onClick={close}
       >
         &times;
       </span>
-      <div className="text-black dark:text-badger-white-400 text-ellipsis">
-        {message}
-      </div>
+      <div className="text-badger-white-400 text-ellipsis">{message}</div>
       <div className="bg-[#EC4B4B] h-[6px] w-full absolute bottom-0 left-0 rounded-b-md" />
     </div>
   );
@@ -134,7 +132,7 @@ export const WarningCard = ({ message, id, close }) => {
       key={id}
     >
       <span
-        className="absolute top-1 right-1 text-md text-black cursor-pointer"
+        className="absolute top-1 right-1 text-md text-badger-white-400 cursor-pointer"
         onClick={close}
       >
         &times;
@@ -152,7 +150,7 @@ export const SuccessCard = ({ message, id, close }) => {
       key={id}
     >
       <span
-        className="absolute top-1 right-1 text-md text-black cursor-pointer"
+        className="absolute top-1 right-1 text-md text-badger-white-400 cursor-pointer"
         onClick={close}
       >
         &times;
