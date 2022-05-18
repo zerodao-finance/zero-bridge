@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { CogIcon } from "@heroicons/react/outline";
 import OutsideClickHandler from "react-outside-click-handler";
 
-export const SlippageInput = ({ amount, token, slippage, setSlippage }) => {
+export const SlippageInput = ({ token, slippage, setSlippage }) => {
   const [openSettings, setOpenSettings] = useState(false);
 
   const autoSlippage = () => {
