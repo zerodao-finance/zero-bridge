@@ -1,8 +1,6 @@
-import { ethers } from "ethers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CogIcon } from "@heroicons/react/outline";
 import OutsideClickHandler from "react-outside-click-handler";
-import { useSlippageFetchers } from "../../../api/global/interfaces/interfaces.slippage";
 import fixtures from "zero-protocol/lib/fixtures";
 
 export const SlippageInput = ({ amount, token, slippage, setSlippage }) => {
@@ -19,6 +17,10 @@ export const SlippageInput = ({ amount, token, slippage, setSlippage }) => {
         setSlippage(2.0);
     }
   };
+
+  useEffect(() => {
+    autoSlippage();
+  }, [token]);
 
   return (
     <OutsideClickHandler onOutsideClick={() => setOpenSettings(false)}>

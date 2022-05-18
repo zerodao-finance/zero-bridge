@@ -13,7 +13,7 @@ const formatter = new Intl.NumberFormat("en-US", {
  * format it down to 14 units. 14 units bc 6 from USDC and 8 from
  * BTC that get added together
  */
-export const formatFiatPricedBTC = (btc_amount, btc_usd) => {
+export const formatUSDCPricedBTC = (btc_amount, btc_usd) => {
   btc_amount = ethers.utils.parseUnits(btc_amount || "0", 8);
   const pricedBTC = btc_amount.mul(btc_usd || "0");
 
@@ -28,9 +28,13 @@ export const formatFiatPricedBTC = (btc_amount, btc_usd) => {
  * format it down to 24 units. 24 units bc 6 from USDC and 18 from
  * ETH that get added together
  */
-export const formatFiatPricedETH = (eth_amount, eth_usd) => {
-  eth_amount = ethers.utils.parseEther(eth_amount ?? "0");
-  const pricedETH = eth_amount.mul(eth_usd);
+export const formatUSDCPricedETH = (eth_amount, eth_usd) => {
+  eth_amount = ethers.utils.parseEther(eth_amount || "0");
+  const pricedETH = eth_amount.mul(eth_usd || "0");
 
   return formatter.format(ethers.utils.formatUnits(pricedETH, 24));
+};
+
+export const formatUSDC = (usdc_amount) => {
+  formatter.format(usdc_amount);
 };

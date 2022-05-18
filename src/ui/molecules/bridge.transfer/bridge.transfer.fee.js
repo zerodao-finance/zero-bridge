@@ -3,6 +3,11 @@ import { ethers } from "ethers";
 import { getTransferOutput } from "../../../api/hooks/transfer-fees";
 import TokenDropdown from "../../atoms/dropdowns/dropdown.tokens";
 import { DefaultInput } from "../../atoms";
+import {
+  formatUSDCPricedBTC,
+  formatUSDCPricedETH,
+  formatUSDC,
+} from "../../../api/utils/formatters";
 
 export const BridgeTransferFee = ({
   amount,
@@ -32,28 +37,14 @@ export const BridgeTransferFee = ({
     setUsdcEstimate(formatConversionOutput());
   }, [fee]);
 
-  var formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-
   function formatConversionOutput() {
-    console.log("FEE: " + fee);
-    const formattedFee = fee || "0";
-
     switch (token) {
       case "USDC":
-        return formattedFee;
+        return formatUSDC(fee);
       case "ETH":
-        return ethers.utils.formatUnits(
-          ethers.utils.parseEther(formattedFee).mul(eth_usd),
-          24
-        );
+        return formatUSDCPricedETH(fee, eth_usd);
       default:
-        return ethers.utils.formatUnits(
-          ethers.utils.parseUnits(formattedFee, 8).mul(btc_usd),
-          14
-        );
+        return formatUSDCPricedBTC(fee, btc_usd);
     }
   }
 
@@ -79,7 +70,7 @@ export const BridgeTransferFee = ({
         </div>
       </div>
       <div className=" xl:mr-5 italic tracking-wider w-full text-right text-xs text-badger-yellow-neon-400">
-        ~ {formatter.format(usdcEstimate)}
+        ~ {usdcEstimate}
       </div>
     </div>
   );

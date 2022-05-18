@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/solid";
-import { ethers } from "ethers";
+import { formatUSDCPricedBTC } from "../../../api/utils/formatters";
 
 export const BridgeTransferFeeInformation = ({
   gasFee,
@@ -9,24 +9,6 @@ export const BridgeTransferFeeInformation = ({
   btc_usd,
 }) => {
   const [feeDetailOpen, setFeeDetailOpen] = useState(false);
-
-  const formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-
-  const getFormattedFiatPrice = (btcAmount) => {
-    if (btcAmount) {
-      return formatter.format(
-        ethers.utils.formatUnits(
-          ethers.utils.parseUnits(btcAmount, 8).mul(btc_usd),
-          14
-        )
-      );
-    } else {
-      return formatter.format(0);
-    }
-  };
 
   return (
     <div className="grid w-full py-4 text-sm px-3 space-y-1 font-semibold border text-badger-white-400 border-badger-gray-500 rounded-lg">
@@ -59,7 +41,7 @@ export const BridgeTransferFeeInformation = ({
               (feeDetailOpen ? "-mt-4" : "-mt-1")
             }
           >
-            ~ {getFormattedFiatPrice(opFee)}
+            ~ {formatUSDCPricedBTC(opFee, btc_usd)}
           </span>
         </div>
       </div>
@@ -68,7 +50,7 @@ export const BridgeTransferFeeInformation = ({
         <div className="grid">
           <span>{gasFee} BTC</span>
           <span className="italic w-full text-right font-normal text-xs -mt-1 text-badger-yellow-neon-400">
-            ~ {getFormattedFiatPrice(gasFee)}
+            ~ {formatUSDCPricedBTC(gasFee, btc_usd)}
           </span>
         </div>
       </div>
@@ -77,7 +59,7 @@ export const BridgeTransferFeeInformation = ({
         <div className="grid">
           <span>{totalFees} BTC</span>
           <span className="italic w-full text-right font-normal text-xs -mt-1 text-badger-yellow-neon-400">
-            ~ {getFormattedFiatPrice(totalFees)}
+            ~ {formatUSDCPricedBTC(totalFees, btc_usd)}
           </span>
         </div>
       </div>

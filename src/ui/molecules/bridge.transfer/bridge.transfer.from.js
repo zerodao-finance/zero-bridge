@@ -1,5 +1,6 @@
 import { ReactComponent as BTC } from "../../../assets/svg-coins/btc.svg";
 import { DefaultInput } from "../../atoms";
+import { formatUSDCPricedBTC } from "../../../api/utils/formatters";
 
 function BridgeTransferFrom({ amount, effect, btc_usd }) {
   return (
@@ -17,7 +18,7 @@ function BridgeTransferFrom({ amount, effect, btc_usd }) {
         </div>
       </div>
       <div className=" xl:mr-5 italic tracking-wider w-full text-right text-xs -mt-2 text-badger-yellow-neon-400">
-        ~ $15.00
+        ~ {formatUSDCPricedBTC(amount, btc_usd)}
       </div>
     </>
   );
