@@ -5,7 +5,7 @@ import OutsideClickHandler from "react-outside-click-handler";
 export const SlippageInput = ({ amount, token, slippage, setSlippage }) => {
   const [openSettings, setOpenSettings] = useState(false);
 
-  const autoSlippage = async () => {
+  const autoSlippage = () => {
     switch (token) {
       case "renBTC":
         setSlippage(0.0);
