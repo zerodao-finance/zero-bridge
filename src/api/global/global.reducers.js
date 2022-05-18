@@ -40,7 +40,6 @@ export const globalBridgeState = {
     },
     transfer: {
       input: {
-        ratio: 0,
         amount: "0",
         token: "renBTC",
         slippage: 2,

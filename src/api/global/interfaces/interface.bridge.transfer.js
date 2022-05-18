@@ -11,15 +11,10 @@ export const useBridgeInput = () => {
   const StateHelper = new GlobalStateHelper(state, dispatch);
   const { btc_usd, eth_usd } = state.priceFeeds.data;
   const { ETH, renBTC } = state.transfer.display;
-  const { ratio, amount, isFast } = state.transfer.input;
+  const { amount, isFast } = state.transfer.input;
   const { mode } = state.transfer.mode;
   const { sendTransferRequest } = useSDKTransactionSubmit("transfer");
-  const { updateRatio, updateAmount, updateModule } = useInputHooks("transfer");
-
-  const getTransferRatioProps = ({ ...otherProps } = {}) => ({
-    ratio: ratio,
-    effect: updateRatio,
-  });
+  const { updateAmount, updateModule } = useInputHooks("transfer");
 
   const getTransferResultsProps = ({ ...otherProps } = {}) => ({
     ETH: ETH,
@@ -87,7 +82,6 @@ export const useBridgeInput = () => {
     setTransferSlippage,
     getTransferSlippageProps,
     getTransferInputProps,
-    getTransferRatioProps,
     getTransferResultsProps,
     getTransferModuleToggleProps,
     getGatewayData,

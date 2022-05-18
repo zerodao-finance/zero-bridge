@@ -73,8 +73,26 @@ module.exports = {
           "flip-in-hor-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
         "scale-in-bottom":
           "scale-in-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
+        "slide-in-from-left": "slide-in-from-left .5s steps(1000)",
+        "slide-out-to-left": "slide-out-to-left .5s steps(1000)",
       },
       keyframes: {
+        "slide-in-from-left": {
+          from: {
+            left: "-1000px",
+          },
+          to: {
+            left: "10px",
+          },
+        },
+        "slide-out-to-left": {
+          from: {
+            left: "10px",
+          },
+          to: {
+            left: "-1000px",
+          },
+        },
         "scale-in-bottom": {
           "0%": {
             transform: "scale(0)",
