@@ -67,21 +67,28 @@ export class NotificationHelper {
 
   voidCallback = () => {};
 
+  _removeId(id) {
+    this.dispatch({ type: "REMOVE_TRANSITION", payload: { id: id } });
+    setTimeout(() => {
+      this.dispatch({ type: "REMOVE", payload: { id: id } });
+    }, 500);
+  }
+
   async _confirmation(id, data) {
     await data.deposit.confirmed().on("confirmation", (confs, target) => {
-      if (i >= target) {
-        this.dispatch({ type: "REMOVE", payload: { id: id } });
+      if (confs >= target) {
+        this._removeId(id);
         return;
       } else {
         this.dispatch({
           type: "UPDATE",
-          payload: { id: id, update: { max: target, current: i + 1 } },
+          payload: { id: id, update: { max: target, current: confs + 1 } },
         });
       }
     });
     data.on("confirmation", (i, target) => {
       if (i >= target) {
-        this.dispatch({ type: "REMOVE", payload: { id: id } });
+        this._removeId(id);
         return;
       } else {
         this.dispatch({
@@ -92,12 +99,15 @@ export class NotificationHelper {
     });
   }
   _close(id) {
-    this.dispatch({ type: "REMOVE", payload: { id: id } });
+    this._removeId(id);
   }
 
   _timeout(id, timeout) {
     setTimeout(() => {
-      this.dispatch({ type: "REMOVE", payload: { id: id } });
+      this.dispatch({ type: "REMOVE_TRANSITION", payload: { id: id } });
     }, timeout);
+    setTimeout(() => {
+      this.dispatch({ type: "REMOVE", payload: { id: id } });
+    }, timeout + 500);
   }
 }
