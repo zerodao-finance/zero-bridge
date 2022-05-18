@@ -22,7 +22,7 @@ export const DefaultInput = ({
             ? `${
                 loading && "animate-pulse"
               } dark:text-gray-300 form-input !outline-offset-0 !outline-1 
-				text-right bg-transparent focus:ring-0 text-md font-medium text-gray-600 z-40 w-full rounded-xl`
+				text-right bg-transparent focus:ring-0 text-md font-medium text-gray-600 z-40 w-full rounded-xl dark:text-badger-white-400`
             : `dark:text-badger-white-400 placeholder-badger-text-secondary-400 form-input !outline-offset-0 !outline-1 text-right bg-transparent 
 				focus:!outline-badger-yellow-neon-400 focus:ring-0 text-md font-medium text-gray-600 w-full 
 				${

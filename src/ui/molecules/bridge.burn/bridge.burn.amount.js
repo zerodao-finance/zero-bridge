@@ -26,7 +26,7 @@ export const BridgeBurnInput = ({
 
   const formattedAmount = () => {
     let bigNumberAmount = "0";
-    let formattedAmount = amount == "" ? "0" : amount;
+    let formattedAmount = amount || "0";
 
     switch (token) {
       case "USDC":

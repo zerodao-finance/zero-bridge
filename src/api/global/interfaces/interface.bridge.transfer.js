@@ -1,6 +1,5 @@
 import { storeContext } from "../global";
-import { useInputResults } from "../hooks/useInputResults";
-import { useContext, useEffect, useState, useMemo } from "react";
+import { useContext } from "react";
 import _ from "lodash";
 import { useInputHooks } from "../hooks/useInputFunctions";
 import { useSDKTransactionSubmit } from "../../hooks/submit";
@@ -16,7 +15,6 @@ export const useBridgeInput = () => {
   const { mode } = state.transfer.mode;
   const { sendTransferRequest } = useSDKTransactionSubmit("transfer");
   const { updateRatio, updateAmount, updateModule } = useInputHooks("transfer");
-  useInputResults(state.transfer.input, "transfer");
 
   const getTransferRatioProps = ({ ...otherProps } = {}) => ({
     ratio: ratio,
