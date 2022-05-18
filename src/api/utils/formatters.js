@@ -36,5 +36,5 @@ export const formatUSDCPricedETH = (eth_amount, eth_usd) => {
 };
 
 export const formatUSDC = (usdc_amount) => {
-  formatter.format(usdc_amount);
+  return formatter.format(usdc_amount || "0");
 };
