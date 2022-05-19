@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { CogIcon } from "@heroicons/react/outline";
 import OutsideClickHandler from "react-outside-click-handler";
 

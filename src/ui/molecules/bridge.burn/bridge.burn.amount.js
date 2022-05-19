@@ -6,6 +6,11 @@ import { ethers } from "ethers";
 import TokenDropdown from "../../atoms/dropdowns/dropdown.tokens";
 import { BridgeBurnTransferFee } from "./bridge.burn.fee";
 import { useWalletBalances } from "../../../api/global/interfaces/interfaces.wallet";
+import {
+  formatUSDCPricedBTC,
+  formatUSDCPricedETH,
+  formatUSDC,
+} from "../../../api/utils/formatters";
 
 export const BridgeBurnInput = ({
   destination,
@@ -19,24 +24,20 @@ export const BridgeBurnInput = ({
 }) => {
   const { dispatch } = useContext(storeContext);
   const { balances } = useWalletBalances();
-  var formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
 
   const formattedAmount = () => {
     switch (token) {
       case "USDC":
-        return formatter.format(amount);
+        return formatUSDC(amount);
       case "ETH":
-        return formatter.format(amount * ethers.utils.formatUnits(eth_usd, 6));
+        return formatUSDCPricedETH(amount, eth_usd);
       default:
-        return formatter.format(amount * ethers.utils.formatUnits(btc_usd, 6));
+        return formatUSDCPricedBTC(amount, btc_usd);
     }
   };
 
   const getBalance = (token) => {
-    return balances[token]?.toString() ?? 0;
+    return balances[token] || 0;
   };
 
   const getMax = () => {

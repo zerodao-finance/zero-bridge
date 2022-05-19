@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { ethers } from "ethers";
 import { getBurnOutput } from "../../../api/hooks/burn-fees";
+import { formatUSDCPricedBTC } from "../../../api/utils/formatters";
 
 export const BridgeBurnTransferFee = ({ amount, btc_usd, token }) => {
   const [isFeeLoading, setIsFeeLoading] = useState(false);
@@ -13,11 +13,6 @@ export const BridgeBurnTransferFee = ({ amount, btc_usd, token }) => {
       setIsFeeLoading(false);
     }
   }, [amount, token]);
-
-  var formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
 
   return (
     <>
@@ -36,9 +31,7 @@ export const BridgeBurnTransferFee = ({ amount, btc_usd, token }) => {
             </div>
           </div>
           <div className="xl:mr-5 italic tracking-wider w-full pr-2 text-right text-xs text-badger-yellow-neon-400">
-            ~{" "}
-            {btc_usd &&
-              formatter.format(fee * ethers.utils.formatUnits(btc_usd, 6))}
+            ~ {formatUSDCPricedBTC(fee, btc_usd)}
           </div>
         </div>
       )}
