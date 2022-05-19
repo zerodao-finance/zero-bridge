@@ -1,6 +1,6 @@
 const config = {
   verbose: true,
-  testMatch: ["**/*.steps.js"],
+  testMatch: ["**/__tests__/*.test.js?(x)", "**/__tests__/steps/*.steps.js"],
   testEnvironment: "jsdom",
 };
 
