@@ -8,10 +8,10 @@ export const SlippageInput = ({ token, slippage, setSlippage }) => {
   const autoSlippage = () => {
     switch (token) {
       case "renBTC":
-        setSlippage(0.0);
+        setSlippage("0.0");
         break;
       default:
-        setSlippage(2.0);
+        setSlippage("2.0");
     }
   };
 
@@ -51,7 +51,7 @@ export const SlippageInput = ({ token, slippage, setSlippage }) => {
               id="slipTolerance"
               className="block rounded-lg ml-2 text-right focus:border-badger-gray-200 focus:ring-1 focus:ring-badger-gray-200 text-badger-black-800 pr-7 font-semibold"
               placeholder="0.1"
-              value={slippage.toFixed(1)}
+              value={slippage}
               onChange={(e) => setSlippage(e.target.value)}
             />
             <div className="absolute pt-3 right-3 pr-3 flex items-center pointer-events-none text-badger-black-800 font-bold">
