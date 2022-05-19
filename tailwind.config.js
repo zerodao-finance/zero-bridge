@@ -40,6 +40,9 @@ module.exports = {
         "badger-text-secondary": {
           400: "#FFFFFF99",
         },
+        "error-red": {
+          400: "#EC4B4B",
+        },
       },
       fontFamily: {
         header: [
