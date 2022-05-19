@@ -31,8 +31,8 @@ export const BridgeGatewayConfirmation = ({
           className="text-[9px] max-w-[300px] text-gray-500 dark:text-gray-300 justify-self-end"
         >
           <p>
-            please note, this tool is in beta and subject to further
-            improvements and changes. use this tool at your discretion and never
+            Please note, this tool is in beta and subject to further
+            improvements and changes. Use this tool at your discretion and never
             deposit more funds than you could afford to lose
           </p>
         </div>
