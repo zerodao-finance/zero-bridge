@@ -2,7 +2,6 @@ import { storeContext } from "../global";
 
 import Web3 from "web3";
 import Web3Modal from "web3modal";
-import Authereum from "authereum";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useContext, useState } from "react";
 import { URLS } from "./chains";
@@ -45,9 +44,6 @@ export default function wallet_modal() {
               ],
             },
           },
-        },
-        authereum: {
-          package: Authereum,
         },
       };
       web3Modal = new Web3Modal({

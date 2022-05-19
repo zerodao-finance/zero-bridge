@@ -14,8 +14,6 @@ function processAmount(amount, token) {
       return ethers.utils.parseEther(amount);
     case "USDC":
       return ethers.utils.parseUnits(amount, 6);
-    case "ETH":
-      return ethers.utils.parseEther(amount);
     default:
       return ethers.utils.parseUnits(amount, 8);
   }

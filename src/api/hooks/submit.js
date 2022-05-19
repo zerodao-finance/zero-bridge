@@ -30,7 +30,6 @@ export const useSDKTransactionSubmit = (module) => {
     var zeroUser = zero.zeroUser;
     var amount = input.amount;
     var token = input.token;
-    var ratio = String(input.ratio);
     var signer = await getSigner;
     var to = await signer.getAddress();
     var isFast = input.isFast;
@@ -68,16 +67,7 @@ export const useSDKTransactionSubmit = (module) => {
     const minOut = inverseSlippage.mul(quote).div(ethers.utils.parseEther("1"));
     const data = ethers.utils.defaultAbiCoder.encode(["uint256"], [minOut]);
 
-    let requestData = [
-      zeroUser,
-      amount,
-      token,
-      ratio,
-      signer,
-      to,
-      isFast,
-      data,
-    ];
+    let requestData = [zeroUser, amount, token, signer, to, isFast, data];
 
     Helper.request("transfer", requestData);
   }

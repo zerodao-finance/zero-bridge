@@ -40,10 +40,9 @@ export const globalBridgeState = {
     },
     transfer: {
       input: {
-        ratio: 0,
-        amount: "",
+        amount: "0",
         token: "renBTC",
-        slippage: 2,
+        slippage: "2.0",
         isFast: false,
         isLoading: false,
         error: null,
@@ -62,7 +61,7 @@ export const globalBridgeState = {
     },
     burn: {
       input: {
-        amount: "",
+        amount: "0",
         destination: "",
         token: "renBTC",
         isLoading: false,
