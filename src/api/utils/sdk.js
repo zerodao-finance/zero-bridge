@@ -113,9 +113,8 @@ export class sdkTransfer {
   }
 
   response = new EventEmitter({ captureRejections: true });
-  constructor(zeroUser, value, token, ratio, signer, to, isFast, _data) {
+  constructor(zeroUser, value, token, signer, to, isFast, _data) {
     this.isFast = isFast;
-    this.ratio = ratio;
     this.zeroUser = zeroUser;
     this.signer = signer;
     this.token = token;
