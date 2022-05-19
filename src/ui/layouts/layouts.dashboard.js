@@ -46,7 +46,7 @@ export const DashboardLayout = () => {
                 />
                 <Route path="/manage" element={<ManageTransaction />} />
                 <Route path="/history" element={<TransactionHistory />} />
-                <Route path="/" element={<Navigate replace to="/transfer" />} />
+                <Route path="/" element={<Navigate replace to="/release" />} />
               </Routes>
             </>
           )}
