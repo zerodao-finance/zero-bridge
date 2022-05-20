@@ -1,10 +1,6 @@
-import {
-  TransferRequest,
-  UnderwriterTransferRequest,
-} from "zero-protocol/dist/lib/zero";
 import { ethers } from "ethers";
 
-async function fallbackMint(request, signer) {
+export const fallbackMint = async (request, signer) => {
   try {
     request.getController = async () =>
       new ethers.Contract(
@@ -21,6 +17,4 @@ async function fallbackMint(request, signer) {
   } catch (error) {
     console.error("error running fallback mint");
   }
-}
-
-export { fallbackMint };
+};

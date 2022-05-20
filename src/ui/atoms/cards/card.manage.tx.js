@@ -1,11 +1,10 @@
-import * as React from "react";
 import { getStatus } from "../../../api/transaction/status";
 import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationIcon } from "@heroicons/react/outline";
 
 export const ManageTransactionCard = ({ data, type }) => {
-  const [details, toggle] = React.useState(false);
+  const [details, toggle] = useState(false);
   function truncateAddress(address) {
     return address.slice(0, 6) + "..." + address.slice(-4);
   }
@@ -48,7 +47,6 @@ function Details({ data, toggle }) {
   const { passed } = getStatus(data);
   const [open, setOpen] = useState(false);
 
-  console.log(passed ? passed : "no function available");
   return (
     <div
       className="bg-gray-300 rounded-md shadow-md text-xs max-w-[300px] px-4 py-1 flex flex-col gap-1 relative"
@@ -66,18 +64,21 @@ function Details({ data, toggle }) {
             <p>target: {passed.target}</p>
             <p>current: {passed.confs}</p>
           </span>
-          <button
-            onClick={() => {
-              passed.fallbackMint ? setOpen(true) : () => {};
-            }}
-          >
-            Fallback Mint
-          </button>
-          <FallbackWarning
-            open={open}
-            setOpen={setOpen}
-            fallback={passed.fallbackMint}
-          />
+          {passed.fallbackMint ? (
+            <span>
+              <button onClick={() => setOpen(true)}>Fallback Mint</button>
+              <FallbackWarning
+                open={open}
+                setOpen={setOpen}
+                fallback={passed.fallbackMint}
+              />
+            </span>
+          ) : (
+            <p>
+              More than 6 confirmations are required before you may
+              fallbackMint.
+            </p>
+          )}
         </div>
       ) : (
         <div className="h-[60px] flex items-center justify-center content-center animate-pulse">
@@ -88,7 +89,7 @@ function Details({ data, toggle }) {
   );
 }
 
-export default function FallbackWarning({ open, setOpen, passed }) {
+export default function FallbackWarning({ open, setOpen, fallback }) {
   const cancelButtonRef = useRef(null);
 
   return (
@@ -147,7 +148,7 @@ export default function FallbackWarning({ open, setOpen, passed }) {
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
                         Use this feature if your funds have not arrived after
-                        your deposit has reached 12 confirmations.
+                        your deposit has reached more than 6 confirmations.
                       </p>
                     </div>
                   </div>
