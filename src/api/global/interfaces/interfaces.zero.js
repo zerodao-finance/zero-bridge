@@ -16,15 +16,15 @@ export const useZero = () => {
   const { zero } = state;
   const enableMocks = _.memoize(async () => {
     if (process.env.REACT_APP_TEST) {
-      await createMockKeeper();
-      await enableGlobalMockRuntime();
+      // await createMockKeeper();
+      // await enableGlobalMockRuntime();
     }
   });
 
   useEffect(async () => {
     await enableMocks();
     if (!zero.zeroUser) {
-      let user = createZeroUser(await createZeroConnection("mainnet"));
+      let user = createZeroUser(await createZeroConnection("dev-mainnet"));
       await user.conn.start();
       await user.subscribeKeepers();
       user.on("keeper", (address) => {
