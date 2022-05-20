@@ -11,9 +11,7 @@ export const fallbackMint = async (request, signer) => {
         signer
       );
 
-    const tx = await request.fallbackMint(signer);
-    console.log("falling back");
-    console.log(await tx.wait());
+    await request.fallbackMint(signer);
   } catch (error) {
     console.error("error running fallback mint");
   }
