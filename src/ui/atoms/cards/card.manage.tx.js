@@ -1,15 +1,11 @@
-import { usePopup } from "../../../api/transaction/status";
 import * as React from "react";
-import { defaultTo } from "lodash";
 import { getStatus } from "../../../api/transaction/status";
-import { AiOutlineConsoleSql } from "react-icons/ai";
 import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationIcon } from "@heroicons/react/outline";
 
 export const ManageTransactionCard = ({ data, type }) => {
   const [details, toggle] = React.useState(false);
-  const { openModal } = usePopup();
   function truncateAddress(address) {
     return address.slice(0, 6) + "..." + address.slice(-4);
   }

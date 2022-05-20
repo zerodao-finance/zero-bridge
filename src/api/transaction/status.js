@@ -1,21 +1,5 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { TransactionStatusPopup } from "../../ui/molecules/manage/manage.popup";
 import { UnderwriterTransferRequest } from "zero-protocol/dist/lib/zero";
-
-export function usePopup() {
-  function openModal(data) {
-    console.log("opening", data);
-    ReactDOM.createPortal(
-      <TransactionStatusPopup data={data} />,
-      document.body
-    );
-  }
-
-  return {
-    openModal,
-  };
-}
 
 export function getStatus(data) {
   const [passed, setData] = React.useState(null);
