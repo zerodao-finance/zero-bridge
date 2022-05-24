@@ -36,6 +36,7 @@ export const globalBridgeState = {
     bridge: {
       mode: {
         mode: "transfer", //transfer, release
+        chain: "mainnet",
       },
     },
     transfer: {

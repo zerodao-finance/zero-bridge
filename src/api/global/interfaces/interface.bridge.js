@@ -1,6 +1,5 @@
 import { storeContext } from "../global";
-import { useContext, useEffect, useState, useMemo } from "react";
-import _ from "lodash";
+import { useContext, useEffect } from "react";
 
 export const useBridgePage = () => {
   const { state, dispatch } = useContext(storeContext);
@@ -24,13 +23,28 @@ export const useBridgePage = () => {
     });
   };
 
+  const setChain = (newChain) => {
+    dispatch({
+      type: "UPDATE",
+      module: "bridge",
+      effect: "mode",
+      data: { chain: newChain },
+    });
+  };
+
   const getBridgePageProps = ({ ...otherProps } = {}) => ({
     mode: mode.mode,
     toggleMode: toggleMode,
     tcSigned: tcSigned,
   });
 
+  const getBridgeChainProps = ({ ...otherProps } = {}) => ({
+    chain: mode.chain,
+    setChain,
+  });
+
   return {
     getBridgePageProps,
+    getBridgeChainProps,
   };
 };

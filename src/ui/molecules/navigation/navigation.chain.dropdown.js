@@ -3,12 +3,12 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 
-export default function NavigationChainDropdown() {
+export default function NavigationChainDropdown({ chain, setChain }) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <Menu.Button className="inline-flex font-bold rounded-lg justify-center w-full bg-badger-yellow-400 hover:bg-badger-yellow-400/40 shadow-sm px-2 py-1 bg-white text-sm md:text-base text-badger-black-700 focus:outline-none ">
-          Mainnet
+          {chain.charAt(0).toUpperCase() + chain.slice(1)}
           <ChevronDownIcon
             className="-mr-1 md:ml-2 md:mt-1 h-5 w-5"
             aria-hidden="true"
@@ -32,9 +32,13 @@ export default function NavigationChainDropdown() {
                 <span
                   href="#"
                   className={
-                    "text-center block py-2 px-6 text-sm cursor-pointer font-semibold text-badger-white-400 " +
-                    (active ? "bg-badger-yellow-400/10" : "bg-transparent")
+                    "text-center block py-2 px-8 text-sm cursor-pointer font-semibold " +
+                    (active ? "bg-badger-yellow-400/10 " : "bg-transparent ") +
+                    (chain == "mainnet"
+                      ? "text-badger-yellow-400 "
+                      : "text-badger-white-400 ")
                   }
+                  onClick={() => setChain("mainnet")}
                 >
                   Mainnet
                 </span>
@@ -45,9 +49,13 @@ export default function NavigationChainDropdown() {
                 <span
                   href="#"
                   className={
-                    "text-center block py-2 px-6 text-sm cursor-pointer font-semibold text-badger-white-400 " +
-                    (active ? "bg-badger-yellow-400/10" : "bg-transparent")
+                    "text-center block py-2 px-8 text-sm cursor-pointer font-semibold text-badger-white-400 " +
+                    (active ? "bg-badger-yellow-400/10 " : "bg-transparent ") +
+                    (chain == "arbitrum"
+                      ? "text-badger-yellow-400 "
+                      : "text-badger-white-400 ")
                   }
+                  onClick={() => setChain("arbitrum")}
                 >
                   Arbitrum
                 </span>
