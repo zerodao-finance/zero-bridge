@@ -2236,6 +2236,10 @@ input:checked + .toggle-bg {
   background-color: rgb(74 74 74 / var(--tw-bg-opacity));
 }
 
+.bg-badger-yellow-400\/10 {
+  background-color: rgb(255 184 77 / 0.1);
+}
+
 .bg-\[\#EC4B4B\] {
   --tw-bg-opacity: 1;
   background-color: rgb(236 75 75 / var(--tw-bg-opacity));
@@ -2802,6 +2806,15 @@ input:checked + .toggle-bg {
     var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
     calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+.ring-0 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0
+    var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
+    calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
     var(--tw-shadow, 0 0 #0000);
 }

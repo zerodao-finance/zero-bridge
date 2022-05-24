@@ -2,6 +2,8 @@ import { PrimaryRoundedButton } from "../../atoms";
 import { NetworkIndicator } from "../../atoms/indicators/indicator.network";
 import { useWalletConnection } from "../../../api/global/interfaces/interfaces.wallet";
 import { useZero } from "../../../api/global/interfaces/interfaces.zero";
+import NavigationChainDropdown from "../navigation/navigation.chain.dropdown";
+// "/molecules/navigation/navigation.chain.dropdown"
 
 export const NavigationTopBar = () => {
   const { connect, disconnect, wallet } = useWalletConnection();
@@ -26,6 +28,7 @@ export const NavigationTopBar = () => {
         />
       </div>
       <div id="content" className="flex flex-row items-center gap-3">
+        <NavigationChainDropdown />
         <PrimaryRoundedButton
           className="w-fit"
           active={true}

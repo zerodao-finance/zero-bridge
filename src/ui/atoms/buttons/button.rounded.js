@@ -1,5 +1,3 @@
-import React from "react";
-
 export const PrimaryRoundedButton = ({ active, label, action }) => {
   const getClass = () => {
     if (active) {
