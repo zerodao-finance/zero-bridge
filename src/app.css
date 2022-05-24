@@ -3544,6 +3544,14 @@ code {
 }
 
 @media (min-width: 768px) {
+  .md\:ml-2 {
+    margin-left: 0.5rem;
+  }
+
+  .md\:mt-1 {
+    margin-top: 0.25rem;
+  }
+
   .md\:block {
     display: block;
   }
