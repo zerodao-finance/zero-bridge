@@ -4,6 +4,7 @@ import { useContext, useEffect } from "react";
 export const useBridgePage = () => {
   const { state, dispatch } = useContext(storeContext);
   const { mode } = state.bridge;
+  const { wallet } = state;
   const { tcSigned } = state.termsAndConditions;
 
   // Initialize the bridge page
@@ -23,12 +24,14 @@ export const useBridgePage = () => {
     });
   };
 
-  const setChain = (newChain) => {
+  const setChainId = (newChainId) => {
     dispatch({
-      type: "UPDATE",
-      module: "bridge",
-      effect: "mode",
-      data: { chain: newChain },
+      type: "UPDATE_WALLET",
+      effect: "wallet",
+      data: {
+        chainId: newChainId,
+        isLoading: true,
+      },
     });
   };
 
@@ -39,8 +42,8 @@ export const useBridgePage = () => {
   });
 
   const getBridgeChainProps = ({ ...otherProps } = {}) => ({
-    chain: mode.chain,
-    setChain,
+    chainId: wallet.chainId,
+    setChainId,
   });
 
   return {

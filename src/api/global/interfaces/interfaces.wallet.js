@@ -1,5 +1,5 @@
 import { storeContext } from "../global";
-import { useContext, useEffect, useState, useMemo } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import wallet_modal from "../../utils/walletModal";
 import { NETWORK_ROUTER } from "../../utils/network";
@@ -11,7 +11,7 @@ import { useBridgeBurnInput } from "./interface.bridge.burn";
 export const useWalletConnection = () => {
   const { state, dispatch } = useContext(storeContext);
   const { wallet } = state;
-  const { isLoading } = wallet;
+  const { isLoading, chainId } = wallet;
   const { getweb3 } = wallet_modal();
 
   useEffect(async () => {
@@ -28,20 +28,20 @@ export const useWalletConnection = () => {
         const web3Modal = await getweb3();
         await web3Modal.currentProvider.sendAsync({
           method: "wallet_addEthereumChain",
-          params: [CHAINS["1"]],
+          params: [CHAINS[chainId]],
         });
         await web3Modal.currentProvider.sendAsync({
           method: "wallet_switchEthereumChain",
-          params: [{ chainId: "0x1" }],
+          params: [{ chainId: CHAINS[chainId].chainId }],
         });
-        let chainId = await web3Modal.eth.getChainId();
+        let modalChainID = await web3Modal.eth.getChainId();
         await dispatch({
           type: "SUCCEED_BATCH_REQUEST",
           effect: "wallet",
           payload: {
             address: (await web3Modal.eth.getAccounts())[0],
             chainId: chainId,
-            network: NETWORK_ROUTER[chainId],
+            network: NETWORK_ROUTER[modalChainID],
             provider: new ethers.providers.Web3Provider(
               await web3Modal.currentProvider
             ),
@@ -57,7 +57,7 @@ export const useWalletConnection = () => {
     if (isLoading) {
       call();
     }
-  }, [isLoading]);
+  }, [isLoading, chainId]);
 
   const connect = async () => {
     dispatch({ type: "START_REQUEST", effect: "wallet" });

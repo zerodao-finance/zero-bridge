@@ -4,7 +4,6 @@ import { useWalletConnection } from "../../../api/global/interfaces/interfaces.w
 import { useZero } from "../../../api/global/interfaces/interfaces.zero";
 import { useBridgePage } from "../../../api/global/interfaces/interface.bridge";
 import NavigationChainDropdown from "../navigation/navigation.chain.dropdown";
-// "/molecules/navigation/navigation.chain.dropdown"
 
 export const NavigationTopBar = () => {
   const { connect, disconnect, wallet } = useWalletConnection();
