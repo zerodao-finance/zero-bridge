@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 import wallet_modal from "../../utils/walletModal";
 import { NETWORK_ROUTER } from "../../utils/network";
 import { CHAINS } from "../../utils/chains";
-import _ from "lodash";
+import _, { add } from "lodash";
 import { tokenMapping } from "../../utils/tokenMapping";
 import { useBridgeBurnInput } from "./interface.bridge.burn";
 
@@ -26,14 +26,25 @@ export const useWalletConnection = () => {
       try {
         // TODO: Make getweb3 dynamic and allow the app to define what chain we're on
         const web3Modal = await getweb3();
-        await web3Modal.currentProvider.sendAsync({
-          method: "wallet_addEthereumChain",
-          params: [CHAINS[chainId]],
-        });
-        await web3Modal.currentProvider.sendAsync({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: CHAINS[chainId].chainId }],
-        });
+        try {
+          await web3Modal.currentProvider.sendAsync({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: CHAINS[chainId].chainId }],
+          });
+        } catch (switchError) {
+          if (switchError.code === 4902) {
+            try {
+              await web3Modal.currentProvider.sendAsync({
+                method: "wallet_addEthereumChain",
+                params: [CHAINS[chainId]],
+              });
+            } catch (addError) {
+              console.error(addError);
+            }
+          } else {
+            console.error(switchError);
+          }
+        }
         let modalChainID = await web3Modal.eth.getChainId();
         await dispatch({
           type: "SUCCEED_BATCH_REQUEST",
