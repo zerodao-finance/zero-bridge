@@ -43,7 +43,8 @@ export const useWalletConnection = () => {
             chainId: chainId,
             network: NETWORK_ROUTER[modalChainID],
             provider: new ethers.providers.Web3Provider(
-              await web3Modal.currentProvider
+              await web3Modal.currentProvider,
+              "any"
             ),
           },
         });
