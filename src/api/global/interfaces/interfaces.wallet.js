@@ -107,7 +107,7 @@ export const useCheckWalletConnected = () => {
 export const useWalletBalances = () => {
   // Global Wallet State
   const { state } = useContext(storeContext);
-  const { provider, address, network } = state.wallet;
+  const { provider, address, network, chainId } = state.wallet;
   // User Selected Token
   const { getBridgeBurnInputProps } = useBridgeBurnInput();
   const { token } = getBridgeBurnInputProps();
@@ -152,12 +152,15 @@ export const useWalletBalances = () => {
   ];
 
   async function getBalance(tokenName) {
+    if (!address) {
+      return ethers.utils.parseUnits("0", 6);
+    }
     if (tokenName.toLowerCase() === "eth") {
       const ethBalance = await provider.getBalance(address);
       return ethBalance;
     } else {
       const contract = new ethers.Contract(
-        tokenMapping(tokenName),
+        tokenMapping({ tokenName, chainId }),
         balanceOfABI,
         provider
       );
