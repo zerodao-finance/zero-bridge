@@ -2,15 +2,8 @@
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-
-const getChainName = (chainId) => {
-  switch (chainId) {
-    case "42161":
-      return "Arbitrum";
-    default:
-      return "Mainnet";
-  }
-};
+import { getChainName } from "../../../api/utils/chains";
+import * as React from "react"; // Needs to be here for testing
 
 export default function NavigationChainDropdown({ chainId, setChainId }) {
   return (

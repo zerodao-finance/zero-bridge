@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { deployments, deploymentsFromSigner } from "./zero";
+import { deploymentsFromSigner } from "./zero";
 import {
   UnderwriterTransferRequest,
   UnderwriterBurnRequest,
@@ -12,14 +12,6 @@ import { createGetGasPrice } from "ethers-gasnow";
 import EventEmitter from "events";
 
 const remoteETHTxMap = new WeakMap();
-
-const bufferToHexString = (buffer) => {
-  return buffer.reduce((s, byte) => {
-    let hex = byte.toString(16);
-    if (hex.length === 1) hex = "0" + hex;
-    return s + hex;
-  }, "");
-};
 
 const toLower = (s) => s && s.toLowerCase();
 const signETH = async function (signer) {

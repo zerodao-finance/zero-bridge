@@ -4,7 +4,6 @@ import { ethers } from "ethers";
 import wallet_modal from "../../utils/walletModal";
 import { NETWORK_ROUTER } from "../../utils/network";
 import { CHAINS } from "../../utils/chains";
-import _, { add } from "lodash";
 import { tokenMapping } from "../../utils/tokenMapping";
 import { useBridgeBurnInput } from "./interface.bridge.burn";
 

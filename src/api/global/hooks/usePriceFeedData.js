@@ -2,11 +2,11 @@ import { storeContext } from "../global";
 import { useContext, useEffect } from "react";
 import { ChainId, Token, WETH, Fetcher, Route } from "@uniswap/sdk";
 import { ethers } from "ethers";
-import _ from "lodash";
 
 export const usePriceFeedContracts = () => {
   const { state, dispatch } = useContext(storeContext);
   const { network } = state;
+  const { chainId } = state.wallet;
   const {
     wallet: { address },
   } = state;

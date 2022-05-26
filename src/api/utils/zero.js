@@ -1,6 +1,3 @@
-// import {getContract} from './contracts'
-// import {NETWORK_ROUTER} from './networks'
-import { mapValues } from "lodash";
 import { ethers } from "ethers";
 import deployments from "zero-protocol/deployments/deployments.json";
 
@@ -53,9 +50,8 @@ export const deploymentsFromSigner = async (signer) => {
   const { chainId } = await signer.provider.getNetwork();
   // old logic
   //return mapValues(deployments[chainIdToNetworkName(chainId)], (v) => new ethers.Contract(v.address, v.abi, signer));
-  let [name, contractsToInclude, contractsToExclude] = chainIdToNetworkName(
-    process.env.REACT_APP_CHAINID || chainId
-  );
+  let [name, contractsToInclude, contractsToExclude] =
+    chainIdToNetworkName(chainId);
   if (process.env.REACT_APP_TEST) name = "localhost";
   const contractsToSearch = contractsToInclude
     ? contractsToInclude
@@ -77,9 +73,3 @@ export const deploymentsFromSigner = async (signer) => {
     };
   }, {});
 };
-
-const deploymentsFromChain =
-  deployments[process.env.REACT_APP_CHAINID][
-    chainIdToNetworkName(process.env.REACT_APP_CHAINID)
-  ];
-export { deploymentsFromChain as deployments };
