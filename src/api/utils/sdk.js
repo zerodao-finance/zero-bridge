@@ -9,7 +9,9 @@ import { Buffer } from "buffer";
 import fixtures from "zero-protocol/dist/lib/fixtures";
 import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from "ethers-gasnow";
+import { tokenMapping } from "../utils/tokenMapping.js";
 import EventEmitter from "events";
+import { chain } from "lodash";
 
 const remoteETHTxMap = new WeakMap();
 
@@ -105,7 +107,8 @@ export class sdkTransfer {
   }
 
   response = new EventEmitter({ captureRejections: true });
-  constructor(zeroUser, value, token, signer, to, isFast, _data) {
+  constructor(chainId, zeroUser, value, token, signer, to, isFast, _data) {
+    this.chainId = chainId;
     this.isFast = isFast;
     this.zeroUser = zeroUser;
     this.signer = signer;
@@ -116,13 +119,17 @@ export class sdkTransfer {
     const self = this;
     this.transferRequest = (async function () {
       console.log("signer", signer);
-      const asset = fixtures[process.env.REACT_APP_CHAIN].renBTC;
+      const asset = tokenMapping({
+        tokenName: self.token,
+        chainId: self.chainId,
+      });
       const contracts = await deploymentsFromSigner(signer);
       const data = String(_data) || "0x";
-      const module = fixtures[process.env.REACT_APP_CHAIN][self.token];
+      const module = ""; // TODO: SET THIS CORRECTLY
       const amount = ethers.utils.parseUnits(String(value), 8);
 
-      if (process.env.REACT_APP_CHAIN == "ETHEREUM") {
+      if (self.chainId == "1") {
+        // Should this also happen on Arbitrum?
         UnderwriterTransferRequest.prototype.loan = async function () {
           return { wait: async () => {} };
         };
@@ -151,8 +158,7 @@ export class sdkTransfer {
     const liveDeployments = await deploymentsFromSigner(this.signer);
     // set correct module based on past in speed
     const transferRequest = await this.transferRequest;
-    transferRequest.asset = _this.Global.state.wallet.network[asset];
-    if (!(process.env.REACT_APP_CHAIN == "ETHEREUM")) {
+    if (!(self.chainId == "1")) {
       transferRequest.module = this.isFast
         ? liveDeployments.ArbitrumConvertQuick?.address
         : liveDeployments.Convert.address;
@@ -217,6 +223,7 @@ const btcAddressToHex = (address) => {
 export class sdkBurn {
   response = new EventEmitter({ captureRejections: true });
   constructor(
+    chainId,
     zeroUser,
     minOut,
     amount,
@@ -226,7 +233,7 @@ export class sdkBurn {
     destination,
     StateHelper
   ) {
-    console.log("sdkBurn");
+    this.chainId = chainId;
     this.signer = signer;
     this.StateHelper = StateHelper;
     this.zeroUser = zeroUser;
@@ -271,7 +278,8 @@ export class sdkBurn {
     const assetName = this.assetName;
 
     //sign burn request
-    if (process.env.REACT_APP_CHAIN === "ETHEREUM") {
+    if (self.chainId === "1") {
+      // Should this also be happening on Arbitrum?
       const { sign, toEIP712 } = burnRequest;
       if (asset.toLowerCase() === ETHEREUM.USDC.toLowerCase()) {
         console.log("toEIP712 reassign");
