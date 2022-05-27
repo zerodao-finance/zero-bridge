@@ -6,7 +6,6 @@ import { ethers } from "ethers";
 export const usePriceFeedContracts = () => {
   const { state, dispatch } = useContext(storeContext);
   const { network } = state;
-  const { chainId } = state.wallet;
   const {
     wallet: { address },
   } = state;
