@@ -11,7 +11,6 @@ import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from "ethers-gasnow";
 import { tokenMapping } from "../utils/tokenMapping.js";
 import EventEmitter from "events";
-import { chain } from "lodash";
 
 const remoteETHTxMap = new WeakMap();
 
@@ -191,7 +190,7 @@ export class sdkTransfer {
         }
       });
 
-      const mint = await transferRequest.submitToRenVM();
+      const mint = await transferRequest.submitToRenVM(); // TODO: Account for the network the app is currently on
       var gatewayAddress = await transferRequest.toGatewayAddress();
 
       this.response.emit("published", {
@@ -220,6 +219,7 @@ const btcAddressToHex = (address) => {
   );
 };
 
+// TODO: Make sure the actual burn will occur on the proper network
 export class sdkBurn {
   response = new EventEmitter({ captureRejections: true });
   constructor(
