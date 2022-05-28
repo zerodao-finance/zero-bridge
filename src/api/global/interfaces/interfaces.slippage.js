@@ -41,6 +41,9 @@ export const useSlippageFetchers = () => {
   // direction = true ? renbtc -> wbtc
   const getWbtcQuote = useCallback(
     async (direction, amount) => {
+      if (state.wallet.chainId == "42161") {
+        direction = !direction;
+      }
       const rencrv = new ethers.Contract(
         RENCRV,
         ["function get_dy(int128, int128, uint256) view returns (uint256)"],
@@ -60,6 +63,9 @@ export const useSlippageFetchers = () => {
   // direction = true ? usdc -> wbtc : wbtc -> usdc
   const getUsdcWbtcQuote = useCallback(
     async (direction, amount) => {
+      if (state.wallet.chainId == "42161") {
+        direction = !direction;
+      }
       const usdcToWbtc = [
         tokenMapping({ tokenName: "usdc", chainId }),
         500,
@@ -79,6 +85,9 @@ export const useSlippageFetchers = () => {
   // direction = true ? wbtc -> weth : weth -> wbtc
   const getWbtcWethQuote = useCallback(
     async (direction, amount) => {
+      if (state.wallet.chainId == "42161") {
+        direction = !direction;
+      }
       const wbtcToWeth = [
         tokenMapping({ tokenName: "wbtc", chainId }),
         WETHByNetwork(chainId),
