@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import { getChainName } from "./chains";
 import deployments from "zero-protocol/deployments/deployments.json";
 
 export const test = {
@@ -31,28 +32,13 @@ const contracts = [
   "ArbitrumConvertQuick",
 ];
 
-export const chainIdToNetworkName = (chainId) => {
-  return {
-    [42161]: ["arbitrum", undefined, []],
-    [137]: ["matic", undefined, ["ArbitrumConvertQuick"]],
-    [1]: [
-      "mainnet",
-      [
-        { BadgerBridgeZeroController: "ZeroController" },
-        { BadgerBridgeZeroController: "DelegateUnderwriter" },
-      ],
-      [],
-    ],
-  }[chainId];
-};
-
 export const deploymentsFromSigner = async (signer) => {
   const { chainId } = await signer.provider.getNetwork();
-  // old logic
-  //return mapValues(deployments[chainIdToNetworkName(chainId)], (v) => new ethers.Contract(v.address, v.abi, signer));
-  let [name, contractsToInclude, contractsToExclude] =
-    chainIdToNetworkName(chainId);
-  if (process.env.REACT_APP_TEST) name = "localhost";
+  let [name, contractsToInclude, contractsToExclude] = getChainName(chainId);
+
+  if (process.env.REACT_APP_TEST) {
+    name = "localhost";
+  }
   const contractsToSearch = contractsToInclude
     ? contractsToInclude
     : contracts.filter((d) => !contractsToExclude.includes(d));

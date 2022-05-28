@@ -124,7 +124,7 @@ export class sdkTransfer {
       });
       const contracts = await deploymentsFromSigner(signer);
       const data = String(_data) || "0x";
-      const module = ""; // TODO: SET THIS CORRECTLY
+      const module = contracts.ZeroController.address; // TODO: SET THIS CORRECTLY
       const amount = ethers.utils.parseUnits(String(value), 8);
 
       if (self.chainId == "1") {
