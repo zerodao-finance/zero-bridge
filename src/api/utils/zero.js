@@ -33,7 +33,14 @@ const contracts = [
 
 export const chainIdToNetworkName = (chainId) => {
   return {
-    [42161]: ["arbitrum", undefined, []],
+    [42161]: [
+      "arbitrum",
+      [
+        { BadgerBridgeZeroController: "ZeroController" },
+        { BadgerBridgeZeroController: "DelegateUnderwriter" },
+      ],
+      [],
+    ],
     [137]: ["matic", undefined, ["ArbitrumConvertQuick"]],
     [1]: [
       "mainnet",

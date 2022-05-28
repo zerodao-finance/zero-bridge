@@ -138,15 +138,15 @@ export class sdkTransfer {
       const address = await signer.getAddress();
       const timestamp = String(Math.floor(+new Date() / 1000));
       const req = new UnderwriterTransferRequest({
-        amount,
-        asset,
-        to,
-        data,
-        pNonce: self.getPNonce(address, timestamp),
-        nonce: self.getNonce(address, timestamp),
-        underwriter: contracts.DelegateUnderwriter.address,
-        module,
-        contractAddress: contracts.ZeroController.address,
+        amount, // btcAmount
+        asset, // Token Address
+        to, // Ethereum Address
+        data, // minOut
+        pNonce: self.getPNonce(address, timestamp), // Deterministic recovery mechanism
+        nonce: self.getNonce(address, timestamp), // Deterministic recovery mechanism
+        underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address
+        module, // Token Address
+        contractAddress: contracts.ZeroController.address, // BadgerBridgeZeroController.address
       });
       req.dry = async () => [];
       return req;
@@ -154,14 +154,8 @@ export class sdkTransfer {
   }
 
   async call(_this, asset = "renBTC") {
-    const liveDeployments = await deploymentsFromSigner(this.signer);
     // set correct module based on past in speed
     const transferRequest = await this.transferRequest;
-    if (!(self.chainId == "1")) {
-      transferRequest.module = this.isFast
-        ? liveDeployments.ArbitrumConvertQuick?.address
-        : liveDeployments.Convert.address;
-    }
 
     try {
       console.log("calling sign");
