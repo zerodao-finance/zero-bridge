@@ -144,9 +144,9 @@ export class sdkTransfer {
         data, // minOut
         pNonce: self.getPNonce(address, timestamp), // Deterministic recovery mechanism
         nonce: self.getNonce(address, timestamp), // Deterministic recovery mechanism
-        underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address
+        underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
         module, // Token Address
-        contractAddress: contracts.ZeroController.address, // BadgerBridgeZeroController.address
+        contractAddress: contracts.ZeroController.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
       });
       req.dry = async () => [];
       return req;
@@ -249,13 +249,13 @@ export class sdkBurn {
       this.assetName = self.StateHelper.state.burn.input.token;
 
       return new UnderwriterBurnRequest({
-        owner: to,
-        underwriter: contracts.DelegateUnderwriter.address,
-        asset: asset,
-        amount: value,
-        deadline: ethers.utils.hexlify(deadline),
-        destination: dest,
-        contractAddress: contracts.ZeroController.address,
+        owner: to, // ethereum address
+        underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
+        asset: asset, // address of the token to burn
+        amount: value, // parseUnits of the amount of the asset to burn
+        deadline: ethers.utils.hexlify(deadline), // ethers.constants.MaxUint256 time to keep gatewayAddress open for
+        destination: dest, // bech32 encoded btcAddress put in by user
+        contractAddress: contracts.ZeroController.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
       });
     };
   }
