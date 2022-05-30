@@ -8,21 +8,6 @@ export const test = {
 
 // export const controller = getContract("ZeroController")
 
-export const deployments__old = {
-  matic: {
-    ZeroController: require("zero-protocol/deployments/matic/ZeroController"),
-    DelegateUnderwriter: require("zero-protocol/deployments/matic/DelegateUnderwriter"),
-    Convert: require("zero-protocol/deployments/matic/PolygonConvert"),
-    BTCVault: require("zero-protocol/deployments/matic/BTCVault"),
-  },
-  arbitrum: {
-    ZeroController: require("zero-protocol/deployments/arbitrum/ZeroController"),
-    DelegateUnderwriter: require("zero-protocol/deployments/arbitrum/DelegateUnderwriter"),
-    Convert: require("zero-protocol/deployments/arbitrum/ArbitrumConvert"),
-    BTCVault: require("zero-protocol/deployments/arbitrum/BTCVault"),
-    ArbitrumConvertQuick: require("zero-protocol/deployments/arbitrum/ArbitrumConvertQuick"),
-  },
-};
 const contracts = [
   "ZeroController",
   "DelegateUnderwriter",

@@ -127,26 +127,25 @@ export class sdkTransfer {
       const module = contracts.ZeroController.address; // TODO: SET THIS CORRECTLY
       const amount = ethers.utils.parseUnits(String(value), 8);
 
-      if (self.chainId == "1") {
-        // Should this also happen on Arbitrum?
-        UnderwriterTransferRequest.prototype.loan = async function () {
-          return { wait: async () => {} };
-        };
-        UnderwriterTransferRequest.prototype.getExecutionFunction = () =>
-          "repay";
-      }
+      // Should this also happen on Arbitrum?
+      UnderwriterTransferRequest.prototype.loan = async function () {
+        return { wait: async () => {} };
+      };
+      UnderwriterTransferRequest.prototype.getExecutionFunction = () => "repay";
       const address = await signer.getAddress();
       const timestamp = String(Math.floor(+new Date() / 1000));
       const req = new UnderwriterTransferRequest({
         amount, // btcAmount
-        asset, // Token Address
-        to, // Ethereum Address
-        data, // minOut
-        pNonce: self.getPNonce(address, timestamp), // Deterministic recovery mechanism
-        nonce: self.getNonce(address, timestamp), // Deterministic recovery mechanism
-        underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
         module, // Token Address
+        to, // Ethereum Address
+        underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
+        asset, // Token Address
+        nonce: self.getNonce(address, timestamp), // Deterministic recovery mechanism
+        pNonce: self.getPNonce(address, timestamp), // Deterministic recovery mechanism
+        data, // minOut
         contractAddress: contracts.ZeroController.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
+        chainId: self.chainId, // "1" or "42161" TODO: MATIC
+        signature: "", // Currently not used
       });
       req.dry = async () => [];
       return req;
@@ -272,58 +271,55 @@ export class sdkBurn {
     const assetName = this.assetName;
 
     //sign burn request
-    if (self.chainId === "1") {
-      // Should this also be happening on Arbitrum?
-      const { sign, toEIP712 } = burnRequest;
-      if (asset.toLowerCase() === ETHEREUM.USDC.toLowerCase()) {
-        console.log("toEIP712 reassign");
-        burnRequest.toEIP712 = toEIP712USDC;
-      } else if (asset.toLowerCase() === ethers.constants.AddressZero) {
-        burnRequest.sign = signETH;
-      } else if (asset.toLowerCase() !== ETHEREUM.renBTC.toLowerCase()) {
-        burnRequest.sign = async function (signer, contractAddress) {
-          const assetAddress = this.asset;
-          signer.provider.getGasPrice = createGetGasPrice("rapid");
-          const token = new ethers.Contract(
-            assetAddress,
-            [
-              "function allowance(address, address) view returns (uint256)",
-              "function approve(address, uint256) returns (bool)",
-            ],
-            signer
-          );
-          if (
-            ethers.BigNumber.from(this.amount).gt(
-              await token.allowance(signer.getAddress(), contractAddress)
-            )
+    const { sign, toEIP712 } = burnRequest;
+    if (asset.toLowerCase() === ETHEREUM.USDC.toLowerCase()) {
+      console.log("toEIP712 reassign");
+      burnRequest.toEIP712 = toEIP712USDC;
+    } else if (asset.toLowerCase() === ethers.constants.AddressZero) {
+      burnRequest.sign = signETH;
+    } else if (asset.toLowerCase() !== ETHEREUM.renBTC.toLowerCase()) {
+      burnRequest.sign = async function (signer, contractAddress) {
+        const assetAddress = this.asset;
+        signer.provider.getGasPrice = createGetGasPrice("rapid");
+        const token = new ethers.Contract(
+          assetAddress,
+          [
+            "function allowance(address, address) view returns (uint256)",
+            "function approve(address, uint256) returns (bool)",
+          ],
+          signer
+        );
+        if (
+          ethers.BigNumber.from(this.amount).gt(
+            await token.allowance(signer.getAddress(), contractAddress)
           )
-            await (
-              await token.approve(contractAddress, ethers.constants.MaxUint256)
-            ).wait();
-          this.asset = fixtures.ETHEREUM.renBTC;
-          const tokenNonce = String(
-            await new ethers.Contract(
-              this.contractAddress,
-              ["function nonces(address) view returns (uint256) "],
-              signer
-            ).nonces(await signer.getAddress())
-          );
-          this.contractAddress = contractAddress;
-          burnRequest.toEIP712 = function (...args) {
-            this.asset = assetAddress;
-            this.tokenNonce = tokenNonce;
-            this.assetName =
-              assetName.toLowerCase() === "wbtc"
-                ? "WBTC"
-                : assetName.toLowerCase() === "ibbtc"
-                ? "ibBTC"
-                : assetName;
-            return toEIP712.apply(this, args);
-          };
-
-          return await sign.call(this, signer, contractAddress);
+        )
+          await (
+            await token.approve(contractAddress, ethers.constants.MaxUint256)
+          ).wait();
+        this.asset = fixtures.ETHEREUM.renBTC;
+        const tokenNonce = String(
+          await new ethers.Contract(
+            this.contractAddress,
+            ["function nonces(address) view returns (uint256) "],
+            signer
+          ).nonces(await signer.getAddress())
+        );
+        this.contractAddress = contractAddress;
+        burnRequest.toEIP712 = function (...args) {
+          this.asset = assetAddress;
+          this.tokenNonce = tokenNonce;
+          this.assetName =
+            assetName.toLowerCase() === "wbtc"
+              ? "WBTC"
+              : assetName.toLowerCase() === "ibbtc"
+              ? "ibBTC"
+              : assetName;
+          return toEIP712.apply(this, args);
         };
-      }
+
+        return await sign.call(this, signer, contractAddress);
+      };
     }
     let signTx;
     try {
