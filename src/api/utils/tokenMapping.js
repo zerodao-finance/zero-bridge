@@ -1,14 +1,25 @@
 import fixtures from "zero-protocol/lib/fixtures";
 
-export function tokenMapping(name) {
-  switch (name.toLowerCase()) {
-    case "renbtc":
-      return fixtures.ETHEREUM.renBTC;
-    case "wbtc":
-      return fixtures.ETHEREUM.WBTC;
-    case "ibbtc":
-      return fixtures.ETHEREUM.ibBTC;
-    case "usdc":
-      return fixtures.ETHEREUM.USDC;
+export const selectFixture = (chainId) => {
+  switch (chainId) {
+    case "42161":
+      return fixtures.ARBITRUM;
+    default:
+      return fixtures.ETHEREUM;
   }
-}
+};
+
+export const tokenMapping = ({ tokenName, chainId }) => {
+  const fixture = selectFixture(chainId);
+
+  switch (tokenName.toLowerCase()) {
+    case "renbtc":
+      return fixture.renBTC;
+    case "wbtc":
+      return fixture.WBTC;
+    case "ibbtc":
+      return fixture.ibBTC;
+    case "usdc":
+      return fixture.USDC;
+  }
+};

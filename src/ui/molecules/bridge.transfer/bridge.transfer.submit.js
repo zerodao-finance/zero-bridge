@@ -43,10 +43,8 @@ export const BridgeTransferSubmit = ({ action, amount, token, btc_usd }) => {
     <>
       <div className="px-8">
         <PrimaryRoundedButton
-          // active={active}
-          // label={buttonLabel}
-          active={false}
-          label={"Under Maintenance"}
+          active={active}
+          label={buttonLabel}
           action={action}
         />
       </div>
