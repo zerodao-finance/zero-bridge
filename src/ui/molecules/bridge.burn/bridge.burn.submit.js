@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getBurnOutput, getFeeBreakdown } from "../../../api/hooks/burn-fees";
 import { ethers } from "ethers";
 import { BridgeTransferFeeInformation } from "../bridge.transfer/bridge.transfer.feeInformation";
+import { useZero } from "../../../api/global/interfaces/interfaces.zero";
 
 const btcRegex = /^(?:[13]{1}[a-km-zA-HJ-NP-Z1-9]{26,33}|bc1[a-z0-9]{39,59})$/;
 
@@ -16,6 +17,7 @@ export const BridgeBurnSubmit = ({
   const [buttonLabel, setButtonLabel] = useState(
     "Enter Valid Recipient Address"
   );
+  const { keeper } = useZero();
   const [active, setActive] = useState(false);
   const [burnOutput, setBurnOutput] = useState();
   const [fees, setFees] = useState({});
@@ -34,7 +36,9 @@ export const BridgeBurnSubmit = ({
   useEffect(async () => {
     setActive(false);
     if (destination.match(btcRegex)) {
-      if (burnOutput * ethers.utils.formatUnits(btc_usd, 6) > 15) {
+      if (keeper.length <= 0) {
+        setButtonLabel("Awaiting Keeper");
+      } else if (burnOutput * ethers.utils.formatUnits(btc_usd, 6) > 15) {
         setButtonLabel("Release Funds");
         setActive(true);
       } else {

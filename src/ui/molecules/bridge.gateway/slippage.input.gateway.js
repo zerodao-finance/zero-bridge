@@ -4,7 +4,6 @@ import OutsideClickHandler from "react-outside-click-handler";
 
 export const isStringFloat = (strNumber) => {
   const res = !isNaN(strNumber) && strNumber.toString().indexOf(".") != -1;
-  console.log("RES: " + res);
   return res;
 };
 
