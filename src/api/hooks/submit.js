@@ -10,6 +10,7 @@ export const useSDKTransactionSubmit = (module) => {
   const { dispatch } = useContext(storeContext);
   const { state, Helper } = useRequestHelper();
   const { wallet, zero } = state;
+  const { chainId } = wallet;
   const { slippage } = state.transfer.input;
   const { input } = state[module];
   const { getWbtcQuote, getUsdcWbtcQuote, getWbtcWethQuote } =
@@ -67,7 +68,16 @@ export const useSDKTransactionSubmit = (module) => {
     const minOut = inverseSlippage.mul(quote).div(ethers.utils.parseEther("1"));
     const data = ethers.utils.defaultAbiCoder.encode(["uint256"], [minOut]);
 
-    let requestData = [zeroUser, amount, token, signer, to, isFast, data];
+    let requestData = [
+      chainId,
+      zeroUser,
+      amount,
+      token,
+      signer,
+      to,
+      isFast,
+      data,
+    ];
 
     Helper.request("transfer", requestData);
   }
@@ -116,6 +126,7 @@ export const useSDKTransactionSubmit = (module) => {
     const minOut = inverseSlippage.mul(quote).div(ethers.utils.parseEther("1"));
 
     let requestData = [
+      chainId,
       zeroUser,
       minOut,
       amount,

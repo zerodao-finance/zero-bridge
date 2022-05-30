@@ -63,7 +63,6 @@ export default function wallet_modal() {
         dispatch({
           type: "UPDATE_WALLET",
           data: {
-            chainId: chainId,
             network: NETWORK_ROUTER[parseInt(chainId)],
           },
         });

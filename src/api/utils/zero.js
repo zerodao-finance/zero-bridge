@@ -1,6 +1,3 @@
-// import {getContract} from './contracts'
-// import {NETWORK_ROUTER} from './networks'
-import { mapValues } from "lodash";
 import { ethers } from "ethers";
 import deployments from "zero-protocol/deployments/deployments.json";
 
@@ -36,7 +33,14 @@ const contracts = [
 
 export const chainIdToNetworkName = (chainId) => {
   return {
-    [42161]: ["arbitrum", undefined, []],
+    [42161]: [
+      "arbitrum",
+      [
+        { BadgerBridgeZeroController: "ZeroController" },
+        { BadgerBridgeZeroController: "DelegateUnderwriter" },
+      ],
+      [],
+    ],
     [137]: ["matic", undefined, ["ArbitrumConvertQuick"]],
     [1]: [
       "mainnet",
@@ -51,12 +55,12 @@ export const chainIdToNetworkName = (chainId) => {
 
 export const deploymentsFromSigner = async (signer) => {
   const { chainId } = await signer.provider.getNetwork();
-  // old logic
-  //return mapValues(deployments[chainIdToNetworkName(chainId)], (v) => new ethers.Contract(v.address, v.abi, signer));
-  let [name, contractsToInclude, contractsToExclude] = chainIdToNetworkName(
-    process.env.REACT_APP_CHAINID || chainId
-  );
-  if (process.env.REACT_APP_TEST) name = "localhost";
+  let [name, contractsToInclude, contractsToExclude] =
+    chainIdToNetworkName(chainId);
+
+  if (process.env.REACT_APP_TEST) {
+    name = "localhost";
+  }
   const contractsToSearch = contractsToInclude
     ? contractsToInclude
     : contracts.filter((d) => !contractsToExclude.includes(d));
@@ -77,9 +81,3 @@ export const deploymentsFromSigner = async (signer) => {
     };
   }, {});
 };
-
-const deploymentsFromChain =
-  deployments[process.env.REACT_APP_CHAINID][
-    chainIdToNetworkName(process.env.REACT_APP_CHAINID)
-  ];
-export { deploymentsFromChain as deployments };
