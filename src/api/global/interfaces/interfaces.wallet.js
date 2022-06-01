@@ -164,8 +164,12 @@ export const useWalletBalances = () => {
         balanceOfABI,
         provider
       );
-      const balance = await contract.balanceOf(address);
-      return balance;
+      try {
+        const balance = await contract.balanceOf(address);
+        return balance;
+      } catch (error) {
+        return ethers.utils.parseUnits("0", 6);
+      }
     }
   }
 
