@@ -85,9 +85,6 @@ export const useSlippageFetchers = () => {
   // direction = true ? wbtc -> weth : weth -> wbtc
   const getWbtcWethQuote = useCallback(
     async (direction, amount) => {
-      if (state.wallet.chainId == "42161") {
-        direction = !direction;
-      }
       const wbtcToWeth = [
         tokenMapping({ tokenName: "wbtc", chainId }),
         WETHByNetwork(chainId),

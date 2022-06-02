@@ -6,8 +6,7 @@ import {
 } from "zero-protocol/dist/lib/zero";
 import { EIP712_TYPES } from "zero-protocol/dist/lib/config/constants";
 import { Buffer } from "buffer";
-import fixtures from "zero-protocol/dist/lib/fixtures";
-import { ETHEREUM } from "zero-protocol/dist/lib/fixtures";
+import { ETHEREUM, ARBITRUM } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from "ethers-gasnow";
 import { tokenMapping } from "../utils/tokenMapping.js";
 import EventEmitter from "events";
@@ -43,11 +42,17 @@ const DECIMALS = {
   [toLower(ETHEREUM.USDC)]: 6,
   [toLower(ETHEREUM.ibBTC)]: 8,
   [ethers.constants.AddressZero]: 18,
+  [toLower(ARBITRUM.WBTC)]: 8,
+  [toLower(ARBITRUM.renBTC)]: 8,
+  [toLower(ARBITRUM.USDC)]: 6,
+  [toLower(ARBITRUM.ibBTC)]: 8,
 };
 
 const toEIP712USDC = function (contractAddress, chainId) {
   this.contractAddress = contractAddress || this.contractAddress;
   this.chainId = chainId || this.chainId;
+  const domain_name = chainId == "42161" ? "USD Coin (Arb1)" : "USD Coin";
+  const domain_version = chainId == "42161" ? "1" : "2";
   return {
     types: {
       EIP712Domain: EIP712_TYPES.EIP712Domain,
@@ -75,8 +80,8 @@ const toEIP712USDC = function (contractAddress, chainId) {
       ],
     },
     domain: {
-      name: "USD Coin",
-      version: "2",
+      name: domain_name,
+      version: domain_version,
       chainId: String(this.chainId) || "1",
       verifyingContract: this.asset || ethers.constants.AddressZero,
     },
@@ -114,13 +119,11 @@ export class sdkTransfer {
     this.token = token;
 
     // initialize Transfer Request Object
-
-    const self = this;
     this.transferRequest = (async function () {
       console.log("signer", signer);
       const asset = tokenMapping({
-        tokenName: self.token,
-        chainId: self.chainId,
+        tokenName: this.token,
+        chainId: this.chainId,
       });
       const contracts = await deploymentsFromSigner(signer);
       const data = String(_data) || "0x";
@@ -140,11 +143,11 @@ export class sdkTransfer {
         to, // Ethereum Address
         underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
         asset, // Token Address
-        nonce: self.getNonce(address, timestamp), // Deterministic recovery mechanism
-        pNonce: self.getPNonce(address, timestamp), // Deterministic recovery mechanism
+        nonce: this.getNonce(address, timestamp), // Deterministic recovery mechanism
+        pNonce: this.getPNonce(address, timestamp), // Deterministic recovery mechanism
         data, // minOut
         contractAddress: contracts.ZeroController.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
-        chainId: self.chainId, // "1" or "42161" TODO: MATIC
+        chainId: this.chainId, // "1" or "42161" TODO: MATIC
         signature: "", // Currently not used
       });
       req.dry = async () => [];
@@ -232,20 +235,18 @@ export class sdkBurn {
     this.zeroUser = zeroUser;
     this.minOut = minOut;
     const dest = btcAddressToHex(destination);
-    const self = this;
-    console.log(self.StateHelper.state);
+
     this.burnRequest = async function () {
       const contracts = await deploymentsFromSigner(signer);
-      console.log(ETHEREUM);
+      const tokenNamespace = this.chainId == "42161" ? ARBITRUM : ETHEREUM;
       const asset =
-        self.StateHelper.state.burn.input.token === "ETH"
+        this.StateHelper.state.burn.input.token === "ETH"
           ? ethers.constants.AddressZero
-          : ETHEREUM[self.StateHelper.state.burn.input.token];
+          : tokenNamespace[this.StateHelper.state.burn.input.token];
       const value = ethers.utils.hexlify(
         ethers.utils.parseUnits(String(amount), DECIMALS[asset.toLowerCase()])
       );
-      console.log("Destination is: " + ethers.utils.base58.encode(dest));
-      this.assetName = self.StateHelper.state.burn.input.token;
+      this.assetName = this.StateHelper.state.burn.input.token;
 
       return new UnderwriterBurnRequest({
         owner: to, // ethereum address
@@ -272,15 +273,22 @@ export class sdkBurn {
 
     //sign burn request
     const { sign, toEIP712 } = burnRequest;
-    if (asset.toLowerCase() === ETHEREUM.USDC.toLowerCase()) {
-      console.log("toEIP712 reassign");
+
+    if (
+      asset.toLowerCase() === ETHEREUM.USDC.toLowerCase() ||
+      asset.toLowerCase() === ARBITRUM.USDC.toLowerCase()
+    ) {
       burnRequest.toEIP712 = toEIP712USDC;
     } else if (asset.toLowerCase() === ethers.constants.AddressZero) {
       burnRequest.sign = signETH;
-    } else if (asset.toLowerCase() !== ETHEREUM.renBTC.toLowerCase()) {
+    } else if (
+      asset.toLowerCase() !== ETHEREUM.renBTC.toLowerCase() &&
+      asset.toLowerCase() !== ARBITRUM.renBTC.toLowerCase()
+    ) {
       burnRequest.sign = async function (signer, contractAddress) {
         const assetAddress = this.asset;
         signer.provider.getGasPrice = createGetGasPrice("rapid");
+
         const token = new ethers.Contract(
           assetAddress,
           [
@@ -293,11 +301,12 @@ export class sdkBurn {
           ethers.BigNumber.from(this.amount).gt(
             await token.allowance(signer.getAddress(), contractAddress)
           )
-        )
+        ) {
           await (
             await token.approve(contractAddress, ethers.constants.MaxUint256)
           ).wait();
-        this.asset = fixtures.ETHEREUM.renBTC;
+        }
+
         const tokenNonce = String(
           await new ethers.Contract(
             this.contractAddress,
@@ -321,6 +330,7 @@ export class sdkBurn {
         return await sign.call(this, signer, contractAddress);
       };
     }
+
     let signTx;
     try {
       const contracts = await deploymentsFromSigner(this.signer);
@@ -350,24 +360,9 @@ export class sdkBurn {
         };
 
         this.response.emit("hash", { request: txResponse });
-
-        // hostTransaction.transactionHash
-        // let txo = (await utxo).transactionHash
-        // this.response.emit('hash', { request: hostTransaction.transactionHash, txo: txo })
-
-        // console.log(burn);
-        // burn.on("update", async (tx) => {
-        //   console.log(tx);
-        //   this.response.emit("hash", { request: tx });
-        // });
       } else {
         this.response.emit("hash", { request: signTx });
       }
-      // burn.then(async (tx) => {
-      //   const transaction = this.signer.provider.getTransactionReceipt(tx.hash);
-      //   this.response.emit("published", { data: transaction })
-      //   //TODO: do things with this here
-      // });
     } catch (error) {
       console.error(error);
       this.response.emit("error", {
