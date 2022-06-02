@@ -39,20 +39,20 @@ export const useSDKTransactionSubmit = (module) => {
     let quote = 0;
     let wbtcQuote;
     switch (tokenAddr) {
-      case fixtures.ETHEREUM["renBTC"]:
+      case fixtures.ETHEREUM["renBTC"] || fixtures.ARBITRUM["renBTC"]:
         quote = ethers.utils.parseUnits(amount, 8);
         break;
-      case fixtures.ETHEREUM["WBTC"]:
+      case fixtures.ETHEREUM["WBTC"] || fixtures.ARBITRUM["WBTC"]:
         quote = await getWbtcQuote(true, ethers.utils.parseUnits(amount, 8));
         break;
-      case fixtures.ETHEREUM["USDC"]:
+      case fixtures.ETHEREUM["USDC"] || fixtures.ARBITRUM["USDC"]:
         wbtcQuote = await getWbtcQuote(
           true,
           ethers.utils.parseUnits(amount, 8)
         );
         quote = await getUsdcWbtcQuote(false, wbtcQuote);
         break;
-      case fixtures.ETHEREUM["ETH"]:
+      case fixtures.ETHEREUM["ETH"] || fixtures.ARBITRUM["ETH"]:
         wbtcQuote = await getWbtcQuote(
           true,
           ethers.utils.parseUnits(amount, 8)
