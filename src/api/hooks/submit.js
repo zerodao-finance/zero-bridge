@@ -35,7 +35,8 @@ export const useSDKTransactionSubmit = (module) => {
     var to = await signer.getAddress();
     var isFast = input.isFast;
 
-    let tokenAddr = fixtures.ETHEREUM[token];
+    let tokenAddr =
+      chainId == "42161" ? fixtures.ARBITRUM[token] : fixtures.ETHEREUM[token];
     let quote = 0;
     let wbtcQuote;
     switch (tokenAddr) {
