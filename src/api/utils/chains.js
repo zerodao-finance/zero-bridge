@@ -12,6 +12,15 @@ const MATIC = {
   decimals: 18,
 };
 
+export const getChainName = (chainId) => {
+  switch (chainId) {
+    case "42161":
+      return "Arbitrum";
+    default:
+      return "Mainnet";
+  }
+};
+
 const hexChainIdFromChain = (name) => {
   switch (name.toLowerCase()) {
     case "arbitrum":
@@ -21,15 +30,6 @@ const hexChainIdFromChain = (name) => {
     default:
       return "42161";
   }
-};
-const chainFromEnv = () => {
-  return CHAINS[hexChainIdFromChain(process.env.REACT_APP_CHAIN)];
-};
-
-export const chainFromHexString = (_hex) => {
-  if (process.env.REACT_APP_TEST) return chainFromEnv();
-  let bn = ethers.BigNumber.from(_hex);
-  return CHAINS[Number(bn.toString())];
 };
 
 export const CHAINS = {

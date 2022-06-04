@@ -1,6 +1,6 @@
 /**
  * Persistant Global Synched Store
- * 
+ *
  * DONE: initial context
  * @state
     * items
@@ -22,13 +22,11 @@
 * TODO: reducer
     @disptach SYNC_REQUEST
     @default assertNever
-    
  */
 
 import { createContext, useEffect, useReducer, useMemo } from "react";
 import { globalBridgeState, globalBridgeReducer } from "./global.reducers";
 import { ethers } from "ethers";
-import _ from "lodash";
 
 const storeContext = createContext(globalBridgeState);
 const { Provider } = storeContext;

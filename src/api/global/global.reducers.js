@@ -1,5 +1,3 @@
-import _ from "lodash";
-
 /**
  * @Reducers
  *
@@ -14,28 +12,12 @@ function assertNever(x) {
   throw new Error("Unexpected Object", x);
 }
 
-export const tokenAddressTable = {
-  tokens: {
-    renBTC: {
-      id: "0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D",
-    },
-    WBTC: {
-      id: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
-    },
-    ibBTC: {
-      id: "0xc4E15973E6fF2A35cC804c2CF9D2a1b817a8b40F",
-    },
-    USDC: {
-      id: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-    },
-  },
-};
-
 export const globalBridgeState = {
   state: {
     bridge: {
       mode: {
         mode: "transfer", //transfer, release
+        chain: "mainnet",
       },
     },
     transfer: {

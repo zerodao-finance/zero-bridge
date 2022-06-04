@@ -21,6 +21,7 @@ export const useSDKTransactionSubmit = (module) => {
   const { dispatch } = useContext(storeContext);
   const { state, Helper } = useRequestHelper();
   const { wallet, zero } = state;
+  const { chainId } = wallet;
   const { slippage } = state.transfer.input;
   const { input } = state[module];
   const { getWbtcQuote, getUsdcWbtcQuote, getWbtcWethQuote } =
@@ -34,24 +35,25 @@ export const useSDKTransactionSubmit = (module) => {
     var to = await signer.getAddress();
     var isFast = input.isFast;
 
-    let tokenAddr = fixtures.ETHEREUM[token];
+    let tokenAddr =
+      chainId == "42161" ? fixtures.ARBITRUM[token] : fixtures.ETHEREUM[token];
     let quote = 0;
     let wbtcQuote;
     switch (tokenAddr) {
-      case fixtures.ETHEREUM["renBTC"]:
+      case fixtures.ETHEREUM["renBTC"] || fixtures.ARBITRUM["renBTC"]:
         quote = ethers.utils.parseUnits(amount, 8);
         break;
-      case fixtures.ETHEREUM["WBTC"]:
+      case fixtures.ETHEREUM["WBTC"] || fixtures.ARBITRUM["WBTC"]:
         quote = await getWbtcQuote(true, ethers.utils.parseUnits(amount, 8));
         break;
-      case fixtures.ETHEREUM["USDC"]:
+      case fixtures.ETHEREUM["USDC"] || fixtures.ARBITRUM["USDC"]:
         wbtcQuote = await getWbtcQuote(
           true,
           ethers.utils.parseUnits(amount, 8)
         );
         quote = await getUsdcWbtcQuote(false, wbtcQuote);
         break;
-      case fixtures.ETHEREUM["ETH"]:
+      case fixtures.ETHEREUM["ETH"] || fixtures.ARBITRUM["ETH"]:
         wbtcQuote = await getWbtcQuote(
           true,
           ethers.utils.parseUnits(amount, 8)
@@ -67,7 +69,16 @@ export const useSDKTransactionSubmit = (module) => {
     const minOut = inverseSlippage.mul(quote).div(ethers.utils.parseEther("1"));
     const data = ethers.utils.defaultAbiCoder.encode(["uint256"], [minOut]);
 
-    let requestData = [zeroUser, amount, token, signer, to, isFast, data];
+    let requestData = [
+      chainId,
+      zeroUser,
+      amount,
+      token,
+      signer,
+      to,
+      isFast,
+      data,
+    ];
 
     Helper.request("transfer", requestData);
   }
@@ -116,6 +127,7 @@ export const useSDKTransactionSubmit = (module) => {
     const minOut = inverseSlippage.mul(quote).div(ethers.utils.parseEther("1"));
 
     let requestData = [
+      chainId,
       zeroUser,
       minOut,
       amount,

@@ -1,17 +1,18 @@
 import { storeContext } from "../global";
-import { useContext, useEffect, useState, useMemo } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import wallet_modal from "../../utils/walletModal";
 import { NETWORK_ROUTER } from "../../utils/network";
 import { CHAINS } from "../../utils/chains";
-import _ from "lodash";
 import { tokenMapping } from "../../utils/tokenMapping";
 import { useBridgeBurnInput } from "./interface.bridge.burn";
+import { useBridgePage } from "./interface.bridge";
 
 export const useWalletConnection = () => {
   const { state, dispatch } = useContext(storeContext);
+  const { setChainId } = useBridgePage();
   const { wallet } = state;
-  const { isLoading } = wallet;
+  const { isLoading, chainId } = wallet;
   const { getweb3 } = wallet_modal();
 
   useEffect(async () => {
@@ -21,29 +22,50 @@ export const useWalletConnection = () => {
     }
   }, []);
 
+  useEffect(async () => {
+    const web3Modal = await getweb3();
+    const curChainId = await web3Modal.eth.getChainId();
+    console.log("HERE", curChainId);
+    setChainId(
+      curChainId == 42161 || curChainId == 1 ? String(curChainId) : "1"
+    );
+  }, []);
+
   useEffect(() => {
     const call = async () => {
       try {
         // TODO: Make getweb3 dynamic and allow the app to define what chain we're on
         const web3Modal = await getweb3();
-        await web3Modal.currentProvider.sendAsync({
-          method: "wallet_addEthereumChain",
-          params: [CHAINS["1"]],
-        });
-        await web3Modal.currentProvider.sendAsync({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: "0x1" }],
-        });
-        let chainId = await web3Modal.eth.getChainId();
+        try {
+          await web3Modal.currentProvider.sendAsync({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: CHAINS[chainId].chainId }],
+          });
+        } catch (switchError) {
+          if (switchError.code === 4902) {
+            try {
+              await web3Modal.currentProvider.sendAsync({
+                method: "wallet_addEthereumChain",
+                params: [CHAINS[chainId]],
+              });
+            } catch (addError) {
+              console.error(addError);
+            }
+          } else {
+            console.error(switchError);
+          }
+        }
+        let modalChainID = await web3Modal.eth.getChainId();
         await dispatch({
           type: "SUCCEED_BATCH_REQUEST",
           effect: "wallet",
           payload: {
             address: (await web3Modal.eth.getAccounts())[0],
             chainId: chainId,
-            network: NETWORK_ROUTER[chainId],
+            network: NETWORK_ROUTER[modalChainID],
             provider: new ethers.providers.Web3Provider(
-              await web3Modal.currentProvider
+              await web3Modal.currentProvider,
+              "any"
             ),
           },
         });
@@ -54,10 +76,10 @@ export const useWalletConnection = () => {
       }
     };
 
-    if (isLoading) {
+    if (isLoading && chainId) {
       call();
     }
-  }, [isLoading]);
+  }, [isLoading, chainId]);
 
   const connect = async () => {
     dispatch({ type: "START_REQUEST", effect: "wallet" });
@@ -96,7 +118,7 @@ export const useCheckWalletConnected = () => {
 export const useWalletBalances = () => {
   // Global Wallet State
   const { state } = useContext(storeContext);
-  const { provider, address, network } = state.wallet;
+  const { provider, address, network, chainId } = state.wallet;
   // User Selected Token
   const { getBridgeBurnInputProps } = useBridgeBurnInput();
   const { token } = getBridgeBurnInputProps();
@@ -141,17 +163,24 @@ export const useWalletBalances = () => {
   ];
 
   async function getBalance(tokenName) {
+    if (!address) {
+      return ethers.utils.parseUnits("0", 6);
+    }
     if (tokenName.toLowerCase() === "eth") {
       const ethBalance = await provider.getBalance(address);
       return ethBalance;
     } else {
       const contract = new ethers.Contract(
-        tokenMapping(tokenName),
+        tokenMapping({ tokenName, chainId }),
         balanceOfABI,
         provider
       );
-      const balance = await contract.balanceOf(address);
-      return balance;
+      try {
+        const balance = await contract.balanceOf(address);
+        return balance;
+      } catch (error) {
+        return ethers.utils.parseUnits("0", 6);
+      }
     }
   }
 
