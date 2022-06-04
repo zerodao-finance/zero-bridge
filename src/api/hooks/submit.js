@@ -1,10 +1,21 @@
-import { useMemo, useContext } from "react";
+import { useContext } from "react";
 import { ethers } from "ethers";
 import { storeContext } from "../global";
 import { GlobalStateHelper } from "../utils/global.utilities";
 import { useRequestHelper } from "./helper";
 import fixtures from "zero-protocol/lib/fixtures";
 import { useSlippageFetchers } from "../global/interfaces/interfaces.slippage";
+
+//getSigner function
+export const getSigner = async (wallet) => {
+  try {
+    await wallet.provider.send("eth_accounts", []);
+    const signer = await wallet.provider.getSigner();
+    return signer;
+  } catch (err) {
+    return new Error("Reconnect Wallet, Cannot get signer");
+  }
+};
 
 export const useSDKTransactionSubmit = (module) => {
   const { dispatch } = useContext(storeContext);
@@ -16,22 +27,11 @@ export const useSDKTransactionSubmit = (module) => {
   const { getWbtcQuote, getUsdcWbtcQuote, getWbtcWethQuote } =
     useSlippageFetchers();
 
-  //getSigner function
-  const getSigner = useMemo(async () => {
-    try {
-      await wallet.provider.send("eth_accounts", []);
-      const signer = await wallet.provider.getSigner();
-      return signer;
-    } catch (err) {
-      return new Error("Reconnect Wallet, Cannot get signer");
-    }
-  });
-
   async function sendTransferRequest() {
     var zeroUser = zero.zeroUser;
     var amount = input.amount;
     var token = input.token;
-    var signer = await getSigner;
+    var signer = await getSigner(wallet);
     var to = await signer.getAddress();
     var isFast = input.isFast;
 

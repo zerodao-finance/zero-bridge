@@ -1,36 +1,20 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { TransactionStatusPopup } from "../../ui/molecules/manage/manage.popup";
+import { useEffect, useState } from "react";
 import { UnderwriterTransferRequest } from "zero-protocol/dist/lib/zero";
+import { fallbackMint } from "../utils/fallback";
+import { getSigner } from "../hooks/submit";
+import { useRequestHelper } from "../hooks/helper";
 
-export function usePopup() {
-  function openModal(data) {
-    console.log("opening", data);
-    ReactDOM.createPortal(
-      <TransactionStatusPopup data={data} />,
-      document.body
-    );
-  }
+export const getStatus = (data) => {
+  const [passed, setPassed] = useState(null);
+  const { state } = useRequestHelper();
+  const { wallet } = state;
 
-  return {
-    openModal,
-  };
-}
-
-export function getStatus(data) {
-  const [passed, setData] = React.useState(null);
-  React.useEffect(async () => {
+  useEffect(async () => {
     const req = new UnderwriterTransferRequest({
       ...data._data,
     });
 
-    // try {
-    //   let checkHasMinted = await req.hasMinted()
-    //   // await console.log(checkHasMinted)
-    // } catch (error) {
-    //   console.log(error)
-    // }
-
+    const signer = await getSigner(wallet);
     const mint = await req.submitToRenVM();
 
     if (!process.env.REACT_APP_TEST) {
@@ -40,16 +24,14 @@ export function getStatus(data) {
         let passedData = {
           target: 6,
           confs: await confs,
-          _fallbackMint: req.fallbackMint,
-          get fallbackMint() {
-            if (this.confs && this.confs > 6) return this._fallbackMint;
-            else return null;
-          },
+          fallbackMint:
+            confs && confs > 6 ? () => fallbackMint(req, signer) : null,
         };
-        setData(passedData);
+
+        setPassed(passedData);
       });
     }
   }, []);
 
   return { passed };
-}
+};
