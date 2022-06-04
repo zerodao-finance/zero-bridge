@@ -117,17 +117,19 @@ export class sdkTransfer {
     this.zeroUser = zeroUser;
     this.signer = signer;
     this.token = token;
+    const self = this;
 
     // initialize Transfer Request Object
     this.transferRequest = (async function () {
       console.log("signer", signer);
       const asset = tokenMapping({
-        tokenName: this.token,
-        chainId: this.chainId,
+        tokenName: self.token,
+        chainId: self.chainId,
       });
       const contracts = await deploymentsFromSigner(signer);
       const data = String(_data) || "0x";
-      const module = contracts.ZeroController.address; // TODO: SET THIS CORRECTLY
+      const module =
+        self.chainId == "42161" ? ARBITRUM[self.token] : ETHEREUM[self.token];
       const amount = ethers.utils.parseUnits(String(value), 8);
 
       // Should this also happen on Arbitrum?
@@ -143,11 +145,11 @@ export class sdkTransfer {
         to, // Ethereum Address
         underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
         asset, // Token Address
-        nonce: this.getNonce(address, timestamp), // Deterministic recovery mechanism
-        pNonce: this.getPNonce(address, timestamp), // Deterministic recovery mechanism
+        nonce: self.getNonce(address, timestamp), // Deterministic recovery mechanism
+        pNonce: self.getPNonce(address, timestamp), // Deterministic recovery mechanism
         data, // minOut
         contractAddress: contracts.ZeroController.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
-        chainId: this.chainId, // "1" or "42161" TODO: MATIC
+        chainId: self.chainId, // "1" or "42161" TODO: MATIC
         signature: "", // Currently not used
       });
       req.dry = async () => [];

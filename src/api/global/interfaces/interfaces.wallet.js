@@ -6,9 +6,11 @@ import { NETWORK_ROUTER } from "../../utils/network";
 import { CHAINS } from "../../utils/chains";
 import { tokenMapping } from "../../utils/tokenMapping";
 import { useBridgeBurnInput } from "./interface.bridge.burn";
+import { useBridgePage } from "./interface.bridge";
 
 export const useWalletConnection = () => {
   const { state, dispatch } = useContext(storeContext);
+  const { setChainId } = useBridgePage();
   const { wallet } = state;
   const { isLoading, chainId } = wallet;
   const { getweb3 } = wallet_modal();
@@ -18,6 +20,15 @@ export const useWalletConnection = () => {
     if (provider) {
       await connect();
     }
+  }, []);
+
+  useEffect(async () => {
+    const web3Modal = await getweb3();
+    const curChainId = await web3Modal.eth.getChainId();
+    console.log("HERE", curChainId);
+    setChainId(
+      curChainId == 42161 || curChainId == 1 ? String(curChainId) : "1"
+    );
   }, []);
 
   useEffect(() => {
@@ -65,7 +76,7 @@ export const useWalletConnection = () => {
       }
     };
 
-    if (isLoading) {
+    if (isLoading && chainId) {
       call();
     }
   }, [isLoading, chainId]);
