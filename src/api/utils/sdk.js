@@ -340,29 +340,26 @@ export class sdkBurn {
       burnRequest.waitForHostTransaction = waitForHostTransactionETH;
     try {
       if (burnRequest.asset !== ethers.constants.AddressZero) {
-        const burn = await this.zeroUser.publishBurnRequest(burnRequest);
-        this.response.emit("reset");
-        let hostTransaction = await burnRequest.waitForHostTransaction();
-
-        let txResponse = {
-          hostTX: hostTransaction,
-          txo: utxo,
-        };
-
-        this.response.emit("hash", { request: txResponse });
-
-        // hostTransaction.transactionHash
-        // let txo = (await utxo).transactionHash
-        // this.response.emit('hash', { request: hostTransaction.transactionHash, txo: txo })
-
-        // console.log(burn);
-        // burn.on("update", async (tx) => {
-        //   console.log(tx);
-        //   this.response.emit("hash", { request: tx });
-        // });
-      } else {
-        this.response.emit("hash", { request: signTx });
+        await this.zeroUser.publishBurnRequest(burnRequest);
       }
+      this.response.emit("reset");
+      let hostTransaction = await burnRequest.waitForHostTransaction();
+
+      let txResponse = {
+        hostTX: hostTransaction,
+        txo: utxo,
+      };
+      this.response.emit("hash", { request: txResponse });
+
+      // hostTransaction.transactionHash
+      // let txo = (await utxo).transactionHash
+      // this.response.emit('hash', { request: hostTransaction.transactionHash, txo: txo })
+
+      // console.log(burn);
+      // burn.on("update", async (tx) => {
+      //   console.log(tx);
+      //   this.response.emit("hash", { request: tx });
+      // });
       // burn.then(async (tx) => {
       //   const transaction = this.signer.provider.getTransactionReceipt(tx.hash);
       //   this.response.emit("published", { data: transaction })
