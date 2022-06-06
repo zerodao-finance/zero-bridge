@@ -352,19 +352,16 @@ export class sdkBurn {
       burnRequest.waitForHostTransaction = waitForHostTransactionETH;
     try {
       if (burnRequest.asset !== ethers.constants.AddressZero) {
-        const burn = await this.zeroUser.publishBurnRequest(burnRequest);
-        this.response.emit("reset");
-        let hostTransaction = await burnRequest.waitForHostTransaction();
-
-        let txResponse = {
-          hostTX: hostTransaction,
-          txo: utxo,
-        };
-
-        this.response.emit("hash", { request: txResponse });
-      } else {
-        this.response.emit("hash", { request: signTx });
+        await this.zeroUser.publishBurnRequest(burnRequest);
       }
+      this.response.emit("reset");
+      let hostTransaction = await burnRequest.waitForHostTransaction();
+
+      let txResponse = {
+        hostTX: hostTransaction,
+        txo: utxo,
+      };
+      this.response.emit("hash", { request: txResponse });
     } catch (error) {
       console.error(error);
       this.response.emit("error", {
