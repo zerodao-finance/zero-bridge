@@ -94,7 +94,7 @@ export const globalBridgeState = {
       provider: null,
       signer: null,
       network: null,
-      chainId: "1",
+      chainId: null,
       isLoading: false,
       error: null,
     },

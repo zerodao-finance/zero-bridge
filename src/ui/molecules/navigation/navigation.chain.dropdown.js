@@ -10,7 +10,7 @@ export default function NavigationChainDropdown({ chainId, setChainId }) {
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <Menu.Button className="inline-flex font-bold rounded-lg justify-center w-full bg-badger-yellow-400 hover:bg-badger-yellow-400/40 shadow-sm px-2 py-1 bg-white text-sm md:text-base text-badger-black-700 focus:outline-none ">
-          {getChainName(chainId)}
+          {chainId ? getChainName(chainId) : "Loading..."}
           <ChevronDownIcon
             className="-mr-1 md:ml-2 md:mt-1 h-5 w-5"
             aria-hidden="true"
