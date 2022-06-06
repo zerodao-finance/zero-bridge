@@ -350,21 +350,6 @@ export class sdkBurn {
         txo: utxo,
       };
       this.response.emit("hash", { request: txResponse });
-
-      // hostTransaction.transactionHash
-      // let txo = (await utxo).transactionHash
-      // this.response.emit('hash', { request: hostTransaction.transactionHash, txo: txo })
-
-      // console.log(burn);
-      // burn.on("update", async (tx) => {
-      //   console.log(tx);
-      //   this.response.emit("hash", { request: tx });
-      // });
-      // burn.then(async (tx) => {
-      //   const transaction = this.signer.provider.getTransactionReceipt(tx.hash);
-      //   this.response.emit("published", { data: transaction })
-      //   //TODO: do things with this here
-      // });
     } catch (error) {
       console.error(error);
       this.response.emit("error", {
