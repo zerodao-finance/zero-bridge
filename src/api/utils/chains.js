@@ -21,6 +21,15 @@ export const getChainName = (chainId) => {
   }
 };
 
+export const getExplorerRoot = (chainId) => {
+  switch (chainId) {
+    case "42161":
+      return "https://arbiscan.io/address/";
+    default:
+      return "https://etherscan.io/address/";
+  }
+};
+
 const hexChainIdFromChain = (name) => {
   switch (name.toLowerCase()) {
     case "arbitrum":
