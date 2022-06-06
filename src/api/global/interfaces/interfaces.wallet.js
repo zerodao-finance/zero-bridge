@@ -25,7 +25,6 @@ export const useWalletConnection = () => {
   useEffect(async () => {
     const web3Modal = await getweb3();
     const curChainId = await web3Modal.eth.getChainId();
-    console.log("HERE", curChainId);
     setChainId(
       curChainId == 42161 || curChainId == 1 ? String(curChainId) : "1"
     );
