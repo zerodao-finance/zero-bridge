@@ -49,5 +49,6 @@ export const useBridgePage = () => {
   return {
     getBridgePageProps,
     getBridgeChainProps,
+    setChainId,
   };
 };
