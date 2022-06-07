@@ -174,21 +174,9 @@ export class sdkTransfer {
     } //signing
 
     try {
-      const published = await this.zeroUser.publishTransferRequest(
-        transferRequest
-      );
+      await this.zeroUser.publishTransferRequest(transferRequest);
 
-      let txHash = new Promise((resolve, reject) => {
-        published.on("update", async (tx) => {
-          resolve(tx.request);
-        });
-
-        if (!published) {
-          reject("Couldn't get transaction hash");
-        }
-      });
-
-      const mint = await transferRequest.submitToRenVM(); // TODO: Account for the network the app is currently on
+      const mint = await transferRequest.submitToRenVM();
       var gatewayAddress = await transferRequest.toGatewayAddress();
 
       this.response.emit("published", {
