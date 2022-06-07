@@ -129,7 +129,11 @@ export class sdkTransfer {
       const contracts = await deploymentsFromSigner(signer);
       const data = String(_data) || "0x";
       const module =
-        self.chainId == "42161" ? ARBITRUM[self.token] : ETHEREUM[self.token];
+        self.token === "ETH"
+          ? ethers.constants.AddressZero
+          : self.chainId == "42161"
+          ? ARBITRUM[self.token]
+          : ETHEREUM[self.token];
       const amount = ethers.utils.parseUnits(String(value), 8);
 
       // Should this also happen on Arbitrum?

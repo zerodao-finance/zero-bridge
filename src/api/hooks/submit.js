@@ -10,7 +10,7 @@ import { useSlippageFetchers } from "../global/interfaces/interfaces.slippage";
 export const getSigner = async (wallet) => {
   try {
     await wallet.provider.send("eth_accounts", []);
-    const signer = await wallet.provider.getSigner();
+    const signer = wallet;
     return signer;
   } catch (err) {
     return new Error("Reconnect Wallet, Cannot get signer");
