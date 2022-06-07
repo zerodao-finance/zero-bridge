@@ -6156,9 +6156,9 @@ bitcore-lib@^8.25.10:
     inherits "=2.0.1"
     lodash "^4.17.20"
 
-"bitgo-utxo-lib@git+https://github.com/ren-forks/bitgo-utxo-lib.git#b848585e65b42c48b98c207e72d7d3006c9a5da0":
+"bitgo-utxo-lib@https://github.com/ren-forks/bitgo-utxo-lib#b848585e65b42c48b98c207e72d7d3006c9a5da0":
   version "1.9.1"
-  resolved "git+https://github.com/ren-forks/bitgo-utxo-lib.git#b848585e65b42c48b98c207e72d7d3006c9a5da0"
+  resolved "https://github.com/ren-forks/bitgo-utxo-lib#b848585e65b42c48b98c207e72d7d3006c9a5da0"
   dependencies:
     bech32 "0.0.3"
     bigi "^1.4.0"
@@ -21246,7 +21246,7 @@ zepto@^1.2.0:
 
 "zero-protocol@https://github.com/zerodao-finance/zero-protocol":
   version "0.1.0"
-  resolved "https://github.com/zerodao-finance/zero-protocol#b3e6a8ed9af93d6b9ec13fba97684af657cfd82e"
+  resolved "https://github.com/zerodao-finance/zero-protocol#8081a0f2ba599ea7a612fc20eee643ab48112f13"
   dependencies:
     "@0x/utils" "^6.4.3"
     "@ethersproject/bytes" "^5.4.0"
