@@ -5,6 +5,14 @@ import { GlobalStateHelper } from "../utils/global.utilities";
 import { useRequestHelper } from "./helper";
 import fixtures from "zero-protocol/lib/fixtures";
 import { useSlippageFetchers } from "../global/interfaces/interfaces.slippage";
+import { computeOutputBTC } from "zero-protocol/lib/badger";
+
+const deductFees = async (amount) => {
+  return await computeOutputBTC({
+    amount,
+    asset: fixtures.ETHEREUM.renBTC,
+  });
+};
 
 //getSigner function
 export const getSigner = async (wallet) => {
@@ -49,14 +57,14 @@ export const useSDKTransactionSubmit = (module) => {
       case fixtures.ETHEREUM["USDC"] || fixtures.ARBITRUM["USDC"]:
         wbtcQuote = await getWbtcQuote(
           true,
-          ethers.utils.parseUnits(amount, 8)
+          ethers.utils.parseUnits(await deductFees(amount), 8)
         );
         quote = await getUsdcWbtcQuote(false, wbtcQuote);
         break;
       case fixtures.ETHEREUM["ETH"] || fixtures.ARBITRUM["ETH"]:
         wbtcQuote = await getWbtcQuote(
           true,
-          ethers.utils.parseUnits(amount, 8)
+          ethers.utils.parseUnits(await deductFees(amount), 8)
         );
         quote = await getWbtcWethQuote(true, wbtcQuote);
         break;
