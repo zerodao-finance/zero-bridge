@@ -32,6 +32,8 @@ export const fallbackMint = async (request, signer) => {
       );
 
     request.asset = await getRenBTCAddress(signer);
+    const address = await signer.getAddress();
+    request.destination = () => address;
     await request.fallbackMint(signer);
   } catch (error) {
     console.error("error running fallback mint");
