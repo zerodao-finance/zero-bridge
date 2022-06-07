@@ -45,7 +45,7 @@ export const BridgeBurnSubmit = ({
         setButtonLabel("Result Must Be More Than $15");
       }
     }
-  }, [destination, burnOutput]);
+  }, [destination, burnOutput, keeper]);
 
   return (
     <>
