@@ -86,7 +86,7 @@ export const useSDKTransactionSubmit = (module) => {
   async function sendBurnRequest() {
     const StateHelper = new GlobalStateHelper(state, dispatch);
     StateHelper.update("burn", "mode", { mode: "showSigning" });
-    var signer = await getSigner;
+    var signer = await getSigner(wallet);
     var to = await signer.getAddress();
     var zeroUser = zero.zeroUser;
     var amount = input.amount;
