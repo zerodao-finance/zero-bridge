@@ -191,6 +191,7 @@ export class sdkTransfer {
       });
       return;
     } catch (error) {
+      console.error(error);
       this.response.emit("error", { message: "Error Publishing Transaction" });
       throw new Error("Error publishing transaction", error);
     } //submitting
