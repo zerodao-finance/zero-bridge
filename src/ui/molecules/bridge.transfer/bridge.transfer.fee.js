@@ -56,7 +56,7 @@ export const BridgeTransferFee = ({
           <TokenDropdown
             token={token}
             setToken={setToken}
-            tokensDisabled={["ibBTC", "USDC", "ETH"]}
+            tokensDisabled={["ibBTC", "USDC"]}
           />
         </div>
         <div className="pt-3">
