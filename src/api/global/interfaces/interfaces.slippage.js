@@ -9,6 +9,8 @@ export const renCrvByNetwork = (chainId) => {
       return "0x3E01dD8a5E1fb3481F0F589056b428Fc308AF0Fb";
     case "137":
       return "0xC2d95EEF97Ec6C17551d45e77B590dc1F9117C67";
+    case "43114":
+      return "0x16a7DA911A4DD1d83F3fF066fE28F3C792C50d90";
     default: // ETHEREUM - 1
       return "0x93054188d876f558f4a66B2EF1d97d16eDf0895B";
   }
@@ -20,6 +22,8 @@ export const WETHByNetwork = (chainId) => {
       return "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1";
     case "137":
       return "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270";
+    case "43114":
+      return "0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB";
     default: // ETHEREUM MAINNET - 1
       return "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
   }
@@ -38,9 +42,26 @@ export const useSlippageFetchers = () => {
     state.wallet.provider
   );
 
+  const getWbtcQuoteAVAX = async (direction, amount) => {
+    const rencrv = new ethers.Contract(
+      RENCRV,
+      [
+        "function get_dy_underlying(int128, int128, uint256) view returns (uint256)",
+      ],
+      state.wallet.provider
+    );
+    const path = [1, 0];
+    return await rencrv.get_dy_underlying(
+      ...(direction ? path : [...path].reverse()),
+      amount
+    );
+  };
+
   // direction = true ? renbtc -> wbtc
   const getWbtcQuote = useCallback(
     async (direction, amount) => {
+      if (state.wallet.chainId == "43114")
+        return await getWbtcQuoteAVAX(direction, amount);
       if (state.wallet.chainId == "42161") {
         direction = !direction;
       }
@@ -60,6 +81,53 @@ export const useSlippageFetchers = () => {
     [state.wallet.provider, state.wallet.chainId]
   );
 
+  const createContract = useCallback(
+    (address, abi) => {
+      return new ethers.Contract(address, abi, state.wallet.provider);
+    },
+    [state.wallet.provider]
+  );
+  // direction = true ? usdc -> renbtc
+  const getUsdcQuoteAVAX = async (direction, amount) => {
+    //amount = renBTC amount
+
+    const rencrv = createContract(RENCRV, [
+      "function get_dy(int128, int128, uint256) view returns (uint256)",
+    ]);
+    const aTricrypto = createContract(
+      "0xB755B949C126C04e0348DD881a5cF55d424742B2",
+      ["function get_dy(uint256, uint256, uint256) view returns (uint256)"]
+    );
+
+    const crvUSD = createContract(
+      "0x7f90122BF0700F9E7e1F688fe926940E8839F353",
+      [
+        "function calc_token_amount(uint256[3] calldata, bool) view returns (uint256)",
+      ],
+      [
+        "function calc_withdraw_one_coin(uint256, int128) view returns (uint256)",
+      ]
+    );
+    //0 = wbtc, 1 = renbtc
+    const renCrvPath = [0, 1];
+    //0 = av3usd, 1 = wbtc
+    const path = [0, 1];
+    if (direction) {
+      const av3usdAmount = await crvUSD.calc_token_amount([0, amount, 0], true);
+      const wbtcAmount = await aTricrypto.get_dy(...path, av3usdAmount);
+      return await rencrv.get_dy(...renCrvPath, wbtcAmount);
+    } else {
+      const wbtcAmount = await rencrv.get_dy(
+        ...[...renCrvPath].reverse(),
+        amount
+      );
+      const av3usdAmount = await aTricrypto.get_dy(
+        ...[...path].reverse(),
+        wbtcAmount
+      );
+      return await crvUSD.calc_withdraw_one_coin(av3usdAmount, 1);
+    }
+  };
   // direction = true ? usdc -> wbtc : wbtc -> usdc
   const getUsdcWbtcQuote = useCallback(
     async (direction, amount) => {
