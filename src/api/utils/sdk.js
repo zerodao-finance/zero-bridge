@@ -6,7 +6,7 @@ import {
 } from "zero-protocol/dist/lib/zero";
 import { EIP712_TYPES } from "zero-protocol/dist/lib/config/constants";
 import { Buffer } from "buffer";
-import { ETHEREUM, ARBITRUM } from "zero-protocol/dist/lib/fixtures";
+import { ETHEREUM, ARBITRUM, AVALANCHE } from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from "ethers-gasnow";
 import { tokenMapping } from "../utils/tokenMapping.js";
 import EventEmitter from "events";
@@ -265,20 +265,22 @@ export class sdkBurn {
     );
     const asset = burnRequest.asset;
     const assetName = this.assetName;
+    const { getAddress } = ethers.utils;
 
     //sign burn request
     const { sign, toEIP712 } = burnRequest;
-
     if (
-      asset.toLowerCase() === ETHEREUM.USDC.toLowerCase() ||
-      asset.toLowerCase() === ARBITRUM.USDC.toLowerCase()
+      getAddress(asset) === getAddress(ETHEREUM.USDC) ||
+      getAddress(asset) === getAddress(ARBITRUM.USDC) ||
+      getAddress(asset) === getAddress(AVALANCHE.USDC)
     ) {
       burnRequest.toEIP712 = toEIP712USDC;
-    } else if (asset.toLowerCase() === ethers.constants.AddressZero) {
+    } else if (getAddress(asset) === ethers.constants.AddressZero) {
       burnRequest.sign = signETH;
     } else if (
-      asset.toLowerCase() !== ETHEREUM.renBTC.toLowerCase() &&
-      asset.toLowerCase() !== ARBITRUM.renBTC.toLowerCase()
+      getAddress(asset) !== getAddress(ETHEREUM.renBTC) &&
+      getAddress(asset) !== getAddress(ARBITRUM.renBTC) &&
+      getAddress(asset) !== getAddress(AVALANCHE.renBTC)
     ) {
       burnRequest.sign = async function (signer, contractAddress) {
         const assetAddress = this.asset;
@@ -326,13 +328,9 @@ export class sdkBurn {
       };
     }
 
-    let signTx;
     try {
       const contracts = await deploymentsFromSigner(this.signer);
-      signTx = await burnRequest.sign(
-        this.signer,
-        contracts.ZeroController.address
-      );
+      await burnRequest.sign(this.signer, contracts.ZeroController.address);
       this.response.emit("signed");
     } catch (error) {
       console.error(error);

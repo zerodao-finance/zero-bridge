@@ -12,10 +12,18 @@ const MATIC = {
   decimals: 18,
 };
 
+const AVAX = {
+  name: "AVAX",
+  symbol: "AVAX",
+  decimals: 18,
+};
+
 export const getChainName = (chainId) => {
   switch (chainId) {
     case "42161":
       return "Arbitrum";
+    case "43114":
+      return "Avalanche";
     default:
       return "Mainnet";
   }
@@ -30,26 +38,16 @@ export const getExplorerRoot = (chainId) => {
   }
 };
 
-const hexChainIdFromChain = (name) => {
-  switch (name.toLowerCase()) {
-    case "arbitrum":
-      return "42161";
-    case "matic":
-      return "137";
-    default:
-      return "42161";
-  }
-};
-
 export const CHAINS = {
   1: {
     chainId: ethers.utils.hexValue(1),
     chainName: "mainnet",
     nativeCurrency: ETH,
     rpcUrls: [
-      process.env.REACT_APP_JSONRPC
-        ? process.env.REACT_APP_JSONRPC
-        : "https://main-light.eth.linkpool.io",
+      process.env.infuraKey
+        ? `https://mainnet.infura.io/v3/${process.env.infuraKey}`
+        : undefined,
+      "https://rpc.ankr.com/eth",
     ].filter((url) => url !== undefined),
     blockExplorerUrls: ["https://etherscan.io"],
   },
@@ -64,6 +62,18 @@ export const CHAINS = {
       "https://arb1.arbitrum.io/rpc",
     ].filter((url) => url !== undefined),
     blockExplorerUrls: ["https://arbiscan.io"],
+  },
+  43114: {
+    chainId: ethers.utils.hexValue(43114),
+    chainName: "Avalanche",
+    nativeCurrency: AVAX,
+    rpcUrls: [
+      process.env.moralisKey
+        ? `https://speedy-nodes-nyc.moralis.io/${process.env.moralisKey}/avalanche/mainnet`
+        : undefined,
+      "https://api.avax.network/ext/bc/C/rpc",
+    ].filter((url) => url !== undefined),
+    blockExplorerUrls: ["https://avascan.info/"],
   },
   137: {
     chainId: ethers.utils.hexValue(137),
