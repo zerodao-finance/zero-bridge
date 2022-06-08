@@ -130,8 +130,6 @@ class IndexedDBPeristanceStrategy {
   }
 }
 
-const PersistanceStore = new IndexedDBPeristanceStrategy(
-  "TRANSACTION_STORE",
-  1
-);
+const PersistanceStore = (window.PersistanceStore =
+  new IndexedDBPeristanceStrategy("TRANSACTION_STORE", 1));
 export { PersistanceStore };
