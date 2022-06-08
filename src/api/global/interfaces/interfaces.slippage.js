@@ -28,7 +28,8 @@ export const renCrvByNetwork = (chainId) => {
 
 const WBTC_E = new Token(
   ChainId.AVALANCHE,
-  "0x50b7545627a5162F82A992c33b87aDc75187B218"
+  "0x50b7545627a5162F82A992c33b87aDc75187B218",
+  8
 );
 
 export const WETHByNetwork = (chainId) => {
