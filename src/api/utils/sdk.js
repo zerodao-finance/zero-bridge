@@ -42,39 +42,23 @@ const waitForHostTransactionETH = async function () {
   else return await waitForHostTransaction.call(this);
 };
 
-const DECIMALS = [
-  {
-    name: "WBTC",
-    decimals: 8,
-  },
-  {
-    name: "renBTC",
-    decimals: 8,
-  },
-  {
-    name: "USDC",
-    decimals: 6,
-  },
-  {
-    name: "ibBTC",
-    decimals: 8,
-  },
-]
-  .map((token) => {
-    return Object.keys(fixtures)
-      .filter((v) => v.match(/^[A-Z]+$/))
-      .map((network) => {
-        return {
-          network,
-          ...token,
-        };
-      });
-  })
-  .reduce((r, v) => r.concat(v), [])
-  .reduce((r, v) => {
-    r[toLower(fixtures[v.network][v.token])] = v.decimals;
-    return r;
-  }, {});
+const { ETHEREUM, ARBITRUM, AVALANCHE } = fixtures;
+
+const DECIMALS = {
+  [toLower(ETHEREUM.WBTC)]: 8,
+  [toLower(ETHEREUM.renBTC)]: 8,
+  [toLower(ETHEREUM.USDC)]: 6,
+  [toLower(ETHEREUM.ibBTC)]: 8,
+  [ethers.constants.AddressZero]: 18,
+  [toLower(ARBITRUM.WBTC)]: 8,
+  [toLower(ARBITRUM.renBTC)]: 8,
+  [toLower(ARBITRUM.USDC)]: 6,
+  [toLower(ARBITRUM.ibBTC)]: 8,
+  [toLower(AVALANCHE.WBTC)]: 8,
+  [toLower(AVALANCHE.renBTC)]: 8,
+  [toLower(AVALANCHE.USDC)]: 6,
+  [toLower(AVALANCHE.ibBTC)]: 8,
+};
 
 DECIMALS[ethers.constants.AddressZero] = 18;
 
