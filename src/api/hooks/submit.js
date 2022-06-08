@@ -57,14 +57,14 @@ export const useSDKTransactionSubmit = (module) => {
       case fixtures.ETHEREUM["USDC"] || fixtures.ARBITRUM["USDC"]:
         wbtcQuote = await getWbtcQuote(
           true,
-          ethers.utils.parseUnits(await deductFees(amount), 8)
+          await deductFees(ethers.utils.parseUnits(amount), 8)
         );
         quote = await getUsdcWbtcQuote(false, wbtcQuote);
         break;
       case fixtures.ETHEREUM["ETH"] || fixtures.ARBITRUM["ETH"]:
         wbtcQuote = await getWbtcQuote(
           true,
-          ethers.utils.parseUnits(await deductFees(amount), 8)
+          await deductFees(ethers.utils.parseUnits(amount, 8))
         );
         quote = await getWbtcWethQuote(true, wbtcQuote);
         break;
