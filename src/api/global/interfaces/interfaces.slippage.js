@@ -2,6 +2,16 @@ import { ethers } from "ethers";
 import { storeContext } from "../global";
 import { useContext, useCallback } from "react";
 import { tokenMapping } from "../../utils/tokenMapping";
+import {
+  Fetcher,
+  ChainId,
+  WAVAX,
+  Trade,
+  Token,
+  Route,
+  TokenAmount,
+  TradeType,
+} from "@traderjoe-xyz/sdk";
 
 export const renCrvByNetwork = (chainId) => {
   switch (chainId) {
@@ -15,6 +25,11 @@ export const renCrvByNetwork = (chainId) => {
       return "0x93054188d876f558f4a66B2EF1d97d16eDf0895B";
   }
 };
+
+const WBTC_E = new Token(
+  ChainId.AVALANCHE,
+  "0x50b7545627a5162F82A992c33b87aDc75187B218"
+);
 
 export const WETHByNetwork = (chainId) => {
   switch (chainId) {
@@ -87,6 +102,34 @@ export const useSlippageFetchers = () => {
     },
     [state.wallet.provider]
   );
+
+  // direction ? renbtc -> avax : avax -> renbtc
+  const getAVAXQuote = async (direction, amount) => {
+    const pair = await Fetcher.fetchPairData(
+      WBTC_E,
+      WAVAX[ChainId.AVALANCHE],
+      state.wallet.provider
+    );
+    if (direction) {
+      const wbtcAmount = await getWbtcQuoteAVAX(true, amount);
+      const route = new Route([pair], WBTC_E);
+      const trade = new Trade(
+        route,
+        new TokenAmount(WBTC_E, wbtcAmount),
+        TradeType.EXACT_INPUT
+      );
+      return trade.executionPrice.adjusted();
+    } else {
+      const route = new Route([pair], WAVAX[ChainId.AVALANCHE]);
+      const trade = new Trade(
+        route,
+        new TokenAmount(WAVAX[ChainId.AVALANCHE], amount),
+        TradeType.EXACT_INPUT
+      );
+      return await getWbtcQuoteAVAX(false, trade.executionPrice.adjusted());
+    }
+  };
+
   // direction = true ? usdc -> renbtc
   const getUsdcQuoteAVAX = async (direction, amount) => {
     //amount = renBTC amount
