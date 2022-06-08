@@ -81,13 +81,53 @@ export const useSlippageFetchers = () => {
     [state.wallet.provider, state.wallet.chainId]
   );
 
-  /*
-  const getUsdcWbtcQuoteAVAX = async (direction, amount) => {
-    const rencrv = new ethers.Contract(RENCRV, [ 'function get_dy(int128, int128, uint256) view returns (uint256)' ], state.wallet.provider);
-    const wbtcOut = await rencrv.get_dy(1, 0, amount);
-    // not sure about this exactly
-     */
+  const createContract = useCallback(
+    (address, abi) => {
+      return new ethers.Contract(address, abi, state.wallet.provider);
+    },
+    [state.wallet.provider]
+  );
+  // direction = true ? usdc -> renbtc
+  const getUsdcQuoteAVAX = async (direction, amount) => {
+    //amount = renBTC amount
 
+    const rencrv = createContract(RENCRV, [
+      "function get_dy(int128, int128, uint256) view returns (uint256)",
+    ]);
+    const aTricrypto = createContract(
+      "0xB755B949C126C04e0348DD881a5cF55d424742B2",
+      ["function get_dy(uint256, uint256, uint256) view returns (uint256)"]
+    );
+
+    const crvUSD = createContract(
+      "0x7f90122BF0700F9E7e1F688fe926940E8839F353",
+      [
+        "function calc_token_amount(uint256[3] calldata, bool) view returns (uint256)",
+      ],
+      [
+        "function calc_withdraw_one_coin(uint256, int128) view returns (uint256)",
+      ]
+    );
+    //0 = wbtc, 1 = renbtc
+    const renCrvPath = [0, 1];
+    //0 = av3usd, 1 = wbtc
+    const path = [0, 1];
+    if (direction) {
+      const av3usdAmount = await crvUSD.calc_token_amount([0, amount, 0], true);
+      const wbtcAmount = await aTricrypto.get_dy(...path, av3usdAmount);
+      return await rencrv.get_dy(...renCrvPath, wbtcAmount);
+    } else {
+      const wbtcAmount = await rencrv.get_dy(
+        ...[...renCrvPath].reverse(),
+        amount
+      );
+      const av3usdAmount = await aTricrypto.get_dy(
+        ...[...path].reverse(),
+        wbtcAmount
+      );
+      return await crvUSD.calc_withdraw_one_coin(av3usdAmount, 1);
+    }
+  };
   // direction = true ? usdc -> wbtc : wbtc -> usdc
   const getUsdcWbtcQuote = useCallback(
     async (direction, amount) => {
