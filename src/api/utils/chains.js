@@ -33,6 +33,10 @@ export const getExplorerRoot = (chainId) => {
   switch (chainId) {
     case "42161":
       return "https://arbiscan.io/address/";
+    case "43114":
+      return "https://snowtrace.io/address/";
+    case "137":
+      return "https://polygonscan.com/address/";
     default:
       return "https://etherscan.io/address/";
   }

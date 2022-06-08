@@ -6,10 +6,16 @@ import {
 } from "zero-protocol/dist/lib/zero";
 import { EIP712_TYPES } from "zero-protocol/dist/lib/config/constants";
 import { Buffer } from "buffer";
-import { ETHEREUM, ARBITRUM, AVALANCHE } from "zero-protocol/dist/lib/fixtures";
+import fixtures from "zero-protocol/dist/lib/fixtures";
 import { createGetGasPrice } from "ethers-gasnow";
 import { tokenMapping } from "../utils/tokenMapping.js";
 import EventEmitter from "events";
+const chainIdToName = {
+  [1]: "mainnet",
+  [42161]: "arbitrum",
+  [137]: "matic",
+  [43114]: "avalanche",
+};
 
 const remoteETHTxMap = new WeakMap();
 
@@ -36,16 +42,61 @@ const waitForHostTransactionETH = async function () {
   else return await waitForHostTransaction.call(this);
 };
 
-const DECIMALS = {
-  [toLower(ETHEREUM.WBTC)]: 8,
-  [toLower(ETHEREUM.renBTC)]: 8,
-  [toLower(ETHEREUM.USDC)]: 6,
-  [toLower(ETHEREUM.ibBTC)]: 8,
-  [ethers.constants.AddressZero]: 18,
-  [toLower(ARBITRUM.WBTC)]: 8,
-  [toLower(ARBITRUM.renBTC)]: 8,
-  [toLower(ARBITRUM.USDC)]: 6,
-  [toLower(ARBITRUM.ibBTC)]: 8,
+const DECIMALS = [
+  {
+    name: "WBTC",
+    decimals: 8,
+  },
+  {
+    name: "renBTC",
+    decimals: 8,
+  },
+  {
+    name: "USDC",
+    decimals: 6,
+  },
+  {
+    name: "ibBTC",
+    decimals: 8,
+  },
+]
+  .map((token) => {
+    return Object.keys(fixtures)
+      .filter((v) => v.match(/^[A-Z]+$/))
+      .map((network) => {
+        return {
+          network,
+          ...token,
+        };
+      });
+  })
+  .reduce((r, v) => r.concat(v), [])
+  .reduce((r, v) => {
+    r[toLower(fixtures[v.network][v.token])] = v.decimals;
+    return r;
+  }, {});
+
+DECIMALS[ethers.constants.AddressZero] = 18;
+
+const signUSDCAVAX = async function (signer, contractAddress) {
+  const asset = this.asset;
+  this.asset = getFixtures("43113").renBTC;
+  const tokenNonce = String(
+    await new ethers.Contract(
+      this.contractAddress,
+      ["function noncesUsdc(address) view returns (uint256) "],
+      signer
+    ).noncesUsdc(await signer.getAddress())
+  );
+  const { sign, toEIP712 } = Object.getPrototypeOf(this);
+  this.toEIP712 = function (...args) {
+    this.asset = asset;
+    this.tokenNonce = tokenNonce;
+    this.assetName = "USD Coin";
+    return toEIP712.apply(this, args);
+  };
+  this.contractAddress = contractAddress;
+  return await sign.call(this, signer, contractAddress);
 };
 
 const toEIP712USDC = function (contractAddress, chainId) {
@@ -127,13 +178,12 @@ export class sdkTransfer {
         chainId: self.chainId,
       });
       const contracts = await deploymentsFromSigner(signer);
+      const fixture = getFixtures((await signer.provider.getNetwork()).chainId);
       const data = String(_data) || "0x";
       const module =
         self.token === "ETH"
           ? ethers.constants.AddressZero
-          : self.chainId == "42161"
-          ? ARBITRUM[self.token]
-          : ETHEREUM[self.token];
+          : fixture[self.token];
       const amount = ethers.utils.parseUnits(String(value), 8);
 
       // Should this also happen on Arbitrum?
@@ -210,6 +260,10 @@ const btcAddressToHex = (address) => {
   );
 };
 
+const getFixtures = (chainId) => {
+  return fixtures[chainIdToName[Number(chainId)].toUpperCase()];
+};
+
 // TODO: Make sure the actual burn will occur on the proper network
 export class sdkBurn {
   response = new EventEmitter({ captureRejections: true });
@@ -233,7 +287,8 @@ export class sdkBurn {
 
     this.burnRequest = async function () {
       const contracts = await deploymentsFromSigner(signer);
-      const tokenNamespace = this.chainId == "42161" ? ARBITRUM : ETHEREUM;
+      const tokenNamespace =
+        fixtures[chainIdToName[this.chainId].toUpperCase()];
       const asset =
         this.StateHelper.state.burn.input.token === "ETH"
           ? ethers.constants.AddressZero
@@ -269,19 +324,14 @@ export class sdkBurn {
 
     //sign burn request
     const { sign, toEIP712 } = burnRequest;
-    if (
-      getAddress(asset) === getAddress(ETHEREUM.USDC) ||
-      getAddress(asset) === getAddress(ARBITRUM.USDC) ||
-      getAddress(asset) === getAddress(AVALANCHE.USDC)
-    ) {
-      burnRequest.toEIP712 = toEIP712USDC;
+    const { chainId } = await this.signer.provider.getNetwork();
+    const fixture = getFixtures(chainId);
+    if (getAddress(asset) === getAddress(fixture.USDC)) {
+      if (chainId == 43114) burnRequest.sign = signUSDCAVAX;
+      else burnRequest.toEIP712 = toEIP712USDC;
     } else if (getAddress(asset) === ethers.constants.AddressZero) {
       burnRequest.sign = signETH;
-    } else if (
-      getAddress(asset) !== getAddress(ETHEREUM.renBTC) &&
-      getAddress(asset) !== getAddress(ARBITRUM.renBTC) &&
-      getAddress(asset) !== getAddress(AVALANCHE.renBTC)
-    ) {
+    } else if (getAddress(asset) !== fixture.renBTC) {
       burnRequest.sign = async function (signer, contractAddress) {
         const assetAddress = this.asset;
         signer.provider.getGasPrice = createGetGasPrice("rapid");
