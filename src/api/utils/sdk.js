@@ -304,7 +304,7 @@ export class sdkBurn {
 
         const tokenNonce = String(
           await new ethers.Contract(
-            this.contractAddress,
+            contractAddress,
             ["function nonces(address) view returns (uint256) "],
             signer
           ).nonces(await signer.getAddress())
