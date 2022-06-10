@@ -7,7 +7,7 @@ export const NetworkIndicator = ({ keeper }) => {
         data-tooltip-target="tooltip-keepers"
         data-tooltip-placement="left"
         className={`w-[24px] h-[24px] animate-[spin_5s_linear_infinite] ${
-          keeper.length > 0 ? "fill-badger-yellow-neon-400" : "fill-alert-red"
+          keeper.length > 0 ? "fill-zero-green-500" : "fill-alert-red"
         }`}
       />
       <div

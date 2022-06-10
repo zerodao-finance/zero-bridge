@@ -64,7 +64,7 @@ export const SlippageInput = ({ token, slippage, setSlippage }) => {
           </label>
           <div className="flex mt-1 text-sm">
             <button
-              className="hover:bg-badger-yellow-400/40 bg-badger-yellow-400 rounded-lg p-2 font-bold text-badger-black-700"
+              className="hover:bg-zero-green-500/40 bg-zero-green-500 rounded-lg p-2 font-bold text-badger-black-700"
               onClick={() => autoSlippage()}
             >
               Auto

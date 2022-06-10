@@ -43,6 +43,9 @@ module.exports = {
         "error-red": {
           400: "#EC4B4B",
         },
+        "zero-green": {
+          500: "#41a75b",
+        },
       },
       fontFamily: {
         header: [

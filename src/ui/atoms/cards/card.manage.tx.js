@@ -30,7 +30,7 @@ export const ManageTransactionCard = ({ data }) => {
           <p className="text-md text-badger-white-400 justify-self-start font-semibold">
             {data.type} :
           </p>
-          <p className="text-badger-yellow-300 justify-self-end">
+          <p className="text-zero-green-500 justify-self-end">
             {truncateAddress(data._data.contractAddress)}
           </p>
         </div>
@@ -65,7 +65,7 @@ export const ManageTransactionCard = ({ data }) => {
           </span>
         </div>
         <div
-          className="underline justify-self-center text-badger-yellow-neon-400 mt-px cursor-pointer"
+          className="underline justify-self-center text-zero-green-500 mt-px cursor-pointer"
           onClick={() => toggle(true)}
         >
           click for fallback mint
@@ -103,7 +103,7 @@ function Details({ data, toggle }) {
             onClick={() => {
               passed.fallbackMint ? setOpen(true) : () => {};
             }}
-            className="underline justify-self-center text-badger-yellow-neon-400 mt-px cursor-pointer"
+            className="underline justify-self-center text-zero-green-500 mt-px cursor-pointer"
           >
             Fallback Mint
           </div>

@@ -9,7 +9,7 @@ export default function NavigationChainDropdown({ chainId, setChainId }) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="inline-flex font-bold rounded-lg justify-center w-full bg-badger-yellow-400 hover:bg-badger-yellow-400/40 shadow-sm px-2 py-1 bg-white text-sm md:text-base text-badger-black-700 focus:outline-none ">
+        <Menu.Button className="inline-flex font-bold rounded-lg justify-center w-full bg-zero-green-500 hover:bg-zero-green-500/40 shadow-sm px-2 py-1 bg-white text-sm md:text-base text-badger-black-700 focus:outline-none ">
           {chainId ? getChainName(chainId) : "Loading..."}
           <ChevronDownIcon
             className="-mr-1 md:ml-2 md:mt-1 h-5 w-5"
@@ -35,9 +35,9 @@ export default function NavigationChainDropdown({ chainId, setChainId }) {
                   href="#"
                   className={
                     "text-center block py-2 px-8 text-sm cursor-pointer font-semibold " +
-                    (active ? "bg-badger-yellow-400/10 " : "bg-transparent ") +
+                    (active ? "bg-zero-green-500/10 " : "bg-transparent ") +
                     (getChainName(chainId) == "Mainnet"
-                      ? "text-badger-yellow-400 "
+                      ? "text-zero-green-500 "
                       : "text-badger-white-400 ")
                   }
                   onClick={() => setChainId("1")}
@@ -52,9 +52,9 @@ export default function NavigationChainDropdown({ chainId, setChainId }) {
                   href="#"
                   className={
                     "text-center block py-2 px-8 text-sm cursor-pointer font-semibold text-badger-white-400 " +
-                    (active ? "bg-badger-yellow-400/10 " : "bg-transparent ") +
+                    (active ? "bg-zero-green-500/10 " : "bg-transparent ") +
                     (getChainName(chainId) == "Arbitrum"
-                      ? "text-badger-yellow-400 "
+                      ? "text-zero-green-500 "
                       : "text-badger-white-400 ")
                   }
                   onClick={() => setChainId("42161")}
