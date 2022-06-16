@@ -364,6 +364,7 @@ export class sdkBurn {
       let txResponse = {
         hostTX: hostTransaction,
         txo: utxo,
+        underwriterRequest: burnRequest,
       };
       this.response.emit("hash", { request: txResponse });
     } catch (error) {
