@@ -48,7 +48,7 @@ function ParseDetails(data, type, truncateAddress) {
   switch (type) {
     case "burn":
       if (!data || !data.underwriterRequest) break;
-      if (data.underwriterRequest?.contractAddress)
+      if (data.underwriterRequest?.contractAddress) {
         return (
           <>
             <div className="grid grid-cols-2">
@@ -98,6 +98,8 @@ function ParseDetails(data, type, truncateAddress) {
             </div>
           </>
         );
+      }
+      if (!data || !data.hostTX) return <></>;
       return (
         <>
           <div className="grid grid-cols-2">
@@ -128,6 +130,8 @@ function ParseDetails(data, type, truncateAddress) {
 }
 
 export const ManageTransactionCard = ({ data }) => {
+  if (!data || !data._data || !data._data.asset) return <></>;
+
   const [details, toggle] = useState(false);
   const tokenName = reverseTokenMapping({ tokenAddress: data._data.asset });
 
