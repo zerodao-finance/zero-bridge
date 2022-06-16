@@ -116,7 +116,7 @@ function ParseDetails(data, type, truncateAddress) {
             <span className="justify-self-start"> view on Etherscan: </span>
             <a
               className="text-xs justify-self-end underline text-badger-yellow-300"
-              href={`etherscan.io/tx/${data.hostTX.transactionHash}`}
+              href={`https://etherscan.io/tx/${data.hostTX.transactionHash}`}
             >
               {truncateAddress(data.hostTX.transactionHash)}
             </a>
