@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { getBurnOutput } from "../../../api/hooks/burn-fees";
 import { formatUSDCPricedBTC } from "../../../api/utils/formatters";
 
-export const BridgeBurnTransferFee = ({ amount, btc_usd, token }) => {
+export const BridgeBurnTransferFee = ({ amount, btc_usd, token, chainId }) => {
   const [isFeeLoading, setIsFeeLoading] = useState(false);
   const [fee, setFee] = useState();
   useEffect(async () => {
     if (amount > 0) {
       setIsFeeLoading(true);
-      const output = await getBurnOutput({ amount, token });
+      const output = await getBurnOutput({ amount, token, chainId });
       setFee(output);
       setIsFeeLoading(false);
     }
