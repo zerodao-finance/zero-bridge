@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { makeCompute, applyRenVMFee } from "zero-protocol/lib/badger";
+import { makeCompute } from "zero-protocol/lib/badger";
 import { tokenMapping } from "../utils/tokenMapping";
 
 function processAmount(amount, token) {
