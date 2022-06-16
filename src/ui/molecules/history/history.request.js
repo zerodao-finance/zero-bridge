@@ -24,7 +24,6 @@ function CardGrid(completed) {
   return (
     <>
       {_.concat(completed.burn, completed.transfer).map((d, index) => {
-        console.log(d);
         return <CardTypeSwitch data={d} key={index} type="completed" />;
       })}
     </>
