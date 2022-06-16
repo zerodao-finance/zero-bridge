@@ -21,6 +21,8 @@ export const BridgeBurnInput = ({
   btc_usd,
   eth_usd,
   chainId,
+  quote,
+  setQuote,
 }) => {
   const { dispatch } = useContext(storeContext);
   const { balances } = useWalletBalances();
@@ -85,7 +87,9 @@ export const BridgeBurnInput = ({
             <div className="w-full grid justify-items-center">
               <ArrowDownIcon className="h-6 w-6 text-badger-yellow-400" />
             </div>
-            <BridgeBurnTransferFee {...{ amount, token, btc_usd, chainId }} />
+            <BridgeBurnTransferFee
+              {...{ amount, token, btc_usd, chainId, quote, setQuote }}
+            />
           </>
         )}
 

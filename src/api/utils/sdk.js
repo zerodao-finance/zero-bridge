@@ -16,6 +16,7 @@ const chainIdToName = {
   [137]: "matic",
   [43114]: "avalanche",
 };
+import { selectFixture } from "../utils/tokenMapping.js";
 
 const remoteETHTxMap = new WeakMap();
 
@@ -162,7 +163,7 @@ export class sdkTransfer {
         chainId: self.chainId,
       });
       const contracts = await deploymentsFromSigner(signer);
-      const fixture = getFixtures((await signer.provider.getNetwork()).chainId);
+      const fixture = selectFixture(self.chainId);
       const data = String(_data) || "0x";
       const module =
         self.token === "ETH"

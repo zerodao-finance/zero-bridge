@@ -10,8 +10,9 @@ export const useBridgeInput = () => {
   const { state, dispatch } = useContext(storeContext);
   const StateHelper = new GlobalStateHelper(state, dispatch);
   const { btc_usd, eth_usd } = state.priceFeeds.data;
+  const { wallet } = state;
   const { ETH, renBTC } = state.transfer.display;
-  const { amount, isFast } = state.transfer.input;
+  const { amount, isFast, token, quote, slippage } = state.transfer.input;
   const { mode } = state.transfer.mode;
   const { sendTransferRequest } = useSDKTransactionSubmit("transfer");
   const { updateAmount, updateModule } = useInputHooks("transfer");
@@ -29,9 +30,10 @@ export const useBridgeInput = () => {
   const getTransferSenderProps = ({ ...otherProps } = {}) => ({
     action: sendTransferRequest,
     amount: amount,
-    token: state.transfer.input.token,
+    token: token,
     btc_usd: btc_usd,
     eth_usd: eth_usd,
+    chainId: wallet.chainId,
   });
 
   const setTransferSlippage = (e) => {
@@ -44,8 +46,8 @@ export const useBridgeInput = () => {
   };
 
   const getTransferSlippageProps = ({ ...otherProps } = {}) => ({
-    token: state.transfer.input.token,
-    slippage: state.transfer.input.slippage,
+    token: token,
+    slippage: slippage,
     setSlippage: setTransferSlippage,
   });
 
@@ -62,15 +64,27 @@ export const useBridgeInput = () => {
     });
   };
 
+  const setQuote = (e) => {
+    dispatch({
+      type: "UPDATE",
+      module: "transfer",
+      effect: "input",
+      data: { quote: e },
+    });
+  };
+
   const getTransferInputProps = ({ ...otherProps } = {}) => ({
     amount: amount,
-    token: state.transfer.input.token,
+    token: token,
     setToken: setToken,
     effect: updateAmount,
     btc_usd: btc_usd,
     eth_usd: eth_usd,
-    slippage: state.transfer.input.slippage,
+    slippage: slippage,
     setSlippage: setTransferSlippage,
+    chainId: wallet.chainId,
+    setQuote: setQuote,
+    quote: quote,
   });
 
   const getGatewayData = ({ ...otherProps } = {}) => ({

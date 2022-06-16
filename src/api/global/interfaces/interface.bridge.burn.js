@@ -9,7 +9,7 @@ export const useBridgeBurnInput = () => {
   const { wallet } = state;
   const { sendBurnRequest } = useSDKTransactionSubmit("burn");
   const { input } = state.burn;
-  const { amount, destination, token } = input;
+  const { amount, destination, token, quote } = input;
   const { setTransferSlippage } = useBridgeInput();
 
   const updateAmount = (e) => {
@@ -20,6 +20,7 @@ export const useBridgeBurnInput = () => {
       data: { amount: e.target.value },
     });
   };
+
   const updateDestination = (e) => {
     dispatch({
       type: "UPDATE",
@@ -28,12 +29,22 @@ export const useBridgeBurnInput = () => {
       data: { destination: e.target.value },
     });
   };
+
   const setToken = (e) => {
     dispatch({
       type: "UPDATE",
       module: "burn",
       effect: "input",
       data: { token: e },
+    });
+  };
+
+  const setQuote = (e) => {
+    dispatch({
+      type: "UPDATE",
+      module: "burn",
+      effect: "input",
+      data: { quote: e },
     });
   };
 
@@ -55,6 +66,8 @@ export const useBridgeBurnInput = () => {
     updateAmount,
     updateDestination,
     chainId: wallet.chainId,
+    quote,
+    setQuote,
   });
 
   const getBurnSenderProps = ({ ...otherProps } = {}) => ({
@@ -64,6 +77,7 @@ export const useBridgeBurnInput = () => {
     amount: amount,
     btc_usd: btc_usd,
     chainId: wallet.chainId,
+    quote,
   });
 
   return {
