@@ -3,16 +3,6 @@ import { ethers } from "ethers";
 import { storeContext } from "../global";
 import { GlobalStateHelper } from "../utils/global.utilities";
 import { useRequestHelper } from "./helper";
-import fixtures from "zero-protocol/lib/fixtures";
-import { useSlippageFetchers } from "../global/interfaces/interfaces.slippage";
-import { computeOutputBTC } from "zero-protocol/lib/badger";
-
-const deductFees = async (amount) => {
-  return await computeOutputBTC({
-    amount,
-    asset: fixtures.ETHEREUM.renBTC,
-  });
-};
 
 //getSigner function
 export const getSigner = async (wallet) => {
@@ -32,8 +22,6 @@ export const useSDKTransactionSubmit = (module) => {
   const { chainId } = wallet;
   const { slippage } = state.transfer.input;
   const { input } = state[module];
-  const { getWbtcQuote, getUsdcWbtcQuote, getWbtcWethQuote } =
-    useSlippageFetchers();
 
   async function sendTransferRequest() {
     var zeroUser = zero.zeroUser;
@@ -43,31 +31,16 @@ export const useSDKTransactionSubmit = (module) => {
     var to = await signer.getAddress();
     var isFast = input.isFast;
 
-    let tokenAddr =
-      chainId == "42161" ? fixtures.ARBITRUM[token] : fixtures.ETHEREUM[token];
-    let quote = 0;
-    let wbtcQuote;
-    switch (tokenAddr) {
-      case fixtures.ETHEREUM["renBTC"] || fixtures.ARBITRUM["renBTC"]:
-        quote = ethers.utils.parseUnits(amount, 8);
+    var quote = input.quote;
+    switch (token) {
+      case "ETH":
+        quote = ethers.utils.parseEther(quote);
         break;
-      case fixtures.ETHEREUM["WBTC"] || fixtures.ARBITRUM["WBTC"]:
-        quote = await getWbtcQuote(true, ethers.utils.parseUnits(amount, 8));
+      case "USDC":
+        quote = ethers.utils.parseUnits(quote, 6);
         break;
-      case fixtures.ETHEREUM["USDC"] || fixtures.ARBITRUM["USDC"]:
-        wbtcQuote = await getWbtcQuote(
-          true,
-          await deductFees(ethers.utils.parseUnits(amount), 8)
-        );
-        quote = await getUsdcWbtcQuote(false, wbtcQuote);
-        break;
-      case fixtures.ETHEREUM["ETH"] || fixtures.ARBITRUM["ETH"]:
-        wbtcQuote = await getWbtcQuote(
-          true,
-          await deductFees(ethers.utils.parseUnits(amount, 8))
-        );
-        quote = await getWbtcWethQuote(true, wbtcQuote);
-        break;
+      default:
+        quote = ethers.utils.parseUnits(quote, 8);
     }
 
     const inverseSlippage = ethers.utils
@@ -100,33 +73,8 @@ export const useSDKTransactionSubmit = (module) => {
     var amount = input.amount;
     var destination = input.destination;
     var deadline = ethers.constants.MaxUint256;
-    var asset = StateHelper.state.burn.input.token;
 
-    let quote = 0;
-    let wbtcQuote;
-    switch (asset) {
-      case "renBTC":
-        quote = ethers.utils.parseUnits(amount, 8);
-        break;
-      case "WBTC":
-        quote = await getWbtcQuote(false, ethers.utils.parseUnits(amount, 8));
-        break;
-      case "USDC":
-        wbtcQuote = await getUsdcWbtcQuote(
-          true,
-          ethers.utils.parseUnits(amount, 6)
-        );
-        quote = await getWbtcQuote(false, wbtcQuote);
-        //        quote = ethers.utils.parseUnits(quote, 8);
-        break;
-      case "ETH":
-        wbtcQuote = await getWbtcWethQuote(
-          false,
-          ethers.utils.parseEther(amount)
-        );
-        quote = await getWbtcQuote(false, wbtcQuote);
-        break;
-    }
+    var quote = ethers.utils.parseUnits(input.quote, 8);
 
     const inverseSlippage = ethers.utils
       .parseEther("1")

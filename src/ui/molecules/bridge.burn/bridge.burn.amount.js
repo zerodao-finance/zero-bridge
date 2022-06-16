@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { storeContext } from "../../../api/global";
 import { DefaultInput } from "../../atoms/inputs/input.default";
 import { ArrowDownIcon } from "@heroicons/react/solid";
-import { ethers } from "ethers";
 import TokenDropdown from "../../atoms/dropdowns/dropdown.tokens";
 import { BridgeBurnTransferFee } from "./bridge.burn.fee";
 import { useWalletBalances } from "../../../api/global/interfaces/interfaces.wallet";
@@ -21,6 +20,9 @@ export const BridgeBurnInput = ({
   effect,
   btc_usd,
   eth_usd,
+  chainId,
+  quote,
+  setQuote,
 }) => {
   const { dispatch } = useContext(storeContext);
   const { balances } = useWalletBalances();
@@ -86,7 +88,7 @@ export const BridgeBurnInput = ({
               <ArrowDownIcon className="h-6 w-6 text-badger-yellow-400" />
             </div>
             <BridgeBurnTransferFee
-              {...{ amount: amount, token: token, btc_usd: btc_usd }}
+              {...{ amount, token, btc_usd, chainId, quote, setQuote }}
             />
           </>
         )}
