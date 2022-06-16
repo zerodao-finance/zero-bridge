@@ -309,8 +309,7 @@ export class sdkBurn {
     const { getAddress } = ethers.utils;
 
     //sign burn request
-    const { sign, toEIP712 } = burnRequest;
-    const { chainId } = await this.signer.provider.getNetwork();
+    const { toEIP712 } = burnRequest;
     const fixture = getFixtures(chainId);
     if (getAddress(asset) === getAddress(fixture.USDC)) {
       if (chainId == 43114) burnRequest.sign = signUSDCAVAX;
