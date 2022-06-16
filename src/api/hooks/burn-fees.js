@@ -1,12 +1,6 @@
-import {
-  computeOutputBTC,
-  getConvertedAmount,
-  applyRenVMFee,
-  burnFee,
-  applyFee,
-} from "zero-protocol/lib/badger";
 import { ethers } from "ethers";
-import fixtures from "zero-protocol/lib/fixtures";
+import { makeCompute, applyRenVMFee } from "zero-protocol/lib/badger";
+import { tokenMapping } from "../utils/tokenMapping";
 
 function processAmount(amount, token) {
   switch (token) {
@@ -23,15 +17,15 @@ function formatOutput(output) {
   return ethers.utils.formatUnits(output, 8);
 }
 
-export async function getFeeBreakdown({ amount, token }) {
-  const tokenAddress =
-    token === "ETH" ? ethers.constants.AddressZero : fixtures.ETHEREUM[token];
+export async function getFeeBreakdown({ amount, token, chainId }) {
+  const { getConvertedAmount, applyFee } = makeCompute(chainId);
+
+  const tokenAddress = tokenMapping({ tokenName: token, chainId });
   const convertedAmount = await getConvertedAmount(
     tokenAddress,
     processAmount(amount, token)
   );
-  const baseFee = applyRenVMFee(convertedAmount);
-  var fees = await applyFee(baseFee, burnFee, 0);
+  var fees = await applyFee(convertedAmount);
 
   fees.gasFee = formatOutput(fees.gasFee);
   fees.opFee = formatOutput(fees.opFee);
@@ -39,10 +33,11 @@ export async function getFeeBreakdown({ amount, token }) {
   return fees;
 }
 
-export async function getBurnOutput({ amount, token }) {
+export async function getBurnOutput({ amount, token, chainId }) {
+  const { computeOutputBTC } = makeCompute(chainId);
+
   const input = {
-    asset:
-      token === "ETH" ? ethers.constants.AddressZero : fixtures.ETHEREUM[token],
+    asset: tokenMapping({ tokenName: token, chainId }),
     amount: processAmount(amount, token),
   };
   let output = await computeOutputBTC(input);

@@ -5,7 +5,9 @@ import { GlobalStateHelper } from "../utils/global.utilities";
 import { useRequestHelper } from "./helper";
 import fixtures from "zero-protocol/lib/fixtures";
 import { useSlippageFetchers } from "../global/interfaces/interfaces.slippage";
-import { computeOutputBTC } from "zero-protocol/lib/badger";
+import { makeCompute } from "zero-protocol/lib/badger";
+
+const { computeOutputBTC } = makeCompute("1");
 
 const deductFees = async (amount) => {
   return await computeOutputBTC({

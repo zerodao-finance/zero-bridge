@@ -1,11 +1,8 @@
-import {
-  computeTransferOutput,
-  mintFee,
-  applyFee,
-  applyRenVMMintFee,
-} from "zero-protocol/lib/badger";
 import { ethers } from "ethers";
 import fixtures from "zero-protocol/lib/fixtures";
+import { makeCompute } from "zero-protocol/lib/badger";
+
+const { computeTransferOutput, applyFee } = makeCompute("1");
 
 function formatOutput(token, output) {
   switch (token) {

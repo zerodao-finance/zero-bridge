@@ -6,6 +6,7 @@ import { useBridgeInput } from "./interface.bridge.transfer";
 export const useBridgeBurnInput = () => {
   const { state, dispatch } = useContext(storeContext);
   const { eth_usd, btc_usd } = state.priceFeeds.data;
+  const { wallet } = state;
   const { sendBurnRequest } = useSDKTransactionSubmit("burn");
   const { input } = state.burn;
   const { amount, destination, token } = input;
@@ -53,6 +54,7 @@ export const useBridgeBurnInput = () => {
     effect: updateAmount,
     updateAmount,
     updateDestination,
+    chainId: wallet.chainId,
   });
 
   const getBurnSenderProps = ({ ...otherProps } = {}) => ({
@@ -61,6 +63,7 @@ export const useBridgeBurnInput = () => {
     token,
     amount: amount,
     btc_usd: btc_usd,
+    chainId: wallet.chainId,
   });
 
   return {

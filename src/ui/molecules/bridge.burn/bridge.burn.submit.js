@@ -13,6 +13,7 @@ export const BridgeBurnSubmit = ({
   amount,
   token,
   btc_usd,
+  chainId,
 }) => {
   const [buttonLabel, setButtonLabel] = useState(
     "Enter Valid Recipient Address"
@@ -24,8 +25,8 @@ export const BridgeBurnSubmit = ({
 
   useEffect(async () => {
     if (amount > 0) {
-      const output = await getBurnOutput({ amount, token });
-      const feeAmounts = await getFeeBreakdown({ amount, token });
+      const output = await getBurnOutput({ amount, token, chainId });
+      const feeAmounts = await getFeeBreakdown({ amount, token, chainId });
       setBurnOutput(output);
       setFees(feeAmounts);
     } else {
