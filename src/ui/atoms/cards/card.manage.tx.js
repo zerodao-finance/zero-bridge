@@ -9,6 +9,123 @@ import {
 } from "../../../api/utils/tokenMapping";
 import { getChainName, getExplorerRoot } from "../../../api/utils/chains";
 
+export function CardTypeSwitch({ data, key, type }) {
+  switch (data.type) {
+    case "burn":
+      return <BurnManageCard data={data} key={key} type={type} />;
+    case "transfer":
+      return <ManageTransactionCard data={data} key={key} type={type} />;
+    default:
+      return;
+  }
+}
+
+export const BurnManageCard = ({ data }) => {
+  const [details, toggle] = useState(false);
+  function truncateAddress(address) {
+    try {
+      const checksummedAddress = ethers.utils.getAddress(address);
+      return (
+        checksummedAddress.slice(0, 6) + "..." + checksummedAddress.slice(-4)
+      );
+    } catch (error) {
+      return address.slice(0, 6) + "..." + address.slice(-4);
+    }
+  }
+
+  if (!details)
+    return (
+      <div
+        key={data.id}
+        className="bg-badger-gray-500 rounded-md shadow-md text-xs max-w-[500px] px-4 py-1 grid gap-1"
+      >
+        {ParseDetails(data._data, "burn", truncateAddress)}
+      </div>
+    );
+};
+
+function ParseDetails(data, type, truncateAddress) {
+  switch (type) {
+    case "burn":
+      if (data.underwriterRequest?.contractAddress)
+        return (
+          <>
+            <div className="grid grid-cols-2">
+              <p className="text-badger-white-400 text-md justify-self-start font-semibold">
+                {type} :
+              </p>
+              <p className="text-badger-yellow-300 justify-self-end">
+                {truncateAddress(
+                  ethers.utils.getAddress(
+                    data.underwriterRequest.contractAddress
+                  )
+                )}
+              </p>
+            </div>
+            <hr className="border-badger-black-800" />
+            <div className="grid text-badger-white-400 grid-cols-2">
+              <span className="justify-self-start"> to: </span>
+              <a
+                className="text-xs justify-self-end underline"
+                href={
+                  getExplorerRoot(String(data.underwriterRequest.chainId)) +
+                  ethers.utils.getAddress(data.hostTX.to)
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {truncateAddress(data.hostTX.to)}
+              </a>
+              <span className="justify-self-start"> amount: </span>
+              <span className="justify-self-end">
+                {" "}
+                {txCardAmount({
+                  amount: data.underwriterRequest.amount,
+                  tokenName: data.underwriterRequest.assetName,
+                })}{" "}
+              </span>
+              <span className="justify-self-start"> asset: </span>
+              <span className="justify-self-end">
+                {" "}
+                {data.underwriterRequest.assetName}
+              </span>
+              <span className="justify-self-start"> chain: </span>
+              <span className="justify-self-end">
+                {" "}
+                {getChainName(String(data.underwriterRequest.chainId))}{" "}
+              </span>
+            </div>
+          </>
+        );
+      return (
+        <>
+          <div className="grid grid-cols-2">
+            <p className="text-badger-white-400 text-md justify-self-start font-semibold">
+              {type} :
+            </p>
+            <p className="text-badger-yellow-300 justify-self-end">
+              {truncateAddress(data.hostTX.transactionHash)}
+            </p>
+          </div>
+          <hr className="border-badger-black-800" />
+          <div className="grid text-badger-white-400 grid-cols-2">
+            <span className="justify-self-start"> to: </span>
+            <a className="text-xs justify-self-end underline">
+              {truncateAddress(data.hostTX.to)}
+            </a>
+            <span className="justify-self-start"> view on Etherscan: </span>
+            <a
+              className="text-xs justify-self-end underline text-badger-yellow-300"
+              href={`etherscan.io/tx/${data.hostTX.transactionHash}`}
+            >
+              {truncateAddress(data.hostTX.transactionHash)}
+            </a>
+          </div>
+        </>
+      );
+  }
+}
+
 export const ManageTransactionCard = ({ data }) => {
   const [details, toggle] = useState(false);
   const tokenName = reverseTokenMapping({ tokenAddress: data._data.asset });
