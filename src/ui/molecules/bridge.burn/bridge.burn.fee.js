@@ -21,10 +21,12 @@ export const BridgeBurnTransferFee = ({
     if (amount > 0) {
       setIsFeeLoading(true);
       await getNewQuote();
-      timerId = setInterval(async () => {
-        await getNewQuote();
-      }, 15000);
       setIsFeeLoading(false);
+      timerId = setInterval(async () => {
+        setIsFeeLoading(true);
+        await getNewQuote();
+        setIsFeeLoading(false);
+      }, 15000);
     } else {
       setQuote(null);
       clearInterval(timerId);
