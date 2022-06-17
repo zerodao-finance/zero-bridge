@@ -57,6 +57,7 @@ export const globalBridgeState = {
         btc_usd: 0,
         eth_usd: 0,
         btc_eth: 0,
+        avax_usd: 0,
       },
     },
     requests: {

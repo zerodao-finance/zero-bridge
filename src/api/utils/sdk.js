@@ -6,7 +6,7 @@ import {
 } from "zero-protocol/dist/lib/zero";
 import { EIP712_TYPES } from "zero-protocol/dist/lib/config/constants";
 import { Buffer } from "buffer";
-import fixtures from "zero-protocol/dist/lib/fixtures";
+import fixtures from "zero-protocol/lib/fixtures";
 import { createGetGasPrice } from "ethers-gasnow";
 import { tokenMapping } from "../utils/tokenMapping.js";
 import EventEmitter from "events";
