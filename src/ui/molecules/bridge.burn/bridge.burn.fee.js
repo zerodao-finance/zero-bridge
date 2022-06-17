@@ -12,14 +12,17 @@ export const BridgeBurnTransferFee = ({
 }) => {
   const [isFeeLoading, setIsFeeLoading] = useState(false);
   useEffect(async () => {
+    const getNewQuote = async () => {
+      const output = await getBurnOutput({ amount, token, chainId });
+      setQuote(output);
+    };
+
     var timerId;
     if (amount > 0) {
       setIsFeeLoading(true);
-      var output = await getBurnOutput({ amount, token, chainId });
-      setQuote(output);
+      await getNewQuote();
       timerId = setInterval(async () => {
-        output = await getBurnOutput({ amount, token, chainId });
-        setQuote(output);
+        await getNewQuote();
       }, 15000);
       setIsFeeLoading(false);
     } else {
