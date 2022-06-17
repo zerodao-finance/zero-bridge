@@ -11,7 +11,7 @@ import { createGetGasPrice } from "ethers-gasnow";
 import { tokenMapping } from "../utils/tokenMapping.js";
 import EventEmitter from "events";
 const chainIdToName = {
-  [1]: "mainnet",
+  [1]: "ethereum",
   [42161]: "arbitrum",
   [137]: "matic",
   [43114]: "avalanche",
