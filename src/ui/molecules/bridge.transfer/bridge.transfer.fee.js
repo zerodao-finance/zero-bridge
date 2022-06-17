@@ -48,6 +48,8 @@ export const BridgeTransferFee = ({
     }
   }
 
+  const removedCoin = chainId == "43114" ? "ETH" : "AVAX";
+
   return (
     <div className="self-center px-0 py-0 w-full">
       <div className="w-full flex items-center justify-between px-4 py-2 mt-5 text-badger-white-400 rounded-xl bg-badger-gray-500">
@@ -56,6 +58,7 @@ export const BridgeTransferFee = ({
           <TokenDropdown
             token={token}
             setToken={setToken}
+            tokensRemoved={[removedCoin]}
             tokensDisabled={["ibBTC", "USDC"]}
           />
         </div>

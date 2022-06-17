@@ -51,6 +51,8 @@ export const BridgeBurnInput = ({
     });
   };
 
+  const removedCoin = chainId == "43114" ? "ETH" : "AVAX";
+
   return (
     <>
       <div className="self-center px-0 py-0 z-10">
@@ -65,7 +67,7 @@ export const BridgeBurnInput = ({
             <TokenDropdown
               token={token}
               setToken={setToken}
-              tokensRemoved={["BTC"]}
+              tokensRemoved={["BTC", removedCoin]}
               tokensDisabled={["ibBTC"]}
             />
           </div>
