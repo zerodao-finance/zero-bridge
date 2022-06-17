@@ -143,6 +143,9 @@ export const useWalletBalances = () => {
         case "ETH":
           tokenAmount = ethers.utils.formatEther(bal);
           break;
+        case "AVAX":
+          tokenAmount = ethers.utils.formatEther(bal);
+          break;
         default:
           tokenAmount = ethers.utils.formatUnits(bal, 8);
       }

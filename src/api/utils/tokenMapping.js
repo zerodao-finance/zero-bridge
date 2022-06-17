@@ -8,6 +8,8 @@ export const txCardAmount = ({ amount, tokenName }) => {
   switch (tokenName.toLowerCase()) {
     case "eth":
       return ethers.utils.formatEther(bigNumAmount);
+    case "avax":
+      return ethers.utils.formatEther(bigNumAmount);
     case "usdc":
       return ethers.utils.formatUnits(bigNumAmount, 6);
     default:
