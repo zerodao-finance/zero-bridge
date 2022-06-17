@@ -83,23 +83,35 @@ export const usePriceFeedContracts = () => {
   };
 
   useEffect(() => {
-    Promise.allSettled([
-      getUniswapBtcETHPrice(),
-      getUniswapBtcUsdPrice(),
-      getUniswapUsdcETHPrice(),
-      getTraderJoeUsdcAvaxPrice(),
-    ]).then(async (result) => {
-      dispatch({
-        type: "UPDATE",
-        module: "priceFeeds",
-        effect: "data",
-        data: {
-          btc_usd: result[1].value,
-          eth_usd: result[2].value,
-          btc_eth: result[0].value,
-          avax_usd: result[3].value,
-        },
+    const fetchAllPricing = () => {
+      Promise.allSettled([
+        getUniswapBtcETHPrice(),
+        getUniswapBtcUsdPrice(),
+        getUniswapUsdcETHPrice(),
+        getTraderJoeUsdcAvaxPrice(),
+      ]).then(async (result) => {
+        dispatch({
+          type: "UPDATE",
+          module: "priceFeeds",
+          effect: "data",
+          data: {
+            btc_usd: result[1].value,
+            eth_usd: result[2].value,
+            btc_eth: result[0].value,
+            avax_usd: result[3].value,
+          },
+        });
       });
-    });
-  }, [address, network]);
+    };
+
+    fetchAllPricing();
+    var timerId;
+    timerId = setInterval(() => {
+      fetchAllPricing();
+    }, 300000);
+
+    return function cleanup() {
+      clearInterval(timerId);
+    };
+  }, []);
 };
