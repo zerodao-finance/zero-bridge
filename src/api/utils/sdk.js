@@ -157,7 +157,6 @@ export class sdkTransfer {
 
     // initialize Transfer Request Object
     this.transferRequest = (async function () {
-      console.log("signer", signer);
       const asset = tokenMapping({
         tokenName: self.token,
         chainId: self.chainId,
