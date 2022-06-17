@@ -9,7 +9,7 @@ import { GlobalStateHelper } from "../../utils/global.utilities";
 export const useBridgeInput = () => {
   const { state, dispatch } = useContext(storeContext);
   const StateHelper = new GlobalStateHelper(state, dispatch);
-  const { btc_usd, eth_usd } = state.priceFeeds.data;
+  const { btc_usd, eth_usd, avax_usd } = state.priceFeeds.data;
   const { wallet } = state;
   const { ETH, renBTC } = state.transfer.display;
   const { amount, isFast, token, quote, slippage } = state.transfer.input;
@@ -78,13 +78,14 @@ export const useBridgeInput = () => {
     token: token,
     setToken: setToken,
     effect: updateAmount,
-    btc_usd: btc_usd,
-    eth_usd: eth_usd,
-    slippage: slippage,
+    btc_usd,
+    eth_usd,
+    avax_usd,
+    slippage,
     setSlippage: setTransferSlippage,
     chainId: wallet.chainId,
     setQuote: setQuote,
-    quote: quote,
+    quote,
   });
 
   const getGatewayData = ({ ...otherProps } = {}) => ({

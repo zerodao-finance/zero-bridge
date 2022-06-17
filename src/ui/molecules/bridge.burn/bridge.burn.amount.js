@@ -20,6 +20,7 @@ export const BridgeBurnInput = ({
   effect,
   btc_usd,
   eth_usd,
+  avax_usd,
   chainId,
   quote,
   setQuote,
@@ -33,6 +34,8 @@ export const BridgeBurnInput = ({
         return formatUSDC(amount);
       case "ETH":
         return formatUSDCPricedETH(amount, eth_usd);
+      case "AVAX":
+        return formatUSDCPricedETH(amount, avax_usd);
       default:
         return formatUSDCPricedBTC(amount, btc_usd);
     }
@@ -82,7 +85,7 @@ export const BridgeBurnInput = ({
           </div>
         </div>
         <div className=" xl:mr-5 tracking-wider w-full flex justify-end pr-2 text-xs text-badger-yellow-neon-400">
-          <span className="italic">~ {btc_usd && formattedAmount()}</span>
+          <span className="italic">~ {formattedAmount()}</span>
         </div>
         {amount > 0 && (
           <>

@@ -32,6 +32,8 @@ export const tokenMapping = ({ tokenName, chainId }) => {
   const fixture = selectFixture(chainId);
 
   switch (tokenName.toLowerCase()) {
+    case "avax":
+      return ethers.constants.AddressZero;
     case "eth":
       return ethers.constants.AddressZero;
     case "renbtc":

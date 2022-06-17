@@ -8,6 +8,8 @@ function formatOutput(token, output) {
       return ethers.utils.formatUnits(output, 6);
     case "ETH":
       return ethers.utils.formatEther(output);
+    case "AVAX":
+      return ethers.utils.formatEther(output);
     default:
       return ethers.utils.formatUnits(output, 8);
   }
