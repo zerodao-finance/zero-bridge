@@ -24,14 +24,29 @@ export const BridgeTransferFee = ({
 
   // Fetch fees when the amount changes
   useEffect(async () => {
-    if (amount > 0) {
-      setIsFeeLoading(true);
+    const getNewQuote = async () => {
       const output = await getTransferOutput({ amount, token, chainId });
       setQuote(output);
+    };
+
+    var timerId;
+    if (amount > 0) {
+      setIsFeeLoading(true);
+      await getNewQuote();
       setIsFeeLoading(false);
-      return;
+      timerId = setInterval(async () => {
+        setIsFeeLoading(true);
+        await getNewQuote();
+        setIsFeeLoading(false);
+      }, 15000);
+    } else {
+      setQuote(null);
+      clearInterval(timerId);
     }
-    setQuote(null);
+
+    return function cleanup() {
+      clearInterval(timerId);
+    };
   }, [amount, token, chainId]);
 
   useEffect(() => {
