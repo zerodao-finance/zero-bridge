@@ -21,37 +21,48 @@ export const BridgeTransferFee = ({
 }) => {
   const [isFeeLoading, setIsFeeLoading] = useState(false);
   const [usdcEstimate, setUsdcEstimate] = useState();
+  const [interval, setInterval] = useState(0);
 
   // Fetch fees when the amount changes
   useEffect(async () => {
-    const getNewQuote = async () => {
-      const output = await getTransferOutput({ amount, token, chainId });
-      setQuote(output);
-    };
-
-    var timerId;
     if (amount > 0) {
       setIsFeeLoading(true);
-      await getNewQuote();
+      const immediateQuote = await getTransferOutput({
+        amount,
+        token,
+        chainId,
+      });
+      setQuote(immediateQuote);
       setIsFeeLoading(false);
-      timerId = setInterval(async () => {
-        setIsFeeLoading(true);
-        await getNewQuote();
-        setIsFeeLoading(false);
-      }, 15000);
+
+      // if(interval) {
+      //   clearInterval(interval);
+      //   setInterval(0);
+      // }
+
+      let isSubscribed = true;
+      const timerId = setInterval(() => {
+        console.log("Refresh");
+        getTransferOutput({ amount, token, chainId }).then((timerQuote) => {
+          isSubscribed ? setQuote(timerQuote) : null;
+        });
+      }, 500);
+      setInterval(timerId);
+      return () => {
+        isSubscribed = false;
+        clearInterval(timerId);
+        setInterval(0);
+      };
     } else {
-      setQuote(null);
-      clearInterval(timerId);
+      setQuote(0);
     }
 
-    return function cleanup() {
-      clearInterval(timerId);
-    };
+    return () => clearInterval(timerId);
   }, [amount, token, chainId]);
 
   useEffect(() => {
-    setUsdcEstimate(formatConversionOutput());
-  }, [quote]);
+    setUsdcEstimate(amount > 0 ? formatConversionOutput() : "$0.00");
+  }, [quote, amount]);
 
   function formatConversionOutput() {
     switch (token) {
@@ -82,7 +93,7 @@ export const BridgeTransferFee = ({
         </div>
         <div className="pt-3">
           <DefaultInput
-            value={quote || 0}
+            value={amount > 0 ? quote || 0 : 0}
             onChange={() => {}}
             loading={isFeeLoading}
             disabled

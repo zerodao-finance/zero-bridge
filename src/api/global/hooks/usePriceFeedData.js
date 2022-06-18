@@ -110,7 +110,7 @@ export const usePriceFeedContracts = () => {
       fetchAllPricing();
     }, 300000);
 
-    return function cleanup() {
+    return () => {
       clearInterval(timerId);
     };
   }, []);
