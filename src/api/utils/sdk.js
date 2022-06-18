@@ -257,7 +257,6 @@ export class sdkBurn {
 
   async call() {
     const burnRequest = await this.burnRequest();
-    const chainId = this.chainId;
     const utxo = burnRequest.waitForRemoteTransaction().then((utxo) => utxo);
     burnRequest.minOut = this.minOut;
     burnRequest.data = ethers.utils.defaultAbiCoder.encode(
@@ -281,9 +280,8 @@ export class sdkBurn {
       asset.toLowerCase() !== ETHEREUM.renBTC.toLowerCase() &&
       asset.toLowerCase() !== ARBITRUM.renBTC.toLowerCase()
     ) {
-      const contractAddressBackup = burnRequest.contractAddress;
-      const assetAddress = burnRequest.asset;
       burnRequest.sign = async function (signer, contractAddress) {
+        const assetAddress = this.asset;
         signer.provider.getGasPrice = createGetGasPrice("rapid");
 
         const token = new ethers.Contract(
@@ -306,12 +304,11 @@ export class sdkBurn {
 
         const tokenNonce = String(
           await new ethers.Contract(
-            contractAddressBackup,
+            this.contractAddress,
             ["function nonces(address) view returns (uint256) "],
             signer
           ).nonces(await signer.getAddress())
         );
-        console.log("tokenNonce", tokenNonce);
         this.contractAddress = contractAddress;
         burnRequest.toEIP712 = function (...args) {
           this.asset = assetAddress;
@@ -324,16 +321,8 @@ export class sdkBurn {
               : assetName;
           return toEIP712.apply(this, args);
         };
-        const payload = this.toEIP712(contractAddress, chainId);
-        delete payload.types.EIP712Domain;
-        const sig = await signer._signTypedData(
-          payload.domain,
-          payload.types,
-          payload.message
-        );
-        return (this.signature = ethers.utils.joinSignature(
-          ethers.utils.splitSignature(sig)
-        ));
+
+        return await sign.call(this, signer, contractAddress);
       };
     }
 
