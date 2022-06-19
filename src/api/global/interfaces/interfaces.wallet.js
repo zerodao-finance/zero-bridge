@@ -126,6 +126,7 @@ export const useWalletBalances = () => {
   // Balance States
   const [balances, setBalances] = useState({
     ETH: 0,
+    AVAX: 0,
     renBTC: 0,
     WBTC: 0,
     ibBTC: 0,
@@ -170,7 +171,7 @@ export const useWalletBalances = () => {
     if (!address) {
       return ethers.utils.parseUnits("0", 6);
     }
-    if (tokenName.toLowerCase() === "eth") {
+    if (["eth", "avax"].includes(tokenName.toLowerCase())) {
       const ethBalance = await provider.getBalance(address);
       return ethBalance;
     } else {
