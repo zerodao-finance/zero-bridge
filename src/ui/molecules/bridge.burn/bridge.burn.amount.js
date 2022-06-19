@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { storeContext } from "../../../api/global";
 import { DefaultInput } from "../../atoms/inputs/input.default";
 import { ArrowDownIcon } from "@heroicons/react/solid";
@@ -17,7 +17,8 @@ export const BridgeBurnInput = ({
   setToken,
   token,
   updateDestination,
-  effect,
+  updateAmount,
+  setAmount,
   btc_usd,
   eth_usd,
   avax_usd,
@@ -27,6 +28,10 @@ export const BridgeBurnInput = ({
 }) => {
   const { dispatch } = useContext(storeContext);
   const { balances } = useWalletBalances();
+
+  useEffect(async () => {
+    setAmount(0);
+  }, [token]);
 
   const formattedAmount = () => {
     switch (token) {
@@ -81,7 +86,11 @@ export const BridgeBurnInput = ({
             >
               MAX
             </button>
-            <DefaultInput value={amount} onChange={effect} withBorder={false} />
+            <DefaultInput
+              value={amount}
+              onChange={updateAmount}
+              withBorder={false}
+            />
           </div>
         </div>
         <div className=" xl:mr-5 tracking-wider w-full flex justify-end pr-2 text-xs text-badger-yellow-neon-400">

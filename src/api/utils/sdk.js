@@ -65,7 +65,7 @@ DECIMALS[ethers.constants.AddressZero] = 18;
 
 const signUSDCAVAX = async function (signer, contractAddress) {
   const asset = this.asset;
-  this.asset = getFixtures("43113").renBTC;
+  this.asset = getFixtures("43114").renBTC;
   const tokenNonce = String(
     await new ethers.Contract(
       this.contractAddress,

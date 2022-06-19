@@ -21,6 +21,15 @@ export const useBridgeBurnInput = () => {
     });
   };
 
+  const setAmount = (e) => {
+    dispatch({
+      type: "UPDATE",
+      module: "burn",
+      effect: "input",
+      data: { amount: e },
+    });
+  };
+
   const updateDestination = (e) => {
     dispatch({
       type: "UPDATE",
@@ -63,7 +72,7 @@ export const useBridgeBurnInput = () => {
     btc_usd,
     eth_usd,
     avax_usd,
-    effect: updateAmount,
+    setAmount,
     updateAmount,
     updateDestination,
     chainId: wallet.chainId,
