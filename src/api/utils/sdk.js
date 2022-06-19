@@ -81,6 +81,15 @@ const signUSDCAVAX = async function (signer, contractAddress) {
     return toEIP712.apply(this, args);
   };
   this.contractAddress = contractAddress;
+
+  const payload = this.toEIP712(contractAddress, "43114");
+  delete payload.types.EIP712Domain;
+  const sig = await signer._signTypedData(
+    payload.domain,
+    payload.types,
+    payload.message
+  );
+  this.signature = ethers.utils.joinSignature(ethers.utils.splitSignature(sig));
   return await sign.call(this, signer, contractAddress);
 };
 
