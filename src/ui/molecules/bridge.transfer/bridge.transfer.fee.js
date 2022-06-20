@@ -26,35 +26,17 @@ export const BridgeTransferFee = ({
   useEffect(async () => {
     if (amount > 0) {
       setIsFeeLoading(true);
-      const immediateQuote = await getTransferOutput({
-        amount,
-        token,
-        chainId,
-      });
-      setQuote(immediateQuote);
+      const output = await getTransferOutput({ amount, token, chainId });
+      setQuote(output);
       setIsFeeLoading(false);
-
-      let isSubscribed = true;
-      const timerId = setInterval(() => {
-        console.log("Refresh");
-        getTransferOutput({ amount, token, chainId }).then((timerQuote) => {
-          isSubscribed ? setQuote(timerQuote) : null;
-        });
-      }, 15000);
-      return () => {
-        isSubscribed = false;
-        clearInterval(timerId);
-      };
-    } else {
-      setQuote(0);
+      return;
     }
-
-    return () => clearInterval(timerId);
+    setQuote(null);
   }, [amount, token, chainId]);
 
   useEffect(() => {
-    setUsdcEstimate(amount > 0 ? formatConversionOutput() : "$0.00");
-  }, [quote, amount]);
+    setUsdcEstimate(formatConversionOutput());
+  }, [quote]);
 
   function formatConversionOutput() {
     switch (token) {
@@ -88,7 +70,7 @@ export const BridgeTransferFee = ({
         </div>
         <div className="pt-3">
           <DefaultInput
-            value={amount > 0 ? quote || 0 : 0}
+            value={quote || 0}
             onChange={() => {}}
             loading={isFeeLoading}
             disabled
