@@ -701,7 +701,6 @@ select {
   padding-right: 2.5rem;
   -webkit-print-color-adjust: exact;
   color-adjust: exact;
-  print-color-adjust: exact;
 }
 
 [multiple] {
@@ -712,7 +711,6 @@ select {
   padding-right: 0.75rem;
   -webkit-print-color-adjust: unset;
   color-adjust: unset;
-  print-color-adjust: unset;
 }
 
 [type="checkbox"],
@@ -723,7 +721,6 @@ select {
   padding: 0;
   -webkit-print-color-adjust: exact;
   color-adjust: exact;
-  print-color-adjust: exact;
   display: inline-block;
   vertical-align: middle;
   background-origin: border-box;
@@ -1182,6 +1179,10 @@ input:checked + .toggle-bg {
   top: -0.25rem;
 }
 
+.right-2 {
+  right: 0.5rem;
+}
+
 .right-3 {
   right: 0.75rem;
 }
@@ -1317,10 +1318,6 @@ input:checked + .toggle-bg {
   margin-top: 1px;
 }
 
-.-mr-1 {
-  margin-right: -0.25rem;
-}
-
 .mt-3 {
   margin-top: 0.75rem;
 }
@@ -1331,6 +1328,10 @@ input:checked + .toggle-bg {
 
 .mr-3 {
   margin-right: 0.75rem;
+}
+
+.-mr-1 {
+  margin-right: -0.25rem;
 }
 
 .mt-1 {
@@ -1430,10 +1431,6 @@ input:checked + .toggle-bg {
   height: fit-content;
 }
 
-.h-4 {
-  height: 1rem;
-}
-
 .h-12 {
   height: 3rem;
 }
@@ -1460,6 +1457,10 @@ input:checked + .toggle-bg {
 
 .h-max {
   height: max-content;
+}
+
+.h-4 {
+  height: 1rem;
 }
 
 .h-\[2rem\] {
@@ -1605,10 +1606,6 @@ input:checked + .toggle-bg {
 
 .max-w-\[160px\] {
   max-width: 160px;
-}
-
-.max-w-\[500px\] {
-  max-width: 500px;
 }
 
 .max-w-\[300px\] {

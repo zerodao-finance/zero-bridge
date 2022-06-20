@@ -6,16 +6,15 @@ import { ReactComponent as renBTC } from "../../../assets/svg-coins/renbtc.svg";
 import { ReactComponent as WBTC } from "../../../assets/svg-coins/wbtc.svg";
 import { ReactComponent as ibBTC } from "../../../assets/svg-coins/ibbtc.svg";
 import { ReactComponent as USDC } from "../../../assets/svg-coins/usdc.svg";
-import { ReactComponent as AVAX } from "../../../assets/svg-coins/avax.svg";
 import { useLocation } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-/*
+/* 
 * How to use 'TokenDropdown' component
-* Create 'useState' variables and pass it to 'TokenDropdown'
+* Create 'useState' variables and pass it to 'TokenDropdown' 
 * (props are 'token' and 'setToken' where 'token' is a string of the token symbol)
 
 * Additional Props: 'tokensRemoved' which is an array of tokens you do not want in dropdown
@@ -45,10 +44,6 @@ function TokenDropdown({
     {
       text: "ETH",
       icon: ETH,
-    },
-    {
-      text: "AVAX",
-      icon: AVAX,
     },
     {
       text: "USDC",

@@ -7,13 +7,7 @@ import {
 } from "../../../api/hooks/transfer-fees";
 import { BridgeTransferFeeInformation } from "./bridge.transfer.feeInformation";
 
-export const BridgeTransferSubmit = ({
-  action,
-  amount,
-  token,
-  btc_usd,
-  chainId,
-}) => {
+export const BridgeTransferSubmit = ({ action, amount, token, btc_usd }) => {
   const { keeper } = useZero();
   const [buttonLabel, setButtonLabel] = useState("Input Valid Amount");
   const [active, setActive] = useState(false);
@@ -22,12 +16,12 @@ export const BridgeTransferSubmit = ({
 
   useEffect(async () => {
     if (amount > 0) {
-      const output = await getTransferOutput({ amount, token, chainId });
-      const feeAmounts = await getFeeBreakdown({ amount, chainId });
+      const output = await getTransferOutput({ amount, token });
+      const feeAmounts = await getFeeBreakdown({ amount, token });
       setFees(feeAmounts);
       setTransferOutput(output);
     }
-  }, [amount, token, chainId]);
+  }, [amount, token]);
 
   useEffect(async () => {
     setActive(false);
