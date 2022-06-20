@@ -22,9 +22,6 @@ export const SlippageInput = ({ token, slippage, setSlippage }) => {
       case "ETH":
         setSlippage("10.0");
         break;
-      case "AVAX":
-        setSlippage("10.0");
-        break;
       default:
         setSlippage("2.0");
     }

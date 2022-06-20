@@ -1,11 +1,11 @@
 import { storeContext } from "../global";
+
 import Web3 from "web3";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useContext, useState } from "react";
 import { URLS } from "./chains";
 import { NETWORK_ROUTER } from "./network";
-import { ethers } from "ethers";
 
 export default function wallet_modal() {
   const [loading, setLoading] = useState(false);
@@ -60,12 +60,10 @@ export default function wallet_modal() {
         dispatch({ type: "UPDATE_WALLET", data: { address: accounts[0] } });
       });
       provider.on("chainChanged", (chainId) => {
-        const baseTenChainId = ethers.BigNumber.from(chainId).toString();
         dispatch({
           type: "UPDATE_WALLET",
           data: {
-            network: NETWORK_ROUTER[baseTenChainId],
-            chainId: baseTenChainId,
+            network: NETWORK_ROUTER[parseInt(chainId)],
           },
         });
       });

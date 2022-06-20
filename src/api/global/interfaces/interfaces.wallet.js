@@ -26,9 +26,7 @@ export const useWalletConnection = () => {
     const web3Modal = await getweb3();
     const curChainId = await web3Modal.eth.getChainId();
     setChainId(
-      curChainId == 42161 || curChainId == 1 || curChainId == 43114
-        ? String(curChainId)
-        : "1"
+      curChainId == 42161 || curChainId == 1 ? String(curChainId) : "1"
     );
   }, []);
 
@@ -38,14 +36,14 @@ export const useWalletConnection = () => {
         // TODO: Make getweb3 dynamic and allow the app to define what chain we're on
         const web3Modal = await getweb3();
         try {
-          await web3Modal.currentProvider.request({
+          await web3Modal.currentProvider.sendAsync({
             method: "wallet_switchEthereumChain",
             params: [{ chainId: CHAINS[chainId].chainId }],
           });
         } catch (switchError) {
-          if (switchError.code === 4902 || switchError.code === -32603) {
+          if (switchError.code === 4902) {
             try {
-              await web3Modal.currentProvider.request({
+              await web3Modal.currentProvider.sendAsync({
                 method: "wallet_addEthereumChain",
                 params: [CHAINS[chainId]],
               });
@@ -119,14 +117,13 @@ export const useCheckWalletConnected = () => {
 export const useWalletBalances = () => {
   // Global Wallet State
   const { state } = useContext(storeContext);
-  const { provider, address, chainId } = state.wallet;
+  const { provider, address, network, chainId } = state.wallet;
   // User Selected Token
   const { getBridgeBurnInputProps } = useBridgeBurnInput();
   const { token } = getBridgeBurnInputProps();
   // Balance States
   const [balances, setBalances] = useState({
     ETH: 0,
-    AVAX: 0,
     renBTC: 0,
     WBTC: 0,
     ibBTC: 0,
@@ -144,9 +141,6 @@ export const useWalletBalances = () => {
         case "ETH":
           tokenAmount = ethers.utils.formatEther(bal);
           break;
-        case "AVAX":
-          tokenAmount = ethers.utils.formatEther(bal);
-          break;
         default:
           tokenAmount = ethers.utils.formatUnits(bal, 8);
       }
@@ -155,7 +149,7 @@ export const useWalletBalances = () => {
         [token]: tokenAmount,
       });
     });
-  }, [token, provider, chainId]);
+  }, [token, address, network, provider]);
 
   const balanceOfABI = [
     {
@@ -171,7 +165,7 @@ export const useWalletBalances = () => {
     if (!address) {
       return ethers.utils.parseUnits("0", 6);
     }
-    if (["eth", "avax"].includes(tokenName.toLowerCase())) {
+    if (tokenName.toLowerCase() === "eth") {
       const ethBalance = await provider.getBalance(address);
       return ethBalance;
     } else {

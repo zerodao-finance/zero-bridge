@@ -1,6 +1,6 @@
 import { PrimaryRoundedButton } from "../../atoms/buttons/button.rounded";
 import { useEffect, useState } from "react";
-import { getFeeBreakdown } from "../../../api/hooks/burn-fees";
+import { getBurnOutput, getFeeBreakdown } from "../../../api/hooks/burn-fees";
 import { ethers } from "ethers";
 import { BridgeTransferFeeInformation } from "../bridge.transfer/bridge.transfer.feeInformation";
 import { useZero } from "../../../api/global/interfaces/interfaces.zero";
@@ -13,41 +13,39 @@ export const BridgeBurnSubmit = ({
   amount,
   token,
   btc_usd,
-  chainId,
-  quote,
 }) => {
   const [buttonLabel, setButtonLabel] = useState(
     "Enter Valid Recipient Address"
   );
   const { keeper } = useZero();
   const [active, setActive] = useState(false);
+  const [burnOutput, setBurnOutput] = useState();
   const [fees, setFees] = useState({});
 
   useEffect(async () => {
     if (amount > 0) {
-      const feeAmounts = await getFeeBreakdown({ amount, token, chainId });
+      const output = await getBurnOutput({ amount, token });
+      const feeAmounts = await getFeeBreakdown({ amount, token });
+      setBurnOutput(output);
       setFees(feeAmounts);
+    } else {
+      setBurnOutput(0);
     }
-  }, [amount, token, chainId]);
+  }, [amount, token]);
 
   useEffect(async () => {
     setActive(false);
     if (destination.match(btcRegex)) {
       if (keeper.length <= 0) {
         setButtonLabel("Awaiting Keeper");
-      } else if (
-        ethers.utils.formatUnits(
-          ethers.utils.parseUnits(quote, 8).mul(ethers.BigNumber.from(btc_usd)),
-          14
-        ) > 15
-      ) {
+      } else if (burnOutput * ethers.utils.formatUnits(btc_usd, 6) > 15) {
         setButtonLabel("Release Funds");
         setActive(true);
       } else {
         setButtonLabel("Result Must Be More Than $15");
       }
     }
-  }, [destination, quote, keeper]);
+  }, [destination, burnOutput, keeper]);
 
   return (
     <>

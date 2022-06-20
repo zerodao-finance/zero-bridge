@@ -1,8 +1,6 @@
 import { storeContext } from "../global";
 import { useContext, useEffect } from "react";
 import { ChainId, Token, WETH, Fetcher, Route } from "@uniswap/sdk";
-import * as JOE from "@traderjoe-xyz/sdk";
-import fixtures from "zero-protocol/lib/fixtures";
 import { ethers } from "ethers";
 
 export const usePriceFeedContracts = () => {
@@ -59,35 +57,11 @@ export const usePriceFeedContracts = () => {
     return ethers.utils.parseUnits(usdcForOneETH, 6).toString();
   };
 
-  const getTraderJoeUsdcAvaxPrice = async () => {
-    const avalancheProvider = new ethers.providers.JsonRpcProvider(
-      "https://api.avax.network/ext/bc/C/rpc"
-    );
-
-    const avUSDC = new JOE.Token(
-      JOE.ChainId.AVALANCHE,
-      fixtures.AVALANCHE.USDC,
-      6
-    );
-
-    const pair = await JOE.Fetcher.fetchPairData(
-      avUSDC,
-      JOE.WAVAX[JOE.ChainId.AVALANCHE],
-      avalancheProvider
-    );
-
-    const route = new JOE.Route([pair], JOE.WAVAX[avUSDC.chainId]);
-
-    const usdcForOneAVAX = route.midPrice.toSignificant(7);
-    return ethers.utils.parseUnits(usdcForOneAVAX, 6).toString();
-  };
-
   useEffect(() => {
     Promise.allSettled([
       getUniswapBtcETHPrice(),
       getUniswapBtcUsdPrice(),
       getUniswapUsdcETHPrice(),
-      getTraderJoeUsdcAvaxPrice(),
     ]).then(async (result) => {
       dispatch({
         type: "UPDATE",
@@ -97,7 +71,6 @@ export const usePriceFeedContracts = () => {
           btc_usd: result[1].value,
           eth_usd: result[2].value,
           btc_eth: result[0].value,
-          avax_usd: result[3].value,
         },
       });
     });

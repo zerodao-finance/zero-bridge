@@ -28,7 +28,6 @@ export const globalBridgeState = {
         isFast: false,
         isLoading: false,
         error: null,
-        quote: "0",
       },
       display: {
         ETH: 0,
@@ -49,7 +48,6 @@ export const globalBridgeState = {
         token: "renBTC",
         isLoading: false,
         error: null,
-        quote: "0",
       },
     },
     priceFeeds: {
@@ -57,7 +55,6 @@ export const globalBridgeState = {
         btc_usd: 0,
         eth_usd: 0,
         btc_eth: 0,
-        avax_usd: 0,
       },
     },
     requests: {
