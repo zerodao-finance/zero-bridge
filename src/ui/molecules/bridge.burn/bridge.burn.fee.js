@@ -2,14 +2,20 @@ import { useEffect, useState } from "react";
 import { getBurnOutput } from "../../../api/hooks/burn-fees";
 import { formatUSDCPricedBTC } from "../../../api/utils/formatters";
 
-export const BridgeBurnTransferFee = ({ amount, btc_usd, token }) => {
+export const BridgeBurnTransferFee = ({
+  amount,
+  btc_usd,
+  token,
+  chainId,
+  quote,
+  setQuote,
+}) => {
   const [isFeeLoading, setIsFeeLoading] = useState(false);
-  const [fee, setFee] = useState();
   useEffect(async () => {
     if (amount > 0) {
       setIsFeeLoading(true);
-      const output = await getBurnOutput({ amount, token });
-      setFee(output);
+      const output = await getBurnOutput({ amount, token, chainId });
+      setQuote(output);
       setIsFeeLoading(false);
     }
   }, [amount, token]);
@@ -26,12 +32,12 @@ export const BridgeBurnTransferFee = ({ amount, btc_usd, token }) => {
             </div>
             <div>
               <span className={`${isFeeLoading && "animate-pulse"}`}>
-                {fee || 0} BTC
+                {quote || 0} BTC
               </span>
             </div>
           </div>
           <div className="xl:mr-5 italic tracking-wider w-full pr-2 text-right text-xs text-badger-yellow-neon-400">
-            ~ {formatUSDCPricedBTC(fee, btc_usd)}
+            ~ {formatUSDCPricedBTC(quote, btc_usd)}
           </div>
         </div>
       )}
