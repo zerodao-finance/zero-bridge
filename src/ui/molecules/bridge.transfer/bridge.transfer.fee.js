@@ -21,7 +21,6 @@ export const BridgeTransferFee = ({
 }) => {
   const [isFeeLoading, setIsFeeLoading] = useState(false);
   const [usdcEstimate, setUsdcEstimate] = useState();
-  const [interval, setInterval] = useState(0);
 
   // Fetch fees when the amount changes
   useEffect(async () => {
@@ -41,7 +40,7 @@ export const BridgeTransferFee = ({
         getTransferOutput({ amount, token, chainId }).then((timerQuote) => {
           isSubscribed ? setQuote(timerQuote) : null;
         });
-      }, 500);
+      }, 15000);
       return () => {
         isSubscribed = false;
         clearInterval(timerId);

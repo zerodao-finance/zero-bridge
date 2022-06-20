@@ -11,7 +11,6 @@ export const BridgeBurnTransferFee = ({
   setQuote,
 }) => {
   const [isFeeLoading, setIsFeeLoading] = useState(false);
-  const [interval, setInterval] = useState(0);
 
   useEffect(async () => {
     if (amount > 0) {
@@ -30,7 +29,7 @@ export const BridgeBurnTransferFee = ({
         getBurnOutput({ amount, token, chainId }).then((timerQuote) => {
           isSubscribed ? setQuote(timerQuote) : null;
         });
-      }, 500);
+      }, 15000);
 
       return () => {
         isSubscribed = false;
