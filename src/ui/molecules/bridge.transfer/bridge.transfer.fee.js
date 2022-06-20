@@ -35,11 +35,6 @@ export const BridgeTransferFee = ({
       setQuote(immediateQuote);
       setIsFeeLoading(false);
 
-      // if(interval) {
-      //   clearInterval(interval);
-      //   setInterval(0);
-      // }
-
       let isSubscribed = true;
       const timerId = setInterval(() => {
         console.log("Refresh");
@@ -47,11 +42,9 @@ export const BridgeTransferFee = ({
           isSubscribed ? setQuote(timerQuote) : null;
         });
       }, 500);
-      setInterval(timerId);
       return () => {
         isSubscribed = false;
         clearInterval(timerId);
-        setInterval(0);
       };
     } else {
       setQuote(0);

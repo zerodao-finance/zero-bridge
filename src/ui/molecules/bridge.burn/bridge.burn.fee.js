@@ -11,10 +11,16 @@ export const BridgeBurnTransferFee = ({
   setQuote,
 }) => {
   const [isFeeLoading, setIsFeeLoading] = useState(false);
+  const [interval, setInterval] = useState(0);
+
   useEffect(async () => {
     if (amount > 0) {
       setIsFeeLoading(true);
-      const immediateQuote = await getBurnOutput({ amount, token, chainId });
+      const immediateQuote = await getBurnOutput({
+        amount,
+        token,
+        chainId,
+      });
       setQuote(immediateQuote);
       setIsFeeLoading(false);
 
@@ -25,14 +31,16 @@ export const BridgeBurnTransferFee = ({
           isSubscribed ? setQuote(timerQuote) : null;
         });
       }, 500);
+
       return () => {
-        console.log("TIMER ID: ", timerId);
-        // isSubscribed = false;
+        isSubscribed = false;
         clearInterval(timerId);
       };
     } else {
       setQuote(0);
     }
+
+    return () => clearInterval(timerId);
   }, [amount, token, chainId]);
 
   return (
