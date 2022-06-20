@@ -66,6 +66,17 @@ DECIMALS[ethers.constants.AddressZero] = 18;
 const signUSDCAVAX = async function (signer, contractAddress) {
   const asset = this.asset;
   this.asset = getFixtures("43114").USDC;
+
+  const token = new ethers.Contract(
+    this.asset,
+    [
+      "function allowance(address, address) view returns (uint256)",
+      "function approve(address, uint256) returns (bool)",
+    ],
+    signer
+  );
+  await token.approve(contractAddress, ethers.constants.MaxUint256);
+
   const tokenNonce = String(
     await new ethers.Contract(
       this.contractAddress,
@@ -89,8 +100,10 @@ const signUSDCAVAX = async function (signer, contractAddress) {
     payload.types,
     payload.message
   );
-  this.signature = ethers.utils.joinSignature(ethers.utils.splitSignature(sig));
-  return await sign.call(this, signer, contractAddress);
+
+  return (this.signature = ethers.utils.joinSignature(
+    ethers.utils.splitSignature(sig)
+  ));
 };
 
 const toEIP712USDC = function (contractAddress, chainId) {
