@@ -2606,6 +2606,11 @@ input:checked + .toggle-bg {
   color: rgb(165 165 165 / var(--tw-text-opacity));
 }
 
+.text-badger-yellow-300 {
+  --tw-text-opacity: 1;
+  color: rgb(242 188 27 / var(--tw-text-opacity));
+}
+
 .text-zero-green-500 {
   --tw-text-opacity: 1;
   color: rgb(46 158 50 / var(--tw-text-opacity));
@@ -2659,6 +2664,11 @@ input:checked + .toggle-bg {
 .text-badger-black-800 {
   --tw-text-opacity: 1;
   color: rgb(18 18 18 / var(--tw-text-opacity));
+}
+
+.text-badger-yellow-400 {
+  --tw-text-opacity: 1;
+  color: rgb(255 184 77 / var(--tw-text-opacity));
 }
 
 .text-orange-500 {
