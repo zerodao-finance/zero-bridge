@@ -47,7 +47,8 @@ export const BurnManageCard = ({ data }) => {
 function ParseDetails(data, type, truncateAddress) {
   switch (type) {
     case "burn":
-      if (data.underwriterRequest?.contractAddress)
+      if (!data || !data.underwriterRequest) break;
+      if (data.underwriterRequest?.contractAddress) {
         return (
           <>
             <div className="grid grid-cols-2">
@@ -57,7 +58,7 @@ function ParseDetails(data, type, truncateAddress) {
               <p className="text-badger-yellow-300 justify-self-end">
                 {truncateAddress(
                   ethers.utils.getAddress(
-                    data.underwriterRequest.contractAddress
+                    data.underwriterRequest?.contractAddress
                   )
                 )}
               </p>
@@ -68,7 +69,7 @@ function ParseDetails(data, type, truncateAddress) {
               <a
                 className="text-xs justify-self-end underline"
                 href={
-                  getExplorerRoot(String(data.underwriterRequest.chainId)) +
+                  getExplorerRoot(String(data.underwriterRequest?.chainId)) +
                   ethers.utils.getAddress(data.hostTX.to)
                 }
                 target="_blank"
@@ -80,23 +81,25 @@ function ParseDetails(data, type, truncateAddress) {
               <span className="justify-self-end">
                 {" "}
                 {txCardAmount({
-                  amount: data.underwriterRequest.amount,
-                  tokenName: data.underwriterRequest.assetName,
+                  amount: data.underwriterRequest?.amount,
+                  tokenName: data.underwriterRequest?.assetName,
                 })}{" "}
               </span>
               <span className="justify-self-start"> asset: </span>
               <span className="justify-self-end">
                 {" "}
-                {data.underwriterRequest.assetName}
+                {data.underwriterRequest?.assetName}
               </span>
               <span className="justify-self-start"> chain: </span>
               <span className="justify-self-end">
                 {" "}
-                {getChainName(String(data.underwriterRequest.chainId))}{" "}
+                {getChainName(String(data.underwriterRequest?.chainId))}{" "}
               </span>
             </div>
           </>
         );
+      }
+      if (!data || !data.hostTX) return <></>;
       return (
         <>
           <div className="grid grid-cols-2">
@@ -127,6 +130,8 @@ function ParseDetails(data, type, truncateAddress) {
 }
 
 export const ManageTransactionCard = ({ data }) => {
+  if (!data || !data._data || !data._data.asset) return <></>;
+
   const [details, toggle] = useState(false);
   const tokenName = reverseTokenMapping({ tokenAddress: data._data.asset });
 
@@ -185,7 +190,7 @@ export const ManageTransactionCard = ({ data }) => {
           className="underline justify-self-center text-badger-yellow-neon-400 mt-px cursor-pointer"
           onClick={() => toggle(true)}
         >
-          click for fallback mint
+          click for fallback mint details
         </div>
       </div>
     );
@@ -199,17 +204,19 @@ function Details({ data, toggle }) {
 
   return (
     <div
-      className="bg-badger-gray-500 rounded-md shadow-md text-xs max-w-[300px] px-4 py-2 grid gap-1"
+      className="bg-badger-gray-500 rounded-md shadow-md text-xs max-w-[300px] px-4 grid"
       key={data.id}
     >
-      <p
-        className="absolute -top-1 right-2 text-lg text-orange-600 cursor-pointer"
-        onClick={() => toggle(false)}
-      >
-        &times;
-      </p>
+      <div className="w-full flex justify-end h-4">
+        <p
+          className="block -top-1 -mr-1 text-lg text-orange-600 cursor-pointer"
+          onClick={() => toggle(false)}
+        >
+          &times;
+        </p>
+      </div>
       {passed ? (
-        <div className="grid h-full items-center content-center ">
+        <div className="grid h-full py-2 items-center content-center ">
           <div className="grid text-badger-white-400 grid-cols-2">
             <span className="justify-self-start"> target: </span>
             <span className="text-xs justify-self-end"> {passed.target} </span>
