@@ -127,7 +127,7 @@ function TokenDropdown({
                     <div
                       className={classNames(
                         active && !tokensDisabled.includes(item.text)
-                          ? "bg-badger-yellow-200 text-black font-medium"
+                          ? "bg-zero-green-500 text-black font-medium"
                           : "text-gray-700",
                         tokensDisabled.includes(item.text)
                           ? "opacity-50 cursor-not-allowed"

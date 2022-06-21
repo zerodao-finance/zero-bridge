@@ -90,7 +90,7 @@ export const BridgeTransferFee = ({
           />
         </div>
       </div>
-      <div className=" xl:mr-5 italic tracking-wider w-full text-right text-xs text-badger-yellow-neon-400">
+      <div className=" xl:mr-5 italic tracking-wider w-full text-right text-xs text-zero-green-500">
         ~ {usdcEstimate}
       </div>
     </div>
