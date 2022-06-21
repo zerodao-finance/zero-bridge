@@ -1,8 +1,5 @@
 import { useTransactionContext } from "../../../api/transaction";
-import {
-  ManageTransactionCard,
-  CardTypeSwitch,
-} from "../../atoms/cards/card.manage.tx";
+import { CardTypeSwitch } from "../../atoms/cards/card.manage.tx";
 import { ManageTransactionLayout } from "../../layouts/layout.manage";
 import _ from "lodash";
 export const ManageTransaction = () => {
@@ -29,7 +26,6 @@ function CardGrid(pending) {
   return (
     <>
       {_.concat(pending.burn, pending.transfer).map((d, index) => {
-        console.log(d);
         return <CardTypeSwitch data={d} key={index} type="pending" />;
       })}
     </>
