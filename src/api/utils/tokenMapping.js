@@ -5,7 +5,7 @@ const { getAddress, isAddress } = ethers.utils;
 export const txCardAmount = ({ amount, tokenName }) => {
   const bigNumAmount = ethers.BigNumber.from(amount);
 
-  switch (tokenName.toLowerCase()) {
+  switch (tokenName ? tokenName.toLowerCase() : "") {
     case "eth":
       return ethers.utils.formatEther(bigNumAmount);
     case "avax":
@@ -54,27 +54,24 @@ export const reverseTokenMapping = ({ tokenAddress }) => {
     ? getAddress(String(tokenAddress))
     : "";
 
-  // TODO: Add handling for arbitrum to this list
-  switch (checksummedAddress) {
-    case ethers.constants.AddressZero:
-      return "ETH";
-    case getAddress(fixtures.ETHEREUM.renBTC):
-      return "renBTC";
-    case getAddress(fixtures.ARBITRUM.renBTC):
-      return "renBTC";
-    case getAddress(fixtures.ETHEREUM.WBTC):
-      return "WBTC";
-    case getAddress(fixtures.ARBITRUM.WBTC):
-      return "WBTC";
-    case getAddress(fixtures.ETHEREUM.ibBTC):
-      return "ibBTC";
-    // case getAddress(fixtures.ARBITRUM.ibBTC):
-    //   return "ibBTC";
-    case getAddress(fixtures.ETHEREUM.USDC):
-      return "USDC";
-    case getAddress(fixtures.ARBITRUM.USDC):
-      return "USDC";
-    default:
-      return "unknown";
-  }
+  const fixture_array = [
+    fixtures.ETHEREUM,
+    fixtures.ARBITRUM,
+    fixtures.AVALANCHE,
+  ];
+  var tokenName = null;
+
+  fixture_array.forEach((fixture) => {
+    if (checksummedAddress == ethers.constants.AddressZero) {
+      tokenName = "ETH";
+    } else if (checksummedAddress == getAddress(fixture.renBTC)) {
+      tokenName = "renBTC";
+    } else if (checksummedAddress == getAddress(fixture.WBTC)) {
+      tokenName = "WBTC";
+    } else if (checksummedAddress == getAddress(fixture.USDC)) {
+      tokenName = "USDC";
+    }
+  });
+
+  return tokenName || "unknown";
 };
