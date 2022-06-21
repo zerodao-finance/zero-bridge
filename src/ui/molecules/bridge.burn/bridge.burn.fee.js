@@ -37,7 +37,7 @@ export const BridgeBurnTransferFee = ({
             </div>
           </div>
           <div className="xl:mr-5 italic tracking-wider w-full pr-2 text-right text-xs text-zero-green-500">
-            ~ {formatUSDCPricedBTC(fee, btc_usd)}
+            ~ {formatUSDCPricedBTC(quote, btc_usd)}
           </div>
         </div>
       )}
