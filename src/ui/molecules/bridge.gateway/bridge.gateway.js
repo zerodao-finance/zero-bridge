@@ -14,12 +14,12 @@ export const BridgeGatewayConfirmation = ({
   );
   return (
     <>
-      <div className="flex flex-col justify-center items-center gap-5 min-h-[290px] text-black dark:text-badger-yellow-neon-400">
+      <div className="flex flex-col justify-center items-center gap-5 min-h-[290px] text-black dark:text-zero-green-500">
         <BitcoinQR bitcoinAddress={gatewayAddress} amount={transferAmount} />
         <p className="cursor-copy select-all">{gatewayAddress}</p>
         <div
           id="usage"
-          className="text-[11px] indent max-w-[300px] text-main-green dark:text-badger-yellow-neon-400 justify-self-end"
+          className="text-[11px] indent max-w-[300px] text-main-green dark:text-zero-green-500 justify-self-end"
         >
           <p>
             Reminder: deposit exactly {transferAmount} amount of BTC indicated

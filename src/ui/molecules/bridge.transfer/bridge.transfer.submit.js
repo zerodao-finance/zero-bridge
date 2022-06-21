@@ -7,7 +7,13 @@ import {
 } from "../../../api/hooks/transfer-fees";
 import { BridgeTransferFeeInformation } from "./bridge.transfer.feeInformation";
 
-export const BridgeTransferSubmit = ({ action, amount, token, btc_usd }) => {
+export const BridgeTransferSubmit = ({
+  action,
+  amount,
+  token,
+  btc_usd,
+  chainId,
+}) => {
   const { keeper } = useZero();
   const [buttonLabel, setButtonLabel] = useState("Input Valid Amount");
   const [active, setActive] = useState(false);
@@ -16,12 +22,12 @@ export const BridgeTransferSubmit = ({ action, amount, token, btc_usd }) => {
 
   useEffect(async () => {
     if (amount > 0) {
-      const output = await getTransferOutput({ amount, token });
-      const feeAmounts = await getFeeBreakdown({ amount, token });
+      const output = await getTransferOutput({ amount, token, chainId });
+      const feeAmounts = await getFeeBreakdown({ amount, chainId });
       setFees(feeAmounts);
       setTransferOutput(output);
     }
-  }, [amount, token]);
+  }, [amount, token, chainId]);
 
   useEffect(async () => {
     setActive(false);
@@ -43,9 +49,9 @@ export const BridgeTransferSubmit = ({ action, amount, token, btc_usd }) => {
     <>
       <div className="px-8">
         <PrimaryRoundedButton
-          active={false}
-          label={"Under Maintenance"}
-          action={() => {}}
+          active={active}
+          label={buttonLabel}
+          action={action}
         />
       </div>
 
