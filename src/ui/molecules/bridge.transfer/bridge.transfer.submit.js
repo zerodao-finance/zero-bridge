@@ -49,9 +49,9 @@ export const BridgeTransferSubmit = ({
     <>
       <div className="px-8">
         <PrimaryRoundedButton
-          active={false}
-          label={"Under Maintenance"}
-          action={() => {}}
+          active={active}
+          label={buttonLabel}
+          action={action}
         />
       </div>
 
