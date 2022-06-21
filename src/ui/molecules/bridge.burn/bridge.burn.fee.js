@@ -2,15 +2,36 @@ import { useEffect, useState } from "react";
 import { getBurnOutput } from "../../../api/hooks/burn-fees";
 import { formatUSDCPricedBTC } from "../../../api/utils/formatters";
 
-export const BridgeBurnTransferFee = ({ amount, btc_usd, token }) => {
+export const BridgeBurnTransferFee = ({
+  amount,
+  btc_usd,
+  token,
+  chainId,
+  quote,
+  setQuote,
+}) => {
   const [isFeeLoading, setIsFeeLoading] = useState(false);
-  const [fee, setFee] = useState();
-  useEffect(async () => {
+  useEffect(() => {
     if (amount > 0) {
       setIsFeeLoading(true);
-      const output = await getBurnOutput({ amount, token });
-      setFee(output);
+      getBurnOutput({ amount, token, chainId }).then((immediateQuote) => {
+        setQuote(immediateQuote);
+      });
       setIsFeeLoading(false);
+
+      let isSubscribed = true;
+      const timerId = setInterval(() => {
+        getBurnOutput({ amount, token, chainId }).then((timerQuote) => {
+          isSubscribed ? setQuote(timerQuote) : null;
+        });
+      }, 15000);
+
+      return () => {
+        isSubscribed = false;
+        clearInterval(timerId);
+      };
+    } else {
+      setQuote(0);
     }
   }, [amount, token]);
 
@@ -26,12 +47,12 @@ export const BridgeBurnTransferFee = ({ amount, btc_usd, token }) => {
             </div>
             <div>
               <span className={`${isFeeLoading && "animate-pulse"}`}>
-                {fee || 0} BTC
+                {quote || 0} BTC
               </span>
             </div>
           </div>
-          <div className="xl:mr-5 italic tracking-wider w-full pr-2 text-right text-xs text-badger-yellow-neon-400">
-            ~ {formatUSDCPricedBTC(fee, btc_usd)}
+          <div className="xl:mr-5 italic tracking-wider w-full pr-2 text-right text-xs text-zero-green-500">
+            ~ {formatUSDCPricedBTC(quote, btc_usd)}
           </div>
         </div>
       )}

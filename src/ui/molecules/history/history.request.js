@@ -1,13 +1,10 @@
 import { useTransactionContext } from "../../../api/transaction";
-import {
-  ManageTransactionCard,
-  CardTypeSwitch,
-} from "../../atoms/cards/card.manage.tx";
+import { CardTypeSwitch } from "../../atoms/cards/card.manage.tx";
 import { ManageTransactionLayout } from "../../layouts/layout.manage";
 import _ from "lodash";
 
 export const TransactionHistory = () => {
-  const { pending, completed } = useTransactionContext();
+  const { completed } = useTransactionContext();
   return (
     <ManageTransactionLayout title="Transaction History">
       {CardGrid(completed)}
