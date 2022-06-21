@@ -52,9 +52,7 @@ export default function NavigationChainDropdown({ chainId, setChainId }) {
                       href="#"
                       className={
                         "text-center block py-2 px-8 text-sm cursor-pointer font-semibold " +
-                        (active
-                          ? "bg-zero-green-500/10 "
-                          : "bg-zero-green-500 ") +
+                        (active ? "bg-zero-green-500/10 " : "bg-transparent ") +
                         (getChainName(chainId) == chain.name
                           ? "text-badger-yellow-400 "
                           : "text-badger-white-400 ")
