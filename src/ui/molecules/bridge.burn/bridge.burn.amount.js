@@ -1,8 +1,7 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { storeContext } from "../../../api/global";
 import { DefaultInput } from "../../atoms/inputs/input.default";
 import { ArrowDownIcon } from "@heroicons/react/solid";
-import { ethers } from "ethers";
 import TokenDropdown from "../../atoms/dropdowns/dropdown.tokens";
 import { BridgeBurnTransferFee } from "./bridge.burn.fee";
 import { useWalletBalances } from "../../../api/global/interfaces/interfaces.wallet";
@@ -18,12 +17,21 @@ export const BridgeBurnInput = ({
   setToken,
   token,
   updateDestination,
-  effect,
+  updateAmount,
+  setAmount,
   btc_usd,
   eth_usd,
+  avax_usd,
+  chainId,
+  quote,
+  setQuote,
 }) => {
   const { dispatch } = useContext(storeContext);
   const { balances } = useWalletBalances();
+
+  useEffect(async () => {
+    setAmount(0);
+  }, [token]);
 
   const formattedAmount = () => {
     switch (token) {
@@ -31,6 +39,8 @@ export const BridgeBurnInput = ({
         return formatUSDC(amount);
       case "ETH":
         return formatUSDCPricedETH(amount, eth_usd);
+      case "AVAX":
+        return formatUSDCPricedETH(amount, avax_usd);
       default:
         return formatUSDCPricedBTC(amount, btc_usd);
     }
@@ -49,6 +59,8 @@ export const BridgeBurnInput = ({
     });
   };
 
+  const removedCoin = chainId == "43114" ? "ETH" : "AVAX";
+
   return (
     <>
       <div className="self-center px-0 py-0 z-10">
@@ -63,7 +75,7 @@ export const BridgeBurnInput = ({
             <TokenDropdown
               token={token}
               setToken={setToken}
-              tokensRemoved={["BTC"]}
+              tokensRemoved={["BTC", removedCoin]}
               tokensDisabled={["ibBTC"]}
             />
           </div>
@@ -74,11 +86,15 @@ export const BridgeBurnInput = ({
             >
               MAX
             </button>
-            <DefaultInput value={amount} onChange={effect} withBorder={false} />
+            <DefaultInput
+              value={amount}
+              onChange={updateAmount}
+              withBorder={false}
+            />
           </div>
         </div>
         <div className=" xl:mr-5 tracking-wider w-full flex justify-end pr-2 text-xs text-zero-green-500">
-          <span className="italic">~ {btc_usd && formattedAmount()}</span>
+          <span className="italic">~ {formattedAmount()}</span>
         </div>
         {amount > 0 && (
           <>
@@ -86,7 +102,7 @@ export const BridgeBurnInput = ({
               <ArrowDownIcon className="h-6 w-6 text-zero-green-500" />
             </div>
             <BridgeBurnTransferFee
-              {...{ amount: amount, token: token, btc_usd: btc_usd }}
+              {...{ amount, token, btc_usd, chainId, quote, setQuote }}
             />
           </>
         )}

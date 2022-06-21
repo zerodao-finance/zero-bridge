@@ -9,7 +9,129 @@ import {
 } from "../../../api/utils/tokenMapping";
 import { getChainName, getExplorerRoot } from "../../../api/utils/chains";
 
+export function CardTypeSwitch({ data, key, type }) {
+  switch (data.type) {
+    case "burn":
+      return <BurnManageCard data={data} key={key} type={type} />;
+    case "transfer":
+      return <ManageTransactionCard data={data} key={key} type={type} />;
+    default:
+      return;
+  }
+}
+
+export const BurnManageCard = ({ data }) => {
+  const [details, toggle] = useState(false);
+  function truncateAddress(address) {
+    try {
+      const checksummedAddress = ethers.utils.getAddress(address);
+      return (
+        checksummedAddress.slice(0, 6) + "..." + checksummedAddress.slice(-4)
+      );
+    } catch (error) {
+      return address.slice(0, 6) + "..." + address.slice(-4);
+    }
+  }
+
+  if (!details)
+    return (
+      <div
+        key={data.id}
+        className="bg-badger-gray-500 rounded-md shadow-md text-xs max-w-[500px] px-4 py-1 grid gap-1"
+      >
+        {ParseDetails(data._data, "burn", truncateAddress)}
+      </div>
+    );
+};
+
+function ParseDetails(data, type, truncateAddress) {
+  switch (type) {
+    case "burn":
+      if (!data || !data.underwriterRequest) break;
+      if (data.underwriterRequest?.contractAddress) {
+        return (
+          <>
+            <div className="grid grid-cols-2">
+              <p className="text-badger-white-400 text-md justify-self-start font-semibold">
+                {type} :
+              </p>
+              <p className="text-badger-yellow-300 justify-self-end">
+                {truncateAddress(
+                  ethers.utils.getAddress(
+                    data.underwriterRequest?.contractAddress
+                  )
+                )}
+              </p>
+            </div>
+            <hr className="border-badger-black-800" />
+            <div className="grid text-badger-white-400 grid-cols-2">
+              <span className="justify-self-start"> to: </span>
+              <a
+                className="text-xs justify-self-end underline"
+                href={
+                  getExplorerRoot(String(data.underwriterRequest?.chainId)) +
+                  ethers.utils.getAddress(data.hostTX.to)
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {truncateAddress(data.hostTX.to)}
+              </a>
+              <span className="justify-self-start"> amount: </span>
+              <span className="justify-self-end">
+                {" "}
+                {txCardAmount({
+                  amount: data.underwriterRequest?.amount,
+                  tokenName: data.underwriterRequest?.assetName,
+                })}{" "}
+              </span>
+              <span className="justify-self-start"> asset: </span>
+              <span className="justify-self-end">
+                {" "}
+                {data.underwriterRequest?.assetName}
+              </span>
+              <span className="justify-self-start"> chain: </span>
+              <span className="justify-self-end">
+                {" "}
+                {getChainName(String(data.underwriterRequest?.chainId))}{" "}
+              </span>
+            </div>
+          </>
+        );
+      }
+      if (!data || !data.hostTX) return <></>;
+      return (
+        <>
+          <div className="grid grid-cols-2">
+            <p className="text-badger-white-400 text-md justify-self-start font-semibold">
+              {type} :
+            </p>
+            <p className="text-badger-yellow-300 justify-self-end">
+              {truncateAddress(data.hostTX.transactionHash)}
+            </p>
+          </div>
+          <hr className="border-badger-black-800" />
+          <div className="grid text-badger-white-400 grid-cols-2">
+            <span className="justify-self-start"> to: </span>
+            <a className="text-xs justify-self-end underline">
+              {truncateAddress(data.hostTX.to)}
+            </a>
+            <span className="justify-self-start"> view on Etherscan: </span>
+            <a
+              className="text-xs justify-self-end underline text-badger-yellow-300"
+              href={`https://etherscan.io/tx/${data.hostTX.transactionHash}`}
+            >
+              {truncateAddress(data.hostTX.transactionHash)}
+            </a>
+          </div>
+        </>
+      );
+  }
+}
+
 export const ManageTransactionCard = ({ data }) => {
+  if (!data || !data._data || !data._data.asset) return <></>;
+
   const [details, toggle] = useState(false);
   const tokenName = reverseTokenMapping({ tokenAddress: data._data.asset });
 
@@ -68,7 +190,7 @@ export const ManageTransactionCard = ({ data }) => {
           className="underline justify-self-center text-zero-green-500 mt-px cursor-pointer"
           onClick={() => toggle(true)}
         >
-          click for fallback mint
+          click for fallback mint details
         </div>
       </div>
     );
@@ -82,17 +204,19 @@ function Details({ data, toggle }) {
 
   return (
     <div
-      className="bg-badger-gray-500 rounded-md shadow-md text-xs max-w-[300px] px-4 py-2 grid gap-1"
+      className="bg-badger-gray-500 rounded-md shadow-md text-xs max-w-[300px] px-4 grid"
       key={data.id}
     >
-      <p
-        className="absolute -top-1 right-2 text-lg text-orange-600 cursor-pointer"
-        onClick={() => toggle(false)}
-      >
-        &times;
-      </p>
+      <div className="w-full flex justify-end h-4">
+        <p
+          className="block -top-1 -mr-1 text-lg text-orange-600 cursor-pointer"
+          onClick={() => toggle(false)}
+        >
+          &times;
+        </p>
+      </div>
       {passed ? (
-        <div className="grid h-full items-center content-center ">
+        <div className="grid h-full py-2 items-center content-center ">
           <div className="grid text-badger-white-400 grid-cols-2">
             <span className="justify-self-start"> target: </span>
             <span className="text-xs justify-self-end"> {passed.target} </span>

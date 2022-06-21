@@ -1,12 +1,14 @@
 import fixtures from "zero-protocol/lib/fixtures";
 import { ethers } from "ethers";
-const { getAddress } = ethers.utils;
+const { getAddress, isAddress } = ethers.utils;
 
 export const txCardAmount = ({ amount, tokenName }) => {
   const bigNumAmount = ethers.BigNumber.from(amount);
 
   switch (tokenName.toLowerCase()) {
     case "eth":
+      return ethers.utils.formatEther(bigNumAmount);
+    case "avax":
       return ethers.utils.formatEther(bigNumAmount);
     case "usdc":
       return ethers.utils.formatUnits(bigNumAmount, 6);
@@ -32,6 +34,8 @@ export const tokenMapping = ({ tokenName, chainId }) => {
   const fixture = selectFixture(chainId);
 
   switch (tokenName.toLowerCase()) {
+    case "avax":
+      return ethers.constants.AddressZero;
     case "eth":
       return ethers.constants.AddressZero;
     case "renbtc":
@@ -46,10 +50,11 @@ export const tokenMapping = ({ tokenName, chainId }) => {
 };
 
 export const reverseTokenMapping = ({ tokenAddress }) => {
-  const checksummedAddress = tokenAddress
+  const checksummedAddress = isAddress(tokenAddress)
     ? getAddress(String(tokenAddress))
     : "";
 
+  // TODO: Add handling for arbitrum to this list
   switch (checksummedAddress) {
     case ethers.constants.AddressZero:
       return "ETH";
@@ -63,8 +68,8 @@ export const reverseTokenMapping = ({ tokenAddress }) => {
       return "WBTC";
     case getAddress(fixtures.ETHEREUM.ibBTC):
       return "ibBTC";
-    case getAddress(fixtures.ARBITRUM.ibBTC):
-      return "ibBTC";
+    // case getAddress(fixtures.ARBITRUM.ibBTC):
+    //   return "ibBTC";
     case getAddress(fixtures.ETHEREUM.USDC):
       return "USDC";
     case getAddress(fixtures.ARBITRUM.USDC):

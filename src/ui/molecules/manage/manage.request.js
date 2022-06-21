@@ -1,5 +1,8 @@
 import { useTransactionContext } from "../../../api/transaction";
-import { ManageTransactionCard } from "../../atoms/cards/card.manage.tx";
+import {
+  ManageTransactionCard,
+  CardTypeSwitch,
+} from "../../atoms/cards/card.manage.tx";
 import { ManageTransactionLayout } from "../../layouts/layout.manage";
 import _ from "lodash";
 export const ManageTransaction = () => {
@@ -7,14 +10,28 @@ export const ManageTransaction = () => {
 
   return (
     <ManageTransactionLayout title="Manage Transactions">
-      {pending.transfer.map((d, index) => {
+      {CardGrid(pending)}
+      {/* {pending.transfer.map((d, index) => {
         return <ManageTransactionCard data={d} key={index} />;
-      })}
+      })} */}
       {
         <div className="dark:text-gray-300">
-          {_.isEmpty(pending.transfer) ? "No Pending Transactions" : ""}
+          {_.isEmpty(pending.transfer) && _.isEmpty(pending.burn)
+            ? "No Pending Transactions"
+            : ""}
         </div>
       }
     </ManageTransactionLayout>
   );
 };
+
+function CardGrid(pending) {
+  return (
+    <>
+      {_.concat(pending.burn, pending.transfer).map((d, index) => {
+        console.log(d);
+        return <CardTypeSwitch data={d} key={index} type="pending" />;
+      })}
+    </>
+  );
+}

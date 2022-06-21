@@ -6,10 +6,17 @@ import {
 } from "zero-protocol/dist/lib/zero";
 import { EIP712_TYPES } from "zero-protocol/dist/lib/config/constants";
 import { Buffer } from "buffer";
-import { ETHEREUM, ARBITRUM } from "zero-protocol/dist/lib/fixtures";
+import fixtures from "zero-protocol/lib/fixtures";
 import { createGetGasPrice } from "ethers-gasnow";
 import { tokenMapping } from "../utils/tokenMapping.js";
 import EventEmitter from "events";
+const chainIdToName = {
+  [1]: "ethereum",
+  [42161]: "arbitrum",
+  [137]: "matic",
+  [43114]: "avalanche",
+};
+import { selectFixture } from "../utils/tokenMapping.js";
 
 const remoteETHTxMap = new WeakMap();
 
@@ -36,6 +43,8 @@ const waitForHostTransactionETH = async function () {
   else return await waitForHostTransaction.call(this);
 };
 
+const { ETHEREUM, ARBITRUM, AVALANCHE } = fixtures;
+
 const DECIMALS = {
   [toLower(ETHEREUM.WBTC)]: 8,
   [toLower(ETHEREUM.renBTC)]: 8,
@@ -46,6 +55,55 @@ const DECIMALS = {
   [toLower(ARBITRUM.renBTC)]: 8,
   [toLower(ARBITRUM.USDC)]: 6,
   [toLower(ARBITRUM.ibBTC)]: 8,
+  [toLower(AVALANCHE.WBTC)]: 8,
+  [toLower(AVALANCHE.renBTC)]: 8,
+  [toLower(AVALANCHE.USDC)]: 6,
+  [toLower(AVALANCHE.ibBTC)]: 8,
+};
+
+DECIMALS[ethers.constants.AddressZero] = 18;
+
+const signUSDCAVAX = async function (signer, contractAddress) {
+  const asset = this.asset;
+  this.asset = getFixtures("43114").USDC;
+
+  const token = new ethers.Contract(
+    this.asset,
+    [
+      "function allowance(address, address) view returns (uint256)",
+      "function approve(address, uint256) returns (bool)",
+    ],
+    signer
+  );
+  await token.approve(contractAddress, ethers.constants.MaxUint256);
+
+  const tokenNonce = String(
+    await new ethers.Contract(
+      this.contractAddress,
+      ["function noncesUsdc(address) view returns (uint256) "],
+      signer
+    ).noncesUsdc(await signer.getAddress())
+  );
+  const { sign, toEIP712 } = Object.getPrototypeOf(this);
+  this.toEIP712 = function (...args) {
+    this.asset = asset;
+    this.tokenNonce = tokenNonce;
+    this.assetName = "USD Coin";
+    return toEIP712.apply(this, args);
+  };
+  this.contractAddress = contractAddress;
+
+  const payload = this.toEIP712(contractAddress, "43114");
+  delete payload.types.EIP712Domain;
+  const sig = await signer._signTypedData(
+    payload.domain,
+    payload.types,
+    payload.message
+  );
+
+  return (this.signature = ethers.utils.joinSignature(
+    ethers.utils.splitSignature(sig)
+  ));
 };
 
 const toEIP712USDC = function (contractAddress, chainId) {
@@ -121,19 +179,17 @@ export class sdkTransfer {
 
     // initialize Transfer Request Object
     this.transferRequest = (async function () {
-      console.log("signer", signer);
       const asset = tokenMapping({
         tokenName: self.token,
         chainId: self.chainId,
       });
       const contracts = await deploymentsFromSigner(signer);
+      const fixture = selectFixture(self.chainId);
       const data = String(_data) || "0x";
       const module =
         self.token === "ETH"
           ? ethers.constants.AddressZero
-          : self.chainId == "42161"
-          ? ARBITRUM[self.token]
-          : ETHEREUM[self.token];
+          : fixture[self.token];
       const amount = ethers.utils.parseUnits(String(value), 8);
 
       // Should this also happen on Arbitrum?
@@ -210,6 +266,10 @@ const btcAddressToHex = (address) => {
   );
 };
 
+const getFixtures = (chainId) => {
+  return fixtures[chainIdToName[Number(chainId)].toUpperCase()];
+};
+
 // TODO: Make sure the actual burn will occur on the proper network
 export class sdkBurn {
   response = new EventEmitter({ captureRejections: true });
@@ -233,7 +293,8 @@ export class sdkBurn {
 
     this.burnRequest = async function () {
       const contracts = await deploymentsFromSigner(signer);
-      const tokenNamespace = this.chainId == "42161" ? ARBITRUM : ETHEREUM;
+      const tokenNamespace =
+        fixtures[chainIdToName[this.chainId].toUpperCase()];
       const asset =
         this.StateHelper.state.burn.input.token === "ETH"
           ? ethers.constants.AddressZero
@@ -265,21 +326,19 @@ export class sdkBurn {
     );
     const asset = burnRequest.asset;
     const assetName = this.assetName;
+    const { getAddress } = ethers.utils;
 
     //sign burn request
-    const { sign, toEIP712 } = burnRequest;
-
-    if (
-      asset.toLowerCase() === ETHEREUM.USDC.toLowerCase() ||
-      asset.toLowerCase() === ARBITRUM.USDC.toLowerCase()
-    ) {
-      burnRequest.toEIP712 = toEIP712USDC;
-    } else if (asset.toLowerCase() === ethers.constants.AddressZero) {
+    const { toEIP712 } = burnRequest;
+    const fixture = getFixtures(chainId);
+    if (getAddress(asset) === getAddress(fixture.USDC)) {
+      if (chainId == 43114) burnRequest.sign = signUSDCAVAX;
+      else burnRequest.toEIP712 = toEIP712USDC;
+    } else if (getAddress(asset) === ethers.constants.AddressZero) {
       burnRequest.sign = signETH;
-    } else if (
-      asset.toLowerCase() !== ETHEREUM.renBTC.toLowerCase() &&
-      asset.toLowerCase() !== ARBITRUM.renBTC.toLowerCase()
-    ) {
+    } else if (getAddress(asset) !== fixture.renBTC) {
+      const contractAddressBackup = burnRequest.contractAddress;
+      const assetAddress = burnRequest.asset;
       burnRequest.sign = async function (signer, contractAddress) {
         const assetAddress = this.asset;
         signer.provider.getGasPrice = createGetGasPrice("rapid");
@@ -326,13 +385,9 @@ export class sdkBurn {
       };
     }
 
-    let signTx;
     try {
       const contracts = await deploymentsFromSigner(this.signer);
-      signTx = await burnRequest.sign(
-        this.signer,
-        contracts.ZeroController.address
-      );
+      await burnRequest.sign(this.signer, contracts.ZeroController.address);
       this.response.emit("signed");
     } catch (error) {
       console.error(error);
@@ -353,6 +408,7 @@ export class sdkBurn {
       let txResponse = {
         hostTX: hostTransaction,
         txo: utxo,
+        underwriterRequest: burnRequest,
       };
       this.response.emit("hash", { request: txResponse });
     } catch (error) {
