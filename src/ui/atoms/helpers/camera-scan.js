@@ -25,24 +25,34 @@ function CameraScan({ onScan }) {
 
   return (
     <>
-      {!isOpen ? (
-        <div
-          onClick={() => setIsOpen(true)}
-          className="flex items-center grayscale invert cursor-pointer"
-        >
-          <img src="/qr-code.png" alt="qr code" height="40" width="40" />
-        </div>
-      ) : (
-        <div className="absolute left-0 top-0">
+      <div
+        onClick={() => setIsOpen(true)}
+        className="flex items-center grayscale invert cursor-pointer"
+      >
+        <img src="/qr-code.png" alt="qr code" height="40" width="40" />
+      </div>
+      {isOpen && (
+        <div className="absolute left-0 -top-4 md:-top-8 w-full animate-fade-in">
           <QrReader
             delay={200}
             onError={handleError}
             onScan={handleScan}
             legacyMode={true}
             style={{
-              borderRadius: "10px",
+              borderTopRightRadius: "10px",
+              borderTopLeftRadius: "10px",
             }}
           />
+          <div
+            style={{
+              borderBottomRightRadius: "10px",
+              borderBottomLeftRadius: "10px",
+            }}
+            className="text-center py-2 bg-badger-black-700 cursor-pointer hover:text-main-green transition duration-200"
+            onClick={() => setIsOpen(false)}
+          >
+            <span>Close</span>
+          </div>
         </div>
       )}
     </>
