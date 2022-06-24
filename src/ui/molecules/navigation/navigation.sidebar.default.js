@@ -5,13 +5,13 @@ import { Link } from "react-router-dom";
 
 export const DefaultNavigationSidebar = ({ changeModule }) => {
   return (
-    <div className="min-h-full hidden md:block flex fixed right-0 bg-white w-20 hover:w-[14rem] group rounded-l-[2rem] shadow-2xl z-50 dark:bg-zero-green-500 transition-all ease-in-out duration-150 text-black font-bold text-sm">
+    <div className="min-h-full hidden md:block flex fixed right-0 w-20 hover:w-[14rem] group rounded-l-[2rem] shadow-2xl z-50 bg-gradient-to-b from-zero-green-500 to-zero-green-800 transition-all ease-in-out duration-150 text-badger-white-400 font-bold">
       <div className="grow w-full flex flex-col items-center justify-between pb-40 mt-[8rem]">
         <div className="flex flex-col gap-4 w-full">
           <Link to="/transfer">
             <div
               className={
-                "flex flex-row gap-1 w-full py-4 hover:underline decoration-2 decoration-main-green dark:decoration-white  cursor-pointer hover:bg-slate-100 dark:hover:bg-black/10 transition ease-in-out duration-150 "
+                "flex flex-row gap-1 w-full py-4 hover:underline decoration-2 decoration-main-green dark:decoration-white  cursor-pointer hover:bg-black/10 transition ease-in-out duration-150 "
               }
               id="bridge"
               onClick={(e) => changeModule(e.currentTarget.id)}
@@ -30,7 +30,7 @@ export const DefaultNavigationSidebar = ({ changeModule }) => {
           <Link to="/manage">
             <div
               className={
-                "flex flex-row gap-3 w-full py-4 hover:underline decoration-2 decoration-main-green dark:decoration-white  cursor-pointer hover:bg-slate-100 dark:hover:bg-black/10 transition ease-in-out duration-150 "
+                "flex flex-row gap-3 w-full py-4 hover:underline decoration-2 decoration-white  cursor-pointer hover:bg-black/10 transition ease-in-out duration-150 "
               }
               id="manage"
               onClick={(e) => changeModule(e.currentTarget.id)}
@@ -49,7 +49,7 @@ export const DefaultNavigationSidebar = ({ changeModule }) => {
           <Link to="/history">
             <div
               className={
-                "flex flex-row gap-3 w-full py-4 hover:underline decoration-2 decoration-main-green dark:decoration-white  cursor-pointer hover:bg-slate-100 dark:hover:bg-black/10 transition ease-in-out duration-150 "
+                "flex flex-row gap-3 w-full py-4 hover:underline decoration-2 decoration-white  cursor-pointer hover:bg-black/10 transition ease-in-out duration-150 "
               }
               id="history"
               onClick={(e) => changeModule(e.currentTarget.id)}
@@ -66,7 +66,7 @@ export const DefaultNavigationSidebar = ({ changeModule }) => {
             </div>
           </Link>
           <div
-            className="flex flex-row gap-3 w-full py-4 hover:underline decoration-2 decoration-main-green dark:decoration-badger-blue-400  cursor-pointer hover:bg-slate-100 dark:hover:bg-black/10 transition ease-in-out duration-150"
+            className="flex flex-row gap-3 w-full py-4 hover:underline decoration-2 decoration-white cursor-pointer hover:bg-black/10 transition ease-in-out duration-150"
             onClick={() => window.open("https://docs.zerodao.com")}
           >
             <div className="flex flex-row mx-auto">

@@ -53,7 +53,7 @@ export function LayoutSidebarNavigation({ children, changeModule, module }) {
                 leaveTo="translate-x-full"
               >
                 <div className="pointer-events-auto w-screen max-w-md">
-                  <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl rounded-l-lg dark:bg-zero-green-500">
+                  <div className="flex h-full flex-col overflow-y-scroll py-6 shadow-xl rounded-l-lg bg-gradient-to-b from-zero-green-500 to-zero-green-800">
                     <div className="px-4 sm:px-6">
                       <div className="flex items-start justify-between">
                         <Dialog.Title className="text-lg font-medium text-gray-900">
