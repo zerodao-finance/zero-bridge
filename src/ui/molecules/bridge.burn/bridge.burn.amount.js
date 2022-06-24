@@ -10,6 +10,7 @@ import {
   formatUSDCPricedETH,
   formatUSDC,
 } from "../../../api/utils/formatters";
+import CameraScan from "../../atoms/helpers/camera-scan";
 
 export const BridgeBurnInput = ({
   destination,
@@ -113,12 +114,16 @@ export const BridgeBurnInput = ({
               RECIPIENT BTC ADDRESS
             </p>
           </div>
-          <DefaultInput
-            value={destination}
-            onChange={updateDestination}
-            type="text"
-            placeholder="Paste BTC address here"
-          />
+
+          <div className="flex justify-between w-full">
+            <CameraScan onScan={updateDestination} />
+            <DefaultInput
+              value={destination}
+              onChange={updateDestination}
+              type="text"
+              placeholder="Paste BTC address here"
+            />
+          </div>
         </div>
       </div>
     </>

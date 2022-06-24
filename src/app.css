@@ -1182,6 +1182,10 @@ input:checked + .toggle-bg {
   top: -0.25rem;
 }
 
+.-top-4 {
+  top: -1rem;
+}
+
 .right-3 {
   right: 0.75rem;
 }
@@ -1754,6 +1758,24 @@ input:checked + .toggle-bg {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.8s;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -2196,6 +2218,11 @@ input:checked + .toggle-bg {
 
 .bg-transparent {
   background-color: transparent;
+}
+
+.bg-badger-black-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 30 30 / var(--tw-bg-opacity));
 }
 
 .bg-gray-900 {
@@ -2831,6 +2858,13 @@ input:checked + .toggle-bg {
     var(--tw-sepia) var(--tw-drop-shadow);
 }
 
+.grayscale {
+  --tw-grayscale: grayscale(100%);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast)
+    var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate)
+    var(--tw-sepia) var(--tw-drop-shadow);
+}
+
 .invert {
   --tw-invert: invert(100%);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast)
@@ -3085,6 +3119,11 @@ code {
 .hover\:bg-white:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.hover\:text-main-green:hover {
+  --tw-text-opacity: 1;
+  color: rgb(82 183 108 / var(--tw-text-opacity));
 }
 
 .hover\:\!text-zero-green-500:hover {
@@ -3526,6 +3565,10 @@ code {
 }
 
 @media (min-width: 768px) {
+  .md\:-top-8 {
+    top: -2rem;
+  }
+
   .md\:ml-2 {
     margin-left: 0.5rem;
   }
