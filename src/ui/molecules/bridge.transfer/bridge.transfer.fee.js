@@ -14,6 +14,7 @@ export const BridgeTransferFee = ({
   btc_usd,
   eth_usd,
   avax_usd,
+  matic_usd,
   setToken,
   token,
   chainId,
@@ -59,6 +60,8 @@ export const BridgeTransferFee = ({
         return formatUSDCPricedETH(quote, eth_usd);
       case "AVAX":
         return formatUSDCPricedETH(quote, avax_usd);
+      case "MATIC":
+        return formatUSDCPricedETH(quote, matic_usd);
       default:
         return formatUSDCPricedBTC(quote, btc_usd);
     }

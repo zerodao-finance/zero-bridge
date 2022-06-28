@@ -24,6 +24,7 @@ export const BridgeBurnInput = ({
   btc_usd,
   eth_usd,
   avax_usd,
+  matic_usd,
   chainId,
   quote,
   setQuote,
@@ -43,6 +44,8 @@ export const BridgeBurnInput = ({
         return formatUSDCPricedETH(amount, eth_usd);
       case "AVAX":
         return formatUSDCPricedETH(amount, avax_usd);
+      case "MATIC":
+        return formatUSDCPricedETH(amount, matic_usd);
       default:
         return formatUSDCPricedBTC(amount, btc_usd);
     }
