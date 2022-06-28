@@ -5,6 +5,14 @@ describe("getChainName function", () => {
     expect(getChainName("42161")).toEqual("Arbitrum");
   });
 
+  test("it should return Avalanche for 43114", () => {
+    expect(getChainName("43114")).toEqual("Avalanche");
+  });
+
+  test("it should return Polygon for 137", () => {
+    expect(getChainName("137")).toEqual("Polygon");
+  });
+
   test("it should return Mainnet for 1", () => {
     expect(getChainName("1")).toEqual("Mainnet");
   });

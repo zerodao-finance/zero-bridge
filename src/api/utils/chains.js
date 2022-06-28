@@ -24,6 +24,8 @@ export const getChainName = (chainId) => {
       return "Arbitrum";
     case "43114":
       return "Avalanche";
+    case "137":
+      return "Polygon";
     default:
       return "Mainnet";
   }

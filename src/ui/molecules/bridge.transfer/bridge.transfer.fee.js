@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getTransferOutput } from "../../../api/hooks/transfer-fees";
 import TokenDropdown from "../../atoms/dropdowns/dropdown.tokens";
 import { DefaultInput } from "../../atoms";
+import { REMOVED_TOKENS } from "../../../api/utils/tokenMapping";
 import {
   formatUSDCPricedBTC,
   formatUSDCPricedETH,
@@ -63,11 +64,6 @@ export const BridgeTransferFee = ({
     }
   }
 
-  const removedCoin = [
-    chainId == "43114" ? "ETH" : "AVAX",
-    chainId !== "1" ? "ibBTC" : "",
-  ];
-
   return (
     <div className="self-center px-0 py-0 w-full">
       <div className="w-full flex items-center justify-between px-4 py-2 mt-5 text-badger-white-400 rounded-xl bg-badger-gray-500">
@@ -76,7 +72,7 @@ export const BridgeTransferFee = ({
           <TokenDropdown
             token={token}
             setToken={setToken}
-            tokensRemoved={removedCoin}
+            tokensRemoved={REMOVED_TOKENS[chainId]}
             tokensDisabled={["ibBTC", "USDC"]}
           />
         </div>

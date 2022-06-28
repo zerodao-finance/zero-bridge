@@ -36,6 +36,8 @@ export const tokenMapping = ({ tokenName, chainId }) => {
   switch (tokenName.toLowerCase()) {
     case "avax":
       return ethers.constants.AddressZero;
+    case "matic":
+      return ethers.constants.AddressZero;
     case "eth":
       return ethers.constants.AddressZero;
     case "renbtc":
@@ -74,4 +76,43 @@ export const reverseTokenMapping = ({ tokenAddress }) => {
   });
 
   return tokenName || "unknown";
+};
+
+export const available_chains = [1, 42161, 43114, 137];
+
+export const chainIdToName = {
+  [1]: "ethereum",
+  [42161]: "arbitrum",
+  [137]: "matic",
+  [43114]: "avalanche",
+};
+
+const toLower = (s) => s && s.toLowerCase();
+const { ETHEREUM, ARBITRUM, AVALANCHE, MATIC } = fixtures;
+
+export const DECIMALS = {
+  [toLower(ETHEREUM.WBTC)]: 8,
+  [toLower(ETHEREUM.renBTC)]: 8,
+  [toLower(ETHEREUM.USDC)]: 6,
+  [toLower(ETHEREUM.ibBTC)]: 8,
+  [ethers.constants.AddressZero]: 18,
+  [toLower(ARBITRUM.WBTC)]: 8,
+  [toLower(ARBITRUM.renBTC)]: 8,
+  [toLower(ARBITRUM.USDC)]: 6,
+  [toLower(ARBITRUM.ibBTC)]: 8,
+  [toLower(AVALANCHE.WBTC)]: 8,
+  [toLower(AVALANCHE.renBTC)]: 8,
+  [toLower(AVALANCHE.USDC)]: 6,
+  [toLower(AVALANCHE.ibBTC)]: 8,
+  [toLower(MATIC.WBTC)]: 8,
+  [toLower(MATIC.renBTC)]: 8,
+  [toLower(MATIC.USDC)]: 6,
+  [toLower(MATIC.ibBTC)]: 8,
+};
+
+export const REMOVED_TOKENS = {
+  [1]: ["ibBTC", "AVAX", "MATIC"],
+  [42161]: ["ibBTC", "AVAX", "MATIC"],
+  [137]: ["ibBTC", "AVAX", "ETH"],
+  [43114]: ["ibBTC", "ETH", "MATIC"],
 };
