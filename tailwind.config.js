@@ -104,6 +104,7 @@ module.exports = {
           "scale-in-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
         "slide-in-from-left": "slide-in-from-left .5s steps(1000)",
         "slide-out-to-left": "slide-out-to-left .5s steps(1000)",
+        "fade-in": "fade-in 0.8s",
       },
       keyframes: {
         "slide-in-from-left": {
@@ -253,6 +254,17 @@ module.exports = {
           },
           "100%": {
             backdropFilter: "blur(0)",
+          },
+        },
+        "fade-in": {
+          "0%": {
+            opacity: 0,
+          },
+          "50%": {
+            opacity: 0,
+          },
+          "100%": {
+            opacity: 1,
           },
         },
       },

@@ -1182,6 +1182,10 @@ input:checked + .toggle-bg {
   top: -0.25rem;
 }
 
+.-top-4 {
+  top: -1rem;
+}
+
 .right-3 {
   right: 0.75rem;
 }
@@ -1752,6 +1756,24 @@ input:checked + .toggle-bg {
 
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.8s;
 }
 
 @keyframes spin {
@@ -2838,6 +2860,13 @@ input:checked + .toggle-bg {
     var(--tw-sepia) var(--tw-drop-shadow);
 }
 
+.grayscale {
+  --tw-grayscale: grayscale(100%);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast)
+    var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate)
+    var(--tw-sepia) var(--tw-drop-shadow);
+}
+
 .invert {
   --tw-invert: invert(100%);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast)
@@ -3519,6 +3548,10 @@ code {
 }
 
 @media (min-width: 768px) {
+  .md\:-top-8 {
+    top: -2rem;
+  }
+
   .md\:ml-2 {
     margin-left: 0.5rem;
   }
