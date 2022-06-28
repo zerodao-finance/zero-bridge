@@ -86,8 +86,6 @@ const signUSDCAVAX = async function (signer, contractAddress) {
 const toEIP712USDC = function (contractAddress, chainId) {
   this.contractAddress = contractAddress || this.contractAddress;
   this.chainId = chainId || this.chainId;
-  const domain_name = chainId == "42161" ? "USD Coin (Arb1)" : "USD Coin";
-  const domain_version = chainId == "42161" ? "1" : "2";
   return {
     types: {
       EIP712Domain: EIP712_TYPES.EIP712Domain,
@@ -114,12 +112,23 @@ const toEIP712USDC = function (contractAddress, chainId) {
         },
       ],
     },
-    domain: {
-      name: domain_name,
-      version: domain_version,
-      chainId: String(this.chainId) || "1",
-      verifyingContract: this.asset || ethers.constants.AddressZero,
-    },
+    domain:
+      chainId == "137"
+        ? {
+            name: "USD Coin (PoS)",
+            version: "1",
+            verifyingContract: this.asset || ethers.constants.AddressZero,
+            salt: ethers.utils.hexZeroPad(
+              ethers.BigNumber.from(String(this.chainId) || "1").toHexString(),
+              32
+            ),
+          }
+        : {
+            name: chainId == "42161" ? "USD Coin (Arb1)" : "USD Coin",
+            version: chainId == "1" ? "2" : "1",
+            chainId: String(this.chainId) || "1",
+            verifyingContract: this.asset || ethers.constants.AddressZero,
+          },
     message: {
       owner: this.owner,
       spender: contractAddress,
