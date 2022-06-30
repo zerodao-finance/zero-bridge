@@ -8,6 +8,8 @@ function processAmount(amount, token) {
       return ethers.utils.parseEther(amount);
     case "AVAX":
       return ethers.utils.parseEther(amount);
+    case "MATIC":
+      return ethers.utils.parseEther(amount);
     case "USDC":
       return ethers.utils.parseUnits(amount, 6);
     default:

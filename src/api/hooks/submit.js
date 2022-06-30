@@ -39,6 +39,9 @@ export const useSDKTransactionSubmit = (module) => {
       case "AVAX":
         quote = ethers.utils.parseEther(quote);
         break;
+      case "MATIC":
+        quote = ethers.utils.parseEther(quote);
+        break;
       case "USDC":
         quote = ethers.utils.parseUnits(quote, 6);
         break;

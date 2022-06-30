@@ -7,6 +7,7 @@ import { ReactComponent as WBTC } from "../../../assets/svg-coins/wbtc.svg";
 import { ReactComponent as ibBTC } from "../../../assets/svg-coins/ibbtc.svg";
 import { ReactComponent as USDC } from "../../../assets/svg-coins/usdc.svg";
 import { ReactComponent as AVAX } from "../../../assets/svg-coins/avax.svg";
+import { ReactComponent as MATIC } from "../../../assets/svg-coins/matic.svg";
 import { useLocation } from "react-router-dom";
 
 function classNames(...classes) {
@@ -49,6 +50,10 @@ function TokenDropdown({
     {
       text: "AVAX",
       icon: AVAX,
+    },
+    {
+      text: "MATIC",
+      icon: MATIC,
     },
     {
       text: "USDC",
@@ -109,7 +114,7 @@ function TokenDropdown({
       >
         <Menu.Items
           data-testid="token-dropdown"
-          className="origin-top-right py-1 absolute w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none"
+          className="z-50 origin-top-right py-1 absolute w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none"
         >
           {items
             .filter((el) => !tokensRemoved.includes(el.text))

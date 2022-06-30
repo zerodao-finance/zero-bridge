@@ -6,6 +6,14 @@ describe("selectFixture function", () => {
     expect(selectFixture("42161")).toEqual(fixtures.ARBITRUM);
   });
 
+  test("it should return fixtures.AVALANCHE for 43114", () => {
+    expect(selectFixture("43114")).toEqual(fixtures.AVALANCHE);
+  });
+
+  test("it should return fixtures.MATIC for 137", () => {
+    expect(selectFixture("137")).toEqual(fixtures.MATIC);
+  });
+
   test("it should return fixtures.ETHEREUM for 1", () => {
     expect(selectFixture("1")).toEqual(fixtures.ETHEREUM);
   });

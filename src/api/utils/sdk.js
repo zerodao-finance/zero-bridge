@@ -10,17 +10,14 @@ import fixtures from "zero-protocol/lib/fixtures";
 import { createGetGasPrice } from "ethers-gasnow";
 import { tokenMapping } from "../utils/tokenMapping.js";
 import EventEmitter from "events";
-const chainIdToName = {
-  [1]: "ethereum",
-  [42161]: "arbitrum",
-  [137]: "matic",
-  [43114]: "avalanche",
-};
-import { selectFixture } from "../utils/tokenMapping.js";
+import {
+  selectFixture,
+  chainIdToName,
+  DECIMALS,
+} from "../utils/tokenMapping.js";
 
 const remoteETHTxMap = new WeakMap();
 
-const toLower = (s) => s && s.toLowerCase();
 const signETH = async function (signer) {
   const { contractAddress, amount, destination, minOut } = this;
   const contract = new ethers.Contract(
@@ -42,26 +39,6 @@ const waitForHostTransactionETH = async function () {
   if (receiptPromise) return await receiptPromise;
   else return await waitForHostTransaction.call(this);
 };
-
-const { ETHEREUM, ARBITRUM, AVALANCHE } = fixtures;
-
-const DECIMALS = {
-  [toLower(ETHEREUM.WBTC)]: 8,
-  [toLower(ETHEREUM.renBTC)]: 8,
-  [toLower(ETHEREUM.USDC)]: 6,
-  [toLower(ETHEREUM.ibBTC)]: 8,
-  [ethers.constants.AddressZero]: 18,
-  [toLower(ARBITRUM.WBTC)]: 8,
-  [toLower(ARBITRUM.renBTC)]: 8,
-  [toLower(ARBITRUM.USDC)]: 6,
-  [toLower(ARBITRUM.ibBTC)]: 8,
-  [toLower(AVALANCHE.WBTC)]: 8,
-  [toLower(AVALANCHE.renBTC)]: 8,
-  [toLower(AVALANCHE.USDC)]: 6,
-  [toLower(AVALANCHE.ibBTC)]: 8,
-};
-
-DECIMALS[ethers.constants.AddressZero] = 18;
 
 const signUSDCAVAX = async function (signer, contractAddress) {
   const asset = this.asset;
@@ -109,8 +86,6 @@ const signUSDCAVAX = async function (signer, contractAddress) {
 const toEIP712USDC = function (contractAddress, chainId) {
   this.contractAddress = contractAddress || this.contractAddress;
   this.chainId = chainId || this.chainId;
-  const domain_name = chainId == "42161" ? "USD Coin (Arb1)" : "USD Coin";
-  const domain_version = chainId == "42161" ? "1" : "2";
   return {
     types: {
       EIP712Domain: EIP712_TYPES.EIP712Domain,
@@ -137,12 +112,23 @@ const toEIP712USDC = function (contractAddress, chainId) {
         },
       ],
     },
-    domain: {
-      name: domain_name,
-      version: domain_version,
-      chainId: String(this.chainId) || "1",
-      verifyingContract: this.asset || ethers.constants.AddressZero,
-    },
+    domain:
+      chainId == "137"
+        ? {
+            name: "USD Coin (PoS)",
+            version: "1",
+            verifyingContract: this.asset || ethers.constants.AddressZero,
+            salt: ethers.utils.hexZeroPad(
+              ethers.BigNumber.from(String(this.chainId) || "1").toHexString(),
+              32
+            ),
+          }
+        : {
+            name: chainId == "42161" ? "USD Coin (Arb1)" : "USD Coin",
+            version: chainId == "1" ? "2" : "1",
+            chainId: String(this.chainId) || "1",
+            verifyingContract: this.asset || ethers.constants.AddressZero,
+          },
     message: {
       owner: this.owner,
       spender: contractAddress,

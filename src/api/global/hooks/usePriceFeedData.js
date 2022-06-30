@@ -4,13 +4,10 @@ import { ChainId, Token, WETH, Fetcher, Route } from "@uniswap/sdk";
 import * as JOE from "@traderjoe-xyz/sdk";
 import fixtures from "zero-protocol/lib/fixtures";
 import { ethers } from "ethers";
+const Quotes = require("zero-protocol/lib/quotes");
 
 export const usePriceFeedContracts = () => {
-  const { state, dispatch } = useContext(storeContext);
-  const { network } = state;
-  const {
-    wallet: { address },
-  } = state;
+  const { dispatch } = useContext(storeContext);
 
   const provider = new ethers.providers.InfuraProvider(
     "mainnet",
@@ -82,6 +79,13 @@ export const usePriceFeedContracts = () => {
     return ethers.utils.parseUnits(usdcForOneAVAX, 6).toString();
   };
 
+  const getUniswapUSDCMATICPrice = async () => {
+    const quotes = Quotes("137");
+    const quote = await quotes.wNativeToUSDC(ethers.utils.parseEther("1"));
+
+    return quote.toString();
+  };
+
   useEffect(() => {
     const fetchAllPricing = () => {
       Promise.allSettled([
@@ -89,6 +93,7 @@ export const usePriceFeedContracts = () => {
         getUniswapBtcUsdPrice(),
         getUniswapUsdcETHPrice(),
         getTraderJoeUsdcAvaxPrice(),
+        getUniswapUSDCMATICPrice(),
       ]).then(async (result) => {
         dispatch({
           type: "UPDATE",
@@ -99,6 +104,7 @@ export const usePriceFeedContracts = () => {
             eth_usd: result[2].value,
             btc_eth: result[0].value,
             avax_usd: result[3].value,
+            matic_usd: result[4].value,
           },
         });
       });

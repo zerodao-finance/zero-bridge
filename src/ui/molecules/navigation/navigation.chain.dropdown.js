@@ -18,6 +18,10 @@ const chains = [
     name: "Avalanche",
     chainId: "43114",
   },
+  {
+    name: "Polygon",
+    chainId: "137",
+  },
 ];
 
 export default function NavigationChainDropdown({ chainId, setChainId }) {

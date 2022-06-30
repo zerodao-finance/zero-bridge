@@ -5,6 +5,7 @@ import { ArrowDownIcon } from "@heroicons/react/solid";
 import TokenDropdown from "../../atoms/dropdowns/dropdown.tokens";
 import { BridgeBurnTransferFee } from "./bridge.burn.fee";
 import { useWalletBalances } from "../../../api/global/interfaces/interfaces.wallet";
+import { REMOVED_TOKENS } from "../../../api/utils/tokenMapping";
 import {
   formatUSDCPricedBTC,
   formatUSDCPricedETH,
@@ -23,6 +24,7 @@ export const BridgeBurnInput = ({
   btc_usd,
   eth_usd,
   avax_usd,
+  matic_usd,
   chainId,
   quote,
   setQuote,
@@ -42,6 +44,8 @@ export const BridgeBurnInput = ({
         return formatUSDCPricedETH(amount, eth_usd);
       case "AVAX":
         return formatUSDCPricedETH(amount, avax_usd);
+      case "MATIC":
+        return formatUSDCPricedETH(amount, matic_usd);
       default:
         return formatUSDCPricedBTC(amount, btc_usd);
     }
@@ -60,11 +64,9 @@ export const BridgeBurnInput = ({
     });
   };
 
-  const removedCoin = chainId == "43114" ? "ETH" : "AVAX";
-
   return (
     <>
-      <div className="self-center px-0 py-0 z-10">
+      <div className="self-center px-0 py-0">
         <div className=" xl:mr-5 tracking-wider pr-2 w-full flex justify-end text-xs text-zero-neon-green-500">
           <span>Your Balance: {getBalance(token) + " " + token}</span>
         </div>
@@ -76,7 +78,7 @@ export const BridgeBurnInput = ({
             <TokenDropdown
               token={token}
               setToken={setToken}
-              tokensRemoved={["BTC", removedCoin]}
+              tokensRemoved={["BTC", ...REMOVED_TOKENS[chainId]]}
               tokensDisabled={["ibBTC"]}
             />
           </div>
