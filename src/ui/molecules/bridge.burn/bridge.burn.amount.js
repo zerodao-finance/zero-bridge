@@ -65,7 +65,7 @@ export const BridgeBurnInput = ({
   return (
     <>
       <div className="self-center px-0 py-0 z-10">
-        <div className=" xl:mr-5 tracking-wider pr-2 w-full flex justify-end text-xs text-zero-green-500">
+        <div className=" xl:mr-5 tracking-wider pr-2 w-full flex justify-end text-xs text-zero-neon-green-500">
           <span>Your Balance: {getBalance(token) + " " + token}</span>
         </div>
         <div className="w-fit flex items-center justify-between gap-2 dark:bg-badger-gray-500 bg-gray-100 px-2 py-1 rounded-2xl">
@@ -82,7 +82,7 @@ export const BridgeBurnInput = ({
           </div>
           <div className="flex justify-between items-center pl-2 dark:!border-white dark:focus:!border-zero-green-500 border !border-gray-600 focus:!border-zero-green-500 rounded-xl">
             <button
-              className="text-sm pl-1 pr-3 h-fit hover:!text-zero-green-500"
+              className="text-sm pl-1 pr-3 h-fit hover:!text-zero-neon-green-500"
               onClick={getMax}
             >
               MAX
@@ -94,13 +94,13 @@ export const BridgeBurnInput = ({
             />
           </div>
         </div>
-        <div className=" xl:mr-5 tracking-wider w-full flex justify-end pr-2 text-xs text-zero-green-500">
+        <div className=" xl:mr-5 tracking-wider w-full flex justify-end pr-2 text-xs text-zero-neon-green-500">
           <span className="italic">~ {formattedAmount()}</span>
         </div>
         {amount > 0 && (
           <>
             <div className="w-full grid justify-items-center">
-              <ArrowDownIcon className="h-6 w-6 text-zero-green-500" />
+              <ArrowDownIcon className="h-6 w-6 text-zero-neon-green-500" />
             </div>
             <BridgeBurnTransferFee
               {...{ amount, token, btc_usd, chainId, quote, setQuote }}

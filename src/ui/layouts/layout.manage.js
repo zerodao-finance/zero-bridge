@@ -5,7 +5,7 @@ export const ManageTransactionLayout = ({ children, title }) => {
         className={`w-full rounded-t-[8px] grid grid-cols-1 dark:bg-badger-gray-400 align-center font-light tracking-wider text-sm text-center`}
         style={{ maxHeight: "42px" }}
       >
-        <div className="py-[10px] w-full rounded-tl-[8px] transition ease-in-out duration-150 text-black border-b-2 border-transparent dark:text-zero-green-500 font-bold">
+        <div className="py-[10px] w-full rounded-tl-[8px] transition ease-in-out duration-150 text-black border-b-2 border-transparent dark:text-zero-neon-green-500 font-bold">
           {title}
         </div>
       </div>
