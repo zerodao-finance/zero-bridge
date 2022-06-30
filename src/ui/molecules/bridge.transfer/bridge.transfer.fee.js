@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getTransferOutput } from "../../../api/hooks/transfer-fees";
 import TokenDropdown from "../../atoms/dropdowns/dropdown.tokens";
 import { DefaultInput } from "../../atoms";
+import { REMOVED_TOKENS } from "../../../api/utils/tokenMapping";
 import {
   formatUSDCPricedBTC,
   formatUSDCPricedETH,
@@ -13,6 +14,7 @@ export const BridgeTransferFee = ({
   btc_usd,
   eth_usd,
   avax_usd,
+  matic_usd,
   setToken,
   token,
   chainId,
@@ -58,15 +60,12 @@ export const BridgeTransferFee = ({
         return formatUSDCPricedETH(quote, eth_usd);
       case "AVAX":
         return formatUSDCPricedETH(quote, avax_usd);
+      case "MATIC":
+        return formatUSDCPricedETH(quote, matic_usd);
       default:
         return formatUSDCPricedBTC(quote, btc_usd);
     }
   }
-
-  const removedCoin = [
-    chainId == "43114" ? "ETH" : "AVAX",
-    chainId !== "1" ? "ibBTC" : "",
-  ];
 
   return (
     <div className="self-center px-0 py-0 w-full">
@@ -76,7 +75,7 @@ export const BridgeTransferFee = ({
           <TokenDropdown
             token={token}
             setToken={setToken}
-            tokensRemoved={removedCoin}
+            tokensRemoved={REMOVED_TOKENS[chainId]}
             tokensDisabled={["ibBTC", "USDC"]}
           />
         </div>
@@ -90,7 +89,7 @@ export const BridgeTransferFee = ({
           />
         </div>
       </div>
-      <div className=" xl:mr-5 italic tracking-wider w-full text-right text-xs text-zero-green-500">
+      <div className=" xl:mr-5 italic tracking-wider w-full text-right text-xs text-zero-neon-green-500">
         ~ {usdcEstimate}
       </div>
     </div>

@@ -44,17 +44,30 @@ module.exports = {
           400: "#EC4B4B",
         },
         "zero-green": {
-          DEFAULT: "#2E9E32",
-          50: "#A0E3A3",
-          100: "#90DF93",
-          200: "#71D674",
-          300: "#51CC56",
-          400: "#37BE3C",
-          500: "#2E9E32",
-          600: "#217324",
-          700: "#154717",
-          800: "#081C09",
+          DEFAULT: "#2D9E32",
+          50: "#9FE4A2",
+          100: "#8FDF93",
+          200: "#6FD674",
+          300: "#50CD55",
+          400: "#36BE3C",
+          500: "#2D9E32",
+          600: "#217224",
+          700: "#144716",
+          800: "#006837",
           900: "#000000",
+        },
+        "zero-neon-green": {
+          DEFAULT: "#0DD60D",
+          50: "#A1F9A1",
+          100: "#8EF88E",
+          200: "#68F668",
+          300: "#41F341",
+          400: "#1BF11B",
+          500: "#0DD60D",
+          600: "#0AA10A",
+          700: "#076C07",
+          800: "#033703",
+          900: "#000200",
         },
       },
       fontFamily: {
@@ -91,6 +104,7 @@ module.exports = {
           "scale-in-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
         "slide-in-from-left": "slide-in-from-left .5s steps(1000)",
         "slide-out-to-left": "slide-out-to-left .5s steps(1000)",
+        "fade-in": "fade-in 0.8s",
       },
       keyframes: {
         "slide-in-from-left": {
@@ -240,6 +254,17 @@ module.exports = {
           },
           "100%": {
             backdropFilter: "blur(0)",
+          },
+        },
+        "fade-in": {
+          "0%": {
+            opacity: 0,
+          },
+          "50%": {
+            opacity: 0,
+          },
+          "100%": {
+            opacity: 1,
           },
         },
       },

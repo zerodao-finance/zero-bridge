@@ -17,7 +17,7 @@ function BridgeTransferFrom({ amount, effect, btc_usd }) {
           </div>
         </div>
       </div>
-      <div className=" xl:mr-5 italic tracking-wider w-full text-right text-xs -mt-2 text-zero-green-500">
+      <div className=" xl:mr-5 italic tracking-wider w-full text-right text-xs -mt-2 text-zero-neon-green-500">
         ~ {formatUSDCPricedBTC(amount, btc_usd)}
       </div>
     </>

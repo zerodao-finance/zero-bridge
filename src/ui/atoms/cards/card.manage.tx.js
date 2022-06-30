@@ -55,7 +55,7 @@ function ParseDetails(data, type, truncateAddress) {
               <p className="text-badger-white-400 text-md justify-self-start font-semibold">
                 {type} :
               </p>
-              <p className="text-badger-yellow-300 justify-self-end">
+              <p className="text-zero-neon-green-500 justify-self-end">
                 {truncateAddress(
                   ethers.utils.getAddress(
                     data.underwriterRequest?.contractAddress
@@ -106,7 +106,7 @@ function ParseDetails(data, type, truncateAddress) {
             <p className="text-badger-white-400 text-md justify-self-start font-semibold">
               {type} :
             </p>
-            <p className="text-badger-yellow-300 justify-self-end">
+            <p className="text-zero-neon-green-500 justify-self-end">
               {truncateAddress(data.hostTX.transactionHash)}
             </p>
           </div>
@@ -118,7 +118,7 @@ function ParseDetails(data, type, truncateAddress) {
             </a>
             <span className="justify-self-start"> view on Etherscan: </span>
             <a
-              className="text-xs justify-self-end underline text-badger-yellow-300"
+              className="text-xs justify-self-end underline text-zero-neon-green-500"
               href={`https://etherscan.io/tx/${data.hostTX.transactionHash}`}
             >
               {truncateAddress(data.hostTX.transactionHash)}
@@ -152,7 +152,7 @@ export const ManageTransactionCard = ({ data }) => {
           <p className="text-md text-badger-white-400 justify-self-start font-semibold">
             {data.type} :
           </p>
-          <p className="text-zero-green-500 justify-self-end">
+          <p className="text-zero-neon-green-500 justify-self-end">
             {truncateAddress(data._data.contractAddress)}
           </p>
         </div>
@@ -187,7 +187,7 @@ export const ManageTransactionCard = ({ data }) => {
           </span>
         </div>
         <div
-          className="underline justify-self-center text-zero-green-500 mt-px cursor-pointer"
+          className="underline justify-self-center text-zero-neon-green-500 mt-px cursor-pointer"
           onClick={() => toggle(true)}
         >
           click for fallback mint details
@@ -227,7 +227,7 @@ function Details({ data, toggle }) {
             onClick={() => {
               passed.fallbackMint ? setOpen(true) : () => {};
             }}
-            className="underline justify-self-center text-zero-green-500 mt-px cursor-pointer"
+            className="underline justify-self-center text-zero-neon-green-500 mt-px cursor-pointer"
           >
             Fallback Mint
           </div>

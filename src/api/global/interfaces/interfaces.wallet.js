@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 import wallet_modal from "../../utils/walletModal";
 import { NETWORK_ROUTER } from "../../utils/network";
 import { CHAINS } from "../../utils/chains";
-import { tokenMapping } from "../../utils/tokenMapping";
+import { tokenMapping, available_chains } from "../../utils/tokenMapping";
 import { useBridgeBurnInput } from "./interface.bridge.burn";
 import { useBridgePage } from "./interface.bridge";
 
@@ -26,9 +26,7 @@ export const useWalletConnection = () => {
     const web3Modal = await getweb3();
     const curChainId = await web3Modal.eth.getChainId();
     setChainId(
-      curChainId == 42161 || curChainId == 1 || curChainId == 43114
-        ? String(curChainId)
-        : "1"
+      available_chains.includes(curChainId) ? String(curChainId) : "1"
     );
   }, []);
 
@@ -127,6 +125,7 @@ export const useWalletBalances = () => {
   const [balances, setBalances] = useState({
     ETH: 0,
     AVAX: 0,
+    MATIC: 0,
     renBTC: 0,
     WBTC: 0,
     ibBTC: 0,
@@ -145,6 +144,9 @@ export const useWalletBalances = () => {
           tokenAmount = ethers.utils.formatEther(bal);
           break;
         case "AVAX":
+          tokenAmount = ethers.utils.formatEther(bal);
+          break;
+        case "MATIC":
           tokenAmount = ethers.utils.formatEther(bal);
           break;
         default:
@@ -171,7 +173,7 @@ export const useWalletBalances = () => {
     if (!address) {
       return ethers.utils.parseUnits("0", 6);
     }
-    if (["eth", "avax"].includes(tokenName.toLowerCase())) {
+    if (["eth", "avax", "matic"].includes(tokenName.toLowerCase())) {
       const ethBalance = await provider.getBalance(address);
       return ethBalance;
     } else {
