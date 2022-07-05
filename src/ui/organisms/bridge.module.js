@@ -20,7 +20,7 @@ export const BridgeModule = ({ wallet }) => {
   ) : (
     <div className="h-fit w-fit pb-8 grid bg-badger-black-500 rounded-lg justify-center text-badger-white-400 min-w-[370px]">
       <NavigationBridgeToggle />
-      <span className="grid px-8">
+      <span className="grid px-4 md:px-8">
         {wallet ? (
           <BridgeLoadingWallet />
         ) : (
