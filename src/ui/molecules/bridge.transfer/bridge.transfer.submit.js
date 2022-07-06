@@ -5,7 +5,7 @@ import {
   getTransferOutput,
   getFeeBreakdown,
 } from "../../../api/hooks/transfer-fees";
-import { BridgeTransferFeeInformation } from "./bridge.transfer.feeInformation";
+import { BridgeFeeInformation } from "./bridge.transfer.feeInformation";
 
 export const BridgeTransferSubmit = ({
   action,
@@ -61,7 +61,7 @@ export const BridgeTransferSubmit = ({
           (active ? "" : "hidden")
         }
       >
-        <BridgeTransferFeeInformation {...fees} btc_usd={btc_usd} />
+        <BridgeFeeInformation {...fees} btc_usd={btc_usd} type="transfer" />
       </div>
     </>
   );
