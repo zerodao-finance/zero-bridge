@@ -2,7 +2,7 @@ import { PrimaryRoundedButton } from "../../atoms/buttons/button.rounded";
 import { useEffect, useState } from "react";
 import { getFeeBreakdown } from "../../../api/hooks/burn-fees";
 import { ethers } from "ethers";
-import { BridgeTransferFeeInformation } from "../bridge.transfer/bridge.transfer.feeInformation";
+import { BridgeFeeInformation } from "../bridge.transfer/bridge.transfer.feeInformation";
 import { useZero } from "../../../api/global/interfaces/interfaces.zero";
 
 const btcRegex = /^(?:[13]{1}[a-km-zA-HJ-NP-Z1-9]{26,33}|bc1[a-z0-9]{39,59})$/;
@@ -65,7 +65,7 @@ export const BridgeBurnSubmit = ({
           (active ? "" : "hidden")
         }
       >
-        <BridgeTransferFeeInformation {...fees} btc_usd={btc_usd} />
+        <BridgeFeeInformation {...fees} btc_usd={btc_usd} type="burn" />
       </div>
     </>
   );

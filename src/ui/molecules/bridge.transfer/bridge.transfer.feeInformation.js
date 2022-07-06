@@ -2,13 +2,30 @@ import { useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/solid";
 import { formatUSDCPricedBTC } from "../../../api/utils/formatters";
 
-export const BridgeTransferFeeInformation = ({
+export const BridgeFeeInformation = ({
   gasFee,
   opFee,
   totalFees,
   btc_usd,
+  type,
 }) => {
   const [feeDetailOpen, setFeeDetailOpen] = useState(false);
+
+  const flatFeeDiv = () => {
+    if (type == "burn") {
+      return (
+        <div className="flex justify-between">
+          <span> RenVM Flat Burn Fee </span>
+          <div className="grid">
+            <span>0.001 BTC</span>
+            <span className="italic w-full text-right font-normal text-xs -mt-1 text-zero-neon-green-500">
+              ~ {formatUSDCPricedBTC("0.001", btc_usd)}
+            </span>
+          </div>
+        </div>
+      );
+    }
+  };
 
   return (
     <div className="grid w-full py-4 text-sm px-3 space-y-1 font-semibold border text-badger-white-400 border-badger-gray-500 rounded-lg">
@@ -29,8 +46,11 @@ export const BridgeTransferFeeInformation = ({
               (feeDetailOpen ? "visible" : "invisible hidden")
             }
           >
-            <span> 0.15% renVM Mint </span>
-            <span> 0.10% feedback to ZERO</span>
+            <span> {type == "transfer" ? "0.20" : "0.10"}% renVM Mint </span>
+            <span>
+              {" "}
+              {type == "transfer" ? "0.20" : "0.30"}% feedback to ZERO
+            </span>
           </div>
         </div>
         <div className="grid">
@@ -54,6 +74,7 @@ export const BridgeTransferFeeInformation = ({
           </span>
         </div>
       </div>
+      {flatFeeDiv()}
       <div className="flex pt-4 justify-between">
         <span> Total Est. Fees </span>
         <div className="grid">
