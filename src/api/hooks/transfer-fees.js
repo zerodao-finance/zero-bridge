@@ -18,9 +18,13 @@ function formatOutput(token, output) {
 }
 
 export async function getFeeBreakdown({ amount, chainId }) {
-  const { applyFee } = makeCompute(chainId);
+  const { applyFee, mintFee, renVmFeeMint } = makeCompute(chainId);
 
-  var fees = await applyFee(ethers.utils.parseUnits(amount, 8));
+  var fees = await applyFee(
+    ethers.utils.parseUnits(amount, 8),
+    mintFee,
+    renVmFeeMint
+  );
 
   fees.gasFee = formatOutput("WBTC", fees.gasFee);
   fees.opFee = formatOutput("WBTC", fees.opFee);

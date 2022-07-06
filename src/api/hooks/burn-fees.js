@@ -22,14 +22,15 @@ function formatOutput(output) {
 }
 
 export async function getFeeBreakdown({ amount, token, chainId }) {
-  const { getConvertedAmount, applyFee } = makeCompute(chainId);
+  const { getConvertedAmount, applyFee, burnFee, renVmFeeBurn } =
+    makeCompute(chainId);
 
   const tokenAddress = tokenMapping({ tokenName: token, chainId });
   const convertedAmount = await getConvertedAmount(
     tokenAddress,
     processAmount(amount, token)
   );
-  var fees = await applyFee(convertedAmount);
+  var fees = await applyFee(convertedAmount, burnFee, renVmFeeBurn);
 
   fees.gasFee = formatOutput(fees.gasFee);
   fees.opFee = formatOutput(fees.opFee);
