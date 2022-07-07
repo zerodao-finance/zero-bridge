@@ -32,7 +32,7 @@ export const BridgeBurnSubmit = ({
 
   useEffect(async () => {
     setActive(false);
-    if (destination.match(btcRegex)) {
+    if (destination.substr(0, 4) != "bc1p" && destination.match(btcRegex)) {
       if (keeper.length <= 0) {
         setButtonLabel("Awaiting Keeper");
       } else if (
@@ -46,6 +46,8 @@ export const BridgeBurnSubmit = ({
       } else {
         setButtonLabel("Result Must Be More Than $15");
       }
+    } else {
+      setButtonLabel("Enter Valid Recipient Address");
     }
   }, [destination, quote, keeper]);
 
