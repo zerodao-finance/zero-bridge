@@ -12,7 +12,7 @@ export const BridgeFeeInformation = ({
   const [feeDetailOpen, setFeeDetailOpen] = useState(false);
 
   const flatFeeDiv = () => {
-    const BTCNetworkFee = type == "burn" ? "0.001" : "0.002";
+    const BTCNetworkFee = "0.002";
 
     return (
       <div className="flex justify-between">
