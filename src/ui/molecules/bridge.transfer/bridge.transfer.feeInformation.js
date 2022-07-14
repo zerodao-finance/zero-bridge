@@ -12,19 +12,19 @@ export const BridgeFeeInformation = ({
   const [feeDetailOpen, setFeeDetailOpen] = useState(false);
 
   const flatFeeDiv = () => {
-    if (type == "burn") {
-      return (
-        <div className="flex justify-between">
-          <span> RenVM Flat Burn Fee </span>
-          <div className="grid">
-            <span>0.001 BTC</span>
-            <span className="italic w-full text-right font-normal text-xs -mt-1 text-zero-neon-green-500">
-              ~ {formatUSDCPricedBTC("0.001", btc_usd)}
-            </span>
-          </div>
+    const BTCNetworkFee = type == "burn" ? "0.001" : "0.002";
+
+    return (
+      <div className="flex justify-between">
+        <span> RenVM BTC Network Fee </span>
+        <div className="grid">
+          <span>~{BTCNetworkFee} BTC</span>
+          <span className="italic w-full text-right font-normal text-xs -mt-1 text-zero-neon-green-500">
+            ~ {formatUSDCPricedBTC(BTCNetworkFee, btc_usd)}
+          </span>
         </div>
-      );
-    }
+      </div>
+    );
   };
 
   return (
