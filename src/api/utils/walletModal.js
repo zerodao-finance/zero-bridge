@@ -54,7 +54,7 @@ export default function wallet_modal() {
       provider = await web3Modal.connect();
       provider.on("error", (e) => console.error("WS Error", e));
       provider.on("end", (e) => console.error("WS End", e));
-      provider.on("disconnect", (error) => console.log("error"));
+      provider.on("disconnect", (e) => console.log("WS Disconnect: ", e));
       provider.on("connect", (info) => console.log("connecting: ", info));
       provider.on("accountsChanged", (accounts) => {
         dispatch({ type: "UPDATE_WALLET", data: { address: accounts[0] } });

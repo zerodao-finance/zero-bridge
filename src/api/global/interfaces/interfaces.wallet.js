@@ -84,12 +84,7 @@ export const useWalletConnection = () => {
     dispatch({ type: "START_REQUEST", effect: "wallet" });
   };
 
-  const disconnect = async () => {
-    dispatch({ type: "RESET_REQUEST", effect: "wallet" });
-    localStorage.removeItem("WEB3_CONNECT_CACHED_PROVIDER");
-  };
-
-  return { connect, disconnect, wallet, isLoading };
+  return { connect, wallet, isLoading };
 };
 
 export const useCheckWalletConnected = () => {
