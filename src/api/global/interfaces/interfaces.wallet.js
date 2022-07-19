@@ -7,6 +7,7 @@ import { CHAINS } from "../../utils/chains";
 import { tokenMapping, available_chains } from "../../utils/tokenMapping";
 import { useBridgeBurnInput } from "./interface.bridge.burn";
 import { useBridgePage } from "./interface.bridge";
+import { NotificationContainer } from "../../../ui/layouts/layout.notification";
 
 export const useWalletConnection = () => {
   const { state, dispatch } = useContext(storeContext);
@@ -23,8 +24,8 @@ export const useWalletConnection = () => {
   }, []);
 
   useEffect(async () => {
-    const web3Modal = await getweb3();
-    const curChainId = await web3Modal.eth.getChainId();
+    const { web3 } = await getweb3();
+    const curChainId = await web3.eth.getChainId();
     setChainId(
       available_chains.includes(curChainId) ? String(curChainId) : "1"
     );
@@ -33,17 +34,16 @@ export const useWalletConnection = () => {
   useEffect(() => {
     const call = async () => {
       try {
-        // TODO: Make getweb3 dynamic and allow the app to define what chain we're on
-        const web3Modal = await getweb3();
+        const { web3 } = await getweb3();
         try {
-          await web3Modal.currentProvider.request({
+          await web3.currentProvider.request({
             method: "wallet_switchEthereumChain",
             params: [{ chainId: CHAINS[chainId].chainId }],
           });
         } catch (switchError) {
           if (switchError.code === 4902 || switchError.code === -32603) {
             try {
-              await web3Modal.currentProvider.request({
+              await web3.currentProvider.request({
                 method: "wallet_addEthereumChain",
                 params: [CHAINS[chainId]],
               });
@@ -54,16 +54,16 @@ export const useWalletConnection = () => {
             console.error(switchError);
           }
         }
-        let modalChainID = await web3Modal.eth.getChainId();
+        let modalChainID = await web3.eth.getChainId();
         await dispatch({
           type: "SUCCEED_BATCH_REQUEST",
           effect: "wallet",
           payload: {
-            address: (await web3Modal.eth.getAccounts())[0],
+            address: (await web3.eth.getAccounts())[0],
             chainId: chainId,
             network: NETWORK_ROUTER[modalChainID],
             provider: new ethers.providers.Web3Provider(
-              await web3Modal.currentProvider,
+              await web3.currentProvider,
               "any"
             ),
           },
@@ -81,13 +81,11 @@ export const useWalletConnection = () => {
   }, [isLoading, chainId]);
 
   const connect = async () => {
-    dispatch({ type: "START_REQUEST", effect: "wallet" });
+    const { web3Modal } = await getweb3();
+    await web3Modal.connect();
   };
 
-  const disconnect = async () => {
-    dispatch({ type: "RESET_REQUEST", effect: "wallet" });
-    localStorage.removeItem("WEB3_CONNECT_CACHED_PROVIDER");
-  };
+  const disconnect = () => {};
 
   return { connect, disconnect, wallet, isLoading };
 };
@@ -174,8 +172,12 @@ export const useWalletBalances = () => {
       return ethers.utils.parseUnits("0", 6);
     }
     if (["eth", "avax", "matic"].includes(tokenName.toLowerCase())) {
-      const ethBalance = await provider.getBalance(address);
-      return ethBalance;
+      try {
+        const ethBalance = await provider.getBalance(address);
+        return ethBalance;
+      } catch (error) {
+        return ethers.utils.parseUnits("0", 6);
+      }
     } else {
       const contract = new ethers.Contract(
         tokenMapping({ tokenName, chainId }),

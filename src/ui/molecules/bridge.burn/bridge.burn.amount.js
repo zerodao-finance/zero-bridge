@@ -78,7 +78,7 @@ export const BridgeBurnInput = ({
             <TokenDropdown
               token={token}
               setToken={setToken}
-              tokensRemoved={["BTC", ...REMOVED_TOKENS[chainId]]}
+              tokensRemoved={["BTC", ...REMOVED_TOKENS[chainId || 1]]}
               tokensDisabled={["ibBTC"]}
             />
           </div>
