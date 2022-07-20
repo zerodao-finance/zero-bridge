@@ -12,6 +12,7 @@ import {
   formatUSDC,
 } from "../../../api/utils/formatters";
 import CameraScan from "../../atoms/helpers/camera-scan";
+import { available_chains } from "../../../api/utils/tokenMapping";
 
 export const BridgeBurnInput = ({
   destination,
@@ -78,7 +79,12 @@ export const BridgeBurnInput = ({
             <TokenDropdown
               token={token}
               setToken={setToken}
-              tokensRemoved={["BTC", ...REMOVED_TOKENS[chainId]]}
+              tokensRemoved={[
+                "BTC",
+                ...REMOVED_TOKENS[
+                  available_chains.includes(chainId) ? chainId : 1
+                ],
+              ]}
               tokensDisabled={["ibBTC"]}
             />
           </div>
