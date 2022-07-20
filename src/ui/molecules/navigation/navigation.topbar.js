@@ -6,7 +6,7 @@ import { useBridgePage } from "../../../api/global/interfaces/interface.bridge";
 import NavigationChainDropdown from "../navigation/navigation.chain.dropdown";
 
 export const NavigationTopBar = () => {
-  const { connect, wallet } = useWalletConnection();
+  const { connect, disconnect, wallet } = useWalletConnection();
   const { keeper } = useZero();
   const { getBridgeChainProps } = useBridgePage();
 
@@ -38,7 +38,7 @@ export const NavigationTopBar = () => {
               ? truncateAddress(wallet.address).toUpperCase()
               : "CONNECT"
           }
-          action={connect}
+          action={wallet.address ? disconnect : connect}
         />
         <NetworkIndicator keeper={keeper} />
       </div>
