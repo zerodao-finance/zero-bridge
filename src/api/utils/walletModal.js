@@ -70,7 +70,7 @@ export default function wallet_modal() {
             chainId: baseTenChainId,
           },
         });
-        if (!available_chains.includes(baseTenChainId)) {
+        if (!available_chains.includes(Number(baseTenChainId))) {
           await provider.request({
             method: "wallet_switchEthereumChain",
             params: [{ chainId: CHAINS[1].chainId }],
