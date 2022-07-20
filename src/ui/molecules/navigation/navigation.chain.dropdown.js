@@ -11,6 +11,7 @@ import { ReactComponent as ETH } from "../../../assets/svg-coins/eth.svg";
 import { ReactComponent as ARB } from "../../../assets/svg-common/arbitrum.svg";
 import { ReactComponent as AVAX } from "../../../assets/svg-coins/avax.svg";
 import { ReactComponent as MATIC } from "../../../assets/svg-coins/matic.svg";
+import { BsQuestionCircle } from "react-icons/bs";
 
 const chains = [
   {
@@ -44,6 +45,8 @@ export default function NavigationChainDropdown({ chainId, setChainId }) {
         return <MATIC className="h-5 w-5" />;
       case "avalanche":
         return <AVAX className="h-5 w-5" />;
+      default:
+        return <BsQuestionCircle className="h-5 w-5" />;
     }
   };
 
@@ -54,7 +57,7 @@ export default function NavigationChainDropdown({ chainId, setChainId }) {
           {chainId
             ? width > 600
               ? getChainName(chainId)
-              : chainToIcon(getChainName(chainId))
+              : chainToIcon("")
             : "Loading..."}
           <ChevronDownIcon
             className="-mr-1 md:ml-2 md:mt-1 h-5 w-5"
