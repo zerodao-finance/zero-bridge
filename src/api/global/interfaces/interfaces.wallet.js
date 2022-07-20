@@ -33,7 +33,6 @@ export const useWalletConnection = () => {
   useEffect(() => {
     const call = async () => {
       try {
-        // TODO: Make getweb3 dynamic and allow the app to define what chain we're on
         const web3Modal = await getweb3();
         try {
           await web3Modal.currentProvider.request({
@@ -82,6 +81,11 @@ export const useWalletConnection = () => {
 
   const connect = async () => {
     dispatch({ type: "START_REQUEST", effect: "wallet" });
+    const web3Modal = await getweb3();
+    const curChainId = await web3Modal.eth.getChainId();
+    setChainId(
+      available_chains.includes(curChainId) ? String(curChainId) : "1"
+    );
   };
 
   const disconnect = async () => {

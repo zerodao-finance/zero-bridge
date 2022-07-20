@@ -6,6 +6,8 @@ import { useContext, useState } from "react";
 import { URLS } from "./chains";
 import { NETWORK_ROUTER } from "./network";
 import { ethers } from "ethers";
+import { available_chains } from "./tokenMapping";
+import { CHAINS } from "./chains";
 
 export default function wallet_modal() {
   const [loading, setLoading] = useState(false);
@@ -54,12 +56,12 @@ export default function wallet_modal() {
       provider = await web3Modal.connect();
       provider.on("error", (e) => console.error("WS Error", e));
       provider.on("end", (e) => console.error("WS End", e));
-      provider.on("disconnect", (error) => console.log("error"));
+      provider.on("disconnect", (e) => console.log("WS Disconnect: ", e));
       provider.on("connect", (info) => console.log("connecting: ", info));
       provider.on("accountsChanged", (accounts) => {
         dispatch({ type: "UPDATE_WALLET", data: { address: accounts[0] } });
       });
-      provider.on("chainChanged", (chainId) => {
+      provider.on("chainChanged", async (chainId) => {
         const baseTenChainId = ethers.BigNumber.from(chainId).toString();
         dispatch({
           type: "UPDATE_WALLET",
@@ -68,6 +70,12 @@ export default function wallet_modal() {
             chainId: baseTenChainId,
           },
         });
+        if (!available_chains.includes(baseTenChainId)) {
+          await provider.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: CHAINS[1].chainId }],
+          });
+        }
       });
 
       web3 = new Web3(provider);

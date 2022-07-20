@@ -26,8 +26,10 @@ export const getChainName = (chainId) => {
       return "Avalanche";
     case "137":
       return "Polygon";
-    default:
+    case "1":
       return "Mainnet";
+    default:
+      return "Unsupported Chain";
   }
 };
 

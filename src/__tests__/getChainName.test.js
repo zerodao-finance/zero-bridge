@@ -17,7 +17,7 @@ describe("getChainName function", () => {
     expect(getChainName("1")).toEqual("Mainnet");
   });
 
-  test("it should return Mainnet for null", () => {
-    expect(getChainName(null)).toEqual("Mainnet");
+  test("it should return Unknown Chain for null", () => {
+    expect(getChainName(null)).toEqual("Unknown Chain");
   });
 });
