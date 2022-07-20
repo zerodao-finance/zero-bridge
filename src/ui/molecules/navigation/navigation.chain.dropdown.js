@@ -3,7 +3,15 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { getChainName } from "../../../api/utils/chains";
+import useWindowDimensions from "../../../api/utils/responsiveness";
 import * as React from "react"; // Needs to be here for testing
+
+// Import SVGs
+import { ReactComponent as ETH } from "../../../assets/svg-coins/eth.svg";
+import { ReactComponent as ARB } from "../../../assets/svg-common/arbitrum.svg";
+import { ReactComponent as AVAX } from "../../../assets/svg-coins/avax.svg";
+import { ReactComponent as MATIC } from "../../../assets/svg-coins/matic.svg";
+import { BsQuestionCircle } from "react-icons/bs";
 
 const chains = [
   {
@@ -25,11 +33,32 @@ const chains = [
 ];
 
 export default function NavigationChainDropdown({ chainId, setChainId }) {
+  const { width } = useWindowDimensions();
+
+  const chainToIcon = (chain) => {
+    switch (chain.toLowerCase()) {
+      case "mainnet":
+        return <ETH className="h-5 w-5" />;
+      case "arbitrum":
+        return <ARB className="h-5 w-5" />;
+      case "polygon":
+        return <MATIC className="h-5 w-5" />;
+      case "avalanche":
+        return <AVAX className="h-5 w-5" />;
+      default:
+        return <BsQuestionCircle className="h-5 w-5" />;
+    }
+  };
+
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <Menu.Button className="inline-flex font-bold rounded-lg justify-center w-full bg-zero-green-500/90 hover:bg-zero-green-500/40 shadow-sm px-2 py-1 text-sm md:text-base text-badger-white-400 focus:outline-none ">
-          {chainId ? getChainName(chainId) : "Loading..."}
+          {chainId
+            ? width > 600
+              ? getChainName(chainId)
+              : chainToIcon("")
+            : "Loading..."}
           <ChevronDownIcon
             className="-mr-1 md:ml-2 md:mt-1 h-5 w-5"
             aria-hidden="true"
