@@ -57,7 +57,7 @@ export default function NavigationChainDropdown({ chainId, setChainId }) {
           {chainId
             ? width > 600
               ? getChainName(chainId)
-              : chainToIcon("")
+              : chainToIcon(getChainName(chainId))
             : "Loading..."}
           <ChevronDownIcon
             className="-mr-1 md:ml-2 md:mt-1 h-5 w-5"
