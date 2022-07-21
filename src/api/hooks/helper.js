@@ -189,7 +189,7 @@ class SDKHelper {
     // at fulfilled (rpcUrls.ts:9:1)
 
     //production code
-    await transaction.renVM.eventEmitter.on("progress", (progress) => {
+    await transaction.in.eventEmitter.on("progress", (progress) => {
       console.log("PROGRESS renVM: ", progress);
       if (progress.status === "ready") {
         const { id, dispatch } = task.this.Notify.createTXCard(
