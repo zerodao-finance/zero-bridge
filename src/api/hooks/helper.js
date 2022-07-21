@@ -180,9 +180,17 @@ class SDKHelper {
     let data = task.this.Transaction.createRequest("transfer", task.request);
     var forwarded = null;
 
+    // helper.js:183 Uncaught (in promise) TypeError: transaction.in.on is not a function
+    // at SDKHelper._tfRequestTransaction2 (helper.js:183:1)
+    // at TransactionEmitter.<anonymous> (helper.js:172:1)
+    // at TransactionEmitter.emit (events.js:153:1)
+    // at Gateway.<anonymous> (gateway.ts:572:1)
+    // at Generator.next (<anonymous>)
+    // at fulfilled (rpcUrls.ts:9:1)
+
     //production code
-    await transaction.in.on("progress", (progress) => {
-      console.log("PROGRESS: ", progress);
+    await transaction.renVM.eventEmitter.on("progress", (progress) => {
+      console.log("PROGRESS renVM: ", progress);
       if (progress.status === "ready") {
         const { id, dispatch } = task.this.Notify.createTXCard(
           true,
