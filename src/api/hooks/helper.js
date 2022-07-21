@@ -163,7 +163,7 @@ class SDKHelper {
 
   async processTransferRequest(error, task) {
     await new Promise((resolve) =>
-      task.mint.on("transaction", async (transaction) => {
+      task.mint.eventEmitter.on("transaction", async (transaction) => {
         console.log("WE GET: ", transaction);
         //recieve deposit object
         task.this.Global.reset(task.type, "input");
