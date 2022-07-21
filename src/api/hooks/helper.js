@@ -162,62 +162,24 @@ class SDKHelper {
   }
 
   async processTransferRequest(error, task) {
-    const deposit = await new Promise(async (resolve) =>
-      task.mint.on("deposit", async (deposit) => {
+    await new Promise((resolve) =>
+      task.mint.on("transaction", async (transaction) => {
         //recieve deposit object
         task.this.Global.reset(task.type, "input");
         task.this.Global.update(task.type, "mode", { mode: "input" });
-        task.this.#tfRequestTransaction(deposit, task);
-        resolve(deposit);
+        task.this.#tfRequestTransaction(transaction, task);
+        resolve(transaction);
         //create a transaction in Transaction with data on deposit receieved
       })
     );
   }
 
-  async #tfRequestTransaction(deposit, task) {
+  async #tfRequestTransaction(transaction, task) {
     let data = task.this.Transaction.createRequest("transfer", task.request);
     var forwarded = null;
 
-    if (process.env.REACT_APP_TEST) {
-      //testing
-
-      const confirmed = await deposit.confirmed();
-      function _initiate(target) {
-        const { id, dispatch } = task.this.Notify.createTXCard(
-          true,
-          task.type,
-          {
-            hash: task.transactionHash,
-            confirmed: true,
-            data: task.request,
-            mask: target,
-            current: 0,
-          }
-        );
-        forwarded = { id: id, dispatch: dispatch };
-      }
-
-      let initiate = _.once(_initiate);
-
-      confirmed.on("confirmation", (confs, target) => {
-        initiate(target);
-        if (confs >= target) {
-          data.payload.data.complete();
-          forwarded.dispatch({ type: "REMOVE", payload: { id: forwarded.id } });
-        } else {
-          forwarded.dispatch({
-            type: "UPDATE",
-            payload: {
-              id: forwarded.id,
-              update: { max: target, current: confs + 1 },
-            },
-          });
-        }
-      });
-    }
-
     //production code
-    await deposit
+    await transaction
       .confirmed()
       .on("target", (target) => {
         const { id, dispatch } = task.this.Notify.createTXCard(
