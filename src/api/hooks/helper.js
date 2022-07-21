@@ -164,6 +164,7 @@ class SDKHelper {
   async processTransferRequest(error, task) {
     await new Promise((resolve) =>
       task.mint.on("transaction", async (transaction) => {
+        console.log("WE GET: ", transaction);
         //recieve deposit object
         task.this.Global.reset(task.type, "input");
         task.this.Global.update(task.type, "mode", { mode: "input" });
@@ -179,9 +180,9 @@ class SDKHelper {
     var forwarded = null;
 
     //production code
-    await transaction
-      .confirmed()
-      .on("target", (target) => {
+    await transaction.on("progress", (progress) => {
+      console.log("PROGRESS: ", progress);
+      if (progress.status === "ready") {
         const { id, dispatch } = task.this.Notify.createTXCard(
           true,
           task.type,
@@ -189,14 +190,13 @@ class SDKHelper {
             hash: task.transactionHash,
             confirmed: true,
             data: task.request,
-            max: target,
-            current: 0,
+            max: progress.target,
+            current: progress.confirmations,
           }
         );
         forwarded = { id: id, dispatch: dispatch };
-      })
-      .on("confirmation", (confs, target) => {
-        if (confs >= target) {
+      } else {
+        if (progress.confirmations >= progress.target) {
           forwarded.dispatch({ type: "REMOVE", payload: { id: forwarded.id } });
           data.payload.data.complete();
         } else {
@@ -204,11 +204,15 @@ class SDKHelper {
             type: "UPDATE",
             payload: {
               id: forwarded.id,
-              update: { max: target, current: confs + 1 },
+              update: {
+                max: progress.taraget,
+                current: progress.confirmations + 1,
+              },
             },
           });
         }
-      });
+      }
+    });
   }
 
   #clean(response) {
