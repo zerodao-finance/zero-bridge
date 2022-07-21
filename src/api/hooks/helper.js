@@ -162,9 +162,10 @@ class SDKHelper {
   }
 
   async processTransferRequest(error, task) {
+    console.log("TASK: ", task);
     await new Promise((resolve) =>
-      task.mint.eventEmitter.on("transaction", async (transaction) => {
-        console.log("WE GET: ", transaction);
+      task.mint.on("transaction", (transaction) => {
+        console.log("TRANSACTION: ", transaction);
         //recieve deposit object
         task.this.Global.reset(task.type, "input");
         task.this.Global.update(task.type, "mode", { mode: "input" });
@@ -180,7 +181,7 @@ class SDKHelper {
     var forwarded = null;
 
     //production code
-    await transaction.on("progress", (progress) => {
+    await transaction.eventEmitter.on("progress", (progress) => {
       console.log("PROGRESS: ", progress);
       if (progress.status === "ready") {
         const { id, dispatch } = task.this.Notify.createTXCard(
