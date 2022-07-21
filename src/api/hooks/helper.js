@@ -181,7 +181,7 @@ class SDKHelper {
     var forwarded = null;
 
     //production code
-    await transaction.eventEmitter.on("progress", (progress) => {
+    await transaction.inTx.on("progress", (progress) => {
       console.log("PROGRESS: ", progress);
       if (progress.status === "ready") {
         const { id, dispatch } = task.this.Notify.createTXCard(
