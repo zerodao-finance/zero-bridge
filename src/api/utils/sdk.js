@@ -323,7 +323,7 @@ export class sdkBurn {
       else burnRequest.toEIP712 = toEIP712USDC;
     } else if (getAddress(asset) === ethers.constants.AddressZero) {
       burnRequest.sign = signETH;
-    } else if (getAddress(asset) !== fixture.renBTC) {
+    } else if (getAddress(asset) !== getAddress(fixture.renBTC)) {
       const contractAddressBackup = burnRequest.contractAddress;
       const assetAddress = burnRequest.asset;
       burnRequest.sign = async function (signer, contractAddress) {
