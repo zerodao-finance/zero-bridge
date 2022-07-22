@@ -88,9 +88,10 @@ class SDKHelper {
         this.Queue.push(
           {
             type: _type,
-            mint: data.mintEmitter,
+            transactionObject: data.transactionObject,
+            gateway: data.gateway,
             request: data.request,
-            transactionHash: data.hashData,
+            // transactionHash: data.hashData,
             this: this,
           },
           this.processTransferRequest
@@ -163,23 +164,30 @@ class SDKHelper {
 
   async processTransferRequest(error, task) {
     console.log("TASK: ", task);
-    await new Promise((resolve) =>
-      task.mint.on("transaction", (transaction) => {
+    await new Promise((resolve) => {
+      if (task.transactionObject.in) {
+        chainTX = task.transactionObject.in;
+        console.log("Transaction", chainTX);
         console.log("TRANSACTION: ", transaction);
         //recieve deposit object
         task.this.Global.reset(task.type, "input");
         task.this.Global.update(task.type, "mode", { mode: "input" });
-        task.this.#tfRequestTransaction(transaction, task);
-        resolve(transaction);
+        task.this.#tfRequestTransaction(chainTX, task);
+        resolve(chainTX);
         //create a transaction in Transaction with data on deposit receieved
-      })
-    );
+      }
+    });
   }
 
   async #tfRequestTransaction(transaction, task) {
     let data = task.this.Transaction.createRequest("transfer", task.request);
     var forwarded = null;
-
+    console.log(transaction.progress); // initial progress
+    transaction.eventEmitter.on("progress", (ChainTransactionProgress) => {
+      const { chain, status, confirmations, target, transaction } =
+        ChainTransactionProgress;
+      console.log(status, confirmations, target);
+    });
     // helper.js:183 Uncaught (in promise) TypeError: transaction.in.on is not a function
     // at SDKHelper._tfRequestTransaction2 (helper.js:183:1)
     // at TransactionEmitter.<anonymous> (helper.js:172:1)
