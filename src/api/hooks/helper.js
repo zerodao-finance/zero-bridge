@@ -7,7 +7,6 @@ import { TransactionHelper } from "../transaction/helper";
 import { GlobalStateHelper } from "../utils/global.utilities";
 import { sdkBurn, sdkTransfer } from "../utils/sdk";
 import async from "async";
-import _ from "lodash";
 
 export const useRequestHelper = () => {
   const { state, dispatch } = useContext(storeContext);
@@ -162,10 +161,8 @@ class SDKHelper {
   }
 
   async processTransferRequest(error, task) {
-    console.log("TASK: ", task);
     await new Promise((resolve) =>
       task.mint.on("transaction", (transaction) => {
-        console.log("TRANSACTION: ", transaction);
         //recieve deposit object
         task.this.Global.reset(task.type, "input");
         task.this.Global.update(task.type, "mode", { mode: "input" });
@@ -180,21 +177,8 @@ class SDKHelper {
     let data = task.this.Transaction.createRequest("transfer", task.request);
     var forwarded = null;
 
-    // helper.js:183 Uncaught (in promise) TypeError: transaction.in.on is not a function
-    // at SDKHelper._tfRequestTransaction2 (helper.js:183:1)
-    // at TransactionEmitter.<anonymous> (helper.js:172:1)
-    // at TransactionEmitter.emit (events.js:153:1)
-    // at Gateway.<anonymous> (gateway.ts:572:1)
-    // at Generator.next (<anonymous>)
-    // at fulfilled (rpcUrls.ts:9:1)
-
-    //production code
-    // await transaction.in.eventEmitter.on("progress", (progress) => { --> Did not work but it seems this is what the example uses
-    // await transaction.in.eventEmitter.on() if that doesnt work try this
-    let waitingTransaction = await transaction.in.wait(6);
-    await waitingTransaction.on("progress", (progress) => {
-      console.log("PROGRESS renVM: ", progress);
-      if (progress.status === "ready") {
+    await transaction.in.wait().on("progress", (progress) => {
+      if (progress.confirmations == 0) {
         const { id, dispatch } = task.this.Notify.createTXCard(
           true,
           task.type,
