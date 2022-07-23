@@ -30,6 +30,10 @@ const chains = [
     name: "Polygon",
     chainId: "137",
   },
+  {
+    name: "Optimism",
+    chainId: "10",
+  },
 ];
 
 export default function NavigationChainDropdown({ chainId, setChainId }) {
