@@ -222,16 +222,13 @@ export class sdkTransfer {
     try {
       await this.zeroUser.publishTransferRequest(transferRequest);
 
-      const gateway = await transferRequest.submitToRenVM();
-      const chainTX = gateway.in;
-
+      const mint = await transferRequest.submitToRenVM(); // In renjsv3, this is really called a gateway
       var gatewayAddress = await transferRequest.toGatewayAddress();
 
       this.response.emit("published", {
         gateway: gatewayAddress,
         request: transferRequest,
-        transactionObject: gateway,
-        chainTX: chainTX,
+        mintEmitter: mint,
         // hashData: txHash
       });
       return;
