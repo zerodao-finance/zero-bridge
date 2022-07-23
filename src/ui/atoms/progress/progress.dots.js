@@ -18,7 +18,7 @@ const Dot = ({ number, current }) => {
     if (number < current) {
       setProps("h-[10px w-[10px] bg-main-green rounded-full animate-pulse");
     } else if (number === current) {
-      setProps("h-[10px] w-[10px] opacity-75 rounded-full animate-ping");
+      setProps("h-[10px] w-[10px] bg-main-green rounded-full animate-ping");
     } else {
       setProps("h-[10px] w-[10px] bg-gray-400 rounded-full");
     }
