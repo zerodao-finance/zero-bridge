@@ -73,7 +73,7 @@ export function getPendingRequestStatus(array, queue, dispatch, Notify) {
     mint.on("transaction", (transaction) => {
       let forwarded = null;
       transaction.in.wait().on("progress", (progress) => {
-        if (progress.confirmations >= 6) {
+        if (!forwarded && progress.confirmations >= 6) {
           dispatch({
             type: "COMPLETE",
             payload: {
