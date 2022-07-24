@@ -122,6 +122,6 @@ export const REMOVED_TOKENS = {
   [1]: ["ibBTC", "AVAX", "MATIC"],
   [42161]: ["ibBTC", "AVAX", "MATIC"],
   [137]: ["ibBTC", "AVAX", "ETH"],
-  [43114]: ["ibBTC", "ETH", "MATIC"],
+  [43114]: ["ibBTC", "ETH", "MATIC", "AVAX"],
   [10]: ["ibBTC", "ETH", "MATIC", "AVAX", "WBTC", "USDC"],
 };
