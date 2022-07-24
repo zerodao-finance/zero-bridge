@@ -16,7 +16,7 @@ const Dot = ({ number, current }) => {
   );
   useEffect(() => {
     if (number < current) {
-      setProps("h-[10px w-[10px] bg-main-green rounded-full animate-pulse");
+      setProps("h-[10px w-[10px] bg-main-green rounded-full");
     } else if (number === current) {
       setProps("h-[10px] w-[10px] bg-main-green rounded-full animate-ping");
     } else {

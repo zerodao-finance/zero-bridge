@@ -201,7 +201,7 @@ class SDKHelper {
             payload: {
               id: forwarded.id,
               update: {
-                max: progress.taraget,
+                max: progress.target,
                 current: progress.confirmations + 1,
               },
             },
