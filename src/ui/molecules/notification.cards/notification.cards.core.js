@@ -69,6 +69,8 @@ export const BurnCard = ({ id, close, data }) => {
 };
 
 export const TransferCard = ({ id, close, data, max, current }) => {
+  console.log("MAX: " + max);
+  console.log("CURRENT: " + current);
   return (
     <div
       className="dark:bg-gray-500 shadow-md text-black min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] text-sm p-5 rounded-md shadow-md text-xs md:text-sm"
