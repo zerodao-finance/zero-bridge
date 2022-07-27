@@ -35,6 +35,7 @@ export async function getFeeBreakdown({ amount, token, chainId }) {
   fees.gasFee = formatOutput(fees.gasFee);
   fees.opFee = formatOutput(fees.opFee);
   fees.totalFees = formatOutput(fees.totalFees);
+  fees.renVmBtcNetworkFee = formatOutput(fees.renVmBtcNetworkFee);
   return fees;
 }
 

@@ -29,6 +29,7 @@ export async function getFeeBreakdown({ amount, chainId }) {
   fees.gasFee = formatOutput("WBTC", fees.gasFee);
   fees.opFee = formatOutput("WBTC", fees.opFee);
   fees.totalFees = formatOutput("WBTC", fees.totalFees);
+  fees.renVmBtcNetworkFee = formatOutput("WBTC", fees.renVmBtcNetworkFee);
   return fees;
 }
 
