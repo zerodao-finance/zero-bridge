@@ -6,13 +6,14 @@ export const BridgeFeeInformation = ({
   gasFee,
   opFee,
   totalFees,
+  renVmBtcNetworkFee,
   btc_usd,
   type,
 }) => {
   const [feeDetailOpen, setFeeDetailOpen] = useState(false);
 
   const flatFeeDiv = () => {
-    const BTCNetworkFee = "0.002";
+    const BTCNetworkFee = renVmBtcNetworkFee || "0.002";
 
     return (
       <div className="flex justify-between">

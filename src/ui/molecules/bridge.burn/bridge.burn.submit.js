@@ -36,6 +36,7 @@ export const BridgeBurnSubmit = ({
       if (keeper.length <= 0) {
         setButtonLabel("Awaiting Keeper");
       } else if (
+        amount > 0 &&
         ethers.utils.formatUnits(
           ethers.utils.parseUnits(quote, 8).mul(ethers.BigNumber.from(btc_usd)),
           14
@@ -49,7 +50,7 @@ export const BridgeBurnSubmit = ({
     } else {
       setButtonLabel("Enter Valid Recipient Address");
     }
-  }, [destination, quote, keeper]);
+  }, [destination, quote, amount, keeper]);
 
   return (
     <>
@@ -61,14 +62,16 @@ export const BridgeBurnSubmit = ({
         />
       </div>
 
-      <div
-        className={
-          "animate-flip-in-hor-top px-6 mt-6 [animation-delay:700ms] w-full " +
-          (active ? "" : "hidden")
-        }
-      >
-        <BridgeFeeInformation {...fees} btc_usd={btc_usd} type="burn" />
-      </div>
+      {amount > 0 && (
+        <div
+          className={
+            "animate-flip-in-hor-top px-6 mt-6 [animation-delay:700ms] w-full " +
+            (active ? "" : "hidden")
+          }
+        >
+          <BridgeFeeInformation {...fees} btc_usd={btc_usd} type="burn" />
+        </div>
+      )}
     </>
   );
 };
