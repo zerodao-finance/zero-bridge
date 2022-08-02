@@ -41,6 +41,8 @@ export const BridgeBurnInput = ({
     switch (token) {
       case "USDC":
         return formatUSDC(amount);
+      case "USDT":
+        return formatUSDC(amount);
       case "ETH":
         return formatUSDCPricedETH(amount, eth_usd);
       case "AVAX":
