@@ -34,9 +34,7 @@ export const useZero = () => {
         });
         keeper = zero.keepers;
       });
-      // zero.keepers.push('QmNzPmnp9qJia5XwzFteBcZW1BYhcZuCsXVgg8qVp7eovV');
       user.emit("keeper", "QmNzPmnp9qJia5XwzFteBcZW1BYhcZuCsXVgg8qVp7eovV");
-      // user.conn.keepers.push('QmNzPmnp9qJia5XwzFteBcZW1BYhcZuCsXVgg8qVp7eovV');
       user.keepers.push("QmNzPmnp9qJia5XwzFteBcZW1BYhcZuCsXVgg8qVp7eovV");
       dispatch({
         type: "SUCCEED_REQUEST",
