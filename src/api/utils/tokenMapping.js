@@ -126,7 +126,7 @@ export const DECIMALS = {
 };
 
 export const REMOVED_TOKENS = {
-  [1]: ["ibBTC", "AVAX", "MATIC"],
+  [1]: ["ibBTC", "AVAX", "MATIC", "USDT"],
   [42161]: ["ibBTC", "AVAX", "MATIC", "USDT"],
   [137]: ["ibBTC", "AVAX", "ETH", "USDT"],
   [43114]: ["ibBTC", "ETH", "MATIC", "USDT"],
