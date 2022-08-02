@@ -15,6 +15,7 @@ import {
   chainIdToName,
   DECIMALS,
 } from "../utils/tokenMapping.js";
+import { get } from "lodash";
 
 const remoteETHTxMap = new WeakMap();
 
@@ -350,13 +351,24 @@ export class sdkBurn {
           ).wait();
         }
 
-        const tokenNonce = String(
-          await new ethers.Contract(
-            contractAddressBackup,
-            ["function nonces(address) view returns (uint256) "],
-            signer
-          ).nonces(await signer.getAddress())
-        );
+        let tokenNonce = null;
+        if (getAddress(asset) == getAddress(fixtures.ETHEREUM.USDT)) {
+          tokenNonce = String(
+            await new ethers.Contract(
+              contractAddressBackup,
+              ["function noncesUsdt(address) view returns (uint256) "],
+              signer
+            ).noncesUsdt(await signer.getAddress())
+          );
+        } else {
+          tokenNonce = String(
+            await new ethers.Contract(
+              contractAddressBackup,
+              ["function nonces(address) view returns (uint256) "],
+              signer
+            ).nonces(await signer.getAddress())
+          );
+        }
         console.log("tokenNonce", tokenNonce);
         this.contractAddress = contractAddress;
         burnRequest.toEIP712 = function (...args) {
