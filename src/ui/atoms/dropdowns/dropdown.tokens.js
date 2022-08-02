@@ -8,6 +8,7 @@ import { ReactComponent as ibBTC } from "../../../assets/svg-coins/ibbtc.svg";
 import { ReactComponent as USDC } from "../../../assets/svg-coins/usdc.svg";
 import { ReactComponent as AVAX } from "../../../assets/svg-coins/avax.svg";
 import { ReactComponent as MATIC } from "../../../assets/svg-coins/matic.svg";
+import { ReactComponent as USDT } from "../../../assets/svg-coins/usdt.svg";
 import { useLocation } from "react-router-dom";
 
 function classNames(...classes) {
@@ -58,6 +59,10 @@ function TokenDropdown({
     {
       text: "USDC",
       icon: USDC,
+    },
+    {
+      text: "USDT",
+      icon: USDT,
     },
   ];
 

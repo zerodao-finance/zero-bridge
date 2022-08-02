@@ -12,6 +12,8 @@ export const txCardAmount = ({ amount, tokenName }) => {
       return ethers.utils.formatEther(bigNumAmount);
     case "usdc":
       return ethers.utils.formatUnits(bigNumAmount, 6);
+    case "usdt":
+      return ethers.utils.formatUnits(bigNumAmount, 6);
     default:
       return ethers.utils.formatUnits(bigNumAmount, 8);
   }
@@ -50,6 +52,8 @@ export const tokenMapping = ({ tokenName, chainId }) => {
       return fixture.ibBTC;
     case "usdc":
       return fixture.USDC;
+    case "usdt":
+      return fixture.USDT;
   }
 };
 
@@ -75,6 +79,8 @@ export const reverseTokenMapping = ({ tokenAddress }) => {
       tokenName = "WBTC";
     } else if (checksummedAddress == getAddress(fixture.USDC)) {
       tokenName = "USDC";
+    } else if (checksummedAddress == getAddress(fixture.USDT)) {
+      tokenName = "USDT";
     }
   });
 
@@ -98,6 +104,7 @@ export const DECIMALS = {
   [toLower(ETHEREUM.WBTC)]: 8,
   [toLower(ETHEREUM.renBTC)]: 8,
   [toLower(ETHEREUM.USDC)]: 6,
+  [toLower(ETHEREUM.USDT)]: 6,
   [toLower(ETHEREUM.ibBTC)]: 8,
   [ethers.constants.AddressZero]: 18,
   [toLower(ARBITRUM.WBTC)]: 8,
@@ -119,9 +126,9 @@ export const DECIMALS = {
 };
 
 export const REMOVED_TOKENS = {
-  [1]: ["ibBTC", "AVAX", "MATIC"],
-  [42161]: ["ibBTC", "AVAX", "MATIC"],
-  [137]: ["ibBTC", "AVAX", "ETH"],
-  [43114]: ["ibBTC", "ETH", "MATIC"],
-  [10]: ["ibBTC", "ETH", "MATIC", "AVAX", "WBTC", "USDC"],
+  [1]: ["ibBTC", "AVAX", "MATIC", "USDT"],
+  [42161]: ["ibBTC", "AVAX", "MATIC", "USDT"],
+  [137]: ["ibBTC", "AVAX", "ETH", "USDT"],
+  [43114]: ["ibBTC", "ETH", "MATIC", "USDT"],
+  [10]: ["ibBTC", "ETH", "MATIC", "AVAX", "WBTC", "USDC", "USDT"],
 };

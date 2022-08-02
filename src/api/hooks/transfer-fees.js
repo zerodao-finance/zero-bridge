@@ -6,6 +6,8 @@ function formatOutput(token, output) {
   switch (token) {
     case "USDC":
       return ethers.utils.formatUnits(output, 6);
+    case "USDT":
+      return ethers.utils.formatUnits(output, 6);
     case "ETH":
       return ethers.utils.formatEther(output);
     case "AVAX":
