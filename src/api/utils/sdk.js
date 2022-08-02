@@ -319,8 +319,11 @@ export class sdkBurn {
     const { toEIP712 } = burnRequest;
     const fixture = getFixtures(chainId);
     if (getAddress(asset) === getAddress(fixture.USDC)) {
-      if (chainId == 43114) burnRequest.sign = signUSDCAVAX;
-      else burnRequest.toEIP712 = toEIP712USDC;
+      if (chainId == 43114) {
+        burnRequest.sign = signUSDCAVAX;
+      } else {
+        burnRequest.toEIP712 = toEIP712USDC;
+      }
     } else if (getAddress(asset) === ethers.constants.AddressZero) {
       burnRequest.sign = signETH;
     } else if (getAddress(asset) !== getAddress(fixture.renBTC)) {

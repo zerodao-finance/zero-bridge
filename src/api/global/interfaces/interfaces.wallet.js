@@ -134,6 +134,7 @@ export const useWalletBalances = () => {
     WBTC: 0,
     ibBTC: 0,
     USDC: 0,
+    USDT: 0,
   });
 
   useEffect(async () => {
@@ -142,6 +143,9 @@ export const useWalletBalances = () => {
       let tokenAmount = "0";
       switch (token) {
         case "USDC":
+          tokenAmount = ethers.utils.formatUnits(bal, 6);
+          break;
+        case "USDT":
           tokenAmount = ethers.utils.formatUnits(bal, 6);
           break;
         case "ETH":

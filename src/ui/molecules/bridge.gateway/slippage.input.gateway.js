@@ -17,7 +17,10 @@ export const SlippageInput = ({ token, slippage, setSlippage }) => {
         setSlippage("0.0");
         break;
       case "USDC":
-        setSlippage("5.0");
+        setSlippage("10.0");
+        break;
+      case "USDT":
+        setSlippage("10.0");
         break;
       case "ETH":
         setSlippage("10.0");

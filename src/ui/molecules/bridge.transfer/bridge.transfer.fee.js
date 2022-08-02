@@ -56,6 +56,8 @@ export const BridgeTransferFee = ({
     switch (token) {
       case "USDC":
         return formatUSDC(quote);
+      case "USDT":
+        return formatUSDC(quote);
       case "ETH":
         return formatUSDCPricedETH(quote, eth_usd);
       case "AVAX":
@@ -76,7 +78,7 @@ export const BridgeTransferFee = ({
             token={token}
             setToken={setToken}
             tokensRemoved={REMOVED_TOKENS[chainId]}
-            tokensDisabled={["ibBTC", "USDC"]}
+            tokensDisabled={["ibBTC"]}
           />
         </div>
         <div className="pt-3">
