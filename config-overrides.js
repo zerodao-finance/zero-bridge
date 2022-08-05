@@ -1,6 +1,10 @@
 const webpack = require("webpack");
 
 module.exports = function override(config, env) {
+  config.headers = {
+    'X-Frame-Options': 'DENY',
+    'X-XSS-Protection': '1; mode=block'
+  }
   config.plugins = [
     ...config.plugins,
     new webpack.ProvidePlugin({
