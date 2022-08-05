@@ -1,6 +1,6 @@
-import { useBridgePage } from '../../api/global/interfaces/interface.bridge'
+import { useBridgePage } from "../../api/global/interfaces/interface.bridge";
 export const LayoutBridgeModule = () => {
-    /**
+  /**
      * Conditional Rendering Logic
      * 
      * States - input | processing
@@ -12,14 +12,14 @@ export const LayoutBridgeModule = () => {
         show signature screen
         show gateway screen
      *  
-     * */    
+     * */
 
-    const { component, mode } = useBridgePage()
+  const { component, mode } = useBridgePage();
 
-    switch (mode) {
-        case "transfer":
-            return 
-        case "process":
-            return
-    }
-}
+  switch (mode) {
+    case "transfer":
+      return;
+    case "process":
+      return;
+  }
+};

@@ -1,50 +1,57 @@
-import { BridgeTransferModule } from '../molecules/bridge.transfer';
+import { BridgeTransferModule } from "../molecules/bridge.transfer";
+import { BridgeBurnModule } from "../molecules/bridge.burn/bridge.burn";
+import { BridgeLoadingWallet } from "../molecules/bridge.transfer/bridge.loading.wallet";
+import { useBridgeInput } from "../../api/global/interfaces/interface.bridge.transfer";
+import { useBridgeBurnInput } from "../../api/global/interfaces/interface.bridge.burn";
+import { useBridgePage } from "../../api/global/interfaces/interface.bridge";
+import Disclaimer from "./Disclaimer";
+import { Route, Routes, Link } from "react-router-dom";
+import { SlippageInput } from "../molecules/bridge.gateway/slippage.input.gateway";
+import NavigationBridgeToggle from "../molecules/navigation/navigation.bridge.toggle";
 
-import { BridgeBurnModule } from '../molecules/bridge.burn/bridge.burn';
-import { BridgeLoadingWallet } from '../molecules/bridge.transfer/bridge.loading.wallet';
-import { useBridgeInput } from '../../api/global/interfaces/interface.bridge.transfer';
-import { useBridgePage } from '../../api/global/interfaces/interface.bridge';
-import Disclaimer from './Disclaimer';
+export const BridgeModule = ({ wallet }) => {
+  const { getTransferMode, getTransferSlippageProps } = useBridgeInput();
+  const { getBurnSlippageProps } = useBridgeBurnInput();
+  const { getBridgePageProps } = useBridgePage();
+  const { tcSigned } = getBridgePageProps();
 
-export const BridgeModule = ({ wallet, mode, toggleMode }) => {
-	const { getTransferMode } = useBridgeInput();
-	const { getBridgePageProps } = useBridgePage();
-	const { tcSigned } = getBridgePageProps();
-	return !tcSigned ? (
-		<Disclaimer />
-	) : (
-		<div className="h-full w-full flex flex-col container h-fit bg-white shadow-xl rounded-[30px] justify-center place-items-center gap-1 md:gap-3  first:gap-0 w-fit pb-4 dark:bg-gray-700 text-white min-w-[370px]">
-			<div
-				className={`h-full w-full overflow-hidden rounded-t-[30px] grid grid-cols-2 grid-flow-rows mb-8 bg-gray-200 dark:bg-gray-800 align-center font-light tracking-wider text-sm text-center`}
-			>
-				<div
-					className={`py-[10px] rounded-tl-[30px] cursor-pointer ${
-						mode === 'transfer'
-							? 'transition ease-in-out duration-150 bg-main-green hover:bg-main-green/90 text-black font-bold'
-							: 'transition ease-in-out duration-150 text-black hover:bg-main-green/10 dark:text-white'
-					}`}
-					onClick={() => toggleMode('transfer')}
-				>
-					Transfer
-				</div>
-				<div
-					className={`py-[10px] rounded-tr-[30px] cursor-pointer ${
-						mode === 'release'
-							? 'bg-main-green text-black font-bold'
-							: 'transition ease-in-out duration-150 text-black hover:bg-main-green/10 dark:text-white'
-					}`}
-					onClick={() => toggleMode('release')}
-				>
-					Release
-				</div>
-			</div>
-			{wallet ? (
-				<BridgeLoadingWallet />
-			) : mode === 'transfer' ? (
-				<BridgeTransferModule {...getTransferMode()} />
-			) : (
-				<BridgeBurnModule />
-			)}
-		</div>
-	);
+  return !tcSigned ? (
+    <Disclaimer />
+  ) : (
+    <div className="h-fit w-fit pb-8 grid bg-badger-black-500 rounded-lg justify-center text-badger-white-400 min-w-[370px]">
+      <NavigationBridgeToggle />
+      <span className="grid px-4 md:px-8">
+        {wallet ? (
+          <BridgeLoadingWallet />
+        ) : (
+          <>
+            <Routes>
+              <Route
+                path="/transfer/*"
+                element={
+                  <div className="grid">
+                    <span className="w-full select-none">
+                      <SlippageInput {...getTransferSlippageProps()} />
+                    </span>
+                    <BridgeTransferModule {...getTransferMode()} />
+                  </div>
+                }
+              />
+              <Route
+                path="/release/*"
+                element={
+                  <div className="grid">
+                    <span className="w-full select-none">
+                      <SlippageInput {...getBurnSlippageProps()} />
+                    </span>
+                    <BridgeBurnModule />
+                  </div>
+                }
+              />
+            </Routes>
+          </>
+        )}
+      </span>
+    </div>
+  );
 };

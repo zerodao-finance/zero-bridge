@@ -1,101 +1,42 @@
-import { BridgeTransferInput } from './bridge.transfer.input'
-import { BridgeTransferResult } from './bridge.transfer.result'
-import { BridgeTransferRatio } from './bridge.transfer.ratio'
-import { BridgeTransferSubmit } from './bridge.transfer.submit'
-import { BridgeModuleToggle } from './bridge.module.toggle'
-import { BridgeLoadingSignature } from './bridge.loading.signature'
-import { BridgeLoadingGateway } from './bridge.loading.gateway'
-import { BridgeGatewayConfirmation } from '../bridge.gateway/bridge.gateway'
-import { AiOutlineArrowDown } from 'react-icons/ai'
-import { useBridgeInput } from '../../../api/global/interfaces/interface.bridge.transfer'
-import { useCheckWalletConnected } from '../../../api/global/interfaces/interfaces.wallet'
+import { BridgeTransferFee } from "./bridge.transfer.fee";
+import { BridgeTransferSubmit } from "./bridge.transfer.submit";
+import { BridgeLoadingSignature } from "./bridge.loading.signature";
+import { BridgeLoadingGateway } from "./bridge.loading.gateway";
+import { BridgeGatewayConfirmation } from "../bridge.gateway/bridge.gateway";
+import { ArrowDownIcon } from "@heroicons/react/solid";
+import { useBridgeInput } from "../../../api/global/interfaces/interface.bridge.transfer";
+import BridgeTransferFrom from "./bridge.transfer.from";
 
 export const BridgeTransferModule = ({ mode }) => {
-    const { 
-        getTransferSenderProps,
-        getTransferInputProps,
-        getTransferRatioProps,
-        getTransferResultsProps,
-        getTransferModuleToggleProps,
-        getGatewayData,
-    } = useBridgeInput()
-    
-    const { 
-        open
-    } = useCheckWalletConnected()
+  const { getTransferSenderProps, getTransferInputProps, getGatewayData } =
+    useBridgeInput();
 
-    if ( mode === "input") {
-        return (
-            <>
-                    <div className="animate-flip-in-hor-top [animation-delay:400ms] container h-max flex flex-row place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around items-center px-1 md:px-8 ">
-                        <div className='flex flex-col w-full justify-center items-center'>
-                            <p className="text-[10px] text-black dark:text-white opacity-60 w-full whitespace-nowrap text-left"> transfer amount </p>
-                            <div className="flex flex-col">
-                                <BridgeTransferInput {...getTransferInputProps()}/>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className={`animate-flip-in-hor-top [animation-delay:500ms] flex flex-col justify-center place-items-center mt-5`}>
-                        <BridgeTransferRatio {...getTransferRatioProps()}/>
-                        <AiOutlineArrowDown  className="fill-black" />
-                    </div>
-                    <div className={` animate-flip-in-hor-top [animation-delay:600ms] container h-max flex flex-col place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around items-center px-1 md:px-8  pt-8 pb-4`}>
-                        <p className="text-[10px] text-gray-300 whitespace-nowrap">result</p>
-                        <div className="flex flex-col w-full">
-                            <BridgeTransferResult {...getTransferResultsProps()} />
-                        </div>
-                    </div>
-                    <BridgeModuleToggle {...getTransferModuleToggleProps()}/>
-                    <div className="animate-flip-in-hor-top [animation-delay:700ms] w-10/12 mt-4">
-                        <BridgeTransferSubmit {...getTransferSenderProps()}/>
-                    </div>
-                </>
-        )
-    } else if ( mode === "showSigning") {
-        return <BridgeLoadingSignature />
-    } else if ( mode === "waitingDry") {
-        return (
-            <BridgeLoadingGateway />
-        )
-    } else if (mode === "showGateway") {
-        return (
-            <BridgeGatewayConfirmation {...getGatewayData()}/>
-        )
-    }
+  if (mode === "input") {
+    return (
+      <>
+        <div className="container h-max flex flex-row place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around items-center px-1 md:px-8 z-10">
+          <div className="flex flex-col w-full justify-center items-center animate-flip-in-hor-top [animation-delay:400ms]">
+            <p className="text-xs pl-2 text-black dark:text-badger-text-secondary-400 opacity-60 w-full whitespace-nowrap text-left">
+              transfer amount
+            </p>
+            <div className="flex flex-col gap-2 justify-center max-w-[100%]">
+              <BridgeTransferFrom {...getTransferInputProps()} />
+              <ArrowDownIcon className="fill-white w-4 self-center pt-3" />
+            </div>
+            <BridgeTransferFee {...getTransferInputProps()} />
+          </div>
+        </div>
 
-    // return (
-    //     <>{
-    //         open ? 
-    //         <BridgeLoadingWallet />
-    //         :
-    //         <>{ isLoading ? <BridgeLoadingSignature /> 
-    //             :
-    //             <>
-    //                 <div className="animate-flip-in-hor-top [animation-delay:400ms] container h-max flex flex-row place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around pr-[4.5rem] items-center px-1 md:px-8 ">
-    //                     <p className="text-[10px] text-gray-300 whitespace-nowrap"> transfer amount </p>
-    //                     <div className="flex flex-col">
-    //                         <BridgeTransferInput {...getTransferInputProps()}/>
-    //                     </div>
-    //                 </div>
-    //                 <div className={`animate-flip-in-hor-top [animation-delay:500ms] flex flex-col justify-center place-items-center mt-5`}>
-    //                     <BridgeTransferRatio {...getTransferRatioProps()}/>
-    //                     <AiOutlineArrowDown  className="fill-black" />
-    //                 </div>
-    //                 <div className={` animate-flip-in-hor-top [animation-delay:600ms] container h-max flex flex-col place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around items-center px-1 md:px-8  pt-8 pb-4`}>
-    //                     <p className="text-[10px] text-gray-300 whitespace-nowrap">result</p>
-    //                     <div className="flex flex-col w-full">
-    //                         <BridgeTransferResult {...getTransferResultsProps()} />
-    //                     </div>
-    //                 </div>
-    //                 <BridgeModuleToggle {...getTransferModuleToggleProps()}/>
-    //                 <div className="animate-flip-in-hor-top [animation-delay:700ms] mt-4">
-    //                     <BridgeTransferSubmit {...getTransferSenderProps()}/>
-    //                 </div>
-    //             </>
-    //         }
-    //         </>
-            
-    //     }</>
-    // )
-}
+        <div className="animate-flip-in-hor-top [animation-delay:500ms] w-full mt-4 pb-2">
+          <BridgeTransferSubmit {...getTransferSenderProps()} />
+        </div>
+      </>
+    );
+  } else if (mode === "showSigning") {
+    return <BridgeLoadingSignature />;
+  } else if (mode === "waitingDry") {
+    return <BridgeLoadingGateway />;
+  } else if (mode === "showGateway") {
+    return <BridgeGatewayConfirmation {...getGatewayData()} />;
+  }
+};
