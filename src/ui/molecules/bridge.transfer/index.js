@@ -1,1 +1,1 @@
-export * from './bridge.transfer'
+export * from "./bridge.transfer";

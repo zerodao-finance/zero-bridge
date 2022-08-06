@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Satoshi";
+  src: url("/src/assets/fonts/Satoshi-Variable.woff2")
+      format("woff2 supports variations"),
+    url("/src/assets/fonts/Satoshi-Variable.woff2") format("woff2-variations");
+  font-weight: 100 1000;
+  font-stretch: 25% 151%;
+}
+
 .slider {
   -webkit-appearance: none;
   width: 50%;
@@ -14,25 +23,23 @@
   padding: 0 5px 0 5px;
 }
 
-
 /* for chrome/safari */
 .slider::-webkit-slider-thumb {
   width: 8px !important;
   height: 8px !important;
   -webkit-appearance: none;
   appearance: none;
-  background: #6ee7b7;
+  background: #ffcf4d;
   border-radius: 100% !important;
   box-shadow: none !important;
   cursor: pointer;
 }
 
-
 /* for firefox */
 .slider::-moz-range-thumb {
   width: 8px;
   height: 8px;
-  background: #6ee7b7;
+  background: #ffcf4d;
   cursor: pointer;
   border-radius: 100%;
 }
@@ -45,7 +52,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -74,17 +81,15 @@ input[type=number] {
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
-     
   input[type="range"]::-webkit-slider-thumb {
-      width: 1px;
-      -webkit-appearance: none;
-      /* appearance: none; */
-      /* height: 15px; */
-      /* cursor: ew-resize; */
-      /* background: #FFF; */
-      box-shadow: -405px 0 0 400px #6EE7B7;
-      border-radius: 50%;  
-      
+    width: 1px;
+    -webkit-appearance: none;
+    /* appearance: none; */
+    /* height: 15px; */
+    /* cursor: ew-resize; */
+    /* background: #FFF; */
+    box-shadow: -405px 0 0 400px #ffcf4d;
+    border-radius: 50%;
   }
 }
 /* body {

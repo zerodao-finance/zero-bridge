@@ -1,65 +1,89 @@
-import { v4 as uuidv4 } from 'uuid'
-import { getCard } from '../../ui/molecules/notification.cards/notification.cards.core'
+import { v4 as uuidv4 } from "uuid";
+import { getCard } from "../../ui/molecules/notification.cards/notification.cards.core";
 export class NotificationHelper {
-    static ADD = "ADD"
-    static REMOVE = "REMOVE"
-    static REMOVE_ALL = "REMOVE_ALL"
-    
-    constructor ( state, dispatch ) {
-        this.dispatch = dispatch
-        this.state = state
-    }
+  static ADD = "ADD";
+  static REMOVE = "REMOVE";
+  static REMOVE_ALL = "REMOVE_ALL";
 
-    
-    createCard(timeout=null, type=null, data) {
-        var id = uuidv4()
-        this.dispatch({ type: "ADD", payload: {
-            id: id,
-            type: type,
-            timeout: timeout,
-            content: getCard,
-            callback: () => this._timeout(id, timeout),
-            close: () => this._close(id),
-            ...data,
-        }})
-    }
+  constructor(state, dispatch) {
+    this.dispatch = dispatch;
+    this.state = state;
+  }
 
-    createTXCard(confirmation = true, type="request", data) {
-        var id = uuidv4()
-        this.dispatch({ type: "ADD", payload: {
-            id: id,
-            type: type,
-            timeout: null,
-            content: getCard,
-            confirmation: confirmation,
-            callback: () => this._confirmation(id, data.confirmed),
-            close: () => this._close(id),
-            ...data
-        }})
-    }
+  createCard(timeout = 10000, type = null, data) {
+    var id = uuidv4();
+    this.dispatch({
+      type: "ADD",
+      payload: {
+        id: id,
+        type: type,
+        timeout: timeout,
+        content: getCard,
+        callback: () => this._timeout(id, timeout),
+        close: () => this._close(id),
+        ...data,
+      },
+    });
+  }
 
-    //callbacks
-    
-    _confirmation(id, data) {
-        data.on('confirmation', (i, target) => {
-            if (i >= target) {
-                this.dispatch({ type: "REMOVE", payload: { id: id}})
-                return
-            } else {
-                this.dispatch({ type: "UPDATE", payload: { id: id, update: { max: target, current: i + 1 }}})
-            }
-        })
-    }
-    _close(id) {
-        this.dispatch({type: "REMOVE", payload: { id: id }})
-    }
+  createTXCard(confirmation = true, type = "request", data) {
+    var id = uuidv4();
+    this.dispatch({
+      type: "ADD",
+      payload: {
+        id: id,
+        type: type,
+        timeout: null,
+        content: getCard,
+        confirmation: confirmation,
+        callback: () => this.voidCallback(),
+        close: () => this._close(id),
+        ...data,
+      },
+    });
 
-    _timeout(id, timeout) {
-        setTimeout(() => {
-            this.dispatch({ type: "REMOVE", payload: { id: id }})
-        }, timeout)
-    }
+    return { id: id, dispatch: this.dispatch };
+  }
 
-    
+  createBurnCard(type = "burn", data) {
+    var id = uuidv4();
+    this.dispatch({
+      type: "ADD",
+      payload: {
+        id: id,
+        type: type,
+        timeout: null,
+        content: getCard,
+        callback: () => this.voidCallback(),
+        close: () => this._close(id),
+        ...data,
+      },
+    });
 
+    return { id: id, dispatch: this.dispatch };
+  }
+
+  //callbacks
+
+  voidCallback = () => {};
+
+  _removeId(id) {
+    this.dispatch({ type: "REMOVE_TRANSITION", payload: { id: id } });
+    setTimeout(() => {
+      this.dispatch({ type: "REMOVE", payload: { id: id } });
+    }, 500);
+  }
+
+  _close(id) {
+    this._removeId(id);
+  }
+
+  _timeout(id, timeout) {
+    setTimeout(() => {
+      this.dispatch({ type: "REMOVE_TRANSITION", payload: { id: id } });
+    }, timeout);
+    setTimeout(() => {
+      this.dispatch({ type: "REMOVE", payload: { id: id } });
+    }, timeout + 500);
+  }
 }

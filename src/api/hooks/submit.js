@@ -1,74 +1,113 @@
-import { useMemo, useContext } from 'react'
-import { ethers } from 'ethers'
-import { storeContext } from "../global"
-import { useNotificationContext } from "../notification"
-import { TransactionContext } from '../transaction'
-import { TransactionHelper } from '../transaction/helper'
-import { NotificationHelper } from '../notification/helper'
-import { GlobalStateHelper } from "../utils/global.utilities"
-import { SDKHelperClass } from '../utils/sdkHelper'
-import { useRequestHelper } from './helper'
+import { useContext } from "react";
+import { ethers } from "ethers";
+import { storeContext } from "../global";
+import { GlobalStateHelper } from "../utils/global.utilities";
+import { useRequestHelper } from "./helper";
+
+//getSigner function
+export const getSigner = async (wallet) => {
+  try {
+    await wallet.provider.send("eth_accounts", []);
+    const signer = await wallet.provider.getSigner();
+    return signer;
+  } catch (err) {
+    return new Error("Reconnect Wallet, Cannot get signer");
+  }
+};
 
 export const useSDKTransactionSubmit = (module) => {
-    const { state, Helper } = useRequestHelper()
-    const { wallet, zero } = state
-    const { input } = state[module]
+  const { dispatch } = useContext(storeContext);
+  const { state, Helper } = useRequestHelper();
+  const { wallet, zero } = state;
+  const { chainId } = wallet;
+  const { slippage } = state.transfer.input;
+  const { input } = state[module];
 
-    //getSigner function
-    const getSigner = useMemo(async () => {
-        try {
-            await wallet.provider.send("eth_requestAccounts", [])
-            const signer = await wallet.provider.getSigner()
-            return signer
-        } catch (err) {
-            return new Error("Reconnect Wallet, Cannot get signer")
-        }
-    })
+  async function sendTransferRequest() {
+    var zeroUser = zero.zeroUser;
+    var amount = input.amount;
+    var token = input.token;
+    var signer = await getSigner(wallet);
+    var to = await signer.getAddress();
+    var isFast = input.isFast;
 
-    async function sendTransferRequest() {
-        var zeroUser = zero.zeroUser
-        var amount = input.amount
-        var ratio = String(input.ratio)
-        var signer = await getSigner
-        var to = await signer.getAddress()
-        var isFast = input.isFast
-        var data = ethers.utils.defaultAbiCoder.encode(
-            ['uint256'],
-            [ethers.utils.parseEther(ratio).div(ethers.BigNumber.from('100'))]
-        )
-        let requestData = [
-            zeroUser,
-            amount,
-            ratio,
-            signer,
-            to,
-            isFast,
-            data
-        ]
-
-        Helper.request("transfer", requestData)
-        console.log(Helper)
-
-    }   
-    
-    async function sendBurnRequest() {
-        const StateHelper = new GlobalStateHelper(state, dispatch)
-        StateHelper.update("burn","mode",{mode: "showSigning"})
-        var signer = await getSigner
-        var to = await signer.getAddress()
-        var zeroUser = zero.zeroUser
-        var amount = input.amount
-        var destination = input.destination
-        var deadline = ethers.constants.MaxUint256
-        var destination = ethers.utils.hexlify(ethers.utils.base58.decode('36c5pSLZ4J11EiyaXuYfJypNzrufYVJ5Qd'))
-        const transfer = new sdkBurn(zeroUser, amount, to, deadline, signer, destination)
-        await transfer.call()
-
+    var quote = input.quote;
+    switch (token) {
+      case "ETH":
+        quote = ethers.utils.parseEther(quote);
+        break;
+      case "AVAX":
+        quote = ethers.utils.parseEther(quote);
+        break;
+      case "MATIC":
+        quote = ethers.utils.parseEther(quote);
+        break;
+      case "USDC":
+        quote = ethers.utils.parseUnits(quote, 6);
+        break;
+      case "USDT":
+        quote = ethers.utils.parseUnits(quote, 6);
+        break;
+      default:
+        quote = ethers.utils.parseUnits(quote, 8);
     }
 
+    const inverseSlippage = ethers.utils
+      .parseEther("1")
+      .sub(ethers.utils.parseEther(String(Number(slippage) / 100)));
 
-    return {
-        sendTransferRequest,
-        sendBurnRequest    
-    }
-}
+    const minOut = inverseSlippage.mul(quote).div(ethers.utils.parseEther("1"));
+    const data = ethers.utils.defaultAbiCoder.encode(["uint256"], [minOut]);
+
+    let requestData = [
+      chainId,
+      zeroUser,
+      amount,
+      token,
+      signer,
+      to,
+      isFast,
+      data,
+    ];
+
+    Helper.request("transfer", requestData);
+  }
+
+  async function sendBurnRequest() {
+    const StateHelper = new GlobalStateHelper(state, dispatch);
+    StateHelper.update("burn", "mode", { mode: "showSigning" });
+    var signer = await getSigner(wallet);
+    var to = await signer.getAddress();
+    var zeroUser = zero.zeroUser;
+    var amount = input.amount;
+    var destination = input.destination;
+    var deadline = ethers.constants.MaxUint256;
+
+    var quote = ethers.utils.parseUnits(input.quote, 8);
+
+    const inverseSlippage = ethers.utils
+      .parseEther("1")
+      .sub(ethers.utils.parseEther(String(Number(slippage) / 100)));
+
+    const minOut = inverseSlippage.mul(quote).div(ethers.utils.parseEther("1"));
+
+    let requestData = [
+      chainId,
+      zeroUser,
+      minOut,
+      amount,
+      to,
+      deadline,
+      signer,
+      destination,
+      StateHelper,
+    ];
+
+    Helper.request("burn", requestData);
+  }
+
+  return {
+    sendTransferRequest,
+    sendBurnRequest,
+  };
+};
