@@ -45,6 +45,14 @@ export const usePriceFeedContracts = () => {
     return ethers.utils.parseUnits(usdcForOneZEC, 6).div(2).toString();
   };
 
+  const getCoinGeckoZecUsdPrice = async () => {
+    const response = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=zcash&vs_currencies=usd"
+    );
+    const data = await response.json();
+    return ethers.utils.parseUnits(String(data.zcash.usd), 6).toString();
+  };
+
   const getUniswapBtcETHPrice = async () => {
     const pair = await Fetcher.fetchPairData(
       WBTC,
@@ -107,7 +115,7 @@ export const usePriceFeedContracts = () => {
         getUniswapUsdcETHPrice(),
         getTraderJoeUsdcAvaxPrice(),
         getUniswapUSDCMATICPrice(),
-        getUniswapZecUsdPrice(),
+        getCoinGeckoZecUsdPrice(),
       ]).then(async (result) => {
         dispatch({
           type: "UPDATE",
