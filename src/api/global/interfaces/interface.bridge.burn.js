@@ -103,6 +103,7 @@ export const useBridgeBurnInput = () => {
     btc_usd: btc_usd,
     chainId: wallet.chainId,
     quote,
+    primaryToken,
   });
 
   return {

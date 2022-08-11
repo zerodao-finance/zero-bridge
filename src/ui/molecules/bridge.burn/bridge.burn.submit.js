@@ -6,6 +6,15 @@ import { BridgeFeeInformation } from "../bridge.transfer/bridge.transfer.feeInfo
 import { useZero } from "../../../api/global/interfaces/interfaces.zero";
 
 const btcRegex = /^(?:[13]{1}[a-km-zA-HJ-NP-Z1-9]{26,33}|bc1[a-z0-9]{39,59})$/;
+const zcashRegex = /t1[a-km-zA-HJ-NP-Z1-9]{33}$/;
+
+const isValidAddress = ({ destination, primaryToken }) => {
+  if (primaryToken === "BTC") {
+    return destination.substr(0, 4) != "bc1p" && destination.match(btcRegex);
+  } else {
+    return destination.match(zcashRegex);
+  }
+};
 
 export const BridgeBurnSubmit = ({
   action,
@@ -15,6 +24,7 @@ export const BridgeBurnSubmit = ({
   btc_usd,
   chainId,
   quote,
+  primaryToken,
 }) => {
   const [buttonLabel, setButtonLabel] = useState(
     "Enter Valid Recipient Address"
@@ -32,7 +42,7 @@ export const BridgeBurnSubmit = ({
 
   useEffect(async () => {
     setActive(false);
-    if (destination.substr(0, 4) != "bc1p" && destination.match(btcRegex)) {
+    if (isValidAddress({ destination, primaryToken })) {
       if (keeper.length <= 0) {
         setButtonLabel("Awaiting Keeper");
       } else if (
@@ -48,9 +58,13 @@ export const BridgeBurnSubmit = ({
         setButtonLabel("Result Must Be More Than $15");
       }
     } else {
-      setButtonLabel("Enter Valid Recipient Address");
+      setButtonLabel(
+        "Enter Valid " +
+          (primaryToken == "ZEC" ? "Transparent" : "") +
+          " Recipient Address"
+      );
     }
-  }, [destination, quote, amount, keeper]);
+  }, [destination, quote, amount, keeper, primaryToken]);
 
   return (
     <>

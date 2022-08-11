@@ -20,6 +20,7 @@ export const useSDKTransactionSubmit = (module) => {
   const { state, Helper } = useRequestHelper();
   const { wallet, zero } = state;
   const { chainId } = wallet;
+  const { primaryToken } = state.bridge.mode;
   const { slippage } = state.transfer.input;
   const { input } = state[module];
 
@@ -62,6 +63,7 @@ export const useSDKTransactionSubmit = (module) => {
     let requestData = [
       chainId,
       zeroUser,
+      primaryToken, // asset
       amount,
       token,
       signer,

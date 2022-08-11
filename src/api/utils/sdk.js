@@ -156,7 +156,17 @@ export class sdkTransfer {
   }
 
   response = new EventEmitter({ captureRejections: true });
-  constructor(chainId, zeroUser, value, token, signer, to, isFast, _data) {
+  constructor(
+    chainId,
+    zeroUser,
+    asset,
+    value,
+    token,
+    signer,
+    to,
+    isFast,
+    _data
+  ) {
     this.chainId = chainId;
     this.isFast = isFast;
     this.zeroUser = zeroUser;
@@ -166,20 +176,14 @@ export class sdkTransfer {
 
     // initialize Transfer Request Object
     this.transferRequest = (async function () {
-      const asset = tokenMapping({
+      const module = tokenMapping({
         tokenName: self.token,
         chainId: self.chainId,
       });
       const contracts = await deploymentsFromSigner(signer);
-      const fixture = selectFixture(self.chainId);
       const data = String(_data) || "0x";
-      const module =
-        self.token === "ETH"
-          ? ethers.constants.AddressZero
-          : fixture[self.token];
       const amount = ethers.utils.parseUnits(String(value), 8);
 
-      // Should this also happen on Arbitrum?
       UnderwriterTransferRequest.prototype.loan = async function () {
         return { wait: async () => {} };
       };
@@ -191,7 +195,7 @@ export class sdkTransfer {
         module, // Token Address
         to, // Ethereum Address
         underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
-        asset, // Token Address
+        asset, // BTC or ZEC
         nonce: self.getNonce(address, timestamp), // Deterministic recovery mechanism
         pNonce: self.getPNonce(address, timestamp), // Deterministic recovery mechanism
         data, // minOut
