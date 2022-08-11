@@ -5,14 +5,12 @@ import { ArrowDownIcon } from "@heroicons/react/solid";
 import TokenDropdown from "../../atoms/dropdowns/dropdown.tokens";
 import { BridgeBurnTransferFee } from "./bridge.burn.fee";
 import { useWalletBalances } from "../../../api/global/interfaces/interfaces.wallet";
-import { REMOVED_TOKENS } from "../../../api/utils/tokenMapping";
 import {
   formatUSDCPricedBTC,
   formatUSDCPricedETH,
   formatUSDC,
 } from "../../../api/utils/formatters";
 import CameraScan from "../../atoms/helpers/camera-scan";
-import { available_chains } from "../../../api/utils/tokenMapping";
 import { selectRemovedTokens } from "../../../api/utils/tokenMapping";
 import PrimaryTokenDropdown from "../../atoms/dropdowns/dropdown.primary.tokens";
 
@@ -121,7 +119,16 @@ export const BridgeBurnInput = ({
               <ArrowDownIcon className="h-6 w-6 text-zero-neon-green-500" />
             </div>
             <BridgeBurnTransferFee
-              {...{ amount, token, btc_usd, chainId, quote, setQuote }}
+              {...{
+                amount,
+                token,
+                btc_usd,
+                renZEC_usd,
+                chainId,
+                quote,
+                setQuote,
+                primaryToken,
+              }}
             />
           </>
         )}

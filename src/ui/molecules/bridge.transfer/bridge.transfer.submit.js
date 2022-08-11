@@ -12,7 +12,9 @@ export const BridgeTransferSubmit = ({
   amount,
   token,
   btc_usd,
+  renZEC_usd,
   chainId,
+  primaryToken,
 }) => {
   const { keeper } = useZero();
   const [buttonLabel, setButtonLabel] = useState("Input Valid Amount");
@@ -61,7 +63,13 @@ export const BridgeTransferSubmit = ({
           (active ? "" : "hidden")
         }
       >
-        <BridgeFeeInformation {...fees} btc_usd={btc_usd} type="transfer" />
+        <BridgeFeeInformation
+          {...fees}
+          btc_usd={btc_usd}
+          renZEC_usd={renZEC_usd}
+          primaryToken={primaryToken}
+          type="transfer"
+        />
       </div>
     </>
   );

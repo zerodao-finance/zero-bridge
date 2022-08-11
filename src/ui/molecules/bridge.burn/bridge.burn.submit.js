@@ -22,6 +22,7 @@ export const BridgeBurnSubmit = ({
   amount,
   token,
   btc_usd,
+  renZEC_usd,
   chainId,
   quote,
   primaryToken,
@@ -35,7 +36,12 @@ export const BridgeBurnSubmit = ({
 
   useEffect(async () => {
     if (amount > 0) {
-      const feeAmounts = await getFeeBreakdown({ amount, token, chainId });
+      const feeAmounts = await getFeeBreakdown({
+        amount,
+        token,
+        chainId,
+        primaryToken,
+      });
       setFees(feeAmounts);
     }
   }, [amount, token, chainId]);
@@ -83,7 +89,13 @@ export const BridgeBurnSubmit = ({
             (active ? "" : "hidden")
           }
         >
-          <BridgeFeeInformation {...fees} btc_usd={btc_usd} type="burn" />
+          <BridgeFeeInformation
+            {...fees}
+            btc_usd={btc_usd}
+            renZEC_usd={renZEC_usd}
+            type="burn"
+            primaryToken={primaryToken}
+          />
         </div>
       )}
     </>

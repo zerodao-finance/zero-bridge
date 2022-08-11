@@ -31,10 +31,12 @@ export const useBridgeInput = () => {
 
   const getTransferSenderProps = () => ({
     action: sendTransferRequest,
-    amount: amount,
-    token: token,
-    btc_usd: btc_usd,
-    eth_usd: eth_usd,
+    amount,
+    token,
+    btc_usd,
+    eth_usd,
+    renZEC_usd,
+    primaryToken,
     chainId: wallet.chainId,
   });
 

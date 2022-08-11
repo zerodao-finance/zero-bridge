@@ -97,10 +97,11 @@ export const useBridgeBurnInput = () => {
 
   const getBurnSenderProps = () => ({
     action: sendBurnRequest,
-    destination: destination,
+    destination,
     token,
-    amount: amount,
-    btc_usd: btc_usd,
+    amount,
+    btc_usd,
+    renZEC_usd,
     chainId: wallet.chainId,
     quote,
     primaryToken,

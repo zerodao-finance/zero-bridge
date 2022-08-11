@@ -136,7 +136,7 @@ export const selectRemovedTokens = ({ primaryToken, chainId }) => {
 };
 
 export const REMOVED_TOKENS = {
-  [1]: ["ibBTC", "AVAX", "MATIC"],
+  [1]: ["ibBTC", "AVAX", "MATIC", "renZEC"],
   [42161]: ["ibBTC", "AVAX", "MATIC", "USDT", "ZEC", "renZEC"],
   [137]: ["ibBTC", "AVAX", "ETH", "USDT", "ZEC", "renZEC"],
   [43114]: ["ibBTC", "ETH", "MATIC", "USDT", "ZEC", "renZEC"],
