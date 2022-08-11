@@ -81,8 +81,16 @@ export const reverseTokenMapping = ({ tokenAddress }) => {
       tokenName = "WBTC";
     } else if (checksummedAddress == getAddress(fixture.USDC)) {
       tokenName = "USDC";
-    } else if (checksummedAddress == getAddress(fixture.USDT)) {
+    } else if (
+      fixture == fixtures.ETHEREUM &&
+      checksummedAddress == getAddress(fixture.USDT)
+    ) {
       tokenName = "USDT";
+    } else if (
+      fixture == fixtures.ETHEREUM &&
+      checksummedAddress == getAddress(fixture.renZEC)
+    ) {
+      tokenName = "renZEC";
     }
   });
 
