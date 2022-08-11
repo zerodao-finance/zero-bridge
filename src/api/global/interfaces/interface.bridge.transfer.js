@@ -107,6 +107,7 @@ export const useBridgeInput = () => {
 
   const getGatewayData = () => ({
     ...StateHelper.getModuleGatewayProps("transfer"),
+    primaryToken,
   });
 
   return {
