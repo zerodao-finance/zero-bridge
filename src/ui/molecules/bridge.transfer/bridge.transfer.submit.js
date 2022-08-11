@@ -24,8 +24,17 @@ export const BridgeTransferSubmit = ({
 
   useEffect(async () => {
     if (amount > 0) {
-      const output = await getTransferOutput({ amount, token, chainId });
-      const feeAmounts = await getFeeBreakdown({ amount, chainId });
+      const output = await getTransferOutput({
+        amount,
+        token,
+        chainId,
+        primaryToken,
+      });
+      const feeAmounts = await getFeeBreakdown({
+        amount,
+        chainId,
+        primaryToken,
+      });
       setFees(feeAmounts);
       setTransferOutput(output);
     }

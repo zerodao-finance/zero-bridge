@@ -38,7 +38,12 @@ export async function getFeeBreakdown({
     processAmount(amount, token),
     primaryToken
   );
-  var fees = await applyFee(convertedAmount, burnFee, renVmFeeBurn);
+  var fees = await applyFee(
+    convertedAmount,
+    burnFee,
+    renVmFeeBurn,
+    primaryToken
+  );
 
   fees.gasFee = formatOutput(fees.gasFee);
   fees.opFee = formatOutput(fees.opFee);

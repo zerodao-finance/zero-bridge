@@ -15,6 +15,7 @@ export const BridgeTransferFee = ({
   eth_usd,
   avax_usd,
   matic_usd,
+  renZEC_usd,
   setToken,
   token,
   chainId,
@@ -29,16 +30,20 @@ export const BridgeTransferFee = ({
   useEffect(() => {
     if (amount > 0) {
       setIsFeeLoading(true);
-      getTransferOutput({ amount, token, chainId }).then((immediateQuote) => {
-        setQuote(immediateQuote);
-      });
+      getTransferOutput({ amount, token, chainId, primaryToken }).then(
+        (immediateQuote) => {
+          setQuote(immediateQuote);
+        }
+      );
       setIsFeeLoading(false);
 
       let isSubscribed = true;
       const timerId = setInterval(() => {
-        getTransferOutput({ amount, token, chainId }).then((timerQuote) => {
-          isSubscribed ? setQuote(timerQuote) : null;
-        });
+        getTransferOutput({ amount, token, chainId, primaryToken }).then(
+          (timerQuote) => {
+            isSubscribed ? setQuote(timerQuote) : null;
+          }
+        );
       }, 15000);
       return () => {
         isSubscribed = false;
@@ -69,6 +74,8 @@ export const BridgeTransferFee = ({
         return formatUSDCPricedETH(quote, avax_usd);
       case "MATIC":
         return formatUSDCPricedETH(quote, matic_usd);
+      case "renZEC":
+        return formatUSDCPricedBTC(quote, renZEC_usd);
       default:
         return formatUSDCPricedBTC(quote, btc_usd);
     }

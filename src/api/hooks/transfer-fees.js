@@ -19,13 +19,14 @@ function formatOutput(token, output) {
   }
 }
 
-export async function getFeeBreakdown({ amount, chainId }) {
+export async function getFeeBreakdown({ amount, chainId, primaryToken }) {
   const { applyFee, mintFee, renVmFeeMint } = makeCompute(chainId);
 
   var fees = await applyFee(
     ethers.utils.parseUnits(amount, 8),
     mintFee,
-    renVmFeeMint
+    renVmFeeMint,
+    primaryToken
   );
 
   fees.gasFee = formatOutput("WBTC", fees.gasFee);
@@ -35,12 +36,18 @@ export async function getFeeBreakdown({ amount, chainId }) {
   return fees;
 }
 
-export async function getTransferOutput({ token, amount, chainId }) {
+export async function getTransferOutput({
+  token,
+  amount,
+  chainId,
+  primaryToken,
+}) {
   const { computeTransferOutput } = makeCompute(chainId);
 
   const input = {
     module: tokenMapping({ tokenName: token, chainId }),
     amount: ethers.utils.parseUnits(amount, 8),
+    primaryToken,
   };
   let output = await computeTransferOutput(input);
   output = formatOutput(token, output);
