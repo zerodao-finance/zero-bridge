@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import { storeContext } from "../global";
 import { GlobalStateHelper } from "../utils/global.utilities";
 import { useRequestHelper } from "./helper";
+import { selectFixture } from "../utils/tokenMapping";
 
 //getSigner function
 export const getSigner = async (wallet) => {
@@ -12,6 +13,19 @@ export const getSigner = async (wallet) => {
     return signer;
   } catch (err) {
     return new Error("Reconnect Wallet, Cannot get signer");
+  }
+};
+
+const getPrimaryTokenMappedAddress = (primaryToken, chainId) => {
+  const fixture = selectFixture(chainId);
+  switch (primaryToken) {
+    case "ZEC":
+      if (chainId != "1") {
+        throw new Error("ZEC is not supported on this chain");
+      }
+      return fixture.renZEC;
+    case "BTC":
+      return fixture.renBTC;
   }
 };
 
@@ -63,7 +77,7 @@ export const useSDKTransactionSubmit = (module) => {
     let requestData = [
       chainId,
       zeroUser,
-      primaryToken, // asset
+      getPrimaryTokenMappedAddress(primaryToken, chainId), // asset
       amount,
       token,
       signer,

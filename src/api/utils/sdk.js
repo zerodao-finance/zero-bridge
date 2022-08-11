@@ -10,12 +10,7 @@ import fixtures from "zero-protocol/lib/fixtures";
 import { createGetGasPrice } from "ethers-gasnow";
 import { tokenMapping } from "../utils/tokenMapping.js";
 import EventEmitter from "events";
-import {
-  selectFixture,
-  chainIdToName,
-  DECIMALS,
-} from "../utils/tokenMapping.js";
-import { get } from "lodash";
+import { chainIdToName, DECIMALS } from "../utils/tokenMapping.js";
 
 const remoteETHTxMap = new WeakMap();
 
@@ -195,7 +190,7 @@ export class sdkTransfer {
         module, // Token Address
         to, // Ethereum Address
         underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
-        asset, // BTC or ZEC
+        asset, // Either the address of renBTC or renZEC on the current chain
         nonce: self.getNonce(address, timestamp), // Deterministic recovery mechanism
         pNonce: self.getPNonce(address, timestamp), // Deterministic recovery mechanism
         data, // minOut
