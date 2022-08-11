@@ -54,6 +54,8 @@ export const tokenMapping = ({ tokenName, chainId }) => {
       return fixture.USDC;
     case "usdt":
       return fixture.USDT;
+    case "renzec":
+      return fixture.renZEC;
   }
 };
 
