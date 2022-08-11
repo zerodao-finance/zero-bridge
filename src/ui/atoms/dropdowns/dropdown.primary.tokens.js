@@ -1,101 +1,29 @@
 import { Fragment, useEffect } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import { ReactComponent as ETH } from "../../../assets/svg-coins/eth.svg";
-import { ReactComponent as renBTC } from "../../../assets/svg-coins/renbtc.svg";
-import { ReactComponent as WBTC } from "../../../assets/svg-coins/wbtc.svg";
-import { ReactComponent as ibBTC } from "../../../assets/svg-coins/ibbtc.svg";
-import { ReactComponent as USDC } from "../../../assets/svg-coins/usdc.svg";
-import { ReactComponent as AVAX } from "../../../assets/svg-coins/avax.svg";
-import { ReactComponent as MATIC } from "../../../assets/svg-coins/matic.svg";
-import { ReactComponent as USDT } from "../../../assets/svg-coins/usdt.svg";
-import { ReactComponent as renZEC } from "../../../assets/svg-coins/renzec.svg";
-import { useLocation } from "react-router-dom";
+import { ReactComponent as BTC } from "../../../assets/svg-coins/btc.svg";
+import { ReactComponent as ZEC } from "../../../assets/svg-coins/zec.svg";
 import { classNames } from "../../../api/utils/textUtilities";
+import { determineIcon } from "./dropdown.tokens";
 
-/*
-* How to use 'TokenDropdown' component
-* Create 'useState' variables and pass it to 'TokenDropdown'
-* (props are 'token' and 'setToken' where 'token' is a string of the token symbol)
-
-* Additional Props: 'tokensRemoved' which is an array of tokens you do not want in dropdown
-* Default Dropdown Items: ETH, WBTC, ibBTC, renBTC, USDC
-*/
-export const determineIcon = ({ token, items }) => {
-  const icon = items.map((item, index) => {
-    if (item.text.toLowerCase() === token.toLowerCase()) {
-      return <item.icon key={index} className="h-8 w-8 fill-gray-400 mr-3" />;
-    }
-  });
-  return icon;
-};
-
-function TokenDropdown({
-  token = "renBTC",
-  setToken,
+function PrimaryTokenDropdown({
+  primaryToken,
+  setPrimaryToken,
   tokensRemoved = [],
   tokensDisabled = [],
 }) {
-  const location = useLocation();
-
   const items = [
     {
-      text: "renBTC",
-      icon: renBTC,
+      text: "BTC",
+      icon: BTC,
     },
     {
-      text: "WBTC",
-      icon: WBTC,
-    },
-    {
-      text: "ibBTC",
-      icon: ibBTC,
-    },
-    {
-      text: "ETH",
-      icon: ETH,
-    },
-    {
-      text: "AVAX",
-      icon: AVAX,
-    },
-    {
-      text: "MATIC",
-      icon: MATIC,
-    },
-    {
-      text: "USDC",
-      icon: USDC,
-    },
-    {
-      text: "USDT",
-      icon: USDT,
-    },
-    {
-      text: "renZEC",
-      icon: renZEC,
+      text: "ZEC",
+      icon: ZEC,
     },
   ];
 
-  // For Routing
-  useEffect(() => {
-    if (
-      window.location.hash === "#/transfer" ||
-      window.location.hash === "#/release"
-    ) {
-      window.location.hash = window.location.hash + "/" + token;
-    } else {
-      const base = window.location.hash.split("/");
-      window.location.hash = base[0] + "/" + base[1] + "/" + token;
-    }
-  }, [token]);
-
-  useEffect(() => {
-    const base = window.location.hash.split("/");
-    if (base.length === 3) {
-      setToken(base[2]);
-    }
-  }, [location]);
+  useEffect(() => {}, [primaryToken]);
 
   return (
     <Menu as="div" className="relative inline-block text-left max-w-[100%]">
@@ -104,8 +32,10 @@ function TokenDropdown({
         style={{ minWidth: "150px" }}
       >
         <span className="flex items-center max-w-[100%]">
-          {determineIcon({ token, items })}
-          <p className="dark:text-badger-white-400 text-gray-500">{token}</p>
+          {determineIcon({ token: primaryToken, items })}
+          <p className="dark:text-badger-white-400 text-gray-500">
+            {primaryToken}
+          </p>
         </span>
         <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
       </Menu.Button>
@@ -130,7 +60,7 @@ function TokenDropdown({
                 key={index}
                 onClick={(e) => {
                   if (!tokensDisabled.includes(e.target.innerText)) {
-                    setToken(e.target.innerText);
+                    setPrimaryToken(e.target.innerText);
                   }
                 }}
               >
@@ -164,4 +94,4 @@ function TokenDropdown({
   );
 }
 
-export default TokenDropdown;
+export default PrimaryTokenDropdown;

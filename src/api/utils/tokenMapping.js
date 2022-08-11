@@ -125,10 +125,28 @@ export const DECIMALS = {
   [toLower(OPTIMISM.ibBTC)]: 8,
 };
 
+export const selectRemovedTokens = ({ primaryToken, chainId }) => {
+  if (primaryToken === "ZEC") {
+    return ["renBTC", "ibBTC", "MATIC", "AVAX", "WBTC", "USDC", "USDT", "ZEC"];
+  }
+
+  return REMOVED_TOKENS[chainId];
+};
+
 export const REMOVED_TOKENS = {
   [1]: ["ibBTC", "AVAX", "MATIC"],
-  [42161]: ["ibBTC", "AVAX", "MATIC", "USDT"],
-  [137]: ["ibBTC", "AVAX", "ETH", "USDT"],
-  [43114]: ["ibBTC", "ETH", "MATIC", "USDT"],
-  [10]: ["ibBTC", "ETH", "MATIC", "AVAX", "WBTC", "USDC", "USDT"],
+  [42161]: ["ibBTC", "AVAX", "MATIC", "USDT", "ZEC", "renZEC"],
+  [137]: ["ibBTC", "AVAX", "ETH", "USDT", "ZEC", "renZEC"],
+  [43114]: ["ibBTC", "ETH", "MATIC", "USDT", "ZEC", "renZEC"],
+  [10]: [
+    "ibBTC",
+    "ETH",
+    "MATIC",
+    "AVAX",
+    "WBTC",
+    "USDC",
+    "USDT",
+    "ZEC",
+    "renZEC",
+  ],
 };

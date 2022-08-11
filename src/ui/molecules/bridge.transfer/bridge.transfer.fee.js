@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getTransferOutput } from "../../../api/hooks/transfer-fees";
 import TokenDropdown from "../../atoms/dropdowns/dropdown.tokens";
 import { DefaultInput } from "../../atoms";
-import { REMOVED_TOKENS } from "../../../api/utils/tokenMapping";
+import { selectRemovedTokens } from "../../../api/utils/tokenMapping";
 import {
   formatUSDCPricedBTC,
   formatUSDCPricedETH,
@@ -20,6 +20,7 @@ export const BridgeTransferFee = ({
   chainId,
   setQuote,
   quote,
+  primaryToken,
 }) => {
   const [isFeeLoading, setIsFeeLoading] = useState(false);
   const [usdcEstimate, setUsdcEstimate] = useState();
@@ -52,6 +53,10 @@ export const BridgeTransferFee = ({
     setUsdcEstimate(amount > 0 ? formatConversionOutput() : "$0.00");
   }, [quote, amount]);
 
+  useEffect(() => {
+    setToken(primaryToken == "ZEC" ? "renZEC" : "renBTC");
+  }, [primaryToken]);
+
   function formatConversionOutput() {
     switch (token) {
       case "USDC":
@@ -77,7 +82,7 @@ export const BridgeTransferFee = ({
           <TokenDropdown
             token={token}
             setToken={setToken}
-            tokensRemoved={REMOVED_TOKENS[chainId]}
+            tokensRemoved={selectRemovedTokens({ primaryToken, chainId })}
             tokensDisabled={["ibBTC"]}
           />
         </div>
