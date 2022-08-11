@@ -23,7 +23,7 @@ export const getStatus = (data) => {
           target: 6,
           confs: progress.confirmations,
           fallbackMint:
-            progress.confirmations && progress.confirmations > 6
+            progress.confirmations && progress.confirmations > progress.target
               ? () => fallbackMint(req, signer)
               : null,
         };

@@ -84,6 +84,7 @@ export const useSDKTransactionSubmit = (module) => {
       to,
       isFast,
       data,
+      primaryToken,
     ];
 
     Helper.request("transfer", requestData);

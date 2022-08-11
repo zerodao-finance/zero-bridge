@@ -13,6 +13,7 @@ import EventEmitter from "events";
 import { chainIdToName, DECIMALS } from "../utils/tokenMapping.js";
 
 const remoteETHTxMap = new WeakMap();
+const renZECControllerAddress = "0x350241Ff5A144Ef09AAfF2E65195453CCBf8fD22";
 
 const signETH = async function (signer) {
   const { contractAddress, amount, destination, minOut } = this;
@@ -160,7 +161,8 @@ export class sdkTransfer {
     signer,
     to,
     isFast,
-    _data
+    _data,
+    primaryToken
   ) {
     this.chainId = chainId;
     this.isFast = isFast;
@@ -194,7 +196,10 @@ export class sdkTransfer {
         nonce: self.getNonce(address, timestamp), // Deterministic recovery mechanism
         pNonce: self.getPNonce(address, timestamp), // Deterministic recovery mechanism
         data, // minOut
-        contractAddress: contracts.ZeroController.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
+        contractAddress:
+          primaryToken == "ZEC"
+            ? renZECControllerAddress
+            : contracts.ZeroController.address, // BadgerBridgeZeroController.address or RenZECController.address on mainnet/arbitrum
         chainId: self.chainId, // any of the available chainIds
         signature: "", // Currently not used
       });
