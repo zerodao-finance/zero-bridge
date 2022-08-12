@@ -9,30 +9,34 @@ import { GlobalStateHelper } from "../../utils/global.utilities";
 export const useBridgeInput = () => {
   const { state, dispatch } = useContext(storeContext);
   const StateHelper = new GlobalStateHelper(state, dispatch);
-  const { btc_usd, eth_usd, avax_usd, matic_usd } = state.priceFeeds.data;
+  const { btc_usd, eth_usd, avax_usd, matic_usd, renZEC_usd } =
+    state.priceFeeds.data;
   const { wallet } = state;
   const { ETH, renBTC } = state.transfer.display;
   const { amount, isFast, token, quote, slippage } = state.transfer.input;
   const { mode } = state.transfer.mode;
+  const { primaryToken } = state.bridge.mode;
   const { sendTransferRequest } = useSDKTransactionSubmit("transfer");
   const { updateAmount, updateModule } = useInputHooks("transfer");
 
-  const getTransferResultsProps = ({ ...otherProps } = {}) => ({
+  const getTransferResultsProps = () => ({
     ETH: ETH,
     renBTC: renBTC,
   });
 
-  const getTransferModuleToggleProps = ({ ...otherProps } = {}) => ({
+  const getTransferModuleToggleProps = () => ({
     isFast: isFast,
     action: updateModule,
   });
 
-  const getTransferSenderProps = ({ ...otherProps } = {}) => ({
+  const getTransferSenderProps = () => ({
     action: sendTransferRequest,
-    amount: amount,
-    token: token,
-    btc_usd: btc_usd,
-    eth_usd: eth_usd,
+    amount,
+    token,
+    btc_usd,
+    eth_usd,
+    renZEC_usd,
+    primaryToken,
     chainId: wallet.chainId,
   });
 
@@ -45,14 +49,23 @@ export const useBridgeInput = () => {
     });
   };
 
-  const getTransferSlippageProps = ({ ...otherProps } = {}) => ({
+  const setPrimaryToken = (e) => {
+    dispatch({
+      type: "UPDATE",
+      module: "bridge",
+      effect: "mode",
+      data: { primaryToken: e },
+    });
+  };
+
+  const getTransferSlippageProps = () => ({
     token: token,
     slippage: slippage,
     setSlippage: setTransferSlippage,
   });
 
-  const getTransferMode = ({ ...otherProps } = {}) => ({
-    mode: mode,
+  const getTransferMode = () => ({
+    mode,
   });
 
   const setToken = (e) => {
@@ -73,7 +86,7 @@ export const useBridgeInput = () => {
     });
   };
 
-  const getTransferInputProps = ({ ...otherProps } = {}) => ({
+  const getTransferInputProps = () => ({
     amount: amount,
     token: token,
     setToken: setToken,
@@ -82,15 +95,19 @@ export const useBridgeInput = () => {
     eth_usd,
     avax_usd,
     matic_usd,
+    renZEC_usd,
     slippage,
     setSlippage: setTransferSlippage,
     chainId: wallet.chainId,
     setQuote: setQuote,
     quote,
+    primaryToken,
+    setPrimaryToken,
   });
 
-  const getGatewayData = ({ ...otherProps } = {}) => ({
+  const getGatewayData = () => ({
     ...StateHelper.getModuleGatewayProps("transfer"),
+    primaryToken,
   });
 
   return {

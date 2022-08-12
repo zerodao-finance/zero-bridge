@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import { storeContext } from "../global";
 import { GlobalStateHelper } from "../utils/global.utilities";
 import { useRequestHelper } from "./helper";
+import { selectFixture } from "../utils/tokenMapping";
 
 //getSigner function
 export const getSigner = async (wallet) => {
@@ -15,11 +16,25 @@ export const getSigner = async (wallet) => {
   }
 };
 
+const getPrimaryTokenMappedAddress = (primaryToken, chainId) => {
+  const fixture = selectFixture(chainId);
+  switch (primaryToken) {
+    case "ZEC":
+      if (chainId != "1") {
+        throw new Error("ZEC is not supported on this chain");
+      }
+      return fixture.renZEC;
+    case "BTC":
+      return fixture.renBTC;
+  }
+};
+
 export const useSDKTransactionSubmit = (module) => {
   const { dispatch } = useContext(storeContext);
   const { state, Helper } = useRequestHelper();
   const { wallet, zero } = state;
   const { chainId } = wallet;
+  const { primaryToken } = state.bridge.mode;
   const { slippage } = state.transfer.input;
   const { input } = state[module];
 
@@ -62,12 +77,14 @@ export const useSDKTransactionSubmit = (module) => {
     let requestData = [
       chainId,
       zeroUser,
+      getPrimaryTokenMappedAddress(primaryToken, chainId), // asset
       amount,
       token,
       signer,
       to,
       isFast,
       data,
+      primaryToken,
     ];
 
     Helper.request("transfer", requestData);
@@ -101,6 +118,7 @@ export const useSDKTransactionSubmit = (module) => {
       signer,
       destination,
       StateHelper,
+      primaryToken,
     ];
 
     Helper.request("burn", requestData);

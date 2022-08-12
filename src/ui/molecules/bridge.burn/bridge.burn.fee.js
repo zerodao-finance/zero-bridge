@@ -5,25 +5,31 @@ import { formatUSDCPricedBTC } from "../../../api/utils/formatters";
 export const BridgeBurnTransferFee = ({
   amount,
   btc_usd,
+  renZEC_usd,
   token,
   chainId,
   quote,
   setQuote,
+  primaryToken,
 }) => {
   const [isFeeLoading, setIsFeeLoading] = useState(false);
   useEffect(() => {
     if (amount > 0) {
       setIsFeeLoading(true);
-      getBurnOutput({ amount, token, chainId }).then((immediateQuote) => {
-        setQuote(immediateQuote);
-      });
+      getBurnOutput({ amount, token, chainId, primaryToken }).then(
+        (immediateQuote) => {
+          setQuote(immediateQuote);
+        }
+      );
       setIsFeeLoading(false);
 
       let isSubscribed = true;
       const timerId = setInterval(() => {
-        getBurnOutput({ amount, token, chainId }).then((timerQuote) => {
-          isSubscribed ? setQuote(timerQuote) : null;
-        });
+        getBurnOutput({ amount, token, chainId, primaryToken }).then(
+          (timerQuote) => {
+            isSubscribed ? setQuote(timerQuote) : null;
+          }
+        );
       }, 15000);
 
       return () => {
@@ -47,12 +53,16 @@ export const BridgeBurnTransferFee = ({
             </div>
             <div>
               <span className={`${isFeeLoading && "animate-pulse"}`}>
-                {quote || 0} BTC
+                {quote || 0} {primaryToken}
               </span>
             </div>
           </div>
           <div className="xl:mr-5 italic tracking-wider w-full pr-2 text-right text-xs text-zero-neon-green-500">
-            ~ {formatUSDCPricedBTC(quote, btc_usd)}
+            ~{" "}
+            {formatUSDCPricedBTC(
+              quote,
+              primaryToken == "BTC" ? btc_usd : renZEC_usd
+            )}
           </div>
         </div>
       )}

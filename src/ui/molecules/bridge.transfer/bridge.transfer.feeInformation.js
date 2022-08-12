@@ -8,20 +8,33 @@ export const BridgeFeeInformation = ({
   totalFees,
   renVmBtcNetworkFee,
   btc_usd,
+  renZEC_usd,
   type,
+  primaryToken,
 }) => {
   const [feeDetailOpen, setFeeDetailOpen] = useState(false);
+
+  const pickUsdcPrice = () => {
+    switch (primaryToken) {
+      case "ZEC":
+        return renZEC_usd;
+      default:
+        return btc_usd;
+    }
+  };
 
   const flatFeeDiv = () => {
     const BTCNetworkFee = renVmBtcNetworkFee || "0.002";
 
     return (
       <div className="flex justify-between">
-        <span> RenVM BTC Network Fee </span>
+        <span> RenVM {primaryToken} Network Fee </span>
         <div className="grid">
-          <span>~{BTCNetworkFee} BTC</span>
+          <span>
+            ~{BTCNetworkFee} {primaryToken}
+          </span>
           <span className="italic w-full text-right font-normal text-xs -mt-1 text-zero-neon-green-500">
-            ~ {formatUSDCPricedBTC(BTCNetworkFee, btc_usd)}
+            ~ {formatUSDCPricedBTC(BTCNetworkFee, pickUsdcPrice())}
           </span>
         </div>
       </div>
@@ -47,31 +60,35 @@ export const BridgeFeeInformation = ({
               (feeDetailOpen ? "visible" : "invisible hidden")
             }
           >
-            <span> {type == "transfer" ? "0.20" : "0.10"}% renVM Mint </span>
+            <span> {type == "transfer" ? "0.002" : "0.001"}% renVM Mint </span>
             <span>
               {" "}
-              {type == "transfer" ? "0.20" : "0.30"}% feedback to ZERO
+              {type == "transfer" ? "0.002" : "0.003"}% feedback to ZERO
             </span>
           </div>
         </div>
         <div className="grid">
-          <span>{opFee} BTC</span>
+          <span>
+            {opFee} {primaryToken}
+          </span>
           <span
             className={
               "italic w-full text-right font-normal text-xs text-zero-neon-green-500 " +
               (feeDetailOpen ? "-mt-4" : "-mt-1")
             }
           >
-            ~ {formatUSDCPricedBTC(opFee, btc_usd)}
+            ~ {formatUSDCPricedBTC(opFee, pickUsdcPrice())}
           </span>
         </div>
       </div>
       <div className="flex justify-between">
         <span> Est. Gas Cost </span>
         <div className="grid">
-          <span>{gasFee} BTC</span>
+          <span>
+            {gasFee} {primaryToken}
+          </span>
           <span className="italic w-full text-right font-normal text-xs -mt-1 text-zero-neon-green-500">
-            ~ {formatUSDCPricedBTC(gasFee, btc_usd)}
+            ~ {formatUSDCPricedBTC(gasFee, pickUsdcPrice())}
           </span>
         </div>
       </div>
@@ -79,9 +96,11 @@ export const BridgeFeeInformation = ({
       <div className="flex pt-4 justify-between">
         <span> Total Est. Fees </span>
         <div className="grid">
-          <span>{totalFees} BTC</span>
+          <span>
+            {totalFees} {primaryToken}
+          </span>
           <span className="italic w-full text-right font-normal text-xs -mt-1 text-zero-neon-green-500">
-            ~ {formatUSDCPricedBTC(totalFees, btc_usd)}
+            ~ {formatUSDCPricedBTC(totalFees, pickUsdcPrice())}
           </span>
         </div>
       </div>

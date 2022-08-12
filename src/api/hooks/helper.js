@@ -175,10 +175,10 @@ class SDKHelper {
 
   async #tfRequestTransaction(transaction, task) {
     let data = task.this.Transaction.createRequest("transfer", task.request);
-    var forwarded = null;
+    let forwarded = null;
 
     await transaction.in.wait().on("progress", (progress) => {
-      if (progress.confirmations == 0) {
+      if (!forwarded) {
         const { id, dispatch } = task.this.Notify.createTXCard(
           true,
           task.type,

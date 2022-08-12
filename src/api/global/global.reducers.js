@@ -18,6 +18,7 @@ export const globalBridgeState = {
       mode: {
         mode: "transfer", //transfer, release
         chain: "mainnet",
+        primaryToken: "BTC",
       },
     },
     transfer: {
@@ -59,6 +60,7 @@ export const globalBridgeState = {
         btc_eth: 0,
         avax_usd: 0,
         matic_usd: 0,
+        renZEC_usd: 0,
       },
     },
     requests: {
@@ -66,8 +68,6 @@ export const globalBridgeState = {
       burn: new Map(),
     },
     utilities: {
-      ethPrice: 0,
-      btcPrice: 0,
       themeMode:
         localStorage.getItem("screenMode") === "light" ? "light" : "dark",
     },

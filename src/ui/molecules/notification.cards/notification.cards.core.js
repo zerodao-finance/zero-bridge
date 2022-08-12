@@ -83,7 +83,14 @@ export const TransferCard = ({ id, close, data, max, current }) => {
       <div className="text-black dark:text-badger-white-400">
         {truncateAddress(data.to)}
       </div>
-      <ProgressDots current={current} max={max} />
+      {max <= 6 ? (
+        <ProgressDots current={current} max={max} />
+      ) : (
+        <p className="text-zero-neon-green-500 animate-pulse font-semibold text-lg">
+          {" "}
+          {current} / {max} confirmations
+        </p>
+      )}
     </div>
   );
 };

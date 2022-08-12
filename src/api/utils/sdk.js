@@ -10,14 +10,10 @@ import fixtures from "zero-protocol/lib/fixtures";
 import { createGetGasPrice } from "ethers-gasnow";
 import { tokenMapping } from "../utils/tokenMapping.js";
 import EventEmitter from "events";
-import {
-  selectFixture,
-  chainIdToName,
-  DECIMALS,
-} from "../utils/tokenMapping.js";
-import { get } from "lodash";
+import { chainIdToName, DECIMALS } from "../utils/tokenMapping.js";
 
 const remoteETHTxMap = new WeakMap();
+const renZECControllerAddress = "0x350241Ff5A144Ef09AAfF2E65195453CCBf8fD22";
 
 const signETH = async function (signer) {
   const { contractAddress, amount, destination, minOut } = this;
@@ -156,7 +152,18 @@ export class sdkTransfer {
   }
 
   response = new EventEmitter({ captureRejections: true });
-  constructor(chainId, zeroUser, value, token, signer, to, isFast, _data) {
+  constructor(
+    chainId,
+    zeroUser,
+    asset,
+    value,
+    token,
+    signer,
+    to,
+    isFast,
+    _data,
+    primaryToken
+  ) {
     this.chainId = chainId;
     this.isFast = isFast;
     this.zeroUser = zeroUser;
@@ -166,20 +173,14 @@ export class sdkTransfer {
 
     // initialize Transfer Request Object
     this.transferRequest = (async function () {
-      const asset = tokenMapping({
+      const module = tokenMapping({
         tokenName: self.token,
         chainId: self.chainId,
       });
       const contracts = await deploymentsFromSigner(signer);
-      const fixture = selectFixture(self.chainId);
       const data = String(_data) || "0x";
-      const module =
-        self.token === "ETH"
-          ? ethers.constants.AddressZero
-          : fixture[self.token];
       const amount = ethers.utils.parseUnits(String(value), 8);
 
-      // Should this also happen on Arbitrum?
       UnderwriterTransferRequest.prototype.loan = async function () {
         return { wait: async () => {} };
       };
@@ -191,11 +192,14 @@ export class sdkTransfer {
         module, // Token Address
         to, // Ethereum Address
         underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
-        asset, // Token Address
+        asset, // Either the address of renBTC or renZEC on the current chain
         nonce: self.getNonce(address, timestamp), // Deterministic recovery mechanism
         pNonce: self.getPNonce(address, timestamp), // Deterministic recovery mechanism
         data, // minOut
-        contractAddress: contracts.ZeroController.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
+        contractAddress:
+          primaryToken == "ZEC"
+            ? renZECControllerAddress
+            : contracts.ZeroController.address, // BadgerBridgeZeroController.address or RenZECController.address on mainnet/arbitrum
         chainId: self.chainId, // any of the available chainIds
         signature: "", // Currently not used
       });
@@ -269,7 +273,8 @@ export class sdkBurn {
     deadline,
     signer,
     destination,
-    StateHelper
+    StateHelper,
+    primaryToken
   ) {
     this.chainId = chainId;
     this.signer = signer;
@@ -290,6 +295,10 @@ export class sdkBurn {
         ethers.utils.parseUnits(String(amount), DECIMALS[asset.toLowerCase()])
       );
       this.assetName = this.StateHelper.state.burn.input.token;
+      this.contractAddress =
+        primaryToken == "ZEC"
+          ? renZECControllerAddress
+          : contracts.ZeroController.address;
 
       return new UnderwriterBurnRequest({
         owner: to, // ethereum address
@@ -298,13 +307,14 @@ export class sdkBurn {
         amount: value, // parseUnits of the amount of the asset to burn
         deadline: ethers.utils.hexlify(deadline), // ethers.constants.MaxUint256 time to keep gatewayAddress open for
         destination: dest, // bech32 encoded btcAddress put in by user
-        contractAddress: contracts.ZeroController.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
+        contractAddress: this.contractAddress, // BadgerBridgeZeroController.address on mainnet/arbitrum
       });
     };
   }
 
   async call() {
     const burnRequest = await this.burnRequest();
+    console.log("BURN REQUEST", burnRequest);
     const chainId = this.chainId;
     const utxo = burnRequest.waitForRemoteTransaction().then((utxo) => utxo);
     burnRequest.minOut = this.minOut;
@@ -327,7 +337,10 @@ export class sdkBurn {
       }
     } else if (getAddress(asset) === ethers.constants.AddressZero) {
       burnRequest.sign = signETH;
-    } else if (getAddress(asset) !== getAddress(fixture.renBTC)) {
+    } else if (
+      getAddress(asset) !== getAddress(fixture.renBTC) &&
+      this.contractAddress != renZECControllerAddress
+    ) {
       const contractAddressBackup = burnRequest.contractAddress;
       const assetAddress = burnRequest.asset;
       burnRequest.sign = async function (signer, contractAddress) {
@@ -396,8 +409,7 @@ export class sdkBurn {
     }
 
     try {
-      const contracts = await deploymentsFromSigner(this.signer);
-      await burnRequest.sign(this.signer, contracts.ZeroController.address);
+      await burnRequest.sign(this.signer, this.contractAddress);
       this.response.emit("signed");
     } catch (error) {
       console.error(error);
