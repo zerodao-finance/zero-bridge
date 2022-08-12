@@ -109,7 +109,7 @@ export const useCheckWalletConnected = () => {
     }
   }, [address]);
 
-  const getWalletConnectionProps = ({ ...otherProps } = {}) => ({
+  const getWalletConnectionProps = () => ({
     wallet: walletConnected,
   });
 

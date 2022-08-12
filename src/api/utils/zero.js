@@ -66,9 +66,6 @@ export const deploymentsFromSigner = async (signer) => {
   let [name, contractsToInclude, contractsToExclude] =
     chainIdToNetworkName(chainId);
 
-  if (process.env.REACT_APP_TEST) {
-    name = "localhost";
-  }
   const contractsToSearch = contractsToInclude
     ? contractsToInclude
     : contracts.filter((d) => !contractsToExclude.includes(d));

@@ -4,6 +4,7 @@ import { BitcoinQR } from "../../atoms/helpers/BitcoinQR";
 export const BridgeGatewayConfirmation = ({
   transferRequest,
   gatewayAddress,
+  primaryToken,
 }) => {
   const transferAmount = ethers.utils.formatUnits(
     ethers.BigNumber.from(transferRequest.amount),
@@ -19,8 +20,8 @@ export const BridgeGatewayConfirmation = ({
           className="text-[11px] indent max-w-[300px] text-main-green dark:text-zero-neon-green-500 justify-self-end"
         >
           <p>
-            Reminder: deposit exactly {transferAmount} amount of BTC indicated
-            to the deposit address
+            Reminder: deposit exactly {transferAmount} amount of {primaryToken}{" "}
+            indicated to the deposit address
           </p>
         </div>
         <div

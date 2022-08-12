@@ -130,10 +130,14 @@ function ParseDetails(data, type, truncateAddress) {
 }
 
 export const ManageTransactionCard = ({ data }) => {
-  if (!data || !data._data || !data._data.asset) return <></>;
+  if (!data || !data._data || !data._data.module || !data._data.asset)
+    return <></>;
 
   const [details, toggle] = useState(false);
-  const tokenName = reverseTokenMapping({ tokenAddress: data._data.asset });
+  const tokenName = reverseTokenMapping({ tokenAddress: data._data.module });
+  const tokenNameForAmount = reverseTokenMapping({
+    tokenAddress: data._data.asset,
+  });
 
   function truncateAddress(address) {
     const checksummedAddress = ethers.utils.getAddress(address);
@@ -175,8 +179,9 @@ export const ManageTransactionCard = ({ data }) => {
             {" "}
             {txCardAmount({
               amount: data._data.amount,
-              tokenName: tokenName,
-            })}{" "}
+              tokenName: tokenNameForAmount,
+            })}
+            {tokenNameForAmount == "renZEC" ? " ZEC" : " BTC"}
           </span>
           <span className="justify-self-start"> asset: </span>
           <span className="justify-self-end"> {tokenName} </span>

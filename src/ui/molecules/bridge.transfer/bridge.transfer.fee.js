@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getTransferOutput } from "../../../api/hooks/transfer-fees";
 import TokenDropdown from "../../atoms/dropdowns/dropdown.tokens";
 import { DefaultInput } from "../../atoms";
-import { REMOVED_TOKENS } from "../../../api/utils/tokenMapping";
+import { selectRemovedTokens } from "../../../api/utils/tokenMapping";
 import {
   formatUSDCPricedBTC,
   formatUSDCPricedETH,
@@ -15,11 +15,13 @@ export const BridgeTransferFee = ({
   eth_usd,
   avax_usd,
   matic_usd,
+  renZEC_usd,
   setToken,
   token,
   chainId,
   setQuote,
   quote,
+  primaryToken,
 }) => {
   const [isFeeLoading, setIsFeeLoading] = useState(false);
   const [usdcEstimate, setUsdcEstimate] = useState();
@@ -28,16 +30,20 @@ export const BridgeTransferFee = ({
   useEffect(() => {
     if (amount > 0) {
       setIsFeeLoading(true);
-      getTransferOutput({ amount, token, chainId }).then((immediateQuote) => {
-        setQuote(immediateQuote);
-      });
+      getTransferOutput({ amount, token, chainId, primaryToken }).then(
+        (immediateQuote) => {
+          setQuote(immediateQuote);
+        }
+      );
       setIsFeeLoading(false);
 
       let isSubscribed = true;
       const timerId = setInterval(() => {
-        getTransferOutput({ amount, token, chainId }).then((timerQuote) => {
-          isSubscribed ? setQuote(timerQuote) : null;
-        });
+        getTransferOutput({ amount, token, chainId, primaryToken }).then(
+          (timerQuote) => {
+            isSubscribed ? setQuote(timerQuote) : null;
+          }
+        );
       }, 15000);
       return () => {
         isSubscribed = false;
@@ -52,6 +58,10 @@ export const BridgeTransferFee = ({
     setUsdcEstimate(amount > 0 ? formatConversionOutput() : "$0.00");
   }, [quote, amount]);
 
+  useEffect(() => {
+    setToken(primaryToken == "ZEC" ? "renZEC" : "renBTC");
+  }, [primaryToken]);
+
   function formatConversionOutput() {
     switch (token) {
       case "USDC":
@@ -64,6 +74,8 @@ export const BridgeTransferFee = ({
         return formatUSDCPricedETH(quote, avax_usd);
       case "MATIC":
         return formatUSDCPricedETH(quote, matic_usd);
+      case "renZEC":
+        return formatUSDCPricedBTC(quote, renZEC_usd);
       default:
         return formatUSDCPricedBTC(quote, btc_usd);
     }
@@ -77,7 +89,7 @@ export const BridgeTransferFee = ({
           <TokenDropdown
             token={token}
             setToken={setToken}
-            tokensRemoved={REMOVED_TOKENS[chainId]}
+            tokensRemoved={selectRemovedTokens({ primaryToken, chainId })}
             tokensDisabled={["ibBTC"]}
           />
         </div>

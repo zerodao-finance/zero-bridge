@@ -35,13 +35,13 @@ export const useBridgePage = () => {
     });
   };
 
-  const getBridgePageProps = ({ ...otherProps } = {}) => ({
+  const getBridgePageProps = () => ({
     mode: mode.mode,
     toggleMode: toggleMode,
     tcSigned: tcSigned,
   });
 
-  const getBridgeChainProps = ({ ...otherProps } = {}) => ({
+  const getBridgeChainProps = () => ({
     chainId: wallet.chainId,
     setChainId,
   });
