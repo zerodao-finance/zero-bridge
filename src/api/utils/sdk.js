@@ -273,7 +273,8 @@ export class sdkBurn {
     deadline,
     signer,
     destination,
-    StateHelper
+    StateHelper,
+    primaryToken
   ) {
     this.chainId = chainId;
     this.signer = signer;
@@ -294,6 +295,10 @@ export class sdkBurn {
         ethers.utils.parseUnits(String(amount), DECIMALS[asset.toLowerCase()])
       );
       this.assetName = this.StateHelper.state.burn.input.token;
+      this.contractAddress =
+        primaryToken == "ZEC"
+          ? renZECControllerAddress
+          : contracts.ZeroController.address;
 
       return new UnderwriterBurnRequest({
         owner: to, // ethereum address
@@ -302,13 +307,14 @@ export class sdkBurn {
         amount: value, // parseUnits of the amount of the asset to burn
         deadline: ethers.utils.hexlify(deadline), // ethers.constants.MaxUint256 time to keep gatewayAddress open for
         destination: dest, // bech32 encoded btcAddress put in by user
-        contractAddress: contracts.ZeroController.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
+        contractAddress: this.contractAddress, // BadgerBridgeZeroController.address on mainnet/arbitrum
       });
     };
   }
 
   async call() {
     const burnRequest = await this.burnRequest();
+    console.log("BURN REQUEST", burnRequest);
     const chainId = this.chainId;
     const utxo = burnRequest.waitForRemoteTransaction().then((utxo) => utxo);
     burnRequest.minOut = this.minOut;
@@ -331,7 +337,10 @@ export class sdkBurn {
       }
     } else if (getAddress(asset) === ethers.constants.AddressZero) {
       burnRequest.sign = signETH;
-    } else if (getAddress(asset) !== getAddress(fixture.renBTC)) {
+    } else if (
+      getAddress(asset) !== getAddress(fixture.renBTC) &&
+      this.contractAddress != renZECControllerAddress
+    ) {
       const contractAddressBackup = burnRequest.contractAddress;
       const assetAddress = burnRequest.asset;
       burnRequest.sign = async function (signer, contractAddress) {
@@ -400,8 +409,7 @@ export class sdkBurn {
     }
 
     try {
-      const contracts = await deploymentsFromSigner(this.signer);
-      await burnRequest.sign(this.signer, contracts.ZeroController.address);
+      await burnRequest.sign(this.signer, this.contractAddress);
       this.response.emit("signed");
     } catch (error) {
       console.error(error);

@@ -118,6 +118,7 @@ export const useSDKTransactionSubmit = (module) => {
       signer,
       destination,
       StateHelper,
+      primaryToken,
     ];
 
     Helper.request("burn", requestData);

@@ -116,6 +116,7 @@ export const DECIMALS = {
   [toLower(ETHEREUM.USDC)]: 6,
   [toLower(ETHEREUM.USDT)]: 6,
   [toLower(ETHEREUM.ibBTC)]: 8,
+  [toLower(ETHEREUM.renZEC)]: 8,
   [ethers.constants.AddressZero]: 18,
   [toLower(ARBITRUM.WBTC)]: 8,
   [toLower(ARBITRUM.renBTC)]: 8,
