@@ -68,6 +68,10 @@ function TokenDropdown({
       icon: USDC,
     },
     {
+      text: "USDC.e",
+      icon: USDC,
+    },
+    {
       text: "USDT",
       icon: USDT,
     },
