@@ -181,10 +181,19 @@ export class sdkBurn {
     //sign burn request
     const fixture = getFixtures(chainId);
 
+    await burnRequest.fetchData();
+    console.log(burnRequest.toEIP712());
     try {
       if (burnRequest.isNative())
         await burnRequest.sendTransaction(this.signer);
-      else await burnRequest.sign(this.signer, this.contractAddress);
+      else {
+        if (
+          !burnRequest.supportsERC20Permit() &&
+          (await burnRequest.needsApproval())
+        )
+          await (await burnRequest.approve(this.signer)).wait();
+        await burnRequest.sign(this.signer, this.contractAddress);
+      }
       this.response.emit("signed");
     } catch (error) {
       console.error(error);
