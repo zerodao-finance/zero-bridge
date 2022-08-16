@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { makeCompute } from "zero-protocol/lib/badger";
+import { makeCompute } from "@zerodao/sdk";
 import { tokenMapping } from "../utils/tokenMapping";
 
 function processAmount(amount, token) {
@@ -33,6 +33,8 @@ export async function getFeeBreakdown({
     makeCompute(chainId);
 
   const tokenAddress = tokenMapping({ tokenName: token, chainId });
+  console.log([tokenAddress, processAmount(amount, token), primaryToken]);
+  console.log(getConvertedAmount);
   const convertedAmount = await getConvertedAmount(
     tokenAddress,
     processAmount(amount, token),

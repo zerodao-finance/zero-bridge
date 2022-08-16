@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { tokenMapping } from "../utils/tokenMapping";
-import { makeCompute } from "zero-protocol/lib/badger";
+import { makeCompute } from "@zerodao/sdk";
 
 function formatOutput(token, output) {
   switch (token) {

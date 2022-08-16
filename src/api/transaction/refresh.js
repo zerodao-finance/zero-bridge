@@ -3,7 +3,7 @@ import * as React from "react";
 import { PersistanceStore } from "../storage/storage";
 import _ from "lodash";
 import async from "async";
-import { UnderwriterTransferRequest } from "zero-protocol/dist/lib/zero";
+import { TransferRequest } from "@zerodao/sdk";
 import { NotificationHelper } from "../notification/helper";
 import { useNotificationContext } from "../notification";
 
@@ -64,7 +64,7 @@ export function getPendingRequestStatus(array, queue, dispatch, Notify) {
   }
 
   async function callback(error, task) {
-    const req = new UnderwriterTransferRequest({
+    const req = new TransferRequest({
       ...task._data,
     });
 

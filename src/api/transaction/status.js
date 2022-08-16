@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { UnderwriterTransferRequest } from "zero-protocol/dist/lib/zero";
+import { TransferRequest } from "@zerodao/sdk";
 import { fallbackMint } from "../utils/fallback";
 import { getSigner } from "../hooks/submit";
 import { useRequestHelper } from "../hooks/helper";
@@ -10,7 +10,7 @@ export const getStatus = (data) => {
   const { wallet } = state;
 
   useEffect(async () => {
-    const req = new UnderwriterTransferRequest({
+    const req = new TransferRequest({
       ...data._data,
     });
 

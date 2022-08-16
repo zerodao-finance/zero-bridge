@@ -1,4 +1,4 @@
-import fixtures from "zero-protocol/lib/fixtures";
+import { FIXTURES } from "@zerodao/sdk";
 import { ethers } from "ethers";
 const { getAddress, isAddress } = ethers.utils;
 
@@ -22,15 +22,15 @@ export const txCardAmount = ({ amount, tokenName }) => {
 export const selectFixture = (chainId) => {
   switch (chainId) {
     case "42161":
-      return fixtures.ARBITRUM;
+      return FIXTURES.ARBITRUM;
     case "43114":
-      return fixtures.AVALANCHE;
+      return FIXTURES.AVALANCHE;
     case "137":
-      return fixtures.MATIC;
+      return FIXTURES.MATIC;
     case "10":
-      return fixtures.OPTIMISM;
+      return FIXTURES.OPTIMISM;
     default:
-      return fixtures.ETHEREUM;
+      return FIXTURES.ETHEREUM;
   }
 };
 
@@ -65,10 +65,10 @@ export const reverseTokenMapping = ({ tokenAddress }) => {
     : "";
 
   const fixture_array = [
-    fixtures.ETHEREUM,
-    fixtures.ARBITRUM,
-    fixtures.AVALANCHE,
-    fixtures.OPTIMISM,
+    FIXTURES.ETHEREUM,
+    FIXTURES.ARBITRUM,
+    FIXTURES.AVALANCHE,
+    FIXTURES.OPTIMISM,
   ];
   var tokenName = null;
 
@@ -82,12 +82,12 @@ export const reverseTokenMapping = ({ tokenAddress }) => {
     } else if (checksummedAddress == getAddress(fixture.USDC)) {
       tokenName = "USDC";
     } else if (
-      fixture == fixtures.ETHEREUM &&
+      fixture == FIXTURES.ETHEREUM &&
       checksummedAddress == getAddress(fixture.USDT)
     ) {
       tokenName = "USDT";
     } else if (
-      fixture == fixtures.ETHEREUM &&
+      fixture == FIXTURES.ETHEREUM &&
       checksummedAddress == getAddress(fixture.renZEC)
     ) {
       tokenName = "renZEC";
@@ -108,7 +108,7 @@ export const chainIdToName = {
 };
 
 const toLower = (s) => s && s.toLowerCase();
-const { ETHEREUM, ARBITRUM, AVALANCHE, MATIC, OPTIMISM } = fixtures;
+const { ETHEREUM, ARBITRUM, AVALANCHE, MATIC, OPTIMISM } = FIXTURES;
 
 export const DECIMALS = {
   [toLower(ETHEREUM.WBTC)]: 8,
