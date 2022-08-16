@@ -1,0 +1,40 @@
+{
+  "id": "zeroBRIDGE",
+  "name": "zeroBRIDGE",
+  "url": "https://dapp-browser.apps.ledger.com",
+  "params": {
+    "dappUrl": "https://bridge.zerodao.com/?embed=true",
+    "nanoApp": "zeroBRIDGE",
+    "dappName": "zeroBRIDGE",
+    "networks": [
+      {
+        "currency": "ethereum",
+        "chainID": 1,
+        "nodeURL": "https://mainnet.infura.io/v3/ca0da016dedf4c5a9ee90bfdbafee233"
+      },
+      {
+        "currency:": "matic",
+        "chainID": 137,
+        "nodeURL": "https://polygon-mainnet.infura.io/v3/ca0da016dedf4c5a9ee90bfdbafee233"
+      }
+    ]
+  },
+  "homepageUrl": "https://bridge.zerodao.com/",
+  "icon": "https://bridge.zerodao.com/ZDBeta_logo-02-Dark.svg",
+  "platform": "all",
+  "apiVersion": "0.0.1",
+  "manifestVersion": "1",
+  "branch": "stable",
+  "categories": ["staking", "defi", "bridge"],
+  "currencies": ["ethereum", "polygon"],
+  "content": {
+    "shortDescription": {
+      "en": "Buy or sell BTC or ZEC for USDC, WBTC, or ETH without gas funds, on any network."
+    },
+    "description": {
+      "en": "Privacy focused L0 BTC to EVM bridging powered by zerop2p. Buy or sell BTC or ZEC for USDC, WBTC, or ETH without gas funds, on any network."
+    }
+  },
+  "permissions": [],
+  "domains": []
+}
