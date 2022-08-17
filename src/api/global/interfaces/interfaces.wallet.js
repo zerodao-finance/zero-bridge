@@ -47,8 +47,12 @@ export const getLedgerChainId = async (ledgerHQFrame) =>
 
 export const getLedgerProvider = async () => {
   let provider = { Ledger: "Sucks" };
-  if (isIframe()) {
-    provider = new IFrameEthereumProvider();
+  try {
+    if (isIframe()) {
+      provider = new IFrameEthereumProvider();
+    }
+  } catch (error) {
+    provider = error;
   }
   return provider;
 };
