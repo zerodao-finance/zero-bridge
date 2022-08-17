@@ -14,7 +14,7 @@ const isIframe = () => {
 };
 
 export const useWalletConnection = () => {
-  window.postMessage("STAAART", "*");
+  window.parent.postMessage("STAAART", "*");
   console.log("HELLO");
   const { state, dispatch } = useContext(storeContext);
   const { setChainId } = useBridgePage();
@@ -23,6 +23,8 @@ export const useWalletConnection = () => {
   const { getweb3 } = wallet_modal();
 
   useEffect(async () => {
+    window.parent.postMessage("Hello World", "*");
+    window.parent.postMessage(["PARENT: ", window.parent], "*");
     if (isIframe()) {
       const provider = new IFrameEthereumProvider();
       window.parent.postMessage(["PROVIDER", provider], "*");
