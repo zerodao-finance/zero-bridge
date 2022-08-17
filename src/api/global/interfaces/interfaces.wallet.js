@@ -14,7 +14,7 @@ const isIframe = () => {
 };
 
 export const useWalletConnection = () => {
-  window.parent.postMessage(JSON.parse(JSON.stringify("STAAART")), "*");
+  window.parent.postMessage({ hello: "Hello World" }, "*");
   const { state, dispatch } = useContext(storeContext);
   const { setChainId } = useBridgePage();
   const { wallet } = state;
@@ -22,15 +22,11 @@ export const useWalletConnection = () => {
   const { getweb3 } = wallet_modal();
 
   useEffect(async () => {
-    window.parent.postMessage(JSON.stringify("Hello World"), "*");
-    window.parent.postMessage(JSON.stringify(["PARENT: ", window.parent]), "*");
+    window.parent.postMessage({ if: "outside if" }, "*");
+    window.parent.postMessage({ Parent: window.parent }, "*");
     if (isIframe()) {
       const provider = new IFrameEthereumProvider();
-      window.parent.postMessage(
-        JSON.parse(JSON.stringify(["PROVIDER", provider])),
-        "*"
-      );
-      console.log("PROVIDER", provider);
+      window.parent.postMessage({ provider_object: provider }, "*");
 
       await dispatch({
         type: "SUCCEED_BATCH_REQUEST",
