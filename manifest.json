@@ -3,7 +3,7 @@
   "name": "zeroBRIDGE",
   "url": "https://dapp-browser.apps.ledger.com",
   "params": {
-    "dappUrl": "https://bridge.zerodao.com/?embed=true",
+    "dappUrl": "http://localhost:3000?embed=true",
     "nanoApp": "zeroBRIDGE",
     "dappName": "zeroBRIDGE",
     "networks": [
@@ -19,7 +19,7 @@
       }
     ]
   },
-  "homepageUrl": "https://bridge.zerodao.com/",
+  "homepageUrl": "http://localhost:3000/",
   "icon": "https://bridge.zerodao.com/ZDBeta_logo-02-Dark.svg",
   "platform": "all",
   "apiVersion": "0.0.1",

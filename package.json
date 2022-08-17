@@ -33,6 +33,7 @@
     "@fortawesome/react-fontawesome": "^0.1.16",
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.5",
+    "@ledgerhq/iframe-provider": "^0.4.2",
     "@mui/base": "5.0.0-alpha.57",
     "@mui/docs": "^5.2.1",
     "@mui/icons-material": "^5.2.0",

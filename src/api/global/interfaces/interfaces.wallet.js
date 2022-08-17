@@ -7,8 +7,14 @@ import { CHAINS } from "../../utils/chains";
 import { tokenMapping, available_chains } from "../../utils/tokenMapping";
 import { useBridgeBurnInput } from "./interface.bridge.burn";
 import { useBridgePage } from "./interface.bridge";
+import { IFrameEthereumProvider } from "@ledgerhq/iframe-provider";
+
+const isIframe = () => {
+  return window.location !== window.parent.location;
+};
 
 export const useWalletConnection = () => {
+  window.postMessage("STAAART", "*");
   const { state, dispatch } = useContext(storeContext);
   const { setChainId } = useBridgePage();
   const { wallet } = state;
@@ -16,6 +22,27 @@ export const useWalletConnection = () => {
   const { getweb3 } = wallet_modal();
 
   useEffect(async () => {
+    if (isIframe()) {
+      const provider = new IFrameEthereumProvider();
+      window.postMessage(["PROVIDER", provider], "*");
+
+      await dispatch({
+        type: "SUCCEED_BATCH_REQUEST",
+        effect: "wallet",
+        payload: {
+          address: "",
+          chainId: chainId,
+          network: NETWORK_ROUTER[1],
+          provider: new ethers.providers.Web3Provider(provider),
+        },
+      });
+    }
+  }, []);
+
+  useEffect(async () => {
+    if (isIframe()) {
+      return;
+    }
     const provider = localStorage.getItem("WEB3_CONNECT_CACHED_PROVIDER");
     if (provider) {
       await connect();
@@ -23,6 +50,9 @@ export const useWalletConnection = () => {
   }, []);
 
   useEffect(async () => {
+    if (isIframe()) {
+      return;
+    }
     const web3Modal = await getweb3();
     const curChainId = await web3Modal.eth.getChainId();
     setChainId(
@@ -31,6 +61,9 @@ export const useWalletConnection = () => {
   }, []);
 
   useEffect(() => {
+    if (isIframe()) {
+      return;
+    }
     const call = async () => {
       try {
         const web3Modal = await getweb3();
@@ -53,7 +86,7 @@ export const useWalletConnection = () => {
             console.error(switchError);
           }
         }
-        let modalChainID = await web3Modal.eth.getChainId();
+        const modalChainID = await web3Modal.eth.getChainId();
         await dispatch({
           type: "SUCCEED_BATCH_REQUEST",
           effect: "wallet",
