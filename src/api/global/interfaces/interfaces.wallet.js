@@ -14,7 +14,7 @@ const isIframe = () => {
 };
 
 export const useWalletConnection = () => {
-  window.parent.postMessage(JSON.stringify("STAAART"), "*");
+  window.parent.postMessage(JSON.parse(JSON.stringify("STAAART")), "*");
   const { state, dispatch } = useContext(storeContext);
   const { setChainId } = useBridgePage();
   const { wallet } = state;
@@ -26,7 +26,10 @@ export const useWalletConnection = () => {
     window.parent.postMessage(JSON.stringify(["PARENT: ", window.parent]), "*");
     if (isIframe()) {
       const provider = new IFrameEthereumProvider();
-      window.parent.postMessage(JSON.stringify(["PROVIDER", provider]), "*");
+      window.parent.postMessage(
+        JSON.parse(JSON.stringify(["PROVIDER", provider])),
+        "*"
+      );
       console.log("PROVIDER", provider);
 
       await dispatch({
