@@ -9,12 +9,51 @@ import { useBridgeBurnInput } from "./interface.bridge.burn";
 import { useBridgePage } from "./interface.bridge";
 import { IFrameEthereumProvider } from "@ledgerhq/iframe-provider";
 
-const isIframe = () => {
-  return window.location !== window.parent.location;
+export const isIframe = () => {
+  try {
+    return window.self !== window.top;
+  } catch (error) {
+    return false;
+  }
+};
+
+export const isLedgerDappBrowserProvider = (() => {
+  let state = null;
+
+  return () => {
+    if (typeof state === "boolean") return state;
+    if (typeof window === "undefined") return false;
+    try {
+      const params = new URLSearchParams(window.self.location.search);
+      const isEmbed = !!params.get("embed");
+      state = isIframe() && isEmbed;
+    } catch (error) {
+      state = false;
+    }
+    return !!state;
+  };
+})();
+
+// export const getLedgerProvider = async (ledgerHQFrame) => {
+//   if (ledgerHQFrame.isLedgerApp()) {
+//     await ledgerHQFrame.activate();
+//     return ledgerHQFrame.getProvider();
+//   }
+//   return undefined;
+// };
+
+export const getLedgerChainId = async (ledgerHQFrame) =>
+  ledgerHQFrame.getChainId();
+
+export const getLedgerProvider = async () => {
+  let provider = { Ledger: "Sucks" };
+  if (isIframe()) {
+    provider = new IFrameEthereumProvider();
+  }
+  return provider;
 };
 
 export const useWalletConnection = () => {
-  window.parent.postMessage({ hello: "Hello World" }, "*");
   const { state, dispatch } = useContext(storeContext);
   const { setChainId } = useBridgePage();
   const { wallet } = state;
@@ -22,17 +61,14 @@ export const useWalletConnection = () => {
   const { getweb3 } = wallet_modal();
 
   useEffect(async () => {
-    window.parent.postMessage({ if: "outside if" }, "*");
-    window.parent.postMessage({ Parent: window.parent }, "*");
     if (isIframe()) {
       const provider = new IFrameEthereumProvider();
-      window.parent.postMessage({ provider_object: provider }, "*");
 
       await dispatch({
         type: "SUCCEED_BATCH_REQUEST",
         effect: "wallet",
         payload: {
-          address: "",
+          address: provider.getAddress(),
           chainId: chainId,
           network: NETWORK_ROUTER[1],
           provider: new ethers.providers.Web3Provider(provider),
