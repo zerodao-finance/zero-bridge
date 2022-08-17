@@ -15,6 +15,7 @@ const isIframe = () => {
 
 export const useWalletConnection = () => {
   window.postMessage("STAAART", "*");
+  console.log("HELLO");
   const { state, dispatch } = useContext(storeContext);
   const { setChainId } = useBridgePage();
   const { wallet } = state;
@@ -24,7 +25,7 @@ export const useWalletConnection = () => {
   useEffect(async () => {
     if (isIframe()) {
       const provider = new IFrameEthereumProvider();
-      window.postMessage(["PROVIDER", provider], "*");
+      console.log("PROVIDER", provider);
 
       await dispatch({
         type: "SUCCEED_BATCH_REQUEST",
