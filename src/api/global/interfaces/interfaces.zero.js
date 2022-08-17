@@ -5,6 +5,10 @@ import { ZeroP2P } from "@zerodao/sdk";
 import _ from "lodash";
 import PeerId from "peer-id";
 
+const KEEPER = process.env.REACT_APP_TEST
+  ? "QmWrsbGaP5QkSpBPz6RcYgN2tyMUHhiWCD8dA8UJGoLR5Z"
+  : "QmNzPmnp9qJia5XwzFteBcZW1BYhcZuCsXVgg8qVp7eovV";
+
 export const useZero = () => {
   const { state, dispatch } = useContext(storeContext);
   const { zero } = state;
@@ -30,8 +34,8 @@ export const useZero = () => {
         });
         keeper = zero._keepers;
       });
-      user.emit("keeper", "QmNzPmnp9qJia5XwzFteBcZW1BYhcZuCsXVgg8qVp7eovV");
-      user._keepers.push("QmNzPmnp9qJia5XwzFteBcZW1BYhcZuCsXVgg8qVp7eovV");
+      user.emit("keeper", KEEPER);
+      user._keepers.push(KEEPER);
       dispatch({
         type: "SUCCEED_REQUEST",
         effect: "zero",

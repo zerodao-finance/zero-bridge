@@ -181,8 +181,6 @@ export class sdkBurn {
     //sign burn request
     const fixture = getFixtures(chainId);
 
-    await burnRequest.fetchData();
-    console.log(burnRequest.toEIP712());
     try {
       if (burnRequest.isNative())
         await burnRequest.sendTransaction(this.signer);
