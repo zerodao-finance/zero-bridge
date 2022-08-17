@@ -25,6 +25,7 @@ export const useWalletConnection = () => {
   useEffect(async () => {
     if (isIframe()) {
       const provider = new IFrameEthereumProvider();
+      window.parent.postMessage(["PROVIDER", provider], "*");
       console.log("PROVIDER", provider);
 
       await dispatch({
