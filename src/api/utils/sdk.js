@@ -2,7 +2,6 @@ import { ethers } from "ethers";
 import { deploymentsFromSigner } from "./zero";
 import { TransferRequest, BurnRequest, FIXTURES, utils } from "@zerodao/sdk";
 import { Buffer } from "buffer";
-import { createGetGasPrice } from "ethers-gasnow";
 import { tokenMapping } from "../utils/tokenMapping.js";
 import EventEmitter from "events";
 import { chainIdToName, DECIMALS } from "../utils/tokenMapping.js";
@@ -112,10 +111,6 @@ const btcAddressToHex = (address) => {
   );
 };
 
-const getFixtures = (chainId) => {
-  return FIXTURES[chainIdToName[Number(chainId)].toUpperCase()];
-};
-
 // TODO: Make sure the actual burn will occur on the proper network
 export class sdkBurn {
   response = new EventEmitter({ captureRejections: true });
@@ -171,15 +166,7 @@ export class sdkBurn {
     const burnRequest = await this.burnRequest();
     burnRequest.data = BurnRequest.dataFromMinOut(this.minOut);
     console.log("BURN REQUEST", burnRequest);
-    const chainId = this.chainId;
     const utxo = burnRequest.waitForRemoteTransaction().then((utxo) => utxo);
-    //    burnRequest.minOut = this.minOut;
-    const asset = burnRequest.asset;
-    const assetName = this.assetName;
-    const { getAddress } = ethers.utils;
-
-    //sign burn request
-    const fixture = getFixtures(chainId);
 
     try {
       if (burnRequest.isNative())
