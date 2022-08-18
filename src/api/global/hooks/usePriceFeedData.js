@@ -2,9 +2,8 @@ import { storeContext } from "../global";
 import { useContext, useEffect } from "react";
 import { ChainId, Token, WETH, Fetcher, Route } from "@uniswap/sdk";
 import * as JOE from "@traderjoe-xyz/sdk";
-import fixtures from "zero-protocol/lib/fixtures";
+import { makeQuoter, FIXTURES } from "@zerodao/sdk";
 import { ethers } from "ethers";
-const Quotes = require("zero-protocol/lib/quotes");
 
 export const usePriceFeedContracts = () => {
   const { dispatch } = useContext(storeContext);
@@ -84,7 +83,7 @@ export const usePriceFeedContracts = () => {
 
     const avUSDC = new JOE.Token(
       JOE.ChainId.AVALANCHE,
-      fixtures.AVALANCHE.USDC,
+      FIXTURES.AVALANCHE.USDC,
       6
     );
 
@@ -101,7 +100,7 @@ export const usePriceFeedContracts = () => {
   };
 
   const getUniswapUSDCMATICPrice = async () => {
-    const quotes = Quotes("137");
+    const quotes = makeQuoter("137");
     const quote = await quotes.wNativeToUSDC(ethers.utils.parseEther("1"));
 
     return quote.toString();

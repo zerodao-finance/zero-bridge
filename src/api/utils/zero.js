@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import deployments from "zero-protocol/deployments/deployments.json";
+import { DEPLOYMENTS } from "@zerodao/sdk";
 
 export const test = {
   TEST_KEEPER_ADDRESS: "0x4A423AB37d70c00e8faA375fEcC4577e3b376aCa",
@@ -75,7 +75,7 @@ export const deploymentsFromSigner = async (signer) => {
       typeof _contract == "string"
         ? [_contract, _contract]
         : [Object.keys(_contract)[0], Object.values(_contract)[0]];
-    const contract = deployments[chainId][name].contracts[deployName];
+    const contract = DEPLOYMENTS[chainId][name].contracts[deployName];
     return {
       ...contracts,
       [contractName]: new ethers.Contract(

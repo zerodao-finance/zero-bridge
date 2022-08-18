@@ -1,10 +1,10 @@
 import { ethers } from "ethers";
 
-import fixtures from "zero-protocol/lib/fixtures";
+import { FIXTURES } from "@zerodao/sdk";
 
 const getRenBTCAddress = async (signer) => {
   const { chainId } = await signer.provider.getNetwork();
-  return fixtures[
+  return FIXTURES[
     (() => {
       switch (Number(chainId)) {
         case 1:
