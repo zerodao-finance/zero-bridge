@@ -73,7 +73,6 @@ export const useBridgeBurnInput = () => {
     token,
     slippage: state.transfer.input.slippage,
     setSlippage: setTransferSlippage,
-    type: "burn",
   });
 
   const getBridgeBurnInputProps = () => ({

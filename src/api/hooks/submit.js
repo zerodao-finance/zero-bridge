@@ -21,7 +21,7 @@ const getPrimaryTokenMappedAddress = (primaryToken, chainId) => {
   switch (primaryToken) {
     case "ZEC":
       if (chainId != "1") {
-        console.error("ZEC is not supported on this chain");
+        throw new Error("ZEC is not supported on this chain");
       }
       return fixture.renZEC;
     case "BTC":
@@ -35,7 +35,7 @@ export const useSDKTransactionSubmit = (module) => {
   const { wallet, zero } = state;
   const { chainId } = wallet;
   const { primaryToken } = state.bridge.mode;
-  const { slippage, destinationAddress } = state.transfer.input;
+  const { slippage } = state.transfer.input;
   const { input } = state[module];
 
   async function sendTransferRequest() {
@@ -43,7 +43,7 @@ export const useSDKTransactionSubmit = (module) => {
     var amount = input.amount;
     var token = input.token;
     var signer = await getSigner(wallet);
-    var to = destinationAddress;
+    var to = await signer.getAddress();
     var isFast = input.isFast;
 
     var quote = input.quote;

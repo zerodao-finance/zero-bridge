@@ -13,8 +13,7 @@ export const useBridgeInput = () => {
     state.priceFeeds.data;
   const { wallet } = state;
   const { ETH, renBTC } = state.transfer.display;
-  const { amount, isFast, token, quote, slippage, destinationAddress } =
-    state.transfer.input;
+  const { amount, isFast, token, quote, slippage } = state.transfer.input;
   const { mode } = state.transfer.mode;
   const { primaryToken } = state.bridge.mode;
   const { sendTransferRequest } = useSDKTransactionSubmit("transfer");
@@ -41,15 +40,6 @@ export const useBridgeInput = () => {
     chainId: wallet.chainId,
   });
 
-  const setDestinationAddress = (e) => {
-    dispatch({
-      type: "UPDATE",
-      module: "transfer",
-      effect: "input",
-      data: { destinationAddress: e },
-    });
-  };
-
   const setTransferSlippage = (e) => {
     dispatch({
       type: "UPDATE",
@@ -69,13 +59,9 @@ export const useBridgeInput = () => {
   };
 
   const getTransferSlippageProps = () => ({
-    token,
-    slippage,
+    token: token,
+    slippage: slippage,
     setSlippage: setTransferSlippage,
-    type: "transfer",
-    destinationAddress,
-    setDestinationAddress,
-    defaultAddress: wallet.address,
   });
 
   const getTransferMode = () => ({

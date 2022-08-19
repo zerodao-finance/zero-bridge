@@ -30,7 +30,6 @@ export const globalBridgeState = {
         isLoading: false,
         error: null,
         quote: "0",
-        destinationAddress: "",
       },
       display: {
         ETH: 0,
