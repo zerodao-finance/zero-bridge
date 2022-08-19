@@ -130,7 +130,13 @@ function ParseDetails(data, type, truncateAddress) {
 }
 
 export const ManageTransactionCard = ({ data }) => {
-  if (!data || !data._data || !data._data.module || !data._data.asset)
+  if (
+    !data ||
+    !data._data ||
+    !data._data.module ||
+    !data._data.asset ||
+    !data._data.contractAddress
+  )
     return <></>;
 
   const [details, toggle] = useState(false);
