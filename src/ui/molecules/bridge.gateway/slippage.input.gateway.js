@@ -48,6 +48,9 @@ export const SlippageInput = ({
     if (!valid && !openSetting) {
       autoSlippage();
     }
+    if (type !== "transfer") {
+      return;
+    }
     if (!addressValid && !openSetting) {
       setDestinationAddress(defaultAddress);
     }
@@ -64,6 +67,9 @@ export const SlippageInput = ({
   }, [token]);
 
   useEffect(() => {
+    if (type !== "transfer") {
+      return;
+    }
     setDestinationAddress(defaultAddress);
   }, [defaultAddress]);
 
