@@ -18,10 +18,10 @@ const chains = [
     name: "Mainnet",
     chainId: "1",
   },
-  // {
-  //   name: "Arbitrum",
-  //   chainId: "42161",
-  // },
+  {
+    name: "Arbitrum",
+    chainId: "42161",
+  },
   {
     name: "Avalanche",
     chainId: "43114",
