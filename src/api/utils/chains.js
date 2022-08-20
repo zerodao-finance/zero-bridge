@@ -20,8 +20,8 @@ const AVAX = {
 
 export const getChainName = (chainId) => {
   switch (chainId) {
-    case "42161":
-      return "Arbitrum";
+    // case "42161":
+    //   return "Arbitrum";
     case "43114":
       return "Avalanche";
     case "137":
