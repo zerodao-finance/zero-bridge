@@ -138,7 +138,7 @@ export const DECIMALS = {
 
 export const selectRemovedTokens = ({ primaryToken, chainId }) => {
   if (primaryToken === "ZEC") {
-    return ["renBTC", "ibBTC", "MATIC", "AVAX", "WBTC", "USDC", "USDT", "ZEC"];
+    return ["renBTC", "ibBTC", "MATIC", "AVAX", "WBTC", "ZEC"];
   }
 
   return REMOVED_TOKENS[chainId];

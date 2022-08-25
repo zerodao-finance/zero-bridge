@@ -36,7 +36,7 @@ export const BridgeBurnInput = ({
   const { dispatch } = useContext(storeContext);
   const { balances } = useWalletBalances();
 
-  useEffect(async () => {
+  useEffect(() => {
     setAmount(0);
   }, [token]);
 
@@ -45,21 +45,26 @@ export const BridgeBurnInput = ({
   }, [primaryToken]);
 
   const formattedAmount = () => {
-    switch (token) {
-      case "USDC":
-        return formatUSDC(amount);
-      case "USDT":
-        return formatUSDC(amount);
-      case "ETH":
-        return formatUSDCPricedETH(amount, eth_usd);
-      case "AVAX":
-        return formatUSDCPricedETH(amount, avax_usd);
-      case "MATIC":
-        return formatUSDCPricedETH(amount, matic_usd);
-      case "renZEC":
-        return formatUSDCPricedBTC(amount, renZEC_usd);
-      default:
-        return formatUSDCPricedBTC(amount, btc_usd);
+    try {
+      switch (token) {
+        case "USDC":
+          return formatUSDC(amount);
+        case "USDT":
+          return formatUSDC(amount);
+        case "ETH":
+          return formatUSDCPricedETH(amount, eth_usd);
+        case "AVAX":
+          return formatUSDCPricedETH(amount, avax_usd);
+        case "MATIC":
+          return formatUSDCPricedETH(amount, matic_usd);
+        case "renZEC":
+          return formatUSDCPricedBTC(amount, renZEC_usd);
+        default:
+          return formatUSDCPricedBTC(amount, btc_usd);
+      }
+    } catch (e) {
+      setAmount(0);
+      console.error(e);
     }
   };
 
