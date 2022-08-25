@@ -75,6 +75,14 @@ function TokenDropdown({
       text: "renZEC",
       icon: renZEC,
     },
+    {
+      text: "USDC.e",
+      icon: USDC,
+    },
+    {
+      text: "WBTC.e",
+      icon: WBTC,
+    },
   ];
 
   // For Routing

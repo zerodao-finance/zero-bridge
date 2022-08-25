@@ -49,6 +49,8 @@ export const BridgeBurnInput = ({
       switch (token) {
         case "USDC":
           return formatUSDC(amount);
+        case "USDC.e":
+          return formatUSDC(amount);
         case "USDT":
           return formatUSDC(amount);
         case "ETH":

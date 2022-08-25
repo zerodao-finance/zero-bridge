@@ -19,6 +19,9 @@ export const SlippageInput = ({ token, slippage, setSlippage }) => {
       case "USDC":
         setSlippage("10.0");
         break;
+      case "USDC.e":
+        setSlippage("10.0");
+        break;
       case "USDT":
         setSlippage("10.0");
         break;
