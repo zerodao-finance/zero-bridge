@@ -90,7 +90,7 @@ export const BridgeTransferFee = ({
             token={token}
             setToken={setToken}
             tokensRemoved={selectRemovedTokens({ primaryToken, chainId })}
-            tokensDisabled={["USDT"]}
+            tokensDisabled={[""]}
           />
         </div>
         <div className="pt-3">
