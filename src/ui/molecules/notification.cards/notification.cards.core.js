@@ -1,6 +1,9 @@
 import * as React from "react";
 import { ProgressDots } from "../../atoms/progress/progress.dots";
 import { truncateAddress } from "../../../api/utils/textUtilities";
+import { getExplorerRoot } from "../../../api/utils/chains";
+import { CONTROLLER_DEPLOYMENTS } from "@zerodao/sdk";
+import { getChainId } from "../../../api/utils/chains";
 
 export const getCard = (_ref) => {
   switch (_ref.type) {
@@ -14,6 +17,8 @@ export const getCard = (_ref) => {
       return MessageCard({ ..._ref });
     case "transfer":
       return TransferCard({ ..._ref });
+    case "burnWaiting":
+      return BurnWaitingCard({ ..._ref });
     case "burn":
       return BurnCard({ ..._ref });
     default:
@@ -24,11 +29,11 @@ export const getCard = (_ref) => {
 export const BurnCard = ({ id, close, data }) => {
   return (
     <div
-      className="dark:bg-gray-500 shadow-md text-black min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] text-sm p-5 rounded-md shadow-md text-xs md:text-sm"
+      className="dark:bg-gray-500 text-black min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] p-5 rounded-md shadow-md text-xs md:text-sm"
       key={id}
     >
       <span
-        className="absolute top-1 right-1 text-md text-black dark:text-badger-white-400 cursor-pointer"
+        className="absolute top-1 right-1 text-md text-badger-white-400 cursor-pointer"
         onClick={close}
       >
         &times;
@@ -37,10 +42,15 @@ export const BurnCard = ({ id, close, data }) => {
         Release Transaction:
       </div>
       <div className="text-black dark:text-badger-white-400 flex flex-row gap-2">
-        <span>View on Etherscan</span>
+        <span>View on Explorer</span>
         <span className="underline text-orange-500">
           <a
-            href={`https://etherscan.io/tx/${data.hostTX.transactionHash}`}
+            href={
+              getExplorerRoot(
+                getChainId(CONTROLLER_DEPLOYMENTS[data?.hostTX?.to]),
+                "tx"
+              ) + data.hostTX.transactionHash
+            }
             target="_blank"
             rel="noreferrer"
           >
@@ -71,11 +81,11 @@ export const BurnCard = ({ id, close, data }) => {
 export const TransferCard = ({ id, close, data, max, current }) => {
   return (
     <div
-      className="dark:bg-gray-500 shadow-md text-black min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] text-sm p-5 rounded-md shadow-md text-xs md:text-sm"
+      className="dark:bg-gray-500 text-black min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] p-5 rounded-md shadow-md text-xs md:text-sm"
       key={id}
     >
       <span
-        className="absolute top-1 right-1 text-md text-black dark:text-badger-white-400 cursor-pointer"
+        className="absolute top-1 right-1 text-md text-badger-white-400 cursor-pointer"
         onClick={close}
       >
         &times;
@@ -99,7 +109,7 @@ export const ErrorCard = ({ message, id, close }) => {
   console.error(message);
   return (
     <div
-      className="dark:bg-gray-500 min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] text-sm p-5 rounded-md shadow-md text-xs md:text-sm"
+      className="dark:bg-gray-500 min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] p-5 rounded-md shadow-md text-xs md:text-sm"
       key={id}
     >
       <span
@@ -117,16 +127,16 @@ export const ErrorCard = ({ message, id, close }) => {
 export const MessageCard = ({ message, id, close }) => {
   return (
     <div
-      className="dark:bg-gray-500 min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] text-sm p-5 rounded-md shadow-md text-xs md:text-sm"
+      className="dark:bg-gray-500 min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] p-5 rounded-md shadow-md text-xs md:text-sm"
       key={id}
     >
       <span
-        className="absolute top-1 right-1 text-md dark:text-badger-white-400 cursor-pointer"
+        className="absolute top-1 right-1 text-md text-badger-white-400 cursor-pointer"
         onClick={close}
       >
         &times;
       </span>
-      <div className="text-black dark:text-badger-white-400">{message}</div>
+      <div className="text-badger-white-400 p-1">{message}</div>
       <div className="bg-[#59616D] dark:bg-gray-300 h-[6px] w-full absolute bottom-0 left-0 rounded-b-md" />
     </div>
   );
@@ -135,7 +145,7 @@ export const MessageCard = ({ message, id, close }) => {
 export const WarningCard = ({ message, id, close }) => {
   return (
     <div
-      className="dark:bg-gray-500 min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] text-sm p-5 rounded-md shadow-md text-xs md:text-sm"
+      className="dark:bg-gray-500 min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] p-5 rounded-md shadow-md text-xs md:text-sm"
       key={id}
     >
       <span
@@ -144,7 +154,7 @@ export const WarningCard = ({ message, id, close }) => {
       >
         &times;
       </span>
-      <div className="text-black dark:text-badger-white-400">{message}</div>
+      <div className="text-badger-white-400 p-1">{message}</div>
       <div className="bg-[#F9A825] h-[6px] w-full absolute bottom-0 left-0 rounded-b-md" />
     </div>
   );
@@ -153,7 +163,7 @@ export const WarningCard = ({ message, id, close }) => {
 export const SuccessCard = ({ message, id, close }) => {
   return (
     <div
-      className="dark:bg-gray-500 min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] text-sm p-5 rounded-md shadow-md text-xs md:text-sm"
+      className="dark:bg-gray-500 min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px]p-5 rounded-md shadow-md text-xs md:text-sm"
       key={id}
     >
       <span
@@ -162,7 +172,29 @@ export const SuccessCard = ({ message, id, close }) => {
       >
         &times;
       </span>
-      <div className="text-black dark:text-badger-white-400">{message}</div>
+      <div className="text-badger-white-400 p-1">{message}</div>
+      <div className="bg-main-green h-[6px] w-full absolute bottom-0 left-0 rounded-b-md" />
+    </div>
+  );
+};
+
+export const BurnWaitingCard = ({ message, id, close }) => {
+  return (
+    <div
+      className="dark:bg-gray-500 min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px]p-5 rounded-md shadow-md text-xs md:text-sm"
+      key={id}
+    >
+      <div className="w-full flex justify-end pr-0.5">
+        <span
+          className="text-sm md:text-lg text-badger-white-400 cursor-pointer"
+          onClick={close}
+        >
+          &times;
+        </span>
+      </div>
+      <div className="text-badger-white-400 animate-pulse px-4 pb-4 -mt-2">
+        {message}
+      </div>
       <div className="bg-main-green h-[6px] w-full absolute bottom-0 left-0 rounded-b-md" />
     </div>
   );

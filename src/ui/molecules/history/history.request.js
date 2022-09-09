@@ -10,7 +10,9 @@ export const TransactionHistory = () => {
       {CardGrid(completed)}
       {
         <div className="dark:text-gray-300">
-          {_.isEmpty(completed.transfer) ? "No Transactions" : ""}
+          {_.isEmpty(completed.transfer) && _.isEmpty(completed.burn)
+            ? "No Transactions"
+            : ""}
         </div>
       }
     </ManageTransactionLayout>
