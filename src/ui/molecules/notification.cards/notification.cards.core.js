@@ -27,8 +27,6 @@ export const getCard = (_ref) => {
 };
 
 export const BurnCard = ({ id, close, data }) => {
-  console.log("DATA: ", data);
-  console.log("NAME: ", CONTROLLER_DEPLOYMENTS[data?.hostTX?.to]);
   return (
     <div
       className="dark:bg-gray-500 text-black min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] p-5 rounded-md shadow-md text-xs md:text-sm"

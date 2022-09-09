@@ -3,8 +3,8 @@ module.exports = {
   darkMode: "class",
   theme: {
     maxWidth: {
-      200: "200px",
       100: "100px",
+      200: "200px",
       300: "300px",
     },
     extend: {

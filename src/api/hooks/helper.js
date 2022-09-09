@@ -159,6 +159,9 @@ class SDKHelper {
       });
     } catch (err) {
       console.error(err);
+      task.this.Notify.createCard(10000, "message", {
+        message: "Error: " + err?.message,
+      });
     }
     //create card takes hostTX and displays that information
     //shows pending screen untill task.txo is fulfulled and displays transaction receipt
