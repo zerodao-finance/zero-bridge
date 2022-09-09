@@ -11,6 +11,9 @@ export class NotificationHelper {
   }
 
   createCard(timeout = 10000, type = null, data) {
+    console.log("TIMEOUT: ", timeout);
+    console.log("TYPE: ", type);
+    console.log("DATA: ", data);
     var id = uuidv4();
     this.dispatch({
       type: "ADD",
@@ -19,11 +22,14 @@ export class NotificationHelper {
         type: type,
         timeout: timeout,
         content: getCard,
-        callback: () => this._timeout(id, timeout),
+        callback: () =>
+          timeout ? this._timeout(id, timeout) : this.voidCallback(),
         close: () => this._close(id),
         ...data,
       },
     });
+
+    return { id: id, dispatch: this.dispatch };
   }
 
   createTXCard(confirmation = true, type = "request", data) {

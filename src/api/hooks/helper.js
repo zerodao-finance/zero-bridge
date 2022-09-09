@@ -99,9 +99,10 @@ class SDKHelper {
     }
 
     if (_type === "burn") {
-      response.on("signed", (data) => {
-        this.Notify.createCard(3000, "success", {
-          message: "successfully signed request",
+      let cardCleanupProperties = null;
+      response.on("signed", () => {
+        cardCleanupProperties = this.Notify.createCard(null, "burnWaiting", {
+          message: "Burn Transaction Signed. Now Being Submitted.",
         });
       });
 
@@ -110,6 +111,15 @@ class SDKHelper {
       });
 
       response.on("hash", async (data) => {
+        try {
+          cardCleanupProperties.dispatch({
+            type: "REMOVE",
+            payload: { id: cardCleanupProperties.id },
+          });
+        } catch (error) {
+          console.error(error);
+        }
+
         this.Queue.push(
           {
             type: _type,
@@ -147,10 +157,8 @@ class SDKHelper {
 
         data.payload.data.complete();
       });
-    } catch {
-      task.this.Notify.createCard((timeout = 10000), "message", {
-        message: "successfully " + value.txHash,
-      });
+    } catch (err) {
+      console.error(err);
     }
     //create card takes hostTX and displays that information
     //shows pending screen untill task.txo is fulfulled and displays transaction receipt

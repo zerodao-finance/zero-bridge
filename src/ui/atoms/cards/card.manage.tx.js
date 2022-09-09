@@ -7,7 +7,8 @@ import {
   reverseTokenMapping,
   txCardAmount,
 } from "../../../api/utils/tokenMapping";
-import { getChainName, getExplorerRoot } from "../../../api/utils/chains";
+import { getExplorerRoot, getChainId } from "../../../api/utils/chains";
+import { CONTROLLER_DEPLOYMENTS } from "@zerodao/sdk";
 
 export function CardTypeSwitch({ data, key, type }) {
   switch (data.type) {
@@ -65,35 +66,41 @@ function ParseDetails(data, type, truncateAddress) {
             </div>
             <hr className="border-badger-black-800" />
             <div className="grid text-badger-white-400 grid-cols-2">
-              <span className="justify-self-start"> to: </span>
+              <span className="justify-self-start"> From: </span>
               <a
                 className="text-xs justify-self-end underline"
                 href={
-                  getExplorerRoot(String(data.underwriterRequest?.chainId)) +
-                  ethers.utils.getAddress(data.hostTX.to)
+                  getExplorerRoot(
+                    getChainId(
+                      CONTROLLER_DEPLOYMENTS[
+                        data?.underwriterRequest?.contractAddress
+                      ]
+                    )
+                  ) + ethers.utils.getAddress(data.underwriterRequest.owner)
                 }
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {truncateAddress(data.hostTX.to)}
+                {truncateAddress(data.underwriterRequest.owner)}
               </a>
               <span className="justify-self-start"> amount: </span>
               <span className="justify-self-end">
                 {" "}
                 {txCardAmount({
                   amount: data.underwriterRequest?.amount,
-                  tokenName: data.underwriterRequest?.assetName,
+                  tokenName: data.underwriterRequest?.tokenName,
                 })}{" "}
               </span>
               <span className="justify-self-start"> asset: </span>
               <span className="justify-self-end">
                 {" "}
-                {data.underwriterRequest?.assetName}
+                {data.underwriterRequest?.tokenName}
               </span>
               <span className="justify-self-start"> chain: </span>
               <span className="justify-self-end">
-                {" "}
-                {getChainName(String(data.underwriterRequest?.chainId))}{" "}
+                {CONTROLLER_DEPLOYMENTS[
+                  data?.underwriterRequest?.contractAddress
+                ] || "Unknown"}
               </span>
             </div>
           </>
@@ -172,8 +179,9 @@ export const ManageTransactionCard = ({ data }) => {
           <a
             className="text-xs justify-self-end underline"
             href={
-              getExplorerRoot(String(data._data.chainId)) +
-              ethers.utils.getAddress(data._data.to)
+              getExplorerRoot(
+                getChainId(CONTROLLER_DEPLOYMENTS[data._data.contractAddress])
+              ) + ethers.utils.getAddress(data._data.to)
             }
             target="_blank"
             rel="noopener noreferrer"
@@ -193,15 +201,14 @@ export const ManageTransactionCard = ({ data }) => {
           <span className="justify-self-end"> {tokenName} </span>
           <span className="justify-self-start"> chain: </span>
           <span className="justify-self-end">
-            {" "}
-            {getChainName(String(data._data.chainId))}{" "}
+            {CONTROLLER_DEPLOYMENTS[data?._data?.contractAddress] || "Unknown"}
           </span>
         </div>
         <div
           className="underline justify-self-center text-zero-neon-green-500 mt-px cursor-pointer"
           onClick={() => toggle(true)}
         >
-          click for fallback mint details
+          Click For Fallback Mint Details
         </div>
       </div>
     );
@@ -215,7 +222,7 @@ function Details({ data, toggle }) {
 
   return (
     <div
-      className="bg-badger-gray-500 rounded-md shadow-md text-xs max-w-[300px] px-4 grid"
+      className="bg-badger-gray-500 rounded-md shadow-md text-xs max-w-300 px-4 grid"
       key={data.id}
     >
       <div className="w-full flex justify-end h-4">
@@ -227,7 +234,7 @@ function Details({ data, toggle }) {
         </p>
       </div>
       {passed ? (
-        <div className="grid h-full py-2 items-center content-center ">
+        <div className="grid h-full max-w-200 py-2 items-center content-center ">
           <div className="grid text-badger-white-400 grid-cols-2">
             <span className="justify-self-start"> target: </span>
             <span className="text-xs justify-self-end"> {passed.target} </span>
@@ -238,9 +245,16 @@ function Details({ data, toggle }) {
             onClick={() => {
               passed.fallbackMint ? setOpen(true) : () => {};
             }}
-            className="underline justify-self-center text-zero-neon-green-500 mt-px cursor-pointer"
+            className={
+              "justify-self-center max-w-300 text-center text-zero-neon-green-500 mt-2 " +
+              (passed.fallbackMint ? "underline cursor-pointer" : "")
+            }
           >
-            Fallback Mint
+            <span>
+              {passed.fallbackMint
+                ? "Fallback Mint"
+                : "More Than 6 Confirmations Required to Fallback Mint"}
+            </span>
           </div>
           <FallbackWarning
             open={open}

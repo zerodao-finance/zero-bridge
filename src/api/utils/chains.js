@@ -35,18 +35,33 @@ export const getChainName = (chainId) => {
   }
 };
 
-export const getExplorerRoot = (chainId) => {
+export const getChainId = (chainId) => {
+  switch (chainId) {
+    case "Arbitrum":
+      return "42161";
+    case "Avalanche":
+      return "43114";
+    case "Polygon":
+      return "137";
+    case "Optimism":
+      return "10";
+    default:
+      return "1";
+  }
+};
+
+export const getExplorerRoot = (chainId, type = "address") => {
   switch (chainId) {
     case "42161":
-      return "https://arbiscan.io/address/";
+      return "https://arbiscan.io/" + type + "/";
     case "43114":
-      return "https://snowtrace.io/address/";
+      return "https://snowtrace.io/" + type + "/";
     case "137":
-      return "https://polygonscan.com/address/";
+      return "https://polygonscan.com/" + type + "/";
     case "10":
-      return "https://optimistic.etherscan.io/address/";
+      return "https://optimistic.etherscan.io/" + type + "/";
     default:
-      return "https://etherscan.io/address/";
+      return "https://etherscan.io/" + type + "/";
   }
 };
 
