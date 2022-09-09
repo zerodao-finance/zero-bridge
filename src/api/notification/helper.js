@@ -11,9 +11,6 @@ export class NotificationHelper {
   }
 
   createCard(timeout = 10000, type = null, data) {
-    console.log("TIMEOUT: ", timeout);
-    console.log("TYPE: ", type);
-    console.log("DATA: ", data);
     var id = uuidv4();
     this.dispatch({
       type: "ADD",
