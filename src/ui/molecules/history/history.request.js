@@ -6,7 +6,7 @@ import _ from "lodash";
 export const TransactionHistory = () => {
   const { completed } = useTransactionContext();
   return (
-    <ManageTransactionLayout title="Transaction History">
+    <ManageTransactionLayout title="Completed Transactions">
       {CardGrid(completed)}
       {
         <div className="dark:text-gray-300">

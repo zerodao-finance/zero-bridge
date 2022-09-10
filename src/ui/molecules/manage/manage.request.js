@@ -6,7 +6,7 @@ export const ManageTransaction = () => {
   const { pending } = useTransactionContext();
 
   return (
-    <ManageTransactionLayout title="Manage Transactions">
+    <ManageTransactionLayout title="Pending Transactions">
       {CardGrid(pending)}
       {/* {pending.transfer.map((d, index) => {
         return <ManageTransactionCard data={d} key={index} />;
