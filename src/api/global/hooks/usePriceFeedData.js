@@ -22,11 +22,6 @@ export const usePriceFeedContracts = () => {
     "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     6
   );
-  const renZEC = new Token(
-    ChainId.MAINNET,
-    "0x1C5db575E2Ff833E46a2E9864C22F4B22E0B37C2",
-    8
-  );
 
   const getUniswapBtcUsdPrice = async () => {
     const pair = await Fetcher.fetchPairData(WBTC, USDC, provider);
@@ -34,14 +29,6 @@ export const usePriceFeedContracts = () => {
 
     const usdcForOneBTC = route.midPrice.invert().toSignificant(7);
     return ethers.utils.parseUnits(usdcForOneBTC, 6).toString();
-  };
-
-  const getUniswapZecUsdPrice = async () => {
-    const pair = await Fetcher.fetchPairData(renZEC, USDC, provider);
-    const route = new Route([pair], USDC);
-
-    const usdcForOneZEC = route.midPrice.invert().toSignificant(7);
-    return ethers.utils.parseUnits(usdcForOneZEC, 6).div(2).toString();
   };
 
   const getCoinGeckoZecUsdPrice = async () => {

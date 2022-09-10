@@ -4,6 +4,7 @@ import { truncateAddress } from "../../../api/utils/textUtilities";
 import { getExplorerRoot } from "../../../api/utils/chains";
 import { CONTROLLER_DEPLOYMENTS } from "@zerodao/sdk";
 import { getChainId } from "../../../api/utils/chains";
+import { useEffect, useState } from "react";
 
 export const getCard = (_ref) => {
   switch (_ref.type) {
@@ -79,6 +80,26 @@ export const BurnCard = ({ id, close, data }) => {
 };
 
 export const TransferCard = ({ id, close, data, max, current }) => {
+  const [confirmationTime, setConfirmationTime] = useState(60);
+
+  useEffect(() => {
+    let controller = new AbortController();
+    const fetchConfirmationTimeEffect = async () => {
+      try {
+        const statsReponse = await fetch(
+          `https://blockchain.info/stats?format=json&cors=true`,
+          { signal: controller.signal }
+        );
+        const statsData = await statsReponse.json();
+        setConfirmationTime(statsData.minutes_between_blocks || 60);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchConfirmationTimeEffect();
+    return () => controller?.abort();
+  }, []);
+
   return (
     <div
       className="dark:bg-gray-500 text-black min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] p-5 rounded-md shadow-md text-xs md:text-sm"
@@ -90,11 +111,15 @@ export const TransferCard = ({ id, close, data, max, current }) => {
       >
         &times;
       </span>
-      <div className="text-black dark:text-badger-white-400">
-        {truncateAddress(data.to)}
-      </div>
+      <div className="text-badger-white-400">{truncateAddress(data.to)}</div>
       {max <= 6 ? (
-        <ProgressDots current={current} max={max} />
+        <div className="grid justify-center">
+          <ProgressDots current={current} max={max} />
+          <p className="text-badger-white-400 mt-1 animate-pulse">
+            {" "}
+            ~{confirmationTime * (max - current + 1)} minutes remaining{" "}
+          </p>
+        </div>
       ) : (
         <p className="text-zero-neon-green-500 animate-pulse font-semibold text-lg">
           {" "}
