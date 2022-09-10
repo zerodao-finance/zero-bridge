@@ -5,6 +5,7 @@ import { getExplorerRoot } from "../../../api/utils/chains";
 import { CONTROLLER_DEPLOYMENTS } from "@zerodao/sdk";
 import { getChainId } from "../../../api/utils/chains";
 import { useEffect, useState } from "react";
+import { safeEthersGetAddress } from "../../atoms/cards/card.manage.tx";
 
 export const getCard = (_ref) => {
   switch (_ref.type) {
@@ -48,7 +49,9 @@ export const BurnCard = ({ id, close, data }) => {
           <a
             href={
               getExplorerRoot(
-                getChainId(CONTROLLER_DEPLOYMENTS[data?.hostTX?.to]),
+                getChainId(
+                  safeEthersGetAddress(CONTROLLER_DEPLOYMENTS[data?.hostTX?.to])
+                ),
                 "tx"
               ) + data.hostTX.transactionHash
             }
