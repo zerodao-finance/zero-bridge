@@ -10,22 +10,30 @@ import {
 import { getExplorerRoot, getChainId } from "../../../api/utils/chains";
 import { CONTROLLER_DEPLOYMENTS } from "@zerodao/sdk";
 
-export function CardTypeSwitch({ data, key, type }) {
+export function safeEthersGetAddress(address) {
+  try {
+    return ethers.utils.getAddress(address);
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
+export function CardTypeSwitch({ data, type }) {
   switch (data.type) {
     case "burn":
-      return <BurnManageCard data={data} key={key} type={type} />;
+      return <BurnManageCard data={data} type={type} />;
     case "transfer":
-      return <ManageTransactionCard data={data} key={key} type={type} />;
+      return <ManageTransactionCard data={data} type={type} />;
     default:
       return;
   }
 }
 
 export const BurnManageCard = ({ data }) => {
-  const [details, toggle] = useState(false);
   function truncateAddress(address) {
     try {
-      const checksummedAddress = ethers.utils.getAddress(address);
+      const checksummedAddress = safeEthersGetAddress(address);
       return (
         checksummedAddress.slice(0, 6) + "..." + checksummedAddress.slice(-4)
       );
@@ -34,15 +42,14 @@ export const BurnManageCard = ({ data }) => {
     }
   }
 
-  if (!details)
-    return (
-      <div
-        key={data.id}
-        className="bg-badger-gray-500 rounded-md shadow-md text-xs max-w-[500px] px-4 py-1 grid gap-1"
-      >
-        {ParseDetails(data._data, "burn", truncateAddress)}
-      </div>
-    );
+  return (
+    <div
+      key={data.id}
+      className="bg-badger-gray-500 rounded-md shadow-md text-xs max-w-[500px] px-4 py-1 grid gap-1"
+    >
+      {ParseDetails(data._data, "burn", truncateAddress)}
+    </div>
+  );
 };
 
 function ParseDetails(data, type, truncateAddress) {
@@ -58,9 +65,7 @@ function ParseDetails(data, type, truncateAddress) {
               </p>
               <p className="text-zero-neon-green-500 justify-self-end">
                 {truncateAddress(
-                  ethers.utils.getAddress(
-                    data.underwriterRequest?.contractAddress
-                  )
+                  safeEthersGetAddress(data.underwriterRequest?.contractAddress)
                 )}
               </p>
             </div>
@@ -73,10 +78,12 @@ function ParseDetails(data, type, truncateAddress) {
                   getExplorerRoot(
                     getChainId(
                       CONTROLLER_DEPLOYMENTS[
-                        data?.underwriterRequest?.contractAddress
+                        safeEthersGetAddress(
+                          data?.underwriterRequest?.contractAddress
+                        )
                       ]
                     )
-                  ) + ethers.utils.getAddress(data.underwriterRequest.owner)
+                  ) + safeEthersGetAddress(data.underwriterRequest.owner)
                 }
                 target="_blank"
                 rel="noopener noreferrer"
@@ -99,7 +106,9 @@ function ParseDetails(data, type, truncateAddress) {
               <span className="justify-self-start"> chain: </span>
               <span className="justify-self-end">
                 {CONTROLLER_DEPLOYMENTS[
-                  data?.underwriterRequest?.contractAddress
+                  safeEthersGetAddress(
+                    data?.underwriterRequest?.contractAddress
+                  )
                 ] || "Unknown"}
               </span>
             </div>
@@ -153,7 +162,7 @@ export const ManageTransactionCard = ({ data }) => {
   });
 
   function truncateAddress(address) {
-    const checksummedAddress = ethers.utils.getAddress(address);
+    const checksummedAddress = safeEthersGetAddress(address);
     return (
       checksummedAddress.slice(0, 6) + "..." + checksummedAddress.slice(-4)
     );
@@ -180,8 +189,12 @@ export const ManageTransactionCard = ({ data }) => {
             className="text-xs justify-self-end underline"
             href={
               getExplorerRoot(
-                getChainId(CONTROLLER_DEPLOYMENTS[data._data.contractAddress])
-              ) + ethers.utils.getAddress(data._data.to)
+                getChainId(
+                  CONTROLLER_DEPLOYMENTS[
+                    safeEthersGetAddress(data._data.contractAddress)
+                  ]
+                )
+              ) + safeEthersGetAddress(data._data.to)
             }
             target="_blank"
             rel="noopener noreferrer"
@@ -201,7 +214,9 @@ export const ManageTransactionCard = ({ data }) => {
           <span className="justify-self-end"> {tokenName} </span>
           <span className="justify-self-start"> chain: </span>
           <span className="justify-self-end">
-            {CONTROLLER_DEPLOYMENTS[data?._data?.contractAddress] || "Unknown"}
+            {CONTROLLER_DEPLOYMENTS[
+              safeEthersGetAddress(data?._data?.contractAddress)
+            ] || "Unknown"}
           </span>
         </div>
         <div
