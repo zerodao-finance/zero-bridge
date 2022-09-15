@@ -5582,17 +5582,17 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@zerodao/buffer@^0.3.3":
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/@zerodao/buffer/-/buffer-0.3.3.tgz#200c2752d75e1294565a3d560b7c56d7b6506d2b"
-  integrity sha512-oBJXKiACGhWo9KLsF+wtr4bkfghD/+NrLVUhA5KTN6KaiQPwMsd2vFOGuHoNkW6onn0nBW3huartUQAwNHDKTg==
+"@zerodao/buffer@^0.3.21":
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/@zerodao/buffer/-/buffer-0.3.21.tgz#da5147f28809a2fb8ef476cf6fb5572027068d95"
+  integrity sha512-7gzUKTW3C0leUBhqnxaY8wI5/th3ZC1nD7wqv6RZYhnQ6SL9wa1BlqaShMfdJBQqnl/T2wrHEKTz7aFwLDArfg==
   dependencies:
     typescript "^4.7.4"
 
-"@zerodao/chains@^0.3.15":
-  version "0.3.15"
-  resolved "https://registry.yarnpkg.com/@zerodao/chains/-/chains-0.3.15.tgz#82b3e6792d01d374c3569f4dd62974dde60a2ccc"
-  integrity sha512-qNMBcBvgMEzQS6ZPHGdHD7g/OASSl+7MrLdsevWtAJMR/z8E6usNRZy/PnxUm7x/JECD+j59R3yLrbPYpg9z2w==
+"@zerodao/chains@^0.3.23":
+  version "0.3.23"
+  resolved "https://registry.yarnpkg.com/@zerodao/chains/-/chains-0.3.23.tgz#1d26e89d93a182cb28c879d20f736ab8d3975a11"
+  integrity sha512-6Zbg7KVVZHsCCAzw6pI16WseuLg/brPfiGuCb3mNjbPACCjfjLYIOmzBlYILIbg6speX6/b3A59bIYQfriEFdg==
   dependencies:
     "@ethersproject/address" "^5.6.1"
     "@ethersproject/bignumber" "^5.6.2"
@@ -5601,16 +5601,16 @@
     "@ethersproject/units" "^5.6.1"
     "@renproject/chains" "^3.4.4"
     "@renproject/ren" "^3.4.4"
-    "@zerodao/common" "^0.3.15"
-    "@zerodao/utils" "0.3.4"
+    "@zerodao/common" "^0.3.23"
+    "@zerodao/utils" "^0.3.21"
     jest "^28.1.3"
     lodash "^4.17.21"
     typescript "^4.7.4"
 
-"@zerodao/common@^0.3.15":
-  version "0.3.15"
-  resolved "https://registry.yarnpkg.com/@zerodao/common/-/common-0.3.15.tgz#933094bea1f1fbe7831b2a8015e8d43f92eda22e"
-  integrity sha512-FLVgLRTYRomiCSe8AMPSKfh8iVlZh8SDpW7/KGl3jP3rBYxB7O3rc25n9qesTyDfktLlZ7uGvD9wDeEFhwdeqw==
+"@zerodao/common@^0.3.23":
+  version "0.3.23"
+  resolved "https://registry.yarnpkg.com/@zerodao/common/-/common-0.3.23.tgz#7d52fdeadef949e2d5e3d554ee49b0391ad391f9"
+  integrity sha512-ozhz6kOM9FDqVtWSccup8hTHKZRfooDRf6JIe2dx4NYRthBXSIC9iHqO03nWOQCkEGtGFooBIlY0d3Ry4s7sEg==
   dependencies:
     "@0x/types" "^3.3.6"
     "@ethersproject/abstract-signer" "^5.6.2"
@@ -5621,10 +5621,10 @@
     ethers "^5.6.9"
     hardhat-deploy-ethers "^0.3.0-beta.13"
 
-"@zerodao/compute@^0.3.15":
-  version "0.3.15"
-  resolved "https://registry.yarnpkg.com/@zerodao/compute/-/compute-0.3.15.tgz#157185a3249d563079f2dbd3b58b9bac541fb53b"
-  integrity sha512-6SGXXGFRPAiIWLfm4YYJDQkqVoQGXcYuuUFXvx/FikWyKjLQ8Sh8Be9RmG2pFLzRHT+QUak1bhFde1yxv/Pq0A==
+"@zerodao/compute@^0.3.23":
+  version "0.3.23"
+  resolved "https://registry.yarnpkg.com/@zerodao/compute/-/compute-0.3.23.tgz#add354c2f259fff40e574f0b23edc26535e88919"
+  integrity sha512-cfr4vLi4b+XiF5EoxmUjSc/INccsTJX0fpjTmEeA4wiLTmObfR/Z+9n2F/B+m4dz6cWj8WcQAzxX5ZTMrkgUqw==
   dependencies:
     "@ethersproject/basex" "^5.6.1"
     "@ethersproject/bytes" "^5.6.1"
@@ -5636,16 +5636,16 @@
     "@renproject/ren" "^3.4.4"
     "@traderjoe-xyz/sdk" "^2.0.1"
     "@uniswap/sdk" "^3.0.3"
-    "@zerodao/chains" "^0.3.15"
-    "@zerodao/common" "^0.3.15"
-    "@zerodao/utils" "^0.3.4"
+    "@zerodao/chains" "^0.3.23"
+    "@zerodao/common" "^0.3.23"
+    "@zerodao/utils" "^0.3.21"
     ethers "5.6.9"
     typescript "^4.7.4"
 
-"@zerodao/logger@^0.3.9":
-  version "0.3.9"
-  resolved "https://registry.yarnpkg.com/@zerodao/logger/-/logger-0.3.9.tgz#9ab16fb424d6a8e0832be62f7dc5c3b36734e5b0"
-  integrity sha512-nvtciXkh8WlvpHT59kbDZ4e/pqoddxK2+hSeuvYUBX2C11EJpHqgCan6Mz0DML/9HHUxLSWJs+jRVhbjDqtDzw==
+"@zerodao/logger@^0.3.21":
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/@zerodao/logger/-/logger-0.3.21.tgz#b1d0196b0c8cfb7a2696f7bca4907558733985c8"
+  integrity sha512-wFQfr5m+IhGsMhQOtgm9BFM2p0MDoR4B0CsM0fFddOD0Pjm3zFlbQ/23FGKUBEEuU2Wy2sd1qDiaQVmQuIFNEg==
   dependencies:
     path "^0.12.7"
     setimmediate "^1.0.5"
@@ -5653,15 +5653,15 @@
     typescript "^4.7.4"
     winston "^3.3.3"
 
-"@zerodao/p2p@^0.3.9":
-  version "0.3.9"
-  resolved "https://registry.yarnpkg.com/@zerodao/p2p/-/p2p-0.3.9.tgz#09d0f474114e8d6150a283d9b8432305e2e722d0"
-  integrity sha512-5Q95UCQjv4A2FAHGwCZKN+43jglfXzmjis5B9IZjvSHzAqe1ptOEOgy+xfnv2PP0ssb+FEMYCeUs2EKsFu8YGg==
+"@zerodao/p2p@^0.3.21":
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/@zerodao/p2p/-/p2p-0.3.21.tgz#805284b26fbca670f218c5e467b53399477416cf"
+  integrity sha512-YvlZdTj1FZ4ulLPjG7D2wVuJ9vh4ZYbGQArSWbf+/K/extNJcu2Y2T5IMpwfehoJfPHDZn1YQVtekQuRFHbCxA==
   dependencies:
     "@ethersproject/bytes" "^5.6.1"
     "@noble/ed25519" "^1.6.0"
-    "@zerodao/buffer" "^0.3.3"
-    "@zerodao/logger" "^0.3.9"
+    "@zerodao/buffer" "^0.3.21"
+    "@zerodao/logger" "^0.3.21"
     base64url "^3.0.1"
     buffer "^6.0.3"
     cryptico-js "^1.1.0"
@@ -5685,10 +5685,10 @@
     uuid "^8.3.2"
     wrtc "^0.4.7"
 
-"@zerodao/protocol@^0.3.12":
-  version "0.3.12"
-  resolved "https://registry.yarnpkg.com/@zerodao/protocol/-/protocol-0.3.12.tgz#f27268b199d13a4fd110f9f6a30acb3a5996a8ac"
-  integrity sha512-MAAs8DTE8Sgfdv+8tozozARyxx/eL+Z+l1hGmiuX9Tm8/Tp45hMVUfCI05XC3DRNpD8Da06s1I8KtCgs2BGatQ==
+"@zerodao/protocol@^0.3.21":
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/@zerodao/protocol/-/protocol-0.3.21.tgz#ca2b3126e1411f3f9a25b8a08b25cf4a0a5412ce"
+  integrity sha512-KW9DTA6jjfZpiECyZYfpkjts5eP2stmG9jnFPNuTxTlSETY2+lWfuVik59CoZOpMClpqhnR3oLei19uj21/n1g==
   dependencies:
     "@0x/utils" "^6.4.3"
     "@ethersproject/bytes" "^5.4.0"
@@ -5715,10 +5715,10 @@
     tslint-config-prettier "^1.18.0"
     winston "^3.3.3"
 
-"@zerodao/request@^0.3.15":
-  version "0.3.15"
-  resolved "https://registry.yarnpkg.com/@zerodao/request/-/request-0.3.15.tgz#79020c3cf6c4abdb9813bfc4ba26dc5119990d06"
-  integrity sha512-OjVPSzwcCYzEkAgm8ssRTTR74z+t3tDIDEQeiu3XleuSpi7TyYE3lucdoAVK2I9sps8U8EBjJ2bYWF4dh8K2rA==
+"@zerodao/request@^0.3.23":
+  version "0.3.23"
+  resolved "https://registry.yarnpkg.com/@zerodao/request/-/request-0.3.23.tgz#55e8964db9e83946015824e8547e73c9f6cdf965"
+  integrity sha512-OJ0vYnQMk8lEY4fhBWRZprmUTI7i2lFn/tJ7S1nEDUN0OewNAnUD4e3J6havh0IhoCK90+RyfxEjCb99D5K1Ig==
   dependencies:
     "@ethersproject/abi" "^5.6.1"
     "@ethersproject/address" "^5.6.1"
@@ -5732,34 +5732,34 @@
     "@renproject/chains" "^3.4.4"
     "@renproject/interfaces" "^2.6.0"
     "@renproject/ren" "^3.4.4"
-    "@zerodao/buffer" "^0.3.3"
-    "@zerodao/chains" "^0.3.15"
-    "@zerodao/common" "^0.3.15"
-    "@zerodao/p2p" "^0.3.9"
-    "@zerodao/protocol" "^0.3.12"
-    "@zerodao/utils" "^0.3.4"
+    "@zerodao/buffer" "^0.3.21"
+    "@zerodao/chains" "^0.3.23"
+    "@zerodao/common" "^0.3.23"
+    "@zerodao/protocol" "^0.3.21"
+    "@zerodao/utils" "^0.3.21"
+    it-length-prefixed "^5.0.3"
+    it-pipe "1.1.0"
     send-crypto "^0.2.37"
-    typescript "^4.7.4"
 
-"@zerodao/sdk@^0.3.16":
-  version "0.3.16"
-  resolved "https://registry.yarnpkg.com/@zerodao/sdk/-/sdk-0.3.16.tgz#6d8eeabde934d1c840a5140cf16ea1c2911299d9"
-  integrity sha512-8abzmnuUx/L1DjPjqo4jNEbO2F3R8AEDhiVdLcRJhHH+lRJxs8V8ljmgOSE3m/H92Rah6X+D4CSR8sEu2w3ksg==
+"@zerodao/sdk@^0.3.23":
+  version "0.3.23"
+  resolved "https://registry.yarnpkg.com/@zerodao/sdk/-/sdk-0.3.23.tgz#de6963d4a30bf4d5bc2e8b7fe2c7f96ff6d8d5cb"
+  integrity sha512-xGPcERsP0HdFOJvtvxXoYDst2rsqVVowGDGFg0xZJtdSRjN6WmGUZo5KzZzIJ//e6pGZ68TCAQmMkW3EHddjXw==
   dependencies:
-    "@zerodao/chains" "^0.3.15"
-    "@zerodao/common" "^0.3.15"
-    "@zerodao/compute" "^0.3.15"
-    "@zerodao/logger" "^0.3.9"
-    "@zerodao/p2p" "^0.3.9"
-    "@zerodao/protocol" "^0.3.12"
-    "@zerodao/request" "^0.3.15"
-    "@zerodao/utils" "^0.3.4"
+    "@zerodao/chains" "^0.3.23"
+    "@zerodao/common" "^0.3.23"
+    "@zerodao/compute" "^0.3.23"
+    "@zerodao/logger" "^0.3.21"
+    "@zerodao/p2p" "^0.3.21"
+    "@zerodao/protocol" "^0.3.21"
+    "@zerodao/request" "^0.3.23"
+    "@zerodao/utils" "^0.3.21"
     typescript "^4.7.4"
 
-"@zerodao/utils@0.3.4", "@zerodao/utils@^0.3.4":
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/@zerodao/utils/-/utils-0.3.4.tgz#b8d191b3f9cda44645e2d3c27711763fd30759a4"
-  integrity sha512-vC9SueLz8Lfd4o6ko03A1CAxlCZMKD7RCAlcyH8sShkpBS435902I7js0rljQTnqdvz+/NhfTTQ0GdRIzix/hg==
+"@zerodao/utils@^0.3.21":
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/@zerodao/utils/-/utils-0.3.21.tgz#e7b13fd28c2cb48677c3147c442e21b2d8300030"
+  integrity sha512-/iA0QqesNz1ANUDEdiTPyi8cZegapVkcHYbPDlZT8hi90gimn1ZfaaghfF+Fdm6Rq2bQRcj0CN1QecRQrzKeew==
   dependencies:
     typescript "^4.7.4"
 
@@ -10499,6 +10499,13 @@ ethereumjs-vm@^2.3.4:
     rustbn.js "~0.2.0"
     safe-buffer "^5.1.1"
 
+"ethers-gasnow@git+https://github.com/kungfuflex/ethers-gasnow.git":
+  version "0.1.3"
+  resolved "git+https://github.com/kungfuflex/ethers-gasnow.git#9e87793ce6e084785c741c6c685c024b8c426867"
+  dependencies:
+    "@ethersproject/bignumber" "^5.0.8"
+    axios "^0.21.0"
+
 "ethers-gasnow@https://github.com/kungfuflex/ethers-gasnow":
   version "0.1.3"
   resolved "https://github.com/kungfuflex/ethers-gasnow#9e87793ce6e084785c741c6c685c024b8c426867"
@@ -13089,7 +13096,7 @@ it-handshake@^2.0.0:
     it-reader "^3.0.0"
     p-defer "^3.0.0"
 
-it-length-prefixed@^5.0.0, it-length-prefixed@^5.0.2:
+it-length-prefixed@^5.0.0, it-length-prefixed@^5.0.2, it-length-prefixed@^5.0.3:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/it-length-prefixed/-/it-length-prefixed-5.0.3.tgz#77fbd99b89aa6cdd79fad62c962423b413db7045"
   integrity sha512-b+jDHLcnOnPDQN79ronmzF5jeBjdJsy0ce2O6i6X4J5tnaO8Fd146ZA/tMbzaLlKnTpXa0eKtofpYhumXGENeg==
@@ -13138,7 +13145,7 @@ it-pb-rpc@^0.1.9:
     it-handshake "^2.0.0"
     it-length-prefixed "^5.0.2"
 
-it-pipe@^1.0.1, it-pipe@^1.1.0:
+it-pipe@1.1.0, it-pipe@^1.0.1, it-pipe@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/it-pipe/-/it-pipe-1.1.0.tgz#f5964c6bb785dd776f11a62d1e75964787ab95ce"
   integrity sha512-lF0/3qTVeth13TOnHVs0BTFaziwQF7m5Gg+E6JV0BXcLKutC92YjSi7bASgkPOXaLEb+YvNZrPorGMBIJvZfxg==

@@ -2,6 +2,11 @@ module.exports = {
   content: ["./src/**/*.{js,jsx}", "./node_modules/flowbite/**/*.js"],
   darkMode: "class",
   theme: {
+    maxWidth: {
+      100: "100px",
+      200: "200px",
+      300: "300px",
+    },
     extend: {
       colors: {
         "main-green": "#52B76C",

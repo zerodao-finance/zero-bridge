@@ -19,11 +19,14 @@ export class NotificationHelper {
         type: type,
         timeout: timeout,
         content: getCard,
-        callback: () => this._timeout(id, timeout),
+        callback: () =>
+          timeout ? this._timeout(id, timeout) : this.voidCallback(),
         close: () => this._close(id),
         ...data,
       },
     });
+
+    return { id: id, dispatch: this.dispatch };
   }
 
   createTXCard(confirmation = true, type = "request", data) {
