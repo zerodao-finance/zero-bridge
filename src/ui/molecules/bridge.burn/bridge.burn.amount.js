@@ -101,6 +101,7 @@ export const BridgeBurnInput = ({
               setToken={setToken}
               tokensRemoved={selectRemovedTokens({ primaryToken, chainId })}
               tokensDisabled={[""]}
+              primaryToken={primaryToken}
             />
             <div className="flex justify-between items-center pl-2 dark:!border-white dark:focus:!border-zero-green-500 border !border-gray-600 focus:!border-zero-green-500 rounded-xl">
               <button

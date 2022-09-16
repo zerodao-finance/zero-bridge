@@ -30,11 +30,14 @@ export const determineIcon = ({ token, items }) => {
   return icon;
 };
 
+const zecTokens = ["ETH", "renZEC", "USDC", "USDT"];
+
 function TokenDropdown({
   token = "renBTC",
   setToken,
   tokensRemoved = [],
   tokensDisabled = [],
+  primaryToken = "BTC",
 }) {
   const location = useLocation();
 
@@ -95,6 +98,10 @@ function TokenDropdown({
     } else {
       const base = window.location.hash.split("/");
       window.location.hash = base[0] + "/" + base[1] + "/" + token;
+    }
+
+    if (primaryToken === "ZEC" && !zecTokens.includes(token)) {
+      setToken("renZEC");
     }
   }, [token]);
 

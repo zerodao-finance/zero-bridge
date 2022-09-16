@@ -1,6 +1,10 @@
 import { ethers } from "ethers";
-
+import deployments from "@zerodao/protocol";
 import { FIXTURES } from "@zerodao/sdk";
+
+const renZECController = ethers.utils.getAddress(
+  deployments["1"]["mainnet"]["contracts"]["RenZECController"].address
+);
 
 const getRenBTCAddress = async (signer) => {
   const { chainId } = await signer.provider.getNetwork();
@@ -32,12 +36,14 @@ export const fallbackMint = async (request, signer) => {
         ],
         signer
       );
-
-    request.asset = await getRenBTCAddress(signer);
+    request.asset =
+      ethers.utils.getAddress(request.contractAddress) == renZECController
+        ? FIXTURES.ETHEREUM.renZEC
+        : await getRenBTCAddress(signer);
     const address = await signer.getAddress();
     request.destination = () => address;
     await request.fallbackMint(signer);
   } catch (error) {
-    console.error("error running fallback mint");
+    console.error("error running fallback mint", error);
   }
 };
