@@ -51,11 +51,18 @@ export const tokenMapping = ({ tokenName, chainId }) => {
     case "ibbtc":
       return fixture.ibBTC;
     case "usdc":
+      if (chainId === "42161") {
+        return fixture.USDC_NATIVE;
+      }
       return fixture.USDC;
     case "usdt":
       return fixture.USDT;
     case "renzec":
       return fixture.renZEC;
+    case "usdc.e":
+      return fixture.USDC_POOL;
+    case "wbtc.e":
+      return fixture.WBTC;
   }
 };
 
@@ -138,17 +145,35 @@ export const DECIMALS = {
 
 export const selectRemovedTokens = ({ primaryToken, chainId }) => {
   if (primaryToken === "ZEC") {
-    return ["renBTC", "ibBTC", "MATIC", "AVAX", "WBTC", "USDC", "USDT", "ZEC"];
+    return [
+      "renBTC",
+      "ibBTC",
+      "MATIC",
+      "AVAX",
+      "WBTC",
+      "ZEC",
+      "USDC.e",
+      "WBTC.e",
+    ];
   }
 
   return REMOVED_TOKENS[chainId];
 };
 
 export const REMOVED_TOKENS = {
-  [1]: ["ibBTC", "AVAX", "MATIC", "renZEC"],
-  [42161]: ["ibBTC", "AVAX", "MATIC", "USDT", "ZEC", "renZEC"],
-  [137]: ["ibBTC", "AVAX", "ETH", "USDT", "ZEC", "renZEC"],
-  [43114]: ["ibBTC", "ETH", "MATIC", "USDT", "ZEC", "renZEC"],
+  [1]: ["ibBTC", "AVAX", "MATIC", "renZEC", "USDC.e", "WBTC.e"],
+  [42161]: [
+    "ibBTC",
+    "AVAX",
+    "MATIC",
+    "USDT",
+    "ZEC",
+    "renZEC",
+    "USDC.e",
+    "WBTC.e",
+  ],
+  [137]: ["ibBTC", "AVAX", "ETH", "USDT", "ZEC", "renZEC", "USDC.e", "WBTC.e"],
+  [43114]: ["ibBTC", "ETH", "MATIC", "USDT", "ZEC", "renZEC", "WBTC"],
   [10]: [
     "ibBTC",
     "ETH",
@@ -159,5 +184,7 @@ export const REMOVED_TOKENS = {
     "USDT",
     "ZEC",
     "renZEC",
+    "USDC.e",
+    "WBTC.e",
   ],
 };

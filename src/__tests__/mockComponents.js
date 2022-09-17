@@ -27,17 +27,11 @@ export const useMockComponents = () => {
     return link;
   };
 
-  // Token Dropdown Component
-  // const tokenDropdownUtils = render(<TokenDropdown tokensDisabled={["ibBTC"]} />);
-  // const tokenDropdown = tokenDropdownUtils.getByTestId("token-dropdown");
-
   return {
     input,
     ...inputUtils,
     btcInput,
     ...btcInputUtils,
     navigationLink,
-    // tokenDropdown,
-    // ...tokenDropdownUtils
   };
 };

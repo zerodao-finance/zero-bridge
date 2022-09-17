@@ -41,7 +41,7 @@ export const DefaultNavigationSidebar = ({ changeModule }) => {
                   className="hidden group-hover:block opacity-0 group-hover:opacity-100 pl-3"
                   id="manage"
                 >
-                  Manage Transactions
+                  Pending Transactions
                 </div>
               </div>
             </div>
@@ -60,7 +60,7 @@ export const DefaultNavigationSidebar = ({ changeModule }) => {
                   className="hidden group-hover:block opacity-0 group-hover:opacity-100 pl-3"
                   id="history"
                 >
-                  History
+                  Completed Transactions
                 </div>
               </div>
             </div>

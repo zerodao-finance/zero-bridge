@@ -24,18 +24,18 @@ export function MobileNavigationSidebar({ changeModule }) {
           onClick={(e) => changeModule(e.currentTarget.id)}
         >
           <MdOutlinePending className="h-[1.2rem] w-[1.2rem]" />
-          <button id="manage">Manage Transactions</button>
+          <button id="manage">Pending Transactions</button>
         </div>
       </Link>
       <Link to="/history">
         <div
-          className="flex flex-row gap-3 py-3"
+          className="flex flex-row gap-3 py-3 px-2"
           id="history"
           onClick={(e) => changeModule(e.currentTarget.id)}
         >
           <BiTransfer className="h-[1.2rem] w-[1.2rem]" />
 
-          <button id="history">History</button>
+          <button id="history">Completed Transactions</button>
         </div>
       </Link>
       <div className="flex flex-row gap-3 py-3">
