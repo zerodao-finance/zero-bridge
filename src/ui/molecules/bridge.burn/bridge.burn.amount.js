@@ -36,7 +36,7 @@ export const BridgeBurnInput = ({
   const { dispatch } = useContext(storeContext);
   const { balances } = useWalletBalances();
 
-  useEffect(async () => {
+  useEffect(() => {
     setAmount(0);
   }, [token]);
 
@@ -45,21 +45,28 @@ export const BridgeBurnInput = ({
   }, [primaryToken]);
 
   const formattedAmount = () => {
-    switch (token) {
-      case "USDC":
-        return formatUSDC(amount);
-      case "USDT":
-        return formatUSDC(amount);
-      case "ETH":
-        return formatUSDCPricedETH(amount, eth_usd);
-      case "AVAX":
-        return formatUSDCPricedETH(amount, avax_usd);
-      case "MATIC":
-        return formatUSDCPricedETH(amount, matic_usd);
-      case "renZEC":
-        return formatUSDCPricedBTC(amount, renZEC_usd);
-      default:
-        return formatUSDCPricedBTC(amount, btc_usd);
+    try {
+      switch (token) {
+        case "USDC":
+          return formatUSDC(amount);
+        case "USDC.e":
+          return formatUSDC(amount);
+        case "USDT":
+          return formatUSDC(amount);
+        case "ETH":
+          return formatUSDCPricedETH(amount, eth_usd);
+        case "AVAX":
+          return formatUSDCPricedETH(amount, avax_usd);
+        case "MATIC":
+          return formatUSDCPricedETH(amount, matic_usd);
+        case "renZEC":
+          return formatUSDCPricedBTC(amount, renZEC_usd);
+        default:
+          return formatUSDCPricedBTC(amount, btc_usd);
+      }
+    } catch (e) {
+      setAmount(0);
+      console.error(e);
     }
   };
 
@@ -94,6 +101,7 @@ export const BridgeBurnInput = ({
               setToken={setToken}
               tokensRemoved={selectRemovedTokens({ primaryToken, chainId })}
               tokensDisabled={[""]}
+              primaryToken={primaryToken}
             />
             <div className="flex justify-between items-center pl-2 dark:!border-white dark:focus:!border-zero-green-500 border !border-gray-600 focus:!border-zero-green-500 rounded-xl">
               <button

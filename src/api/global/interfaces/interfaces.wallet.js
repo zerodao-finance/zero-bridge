@@ -145,6 +145,9 @@ export const useWalletBalances = () => {
         case "USDC":
           tokenAmount = ethers.utils.formatUnits(bal, 6);
           break;
+        case "USDC.e":
+          tokenAmount = ethers.utils.formatUnits(bal, 6);
+          break;
         case "USDT":
           tokenAmount = ethers.utils.formatUnits(bal, 6);
           break;

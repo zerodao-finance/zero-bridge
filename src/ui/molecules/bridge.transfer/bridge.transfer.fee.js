@@ -66,6 +66,8 @@ export const BridgeTransferFee = ({
     switch (token) {
       case "USDC":
         return formatUSDC(quote);
+      case "USDC.e":
+        return formatUSDC(quote);
       case "USDT":
         return formatUSDC(quote);
       case "ETH":

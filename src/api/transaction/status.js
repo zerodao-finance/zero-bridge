@@ -20,7 +20,7 @@ export const getStatus = (data) => {
     mint.on("transaction", (transaction) => {
       transaction.in.wait().on("progress", (progress) => {
         let passedData = {
-          target: 6,
+          target: progress.target,
           confs: progress.confirmations,
           fallbackMint:
             progress.confirmations && progress.confirmations > progress.target
