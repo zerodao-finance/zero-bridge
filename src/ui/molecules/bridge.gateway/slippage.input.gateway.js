@@ -34,7 +34,7 @@ export const SlippageInput = ({
         setSlippage("10.0");
         break;
       case "ETH":
-        setSlippage("10.0");
+        setSlippage("3.0");
         break;
       case "AVAX":
         setSlippage("10.0");
