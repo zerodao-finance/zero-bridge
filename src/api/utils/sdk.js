@@ -5,8 +5,17 @@ import { Buffer } from "buffer";
 import { tokenMapping } from "../utils/tokenMapping.js";
 import EventEmitter from "events";
 import { chainIdToName, DECIMALS } from "../utils/tokenMapping.js";
+import peerId from "peer-id";
+import { multiaddr } from "multiaddr";
 
 const renZECControllerAddress = "0x350241Ff5A144Ef09AAfF2E65195453CCBf8fD22";
+
+const pingKeeper = async (zero) => {
+  const keeper = zero._keepers[0];
+  const _peerId = await peerId.createFromB58String(keeper);
+  const peerInfo = await zero.peerRouting.findPeer(_peerId);
+  return await zero.ping(peerInfo.id);
+};
 
 export class sdkTransfer {
   response = new EventEmitter({ captureRejections: true });
@@ -79,6 +88,7 @@ export class sdkTransfer {
     } //signing
 
     try {
+      console.log("LATENCY: " + (await pingKeeper(this.zeroUser)));
       await transferRequest.publish(this.zeroUser);
 
       const mint = await transferRequest.submitToRenVM(); // In renjsv3, this is really called a gateway
@@ -188,6 +198,7 @@ export class sdkBurn {
 
     //publishBurnRequest
     try {
+      console.log("LATENCY: " + (await pingKeeper(this.zeroUser)));
       burnRequest.publish(this.zeroUser);
       this.response.emit("reset");
       let hostTransaction = await burnRequest.waitForHostTransaction();
