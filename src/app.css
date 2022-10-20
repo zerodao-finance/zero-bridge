@@ -1745,6 +1745,10 @@ input:checked + .toggle-bg {
   width: 83.333333%;
 }
 
+.w-1\/6 {
+  width: 16.666667%;
+}
+
 .w-12 {
   width: 3rem;
 }
@@ -3305,6 +3309,14 @@ code {
   width: 14rem;
 }
 
+.hover\:\!cursor-pointer:hover {
+  cursor: pointer !important;
+}
+
+.hover\:cursor-pointer:hover {
+  cursor: pointer;
+}
+
 .hover\:border-gray-300:hover {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
@@ -3702,10 +3714,6 @@ code {
 
   .sm\:h-10 {
     height: 2.5rem;
-  }
-
-  .sm\:w-full {
-    width: 100%;
   }
 
   .sm\:w-10 {

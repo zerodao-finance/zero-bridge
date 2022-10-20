@@ -118,7 +118,7 @@ export const BridgeBurnInput = ({
             </div>
           </div>
         </div>
-        <div className=" xl:mr-5 tracking-wider w-full flex justify-end pr-2 text-xs text-zero-neon-green-500">
+        <div className="mt-1 tracking-wider w-full flex justify-end pr-2 text-xs text-zero-neon-green-500">
           <span className="italic">~ {formattedAmount()}</span>
         </div>
         {amount > 0 && (

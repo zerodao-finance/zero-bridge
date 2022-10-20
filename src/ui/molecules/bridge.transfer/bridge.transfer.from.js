@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { DefaultInput } from "../../atoms";
 import { formatUSDCPricedBTC } from "../../../api/utils/formatters";
 import PrimaryTokenDropdown from "../../atoms/dropdowns/dropdown.primary.tokens";
+import { CheckboxInput } from "../../atoms/inputs/input.checkbox";
 
 function BridgeTransferFrom({
   amount,
@@ -35,12 +36,15 @@ function BridgeTransferFrom({
             <DefaultInput value={amount} onChange={effect} maxW="150px" />
           </div>
         </div>
-        <div className=" xl:mr-5 italic tracking-wider w-full text-right text-xs text-zero-neon-green-500">
-          ~{" "}
-          {formatUSDCPricedBTC(
-            amount,
-            primaryToken == "BTC" ? btc_usd : renZEC_usd
-          )}
+        <div className="px-2 w-full flex justify-between items-center mt-1">
+          <CheckboxInput label="Enable 1 Confirmation Transfer" />
+          <div className="italic tracking-wider text-xs text-zero-neon-green-500">
+            ~{" "}
+            {formatUSDCPricedBTC(
+              amount,
+              primaryToken == "BTC" ? btc_usd : renZEC_usd
+            )}
+          </div>
         </div>
       </div>
     </>
