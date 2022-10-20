@@ -1668,6 +1668,10 @@ input:checked + .toggle-bg {
   height: 24px;
 }
 
+.h-3 {
+  height: 0.75rem;
+}
+
 .h-\[10px\] {
   height: 10px;
 }
@@ -1771,6 +1775,10 @@ input:checked + .toggle-bg {
 
 .w-\[24px\] {
   width: 24px;
+}
+
+.w-3 {
+  width: 0.75rem;
 }
 
 .w-\[10px\] {
@@ -2324,6 +2332,10 @@ input:checked + .toggle-bg {
   border-width: 1px;
 }
 
+.border-2 {
+  border-width: 2px;
+}
+
 .border-0 {
   border-width: 0px;
 }
@@ -2353,6 +2365,11 @@ input:checked + .toggle-bg {
 .border-gray-300 {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
+}
+
+.border-zero-green-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(80 205 85 / var(--tw-border-opacity));
 }
 
 .\!border-gray-600 {
@@ -2501,6 +2518,26 @@ input:checked + .toggle-bg {
   background-color: rgb(255 255 255 / 0.5);
 }
 
+.bg-neutral-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 245 245 / var(--tw-bg-opacity));
+}
+
+.bg-neutral-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(115 115 115 / var(--tw-bg-opacity));
+}
+
+.bg-neutral-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(212 212 212 / var(--tw-bg-opacity));
+}
+
+.bg-neutral-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 229 229 / var(--tw-bg-opacity));
+}
+
 .bg-opacity-75 {
   --tw-bg-opacity: 0.75;
 }
@@ -2537,6 +2574,10 @@ input:checked + .toggle-bg {
 
 .fill-alert-red {
   fill: #cf6679;
+}
+
+.fill-current {
+  fill: currentColor;
 }
 
 .fill-white {
@@ -2913,6 +2954,11 @@ input:checked + .toggle-bg {
   color: rgb(4 120 87 / var(--tw-text-opacity));
 }
 
+.text-zero-green {
+  --tw-text-opacity: 1;
+  color: rgb(45 158 50 / var(--tw-text-opacity));
+}
+
 .text-gray-600 {
   --tw-text-opacity: 1;
   color: rgb(75 85 99 / var(--tw-text-opacity));
@@ -3228,6 +3274,15 @@ input:checked + .toggle-bg {
   font-stretch: 25% 151%;
 }
 
+input:checked + div {
+  --tw-border-opacity: 1;
+  border-color: rgb(45 158 50 / var(--tw-border-opacity));
+}
+
+input:checked + div svg {
+  display: block;
+}
+
 .slider {
   -webkit-appearance: none;
   width: 50%;
@@ -3305,12 +3360,13 @@ code {
 
 /* } */
 
-.hover\:w-\[14rem\]:hover {
-  width: 14rem;
+.focus-within\:border-zero-green-400:focus-within {
+  --tw-border-opacity: 1;
+  border-color: rgb(54 190 60 / var(--tw-border-opacity));
 }
 
-.hover\:\!cursor-pointer:hover {
-  cursor: pointer !important;
+.hover\:w-\[14rem\]:hover {
+  width: 14rem;
 }
 
 .hover\:cursor-pointer:hover {
