@@ -12,6 +12,8 @@ function BridgeTransferFrom({
   primaryToken,
   setPrimaryToken,
   chainId,
+  oneConfEnabled,
+  setOneConfEnabled,
 }) {
   useEffect(() => {
     if (chainId != "1") {
@@ -37,7 +39,11 @@ function BridgeTransferFrom({
           </div>
         </div>
         <div className="px-2 w-full flex justify-between items-center mt-1">
-          <CheckboxInput label="Enable 1 Confirmation Transfer" />
+          <CheckboxInput
+            label="Enable 1 Confirmation Transfer"
+            checked={oneConfEnabled}
+            onClick={setOneConfEnabled}
+          />
           <div className="italic tracking-wider text-xs text-zero-neon-green-500">
             ~{" "}
             {formatUSDCPricedBTC(

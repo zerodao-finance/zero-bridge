@@ -31,6 +31,7 @@ export const globalBridgeState = {
         error: null,
         quote: "0",
         destinationAddress: "",
+        oneConfEnabled: true,
       },
       display: {
         ETH: 0,
