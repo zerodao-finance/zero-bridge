@@ -6,6 +6,7 @@ import {
   FIXTURES,
   utils,
   TransferRequestV2,
+  DEPLOYMENTS,
 } from "@zerodao/sdk";
 import { Buffer } from "buffer";
 import { tokenMapping } from "../utils/tokenMapping.js";
@@ -15,12 +16,28 @@ import peerId from "peer-id";
 import { multiaddr } from "multiaddr";
 
 const renZECControllerAddress = "0x350241Ff5A144Ef09AAfF2E65195453CCBf8fD22";
+const zeroBTCAddress = DEPLOYMENTS["1"].mainnet.contracts.ZeroBTC.address;
 
 const pingKeeper = async (zero) => {
   const keeper = zero._keepers[0];
   const _peerId = await peerId.createFromB58String(keeper);
   const peerInfo = await zero.peerRouting.findPeer(_peerId);
   return await zero.ping(peerInfo.id);
+};
+
+const determineModule = (asset, chain = "ETHEREUM") => {
+  const assetName = FIXTURES[chain]
+    .keys()
+    .find((d) => FIXTURES[chain][d].toLowerCase() == asset.toLowerCase());
+  if (!["USDC", "WBTC", "renBTC", "ETH"].includes(assetName))
+    throw new Error("invalid asset");
+  if (["USDC", "WBTC"].includes(assetName))
+    return DEPLOYMENTS["1"].mainnet.contracts[`convert${assetName}Mainnet`]
+      .address;
+  if (assetName == "ETH")
+    return DEPLOYMENTS["1"].mainnet.contracts[`convertNativeMainnet`].address;
+
+  if (assetName == "renBTC") return ethers.utils.Address;
 };
 
 export class sdkTransfer {
@@ -77,17 +94,15 @@ export class sdkTransfer {
         return req;
       } else {
         const req = new TransferRequestV2({
-          module: 0x0,
+          module: determineModule(asset), // determines which module to use
           amount,
           to,
-          contractAddress,
-          asset,
+          contractAddress: zeroBTCAddress,
           data:
             String(_data) ||
             ethers.utils.defaultAbiCoder.encode(["uint256"], [1]),
-          nonce,
-          pNonce,
-          underwriter,
+          nonce: utils.getNonce(address, timestamp),
+          pNonce: utils.getPNonce(address, timestamp),
         });
         return req;
       }
