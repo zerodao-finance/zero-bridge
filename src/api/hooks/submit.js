@@ -44,7 +44,7 @@ export const useSDKTransactionSubmit = (module) => {
     var token = input.token;
     var signer = await getSigner(wallet);
     var to = destinationAddress;
-    var isFast = input.isFast;
+    var isFast = input.oneConfEnabled;
 
     var quote = input.quote;
     switch (token) {

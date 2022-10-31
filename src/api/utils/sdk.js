@@ -1,6 +1,12 @@
 import { ethers } from "ethers";
 import { deploymentsFromSigner } from "./zero";
-import { TransferRequest, BurnRequest, FIXTURES, utils } from "@zerodao/sdk";
+import {
+  TransferRequest,
+  BurnRequest,
+  FIXTURES,
+  utils,
+  TransferRequestV2,
+} from "@zerodao/sdk";
 import { Buffer } from "buffer";
 import { tokenMapping } from "../utils/tokenMapping.js";
 import EventEmitter from "events";
@@ -50,24 +56,41 @@ export class sdkTransfer {
 
       const address = await signer.getAddress();
       const timestamp = String(Math.floor(+new Date() / 1000));
-      const req = new TransferRequest({
-        amount, // btcAmount
-        module, // Token Address
-        to, // Ethereum Address
-        underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
-        asset, // Either the address of renBTC or renZEC on the current chain
-        nonce: utils.getNonce(address, timestamp), // Deterministic recovery mechanism
-        pNonce: utils.getPNonce(address, timestamp), // Deterministic recovery mechanism
-        data, // minOut
-        contractAddress:
-          primaryToken == "ZEC"
-            ? renZECControllerAddress
-            : contracts.ZeroController.address, // BadgerBridgeZeroController.address or RenZECController.address on mainnet/arbitrum
-        chainId: self.chainId, // any of the available chainIds
-        signature: "", // Currently not used
-      });
-      req.dry = async () => [];
-      return req;
+      if (!isFast) {
+        const req = new TransferRequest({
+          amount, // btcAmount
+          module, // Token Address
+          to, // Ethereum Address
+          underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
+          asset, // Either the address of renBTC or renZEC on the current chain
+          nonce: utils.getNonce(address, timestamp), // Deterministic recovery mechanism
+          pNonce: utils.getPNonce(address, timestamp), // Deterministic recovery mechanism
+          data, // minOut
+          contractAddress:
+            primaryToken == "ZEC"
+              ? renZECControllerAddress
+              : contracts.ZeroController.address, // BadgerBridgeZeroController.address or RenZECController.address on mainnet/arbitrum
+          chainId: self.chainId, // any of the available chainIds
+          signature: "", // Currently not used
+        });
+        req.dry = async () => [];
+        return req;
+      } else {
+        const req = new TransferRequestV2({
+          module: 0x0,
+          amount,
+          to,
+          contractAddress,
+          asset,
+          data:
+            String(_data) ||
+            ethers.utils.defaultAbiCoder.encode(["uint256"], [1]),
+          nonce,
+          pNonce,
+          underwriter,
+        });
+        return req;
+      }
     })();
   }
 

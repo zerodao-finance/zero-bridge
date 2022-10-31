@@ -46,6 +46,7 @@ export const useBridgeInput = () => {
     renZEC_usd,
     primaryToken,
     chainId: wallet.chainId,
+    oneConfEnabled,
   });
 
   const setDestinationAddress = (e) => {
