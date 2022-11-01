@@ -13,7 +13,6 @@ import { tokenMapping } from "../utils/tokenMapping.js";
 import EventEmitter from "events";
 import { chainIdToName, DECIMALS } from "../utils/tokenMapping.js";
 import peerId from "peer-id";
-import { multiaddr } from "multiaddr";
 
 const renZECControllerAddress = "0x350241Ff5A144Ef09AAfF2E65195453CCBf8fD22";
 const zeroBTCAddress = DEPLOYMENTS["1"].mainnet.contracts.ZeroBTC.address;
@@ -50,9 +49,9 @@ export class sdkTransfer {
     token,
     signer,
     to,
-    isFast,
     _data,
-    primaryToken
+    primaryToken,
+    isFast
   ) {
     this.chainId = chainId;
     this.isFast = isFast;
@@ -70,9 +69,9 @@ export class sdkTransfer {
       const contracts = await deploymentsFromSigner(signer);
       const data = String(_data) || "0x";
       const amount = ethers.utils.parseUnits(String(value), 8);
-
       const address = await signer.getAddress();
       const timestamp = String(Math.floor(+new Date() / 1000));
+
       if (!isFast) {
         const req = new TransferRequest({
           amount, // btcAmount
