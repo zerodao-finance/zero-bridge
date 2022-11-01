@@ -17,6 +17,8 @@ import peerId from "peer-id";
 const renZECControllerAddress = "0x350241Ff5A144Ef09AAfF2E65195453CCBf8fD22";
 const zeroBTCAddress = DEPLOYMENTS["1"].mainnet.contracts.ZeroBTC.address;
 
+console.log(DEPLOYMENTS);
+
 const pingKeeper = async (zero) => {
   const keeper = zero._keepers[0];
   const _peerId = await peerId.createFromB58String(keeper);
@@ -25,6 +27,7 @@ const pingKeeper = async (zero) => {
 };
 
 const determineModule = (asset, chain = "ETHEREUM") => {
+  // TODO: Complete all assets and chains for determining module
   const assetName = FIXTURES[chain]
     .keys()
     .find((d) => FIXTURES[chain][d].toLowerCase() == asset.toLowerCase());
@@ -35,8 +38,7 @@ const determineModule = (asset, chain = "ETHEREUM") => {
       .address;
   if (assetName == "ETH")
     return DEPLOYMENTS["1"].mainnet.contracts[`convertNativeMainnet`].address;
-
-  if (assetName == "renBTC") return ethers.utils.Address;
+  if (assetName == "renBTC") return "";
 };
 
 export class sdkTransfer {
@@ -94,6 +96,8 @@ export class sdkTransfer {
       } else {
         const req = new TransferRequestV2({
           module: determineModule(asset), // determines which module to use
+          asset,
+          underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
           amount,
           to,
           contractAddress: zeroBTCAddress,
@@ -103,6 +107,7 @@ export class sdkTransfer {
           nonce: utils.getNonce(address, timestamp),
           pNonce: utils.getPNonce(address, timestamp),
         });
+        console.log(JSON.parse(req));
         return req;
       }
     })();
