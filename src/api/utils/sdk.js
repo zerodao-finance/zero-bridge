@@ -73,9 +73,9 @@ export class sdkTransfer {
       const amount = ethers.utils.parseUnits(String(value), 8);
       const address = await signer.getAddress();
       const timestamp = String(Math.floor(+new Date() / 1000));
-
+      let req;
       if (!isFast) {
-        const req = new TransferRequest({
+        req = new TransferRequest({
           amount, // btcAmount
           module, // Token Address
           to, // Ethereum Address
@@ -91,13 +91,10 @@ export class sdkTransfer {
           chainId: self.chainId, // any of the available chainIds
           signature: "", // Currently not used
         });
-        req.dry = async () => [];
-        return req;
       } else {
-        const req = new TransferRequestV2({
+        req = new TransferRequestV2({
           module: determineModule(asset), // determines which module to use
           asset,
-          underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
           amount,
           to,
           contractAddress: zeroBTCAddress,
@@ -107,9 +104,9 @@ export class sdkTransfer {
           nonce: utils.getNonce(address, timestamp),
           pNonce: utils.getPNonce(address, timestamp),
         });
-        console.log(JSON.parse(req));
-        return req;
       }
+      req.dry = async () => [];
+      return req;
     })();
   }
 
