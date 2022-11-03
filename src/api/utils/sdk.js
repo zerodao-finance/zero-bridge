@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { deploymentsFromSigner } from "./zero";
+import { deploymentsFromSigner, test } from "./zero";
 import {
   TransferRequest,
   BurnRequest,
@@ -104,6 +104,7 @@ export class sdkTransfer {
             ethers.utils.defaultAbiCoder.encode(["uint256"], [1]),
           nonce: utils.getNonce(address, timestamp),
           pNonce: utils.getPNonce(address, timestamp),
+          underwriter: test.TEST_KEEPER_ADDRESS,
         });
       }
       req.dry = async () => [];
