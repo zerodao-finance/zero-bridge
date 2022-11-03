@@ -39,7 +39,7 @@ const determineModule = (asset, chain = "ETHEREUM") => {
       .address;
   if (assetName == "ETH")
     return DEPLOYMENTS["1"].mainnet.contracts[`convertNativeMainnet`].address;
-  if (assetName == "renBTC") return "";
+  if (assetName == "renBTC") return ethers.constants.AddressZero;
 };
 
 export class sdkTransfer {
