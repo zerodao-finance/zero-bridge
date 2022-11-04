@@ -2,6 +2,7 @@ import { storeContext } from "../global";
 import { useContext, useEffect, useState, useMemo } from "react";
 import { ethers } from "ethers";
 import { ZeroP2P } from "@zerodao/sdk";
+import { test } from "../../utils/zero";
 import _ from "lodash";
 import PeerId from "peer-id";
 
@@ -19,7 +20,7 @@ export const useZero = () => {
     if (!zero.zeroUser) {
       let user = new ZeroP2P({
         signer: ethers.Wallet.createRandom(),
-        multiaddr: "mainnet",
+        multiaddr: test.SIGNALING_MULTIADDR,
         peerId: await PeerId.create(),
       });
       await user.start();
