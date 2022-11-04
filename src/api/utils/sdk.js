@@ -17,8 +17,6 @@ import peerId from "peer-id";
 const renZECControllerAddress = "0x350241Ff5A144Ef09AAfF2E65195453CCBf8fD22";
 const zeroBTCAddress = DEPLOYMENTS["1"].mainnet.contracts.ZeroBTC.address;
 
-console.log(DEPLOYMENTS);
-
 const pingKeeper = async (zero) => {
   const keeper = zero._keepers[0];
   const _peerId = await peerId.createFromB58String(keeper);
@@ -103,10 +101,12 @@ export class sdkTransfer {
             String(_data) ||
             ethers.utils.defaultAbiCoder.encode(["uint256"], [1]),
           nonce: utils.getNonce(address, timestamp),
+          loanId: utils.getPNonce(address, timestamp),
           pNonce: utils.getPNonce(address, timestamp),
           underwriter: test.TEST_KEEPER_ADDRESS,
         });
       }
+      console.log(req);
       req.dry = async () => [];
       return req;
     })();

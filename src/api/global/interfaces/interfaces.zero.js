@@ -7,7 +7,7 @@ import _ from "lodash";
 import PeerId from "peer-id";
 
 const KEEPER = process.env.REACT_APP_TEST
-  ? "QmWrsbGaP5QkSpBPz6RcYgN2tyMUHhiWCD8dA8UJGoLR5Z"
+  ? "QmXXKMKno6KXdtTWYkUe3AGXCMEKRnNhFcvPkA2a4roj9Y"
   : "QmNzPmnp9qJia5XwzFteBcZW1BYhcZuCsXVgg8qVp7eovV";
 
 export const useZero = () => {
