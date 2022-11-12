@@ -25,11 +25,9 @@ const pingKeeper = async (zero) => {
 };
 
 const determineModule = (asset, chain = "ETHEREUM") => {
-  // TODO: Complete all assets and chains for determining module
   const assetName = Object.keys(FIXTURES[chain]).find(
     (d) => FIXTURES[chain][d].toLowerCase() == asset.toLowerCase()
   );
-  console.log(assetName);
   if (!["USDC", "WBTC", "renBTC", "ETH"].includes(assetName))
     throw new Error("invalid asset");
   if (["USDC", "WBTC"].includes(assetName))

@@ -1,16 +1,23 @@
-export const CheckboxInput = ({ label, checked, onClick }) => {
+export const CheckboxInput = ({ label, checked, onClick, disabled }) => {
   return (
-    <div
-      className="flex gap-1 items-center hover:cursor-pointer"
-      onClick={onClick}
-    >
+    <div className={`flex gap-1 items-center`}>
       <input
         id="checkbox-input"
         type="checkbox"
-        className="hover:cursor-pointer opacity-0 absolute"
+        className={`${
+          disabled ? "cursor-not-allowed" : "cursor-pointer"
+        } opacity-0 absolute`}
         checked={checked}
+        onChange={onClick}
+        disabled={disabled}
       />
-      <div class="bg-neutral-200 border-2 rounded-md border-zero-green-300 w-5 h-5 flex flex-shrink-0 justify-center items-center focus-within:border-zero-green-400">
+      <div
+        class={`${
+          disabled
+            ? "bg-[rgb(200,200,200)] border-neutral-400"
+            : "bg-neutral-100 border-zero-green-300 focus-within:border-zero-green-400"
+        } border-2 rounded-md  w-5 h-5 flex flex-shrink-0 justify-center items-center`}
+      >
         <svg
           class="fill-current hidden w-3 h-3 text-zero-green pointer-events-none"
           version="1.1"
@@ -24,7 +31,12 @@ export const CheckboxInput = ({ label, checked, onClick }) => {
           </g>
         </svg>
       </div>
-      <label for="checkbox-input" className="text-sm">
+      <label
+        for="checkbox-input"
+        className={`text-sm ${
+          disabled ? "cursor-not-allowed text-neutral-400" : "cursor-pointer"
+        }`}
+      >
         {label}
       </label>
     </div>

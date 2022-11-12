@@ -14,7 +14,19 @@ function BridgeTransferFrom({
   chainId,
   oneConfEnabled,
   setOneConfEnabled,
+  token,
 }) {
+  const canEnableOneConf = ["USDC", "renBTC", "WBTC", "ETH"].includes(token)
+    ? true
+    : false;
+
+  useEffect(() => {
+    if (canEnableOneConf && !oneConfEnabled) setOneConfEnabled(true);
+    else if (!canEnableOneConf && oneConfEnabled) setOneConfEnabled(false);
+  }, [token]);
+
+  console.log(oneConfEnabled);
+
   useEffect(() => {
     if (chainId != "1") {
       setPrimaryToken("BTC");
@@ -38,11 +50,12 @@ function BridgeTransferFrom({
             <DefaultInput value={amount} onChange={effect} maxW="150px" />
           </div>
         </div>
-        <div className="px-2 w-full flex justify-between items-center mt-1">
+        <div className={`px-2 w-full flex justify-between items-center mt-1`}>
           <CheckboxInput
             label="Enable 1 Confirmation Transfer"
             checked={oneConfEnabled}
             onClick={setOneConfEnabled}
+            disabled={!canEnableOneConf}
           />
           <div className="italic tracking-wider text-xs text-zero-neon-green-500">
             ~{" "}
