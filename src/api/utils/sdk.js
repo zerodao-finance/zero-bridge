@@ -13,9 +13,31 @@ import { tokenMapping } from "../utils/tokenMapping.js";
 import EventEmitter from "events";
 import { chainIdToName, DECIMALS } from "../utils/tokenMapping.js";
 import peerId from "peer-id";
+import { CHAINS } from "./chains";
 
 const renZECControllerAddress = "0x350241Ff5A144Ef09AAfF2E65195453CCBf8fD22";
 const zeroBTCAddress = DEPLOYMENTS["1"].mainnet.contracts.ZeroBTC.address;
+
+export const checkVaultAmount = async () => {
+  const provider = new ethers.providers.JsonRpcProvider(CHAINS[1].rpcUrls[0]);
+  provider
+    .getBalance(zeroBTCAddress)
+    .then((bal) =>
+      console.log(`Vault Balance: ${ethers.utils.formatEther(bal)} ETH`)
+    );
+
+  const signer = new ethers.VoidSigner(zeroBTCAddress, provider);
+  const renBtcContract = new ethers.Contract(
+    "0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D", // renBtc token address
+    ["function balanceOf(address) view returns (uint)"],
+    signer
+  );
+
+  let renBtcBalance = await renBtcContract.balanceOf(signer.getAddress());
+  renBtcBalance = ethers.utils.formatUnits(renBtcBalance, 8);
+  console.log(`renBTC Vault Balance: ${renBtcBalance} renBTC`);
+  return renBtcBalance;
+};
 
 const pingKeeper = async (zero) => {
   const keeper = zero._keepers[0];

@@ -1,4 +1,3 @@
-import { ethers } from "ethers";
 import { FIXTURES } from "@zerodao/sdk";
 const { ETHEREUM, ARBITRUM, MATIC } = FIXTURES;
 export const NETWORK_ROUTER = {

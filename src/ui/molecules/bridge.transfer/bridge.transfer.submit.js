@@ -6,6 +6,7 @@ import {
   getFeeBreakdown,
 } from "../../../api/hooks/transfer-fees";
 import { BridgeFeeInformation } from "./bridge.transfer.feeInformation";
+import { checkVaultAmount } from "../../../api/utils/sdk";
 
 export const BridgeTransferSubmit = ({
   action,
@@ -15,6 +16,7 @@ export const BridgeTransferSubmit = ({
   renZEC_usd,
   chainId,
   primaryToken,
+  oneConfEnabled,
 }) => {
   const { keeper } = useZero();
   const [buttonLabel, setButtonLabel] = useState("Input Valid Amount");
@@ -55,6 +57,12 @@ export const BridgeTransferSubmit = ({
       setButtonLabel("Awaiting Keeper");
     }
   }, [keeper, transferOutput, amount]);
+
+  useEffect(() => {
+    if (oneConfEnabled) {
+      checkVaultAmount();
+    }
+  }, [oneConfEnabled]);
 
   return (
     <>
