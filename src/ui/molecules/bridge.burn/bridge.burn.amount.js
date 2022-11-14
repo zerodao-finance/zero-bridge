@@ -86,7 +86,7 @@ export const BridgeBurnInput = ({
   return (
     <>
       <div className="self-center px-0 py-0">
-        <div className=" xl:mr-5 tracking-wider pr-2 w-full flex justify-end text-xs text-zero-neon-green-500">
+        <div className=" xl:mr-5 tracking-wider pr-2 w-full flex justify-end text-xs text-zero-neon-green-500 mt-2">
           <span>Your Balance: {getBalance(token) + " " + token}</span>
         </div>
         <div className="w-fit grid items-center bg-badger-gray-500 px-2 py-1 rounded-2xl">
