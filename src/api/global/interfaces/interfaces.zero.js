@@ -2,13 +2,9 @@ import { storeContext } from "../global";
 import { useContext, useEffect, useState, useMemo } from "react";
 import { ethers } from "ethers";
 import { ZeroP2P } from "@zerodao/sdk";
-import { test } from "../../utils/zero";
+import { CONNECTIONS } from "../../utils/zero";
 import _ from "lodash";
 import PeerId from "peer-id";
-
-const KEEPER = process.env.REACT_APP_TEST
-  ? "QmXXKMKno6KXdtTWYkUe3AGXCMEKRnNhFcvPkA2a4roj9Y"
-  : "QmNzPmnp9qJia5XwzFteBcZW1BYhcZuCsXVgg8qVp7eovV";
 
 export const useZero = () => {
   const { state, dispatch } = useContext(storeContext);
@@ -20,7 +16,7 @@ export const useZero = () => {
     if (!zero.zeroUser) {
       let user = new ZeroP2P({
         signer: ethers.Wallet.createRandom(),
-        multiaddr: test.SIGNALING_MULTIADDR,
+        multiaddr: CONNECTIONS.SIGNALING_MULTIADDR,
         peerId: await PeerId.create(),
       });
       await user.start();
@@ -35,8 +31,8 @@ export const useZero = () => {
         });
         keeper = zero._keepers;
       });
-      user.emit("keeper", KEEPER);
-      user._keepers.push(KEEPER);
+      user.emit("keeper", CONNECTIONS.KEEPER);
+      user._keepers.push(CONNECTIONS.KEEPER);
       dispatch({
         type: "SUCCEED_REQUEST",
         effect: "zero",

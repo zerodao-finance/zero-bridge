@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { deploymentsFromSigner, test } from "./zero";
+import { deploymentsFromSigner, CONNECTIONS } from "./zero";
 import {
   TransferRequest,
   BurnRequest,
@@ -116,10 +116,10 @@ export class sdkTransfer {
           nonce: utils.getNonce(address, timestamp),
           loanId: utils.getPNonce(address, timestamp),
           pNonce: utils.getPNonce(address, timestamp),
-          underwriter: test.TEST_KEEPER_ADDRESS,
+          underwriter: CONNECTIONS.KEEPER_ADDRESS,
         });
       }
-      console.log(req);
+      console.log("TRANSFER REQUEST:", req);
       req.dry = async () => [];
       return req;
     })();
@@ -214,7 +214,7 @@ export class sdkBurn {
           ? renZECControllerAddress
           : contracts.ZeroController.address;
 
-      return new BurnRequest({
+      const req = new BurnRequest({
         owner: to, // ethereum address
         underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
         asset: asset, // address of the token to burn
@@ -223,6 +223,8 @@ export class sdkBurn {
         destination: dest, // bech32 encoded btcAddress put in by user
         contractAddress: this.contractAddress, // BadgerBridgeZeroController.address on mainnet/arbitrum
       });
+      console.log("BURN REQUEST:", req);
+      return req;
     };
   }
 
