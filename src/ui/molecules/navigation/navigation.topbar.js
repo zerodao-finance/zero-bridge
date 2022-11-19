@@ -11,7 +11,7 @@ export const NavigationTopBar = () => {
   const { getBridgeChainProps } = useBridgePage();
 
   function truncateAddress(address) {
-    return address.slice(0, 6) + "..." + address.slice(-4);
+    return address.slice(0, 5) + "..." + address.slice(-3);
   }
 
   return (
@@ -33,11 +33,7 @@ export const NavigationTopBar = () => {
         <PrimaryRoundedButton
           className="w-fit"
           active={true}
-          label={
-            wallet.address
-              ? truncateAddress(wallet.address).toUpperCase()
-              : "CONNECT"
-          }
+          label={wallet.address ? truncateAddress(wallet.address) : "CONNECT"}
           action={wallet.address ? disconnect : connect}
         />
         <NetworkIndicator keeper={keeper} />

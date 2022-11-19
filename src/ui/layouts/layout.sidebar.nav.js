@@ -40,7 +40,7 @@ export function LayoutSidebarNavigation({ children, changeModule, module }) {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Dialog.Overlay className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+              <Dialog.Overlay className="absolute inset-0 bg-black bg-opacity-50 transition-opacity" />
             </Transition.Child>
 
             <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
@@ -53,9 +53,9 @@ export function LayoutSidebarNavigation({ children, changeModule, module }) {
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
-                <div className="pointer-events-auto w-screen max-w-md">
+                <div className="pointer-events-auto max-w-md">
                   <div className="flex h-full flex-col overflow-y-scroll py-6 shadow-xl rounded-l-lg bg-gradient-to-b from-zero-green-500 to-zero-green-800">
-                    <div className="px-4 sm:px-6">
+                    <div className="pr-4 pl-6">
                       <div className="flex items-start justify-between">
                         <Dialog.Title className="text-lg font-medium text-badger-white-400">
                           {" "}
@@ -69,7 +69,7 @@ export function LayoutSidebarNavigation({ children, changeModule, module }) {
                         </button>
                       </div>
                     </div>
-                    <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                    <div className="relative mt-6 flex-1 pl-6 pr-8">
                       {/* Replace with your content */}
                       {children}
                       {/* /End replace */}
