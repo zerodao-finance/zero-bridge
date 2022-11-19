@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 
 export function MobileNavigationSidebar({ changeModule }) {
   return (
-    <nav aria-label="Sidebar">
+    <nav aria-label="Sidebar" className="text-badger-white-400">
       <Link to="/transfer">
         <div
-          className="flex flex-row gap-3 py-3"
+          className="flex flex-row gap-3 py-3 items-center"
           id="bridge"
           onClick={(e) => changeModule(e.currentTarget.id)}
         >
@@ -19,7 +19,7 @@ export function MobileNavigationSidebar({ changeModule }) {
       </Link>
       <Link to="/manage">
         <div
-          className="flex flex-row gap-3 py-3"
+          className="flex flex-row gap-3 py-3 items-center"
           id="manage"
           onClick={(e) => changeModule(e.currentTarget.id)}
         >
@@ -29,7 +29,7 @@ export function MobileNavigationSidebar({ changeModule }) {
       </Link>
       <Link to="/history">
         <div
-          className="flex flex-row gap-3 py-3 px-2"
+          className="flex flex-row gap-3 py-3 items-center"
           id="history"
           onClick={(e) => changeModule(e.currentTarget.id)}
         >
@@ -38,7 +38,7 @@ export function MobileNavigationSidebar({ changeModule }) {
           <button id="history">Completed Transactions</button>
         </div>
       </Link>
-      <div className="flex flex-row gap-3 py-3">
+      <div className="flex flex-row gap-3 py-3 items-center">
         <RiFileListLine className="h-[1.2rem] w-[1.2rem]" />
         <a href="https://docs.zerodao.com" target="_blank" rel="noreferrer">
           <button>Documentation</button>
