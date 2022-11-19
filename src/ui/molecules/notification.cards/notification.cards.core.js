@@ -120,7 +120,8 @@ export const TransferCard = ({ id, close, data, max, current }) => {
           <ProgressDots current={current} max={max} />
           <p className="text-badger-white-400 mt-1 animate-pulse">
             {" "}
-            ~{confirmationTime * (max - current + 1)} minutes remaining{" "}
+            ~{parseInt(confirmationTime * (max - current + 1))} minutes
+            remaining{" "}
           </p>
         </div>
       ) : (
