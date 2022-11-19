@@ -5,19 +5,17 @@ import _ from "lodash";
 export const ManageTransaction = () => {
   const { pending } = useTransactionContext();
 
+  console.log(pending);
+
   return (
     <ManageTransactionLayout title="Pending Transactions">
-      {CardGrid(pending)}
-      {/* {pending.transfer.map((d, index) => {
-        return <ManageTransactionCard data={d} key={index} />;
-      })} */}
-      {
-        <div className="dark:text-gray-300">
-          {_.isEmpty(pending.transfer) && _.isEmpty(pending.burn)
-            ? "No Pending Transactions"
-            : ""}
+      {_.isEmpty(pending.transfer) && _.isEmpty(pending.burn) ? (
+        <div className="text-gray-300 flex justify-center w-full">
+          <span>No Pending Transactions</span>
         </div>
-      }
+      ) : (
+        CardGrid(pending)
+      )}
     </ManageTransactionLayout>
   );
 };
