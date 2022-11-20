@@ -26,7 +26,7 @@ const getRenBTCAddress = async (signer) => {
   ].renBTC;
 };
 
-export const fallbackMint = async (request, signer, isV2 = false) => {
+export const fallbackMint = async (request, signer) => {
   const abi = request?.loanId
     ? "function fallbackMint(address, address, uint256, uint256, bytes, bytes32, bytes)"
     : "function fallbackMint(address, address, address, uint256, uint256, uint256, address, bytes32, bytes, bytes)";
