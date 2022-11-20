@@ -231,7 +231,6 @@ export class sdkBurn {
   async call() {
     const burnRequest = await this.burnRequest();
     burnRequest.data = BurnRequest.dataFromMinOut(this.minOut);
-    console.log("BURN REQUEST", burnRequest);
     const utxo = burnRequest.waitForRemoteTransaction().then((utxo) => utxo);
 
     try {
