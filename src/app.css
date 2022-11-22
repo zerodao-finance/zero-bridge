@@ -1572,10 +1572,6 @@ input:checked + .toggle-bg {
   margin-bottom: 0.25rem;
 }
 
-.mt-0 {
-  margin-top: 0px;
-}
-
 .block {
   display: block;
 }
@@ -1701,16 +1697,16 @@ input:checked + .toggle-bg {
   min-height: 360px;
 }
 
+.min-h-\[16px\] {
+  min-height: 16px;
+}
+
 .min-h-full {
   min-height: 100%;
 }
 
 .min-h-\[50px\] {
   min-height: 50px;
-}
-
-.min-h-\[16px\] {
-  min-height: 16px;
 }
 
 .w-full {

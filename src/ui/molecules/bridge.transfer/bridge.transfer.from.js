@@ -55,7 +55,7 @@ function BridgeTransferFrom({
             show={oneConfEnabled}
           >
             <div
-              className={`xl:mr-5 tracking-wider pr-2 w-full flex justify-end text-xs text-zero-neon-green-500 ${
+              className={`xl:mr-5 tracking-wider pr-2 w-full flex justify-end text-xs text-zero-neon-green-500 mt-2 ${
                 Number(vaultBalance) === 0 ? "animate-pulse" : ""
               }`}
             >
