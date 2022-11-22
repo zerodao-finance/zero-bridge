@@ -8,6 +8,8 @@ import { GlobalStateHelper } from "../utils/global.utilities";
 import { sdkBurn, sdkTransfer } from "../utils/sdk";
 import async from "async";
 
+const CARD_TIMEOUT = 10000;
+
 export const useRequestHelper = () => {
   const { state, dispatch } = useContext(storeContext);
   const { transactions, txDispatch } = useContext(TransactionContext);
@@ -132,7 +134,9 @@ class SDKHelper {
     }
 
     response.on("error", (data) => {
-      this.Notify.createCard(6000, "warning", { message: data.message });
+      this.Notify.createCard(CARD_TIMEOUT, "warning", {
+        message: data.message,
+      });
     });
   }
 
@@ -159,7 +163,7 @@ class SDKHelper {
       });
     } catch (err) {
       console.error(err);
-      task.this.Notify.createCard(10000, "message", {
+      task.this.Notify.createCard(CARD_TIMEOUT, "message", {
         message: "Error: " + err?.message,
       });
     }

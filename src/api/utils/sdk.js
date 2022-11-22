@@ -157,7 +157,9 @@ export class sdkTransfer {
       return;
     } catch (error) {
       console.error(error);
-      this.response.emit("error", { message: "Error Publishing Transaction" });
+      this.response.emit("error", {
+        message: `Error publishing transaction:\n${error}`,
+      });
       throw new Error("Error publishing transaction", error);
     } //submitting
   }
@@ -247,7 +249,7 @@ export class sdkBurn {
       this.response.emit("signed");
     } catch (error) {
       console.error(error);
-      this.response.emit("error", { message: "failed to sign request!" });
+      this.response.emit("error", { message: "Failed to sign request." });
       //handle signature error
     }
 
@@ -267,7 +269,7 @@ export class sdkBurn {
     } catch (error) {
       console.error(error);
       this.response.emit("error", {
-        message: `failed to publish transaction: ${error}`,
+        message: `Failed to publish transaction:\n${error}`,
       });
     }
   }
