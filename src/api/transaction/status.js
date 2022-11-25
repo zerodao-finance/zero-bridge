@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TransferRequest } from "@zerodao/sdk";
+import { TransferRequest, TransferRequestV2 } from "@zerodao/sdk";
 import { fallbackMint } from "../utils/fallback";
 import { getSigner } from "../hooks/submit";
 import { useRequestHelper } from "../hooks/helper";
@@ -10,12 +10,12 @@ export const getStatus = (data) => {
   const { wallet } = state;
 
   useEffect(async () => {
-    const req = new TransferRequest({
+    const req = new (data._data?.loanId ? TransferRequestV2 : TransferRequest)({
       ...data._data,
     });
 
     const signer = await getSigner(wallet);
-    const mint = await req.submitToRenVM();
+    const mint = await req.submitToRenVM(); // TODO: do we want #submitToRenVM for V2's??
 
     mint.on("transaction", (transaction) => {
       transaction.in.wait().on("progress", (progress) => {

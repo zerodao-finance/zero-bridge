@@ -1,11 +1,11 @@
 import * as React from "react"; // Needs to be here for testing
 
-export const PrimaryRoundedButton = ({ active, label, action }) => {
+export const PrimaryRoundedButton = ({ active, label, action, className }) => {
   const getClass = () => {
     if (active) {
-      return "transition ease-in-out duration-150 px-2 py-1 hover:bg-zero-green-500/40 bg-zero-green-500/90 font-medium rounded-lg text-badger-white-400 w-full truncate text-sm md:text-base";
+      return "hover:bg-zero-green-500/60 bg-zero-green-500 text-badger-white-400";
     }
-    return "cursor-not-allowed transition ease-in-out duration-150 px-2 py-1 font-medium w-full rounded-lg bg-badger-gray-400 text-badger-gray-200 truncate text-sm md:text-base";
+    return "cursor-not-allowed bg-badger-gray-400 text-badger-gray-200";
   };
   return (
     <>
@@ -18,7 +18,7 @@ export const PrimaryRoundedButton = ({ active, label, action }) => {
                 return;
               }
         }
-        className={getClass()}
+        className={`${getClass()} ${className} px-3 py-1 transition ease-in-out duration-150 font-medium rounded-lg w-full truncate text-sm md:text-base`}
         disabled={!active}
       >
         {label}

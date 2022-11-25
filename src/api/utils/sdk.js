@@ -1,20 +1,56 @@
 import { ethers } from "ethers";
-import { deploymentsFromSigner } from "./zero";
-import { TransferRequest, BurnRequest, FIXTURES, utils } from "@zerodao/sdk";
+import { deploymentsFromSigner, CONNECTIONS } from "./zero";
+import {
+  TransferRequest,
+  BurnRequest,
+  FIXTURES,
+  utils,
+  TransferRequestV2,
+  DEPLOYMENTS,
+} from "@zerodao/sdk";
 import { Buffer } from "buffer";
 import { tokenMapping } from "../utils/tokenMapping.js";
 import EventEmitter from "events";
 import { chainIdToName, DECIMALS } from "../utils/tokenMapping.js";
 import peerId from "peer-id";
-import { multiaddr } from "multiaddr";
+import { CHAINS } from "./chains";
 
 const renZECControllerAddress = "0x350241Ff5A144Ef09AAfF2E65195453CCBf8fD22";
+const zeroBTCAddress = DEPLOYMENTS["1"].mainnet.contracts.ZeroBTC.address;
+
+export const checkVaultAmount = async () => {
+  const provider = new ethers.providers.JsonRpcProvider(CHAINS[1].rpcUrls[0]);
+  const signer = new ethers.VoidSigner(zeroBTCAddress, provider);
+  const renBtcContract = new ethers.Contract(
+    "0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D", // renBtc token address
+    ["function balanceOf(address) view returns (uint)"],
+    signer
+  );
+
+  let renBtcBalance = await renBtcContract.balanceOf(signer.getAddress());
+  renBtcBalance = ethers.utils.formatUnits(renBtcBalance, 8);
+  return renBtcBalance;
+};
 
 const pingKeeper = async (zero) => {
   const keeper = zero._keepers[0];
   const _peerId = await peerId.createFromB58String(keeper);
   const peerInfo = await zero.peerRouting.findPeer(_peerId);
   return await zero.ping(peerInfo.id);
+};
+
+const determineModule = (asset, chain = "ETHEREUM") => {
+  const assetName = Object.keys(FIXTURES[chain]).find(
+    (d) => FIXTURES[chain][d].toLowerCase() == asset.toLowerCase()
+  );
+  if (!["USDC", "WBTC", "renBTC", "ETH"].includes(assetName))
+    throw new Error("invalid asset");
+  if (["USDC", "WBTC"].includes(assetName))
+    return DEPLOYMENTS["1"].mainnet.contracts[`convert${assetName}Mainnet`]
+      .address;
+  if (assetName == "ETH")
+    return DEPLOYMENTS["1"].mainnet.contracts[`convertNativeMainnet`].address;
+  if (assetName == "renBTC") return ethers.constants.AddressZero;
 };
 
 export class sdkTransfer {
@@ -27,9 +63,9 @@ export class sdkTransfer {
     token,
     signer,
     to,
-    isFast,
     _data,
-    primaryToken
+    primaryToken,
+    isFast
   ) {
     this.chainId = chainId;
     this.isFast = isFast;
@@ -47,25 +83,43 @@ export class sdkTransfer {
       const contracts = await deploymentsFromSigner(signer);
       const data = String(_data) || "0x";
       const amount = ethers.utils.parseUnits(String(value), 8);
-
       const address = await signer.getAddress();
       const timestamp = String(Math.floor(+new Date() / 1000));
-      const req = new TransferRequest({
-        amount, // btcAmount
-        module, // Token Address
-        to, // Ethereum Address
-        underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
-        asset, // Either the address of renBTC or renZEC on the current chain
-        nonce: utils.getNonce(address, timestamp), // Deterministic recovery mechanism
-        pNonce: utils.getPNonce(address, timestamp), // Deterministic recovery mechanism
-        data, // minOut
-        contractAddress:
-          primaryToken == "ZEC"
-            ? renZECControllerAddress
-            : contracts.ZeroController.address, // BadgerBridgeZeroController.address or RenZECController.address on mainnet/arbitrum
-        chainId: self.chainId, // any of the available chainIds
-        signature: "", // Currently not used
-      });
+      let req;
+      if (!isFast) {
+        req = new TransferRequest({
+          amount, // btcAmount
+          module, // Token Address
+          to, // Ethereum Address
+          underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
+          asset, // Either the address of renBTC or renZEC on the current chain
+          nonce: utils.getNonce(address, timestamp), // Deterministic recovery mechanism
+          pNonce: utils.getPNonce(address, timestamp), // Deterministic recovery mechanism
+          data, // minOut
+          contractAddress:
+            primaryToken == "ZEC"
+              ? renZECControllerAddress
+              : contracts.ZeroController.address, // BadgerBridgeZeroController.address or RenZECController.address on mainnet/arbitrum
+          chainId: self.chainId, // any of the available chainIds
+          signature: "", // Currently not used
+        });
+      } else {
+        req = new TransferRequestV2({
+          module: determineModule(asset), // determines which module to use
+          asset,
+          amount,
+          to,
+          contractAddress: zeroBTCAddress,
+          data:
+            String(_data) ||
+            ethers.utils.defaultAbiCoder.encode(["uint256"], [1]),
+          nonce: utils.getNonce(address, timestamp),
+          loanId: utils.getPNonce(address, timestamp),
+          pNonce: utils.getPNonce(address, timestamp),
+          underwriter: CONNECTIONS.KEEPER_ADDRESS,
+        });
+      }
+      console.log("TRANSFER REQUEST:", req);
       req.dry = async () => [];
       return req;
     })();
@@ -103,7 +157,9 @@ export class sdkTransfer {
       return;
     } catch (error) {
       console.error(error);
-      this.response.emit("error", { message: "Error Publishing Transaction" });
+      this.response.emit("error", {
+        message: `Error publishing transaction:\n${error}`,
+      });
       throw new Error("Error publishing transaction", error);
     } //submitting
   }
@@ -160,7 +216,7 @@ export class sdkBurn {
           ? renZECControllerAddress
           : contracts.ZeroController.address;
 
-      return new BurnRequest({
+      const req = new BurnRequest({
         owner: to, // ethereum address
         underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
         asset: asset, // address of the token to burn
@@ -169,13 +225,14 @@ export class sdkBurn {
         destination: dest, // bech32 encoded btcAddress put in by user
         contractAddress: this.contractAddress, // BadgerBridgeZeroController.address on mainnet/arbitrum
       });
+      console.log("BURN REQUEST:", req);
+      return req;
     };
   }
 
   async call() {
     const burnRequest = await this.burnRequest();
     burnRequest.data = BurnRequest.dataFromMinOut(this.minOut);
-    console.log("BURN REQUEST", burnRequest);
     const utxo = burnRequest.waitForRemoteTransaction().then((utxo) => utxo);
 
     try {
@@ -192,7 +249,7 @@ export class sdkBurn {
       this.response.emit("signed");
     } catch (error) {
       console.error(error);
-      this.response.emit("error", { message: "failed to sign request!" });
+      this.response.emit("error", { message: "Failed to sign request." });
       //handle signature error
     }
 
@@ -212,7 +269,7 @@ export class sdkBurn {
     } catch (error) {
       console.error(error);
       this.response.emit("error", {
-        message: `failed to publish transaction: ${error}`,
+        message: `Failed to publish transaction:\n${error}`,
       });
     }
   }

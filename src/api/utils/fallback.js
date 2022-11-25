@@ -27,15 +27,13 @@ const getRenBTCAddress = async (signer) => {
 };
 
 export const fallbackMint = async (request, signer) => {
+  const abi = request?.loanId
+    ? "function fallbackMint(address, address, uint256, uint256, bytes, bytes32, bytes)"
+    : "function fallbackMint(address, address, address, uint256, uint256, uint256, address, bytes32, bytes, bytes)";
+
   try {
     request.getController = async () =>
-      new ethers.Contract(
-        request.contractAddress,
-        [
-          "function fallbackMint(address, address, address, uint256, uint256, uint256, address, bytes32, bytes, bytes)",
-        ],
-        signer
-      );
+      new ethers.Contract(request.contractAddress, [abi], signer);
     request.asset =
       ethers.utils.getAddress(request.contractAddress) == renZECController
         ? FIXTURES.ETHEREUM.renZEC

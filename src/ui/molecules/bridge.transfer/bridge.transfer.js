@@ -16,9 +16,6 @@ export const BridgeTransferModule = ({ mode }) => {
       <>
         <div className="container h-max flex flex-row place-content-center max-w-[25rem] gap-3 md:gap-5 justify-around items-center px-1 md:px-8 z-10">
           <div className="flex flex-col w-full justify-center items-center animate-flip-in-hor-top [animation-delay:400ms]">
-            <p className="text-xs pl-2 text-black dark:text-badger-text-secondary-400 opacity-60 w-full whitespace-nowrap text-left">
-              transfer amount
-            </p>
             <div className="flex flex-col gap-2 justify-center max-w-[100%]">
               <BridgeTransferFrom {...getTransferInputProps()} />
               <ArrowDownIcon className="fill-white w-4 self-center pt-3" />
