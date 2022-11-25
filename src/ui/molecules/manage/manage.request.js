@@ -5,8 +5,6 @@ import _ from "lodash";
 export const ManageTransaction = () => {
   const { pending } = useTransactionContext();
 
-  console.log(pending);
-
   return (
     <ManageTransactionLayout title="Pending Transactions">
       {_.isEmpty(pending.transfer) && _.isEmpty(pending.burn) ? (
