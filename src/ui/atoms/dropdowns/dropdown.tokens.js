@@ -100,14 +100,14 @@ function TokenDropdown({
       window.location.hash = base[0] + "/" + base[1] + "/" + token;
     }
 
-    if (primaryToken === "ZEC" && !zecTokens.includes(token)) {
+    if (primaryToken === "ZEC" && !zecTokens.includes(token) && setToken) {
       setToken("renZEC");
     }
   }, [token]);
 
   useEffect(() => {
     const base = window.location.hash.split("/");
-    if (base.length === 3) {
+    if (base.length === 3 && setToken) {
       setToken(base[2]);
     }
   }, [location]);
@@ -122,59 +122,63 @@ function TokenDropdown({
           {determineIcon({ token, items })}
           <p className="dark:text-badger-white-400 text-gray-500">{token}</p>
         </span>
-        <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+        {setToken && (
+          <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+        )}
       </Menu.Button>
 
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="transform opacity-0 scale-95"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
-        <Menu.Items
-          data-testid="token-dropdown"
-          className="z-50 origin-top-right py-1 absolute w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none"
+      {setToken && (
+        <Transition
+          as={Fragment}
+          enter="transition ease-out duration-100"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-75"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
         >
-          {items
-            .filter((el) => !tokensRemoved.includes(el.text))
-            .map((item, index) => (
-              <div
-                key={index}
-                onClick={(e) => {
-                  if (!tokensDisabled.includes(e.target.innerText)) {
-                    setToken(e.target.innerText);
-                  }
-                }}
-              >
-                <Menu.Item>
-                  {({ active }) => (
-                    <div
-                      className={classNames(
-                        active && !tokensDisabled.includes(item.text)
-                          ? "bg-zero-green-500 text-black font-medium"
-                          : "text-gray-700",
-                        tokensDisabled.includes(item.text)
-                          ? "opacity-50 cursor-not-allowed"
-                          : "cursor-pointer",
-                        "flex items-center px-4 py-2 text-sm transition duration-300"
-                      )}
-                    >
-                      <item.icon
-                        key={`${index}-${item.text}`}
-                        className="mr-3 h-6 w-6 group-hover:text-gray-500 text-gray-400"
-                        aria-hidden="true"
-                      />
-                      <span>{item.text}</span>
-                    </div>
-                  )}
-                </Menu.Item>
-              </div>
-            ))}
-        </Menu.Items>
-      </Transition>
+          <Menu.Items
+            data-testid="token-dropdown"
+            className="z-50 origin-top-right py-1 absolute w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none"
+          >
+            {items
+              .filter((el) => !tokensRemoved.includes(el.text))
+              .map((item, index) => (
+                <div
+                  key={index}
+                  onClick={(e) => {
+                    if (!tokensDisabled.includes(e.target.innerText)) {
+                      setToken(e.target.innerText);
+                    }
+                  }}
+                >
+                  <Menu.Item>
+                    {({ active }) => (
+                      <div
+                        className={classNames(
+                          active && !tokensDisabled.includes(item.text)
+                            ? "bg-zero-green-500 text-black font-medium"
+                            : "text-gray-700",
+                          tokensDisabled.includes(item.text)
+                            ? "opacity-50 cursor-not-allowed"
+                            : "cursor-pointer",
+                          "flex items-center px-4 py-2 text-sm transition duration-300"
+                        )}
+                      >
+                        <item.icon
+                          key={`${index}-${item.text}`}
+                          className="mr-3 h-6 w-6 group-hover:text-gray-500 text-gray-400"
+                          aria-hidden="true"
+                        />
+                        <span>{item.text}</span>
+                      </div>
+                    )}
+                  </Menu.Item>
+                </div>
+              ))}
+          </Menu.Items>
+        </Transition>
+      )}
     </Menu>
   );
 }

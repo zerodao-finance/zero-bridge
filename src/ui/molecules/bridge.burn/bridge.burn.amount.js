@@ -98,7 +98,7 @@ export const BridgeBurnInput = ({
           <div className="flex items-center mb-2">
             <TokenDropdown
               token={token}
-              setToken={setToken}
+              // setToken={setToken}
               tokensRemoved={selectRemovedTokens({ primaryToken, chainId })}
               tokensDisabled={[""]}
               primaryToken={primaryToken}
