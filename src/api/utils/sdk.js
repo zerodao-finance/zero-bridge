@@ -17,7 +17,8 @@ import { CHAINS } from "./chains";
 
 const renZECControllerAddress = "0x350241Ff5A144Ef09AAfF2E65195453CCBf8fD22";
 const zeroBTCAddress =
-  DEPLOYMENTS["1"].mainnet.contracts?.ZeroBTC?.address || "";
+  DEPLOYMENTS["1"].mainnet.contracts?.ZeroBTC?.address ||
+  "0x11dbf784098e296471a08251178f757156651085";
 
 export const checkVaultAmount = async () => {
   try {
