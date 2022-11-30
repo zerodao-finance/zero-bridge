@@ -16,20 +16,26 @@ import peerId from "peer-id";
 import { CHAINS } from "./chains";
 
 const renZECControllerAddress = "0x350241Ff5A144Ef09AAfF2E65195453CCBf8fD22";
-const zeroBTCAddress = DEPLOYMENTS["1"].mainnet.contracts.ZeroBTC.address;
+const zeroBTCAddress =
+  DEPLOYMENTS["1"].mainnet.contracts?.ZeroBTC?.address || "";
 
 export const checkVaultAmount = async () => {
-  const provider = new ethers.providers.JsonRpcProvider(CHAINS[1].rpcUrls[0]);
-  const signer = new ethers.VoidSigner(zeroBTCAddress, provider);
-  const renBtcContract = new ethers.Contract(
-    "0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D", // renBtc token address
-    ["function balanceOf(address) view returns (uint)"],
-    signer
-  );
+  try {
+    const provider = new ethers.providers.JsonRpcProvider(CHAINS[1].rpcUrls[0]);
+    const signer = new ethers.VoidSigner(zeroBTCAddress, provider);
+    const renBtcContract = new ethers.Contract(
+      "0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D", // renBtc token address
+      ["function balanceOf(address) view returns (uint)"],
+      signer
+    );
 
-  let renBtcBalance = await renBtcContract.balanceOf(signer.getAddress());
-  renBtcBalance = ethers.utils.formatUnits(renBtcBalance, 8);
-  return renBtcBalance;
+    let renBtcBalance = await renBtcContract.balanceOf(signer.getAddress());
+    renBtcBalance = ethers.utils.formatUnits(renBtcBalance, 8);
+    return renBtcBalance;
+  } catch (err) {
+    console.error("Error getting vault amount:", err);
+    return "0";
+  }
 };
 
 const pingKeeper = async (zero) => {

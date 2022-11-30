@@ -3,8 +3,8 @@ import { DEPLOYMENTS } from "@zerodao/sdk";
 
 export const CONNECTIONS = process.env.REACT_APP_TEST
   ? {
-      KEEPER: "QmXXKMKno6KXdtTWYkUe3AGXCMEKRnNhFcvPkA2a4roj9Y",
-      KEEPER_ADDRESS: "0xb0BDFaa09cef1eCDA684ad5FF28fC01c68143aaa",
+      KEEPER: "QmXXKMKno6KXdtTWYkUe3AGXCMEKRnNhFcvPkA2a4roj9Y", // Old Test Keeper: QmWrsbGaP5QkSpBPz6RcYgN2tyMUHhiWCD8dA8UJGoLR5Z
+      KEEPER_ADDRESS: "0xb0BDFaa09cef1eCDA684ad5FF28fC01c68143aaa", // Old Test Keeper Address: 0x4A423AB37d70c00e8faA375fEcC4577e3b376aCa
       SIGNALING_MULTIADDR:
         "/dns4/devp2p.zerodao.com/tcp/443/wss/p2p-webrtc-star/",
     }
