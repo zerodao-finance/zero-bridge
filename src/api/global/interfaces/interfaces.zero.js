@@ -16,7 +16,7 @@ export const useZero = () => {
     if (!zero.zeroUser) {
       let user = new ZeroP2P({
         signer: ethers.Wallet.createRandom(),
-        multiaddr: CONNECTIONS.SIGNALING_MULTIADDR,
+        multiaddr: "mainnet",
         peerId: await PeerId.create(),
       });
       await user.start();

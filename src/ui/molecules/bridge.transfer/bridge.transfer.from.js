@@ -43,7 +43,7 @@ function BridgeTransferFrom({
   return (
     <>
       <div className="self-center px-0 py-0 w-full">
-        <div className="min-h-[16px]">
+        <div className="min-h-[16px] mt-2">
           <Transition
             as={Fragment}
             enter="transition ease-out duration-75"
@@ -55,7 +55,7 @@ function BridgeTransferFrom({
             show={oneConfEnabled}
           >
             <div
-              className={`xl:mr-5 tracking-wider pr-2 w-full flex justify-end text-xs text-zero-neon-green-500 mt-2 ${
+              className={`xl:mr-5 tracking-wider pr-2 w-full flex justify-end text-xs text-zero-neon-green-500 ${
                 Number(vaultBalance) === 0 ? "animate-pulse" : ""
               }`}
             >
