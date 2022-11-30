@@ -35,7 +35,7 @@ export const BurnCard = ({ id, close, data }) => {
       key={id}
     >
       <span
-        className="absolute top-1 right-1 text-md text-badger-white-400 cursor-pointer"
+        className="absolute top-1 right-2 text-md text-badger-white-400 cursor-pointer"
         onClick={close}
       >
         &times;
@@ -109,7 +109,7 @@ export const TransferCard = ({ id, close, data, max, current }) => {
       key={id}
     >
       <span
-        className="absolute top-1 right-1 text-md text-badger-white-400 cursor-pointer"
+        className="absolute top-1 right-2 text-md text-badger-white-400 cursor-pointer"
         onClick={close}
       >
         &times;
@@ -136,18 +136,24 @@ export const TransferCard = ({ id, close, data, max, current }) => {
 
 export const ErrorCard = ({ message, id, close }) => {
   console.error(message);
+  const parsedError = message.includes(" at ")
+    ? message.split(" at ")[0]
+    : message;
+
   return (
     <div
       className="dark:bg-gray-500 min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] p-5 rounded-md shadow-md text-xs md:text-sm"
       key={id}
     >
-      <span
-        className="absolute top-1 right-1 text-md text-badger-white-400 cursor-pointer"
-        onClick={close}
-      >
-        &times;
-      </span>
-      <div className="text-badger-white-400 text-ellipsis">{message}</div>
+      <div className="w-full flex justify-end pr-2">
+        <span
+          className="text-sm md:text-lg text-badger-white-400 cursor-pointer"
+          onClick={close}
+        >
+          &times;
+        </span>
+      </div>
+      <div className="text-badger-white-400 px-4 pb-4 -mt-2">{parsedError}</div>
       <div className="bg-[#EC4B4B] h-[6px] w-full absolute bottom-0 left-0 rounded-b-md" />
     </div>
   );
@@ -159,31 +165,39 @@ export const MessageCard = ({ message, id, close }) => {
       className="dark:bg-gray-500 min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] p-5 rounded-md shadow-md text-xs md:text-sm"
       key={id}
     >
-      <span
-        className="absolute top-1 right-1 text-md text-badger-white-400 cursor-pointer"
-        onClick={close}
-      >
-        &times;
-      </span>
-      <div className="text-badger-white-400 p-1">{message}</div>
+      <div className="w-full flex justify-end pr-2">
+        <span
+          className="text-sm md:text-lg text-badger-white-400 cursor-pointer"
+          onClick={close}
+        >
+          &times;
+        </span>
+      </div>
+      <div className="text-badger-white-400 px-4 pb-4 -mt-2">{message}</div>
       <div className="bg-[#59616D] dark:bg-gray-300 h-[6px] w-full absolute bottom-0 left-0 rounded-b-md" />
     </div>
   );
 };
 
 export const WarningCard = ({ message, id, close }) => {
+  const parsedError = message.includes(" at ")
+    ? message.split(" at ")[0]
+    : message;
+
   return (
     <div
-      className="dark:bg-gray-500 min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] p-5 rounded-md shadow-md text-xs md:text-sm"
+      className="dark:bg-gray-500 min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] rounded-md shadow-md text-xs md:text-sm"
       key={id}
     >
-      <span
-        className="absolute top-1 right-1 text-md text-badger-white-400 cursor-pointer"
-        onClick={close}
-      >
-        &times;
-      </span>
-      <div className="text-badger-white-400 p-1">{message}</div>
+      <div className="w-full flex justify-end pr-2">
+        <span
+          className="text-sm md:text-lg text-badger-white-400 cursor-pointer"
+          onClick={close}
+        >
+          &times;
+        </span>
+      </div>
+      <div className="text-badger-white-400 px-4 pb-4 -mt-2">{parsedError}</div>
       <div className="bg-[#F9A825] h-[6px] w-full absolute bottom-0 left-0 rounded-b-md" />
     </div>
   );
@@ -192,16 +206,18 @@ export const WarningCard = ({ message, id, close }) => {
 export const SuccessCard = ({ message, id, close }) => {
   return (
     <div
-      className="dark:bg-gray-500 min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px]p-5 rounded-md shadow-md text-xs md:text-sm"
+      className="dark:bg-gray-500 min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] rounded-md shadow-md text-xs md:text-sm"
       key={id}
     >
-      <span
-        className="absolute top-1 right-1 text-md text-badger-white-400 cursor-pointer"
-        onClick={close}
-      >
-        &times;
-      </span>
-      <div className="text-badger-white-400 p-1">{message}</div>
+      <div className="w-full flex justify-end pr-2">
+        <span
+          className="text-sm md:text-lg text-badger-white-400 cursor-pointer"
+          onClick={close}
+        >
+          &times;
+        </span>
+      </div>
+      <div className="text-badger-white-400 px-4 pb-4 -mt-2">{message}</div>
       <div className="bg-main-green h-[6px] w-full absolute bottom-0 left-0 rounded-b-md" />
     </div>
   );
@@ -210,10 +226,10 @@ export const SuccessCard = ({ message, id, close }) => {
 export const BurnWaitingCard = ({ message, id, close }) => {
   return (
     <div
-      className="dark:bg-gray-500 min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px]p-5 rounded-md shadow-md text-xs md:text-sm"
+      className="dark:bg-gray-500 min-h-[50px] min-w-[100px] max-h-[200px] max-w-[250px] md:max-h-[1000px] md:max-w-[300px] rounded-md shadow-md text-xs md:text-sm"
       key={id}
     >
-      <div className="w-full flex justify-end pr-0.5">
+      <div className="w-full flex justify-end pr-2">
         <span
           className="text-sm md:text-lg text-badger-white-400 cursor-pointer"
           onClick={close}

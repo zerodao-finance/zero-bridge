@@ -44,6 +44,12 @@ export const BridgeBurnInput = ({
     setToken(primaryToken == "ZEC" ? "renZEC" : "renBTC");
   }, [primaryToken]);
 
+  useEffect(() => {
+    console.log(chainId);
+    if (chainId === "1") setToken("renBTC");
+    if (chainId !== "1") setPrimaryToken("BTC");
+  }, [chainId]);
+
   const formattedAmount = () => {
     try {
       switch (token) {
