@@ -8,7 +8,7 @@ export const ManageTransaction = () => {
   return (
     <ManageTransactionLayout title="Pending Transactions">
       {_.isEmpty(pending.transfer) && _.isEmpty(pending.burn) ? (
-        <div className="text-gray-300 flex justify-center w-full">
+        <div className="text-gray-300 flex w-full">
           <span>No Pending Transactions</span>
         </div>
       ) : (
