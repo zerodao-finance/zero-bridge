@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 function NavigationBridgeToggle() {
   return (
     <div
-      className={`w-full rounded-t-lg grid grid-cols-2 mb-8 bg-badger-gray-400 align-center font-light text-sm text-center md:min-w-[460px]`}
+      className={`w-full rounded-t-lg grid grid-cols-2 mb-8 bg-badger-gray-400 align-center font-light text-sm text-center`}
     >
       <Link to="/transfer">
         <div
