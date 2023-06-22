@@ -50,22 +50,25 @@ export class sdkTransfer {
 
       const address = await signer.getAddress();
       const timestamp = String(Math.floor(+new Date() / 1000));
-      const req = new TransferRequest({
-        amount, // btcAmount
-        module, // Token Address
-        to, // Ethereum Address
-        underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
-        asset, // Either the address of renBTC or renZEC on the current chain
-        nonce: utils.getNonce(address, timestamp), // Deterministic recovery mechanism
-        pNonce: utils.getPNonce(address, timestamp), // Deterministic recovery mechanism
-        data, // minOut
-        contractAddress:
-          primaryToken == "ZEC"
-            ? renZECControllerAddress
-            : contracts.ZeroController.address, // BadgerBridgeZeroController.address or RenZECController.address on mainnet/arbitrum
-        chainId: self.chainId, // any of the available chainIds
-        signature: "", // Currently not used
-      });
+      const req = new TransferRequest(
+        {
+          amount, // btcAmount
+          module, // Token Address
+          to, // Ethereum Address
+          underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
+          asset, // Either the address of renBTC or renZEC on the current chain
+          nonce: utils.getNonce(address, timestamp), // Deterministic recovery mechanism
+          pNonce: utils.getPNonce(address, timestamp), // Deterministic recovery mechanism
+          data, // minOut
+          contractAddress:
+            primaryToken == "ZEC"
+              ? renZECControllerAddress
+              : contracts.ZeroController.address, // BadgerBridgeZeroController.address or RenZECController.address on mainnet/arbitrum
+          chainId: self.chainId, // any of the available chainIds
+          signature: "", // Currently not used
+        },
+        signer
+      );
       req.dry = async () => [];
       return req;
     })();
@@ -88,7 +91,7 @@ export class sdkTransfer {
     } //signing
 
     try {
-      console.log("LATENCY: " + (await pingKeeper(this.zeroUser)));
+      //      console.log("LATENCY: " + (await pingKeeper(this.zeroUser)));
       await transferRequest.publish(this.zeroUser);
 
       const mint = await transferRequest.submitToRenVM(); // In renjsv3, this is really called a gateway
@@ -198,7 +201,7 @@ export class sdkBurn {
 
     //publishBurnRequest
     try {
-      console.log("LATENCY: " + (await pingKeeper(this.zeroUser)));
+      //      console.log("LATENCY: " + (await pingKeeper(this.zeroUser)));
       burnRequest.publish(this.zeroUser);
       this.response.emit("reset");
       let hostTransaction = await burnRequest.waitForHostTransaction();

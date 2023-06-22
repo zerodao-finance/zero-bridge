@@ -64,6 +64,7 @@ export function getPendingRequestStatus(array, queue, dispatch, Notify) {
   }
 
   async function callback(error, task) {
+    /*
     const req = new TransferRequest({
       ...task._data,
     });
@@ -114,5 +115,6 @@ export function getPendingRequestStatus(array, queue, dispatch, Notify) {
         }
       });
     });
+    */
   }
 }

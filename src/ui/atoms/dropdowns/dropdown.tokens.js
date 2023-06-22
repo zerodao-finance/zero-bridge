@@ -42,6 +42,7 @@ function TokenDropdown({
   const location = useLocation();
 
   const items = [
+    /*
     {
       text: "renBTC",
       icon: renBTC,
@@ -54,10 +55,12 @@ function TokenDropdown({
       text: "ibBTC",
       icon: ibBTC,
     },
+    */
     {
       text: "ETH",
       icon: ETH,
     },
+    /*
     {
       text: "AVAX",
       icon: AVAX,
@@ -86,6 +89,7 @@ function TokenDropdown({
       text: "WBTC.e",
       icon: WBTC,
     },
+    */
   ];
 
   // For Routing
