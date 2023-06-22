@@ -93,26 +93,26 @@ export class sdkTransfer {
       const address = await signer.getAddress();
       const timestamp = String(Math.floor(+new Date() / 1000));
       let req;
-      if (!isFast) {
-        req = new TransferRequest(
-          {
-            amount, // btcAmount
-            module, // Token Address
-            to, // Ethereum Address
-            underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
-            asset, // Either the address of renBTC or renZEC on the current chain
-            nonce: utils.getNonce(address, timestamp), // Deterministic recovery mechanism
-            pNonce: utils.getPNonce(address, timestamp), // Deterministic recovery mechanism
-            data, // minOut
-            contractAddress:
-              primaryToken == "ZEC"
-                ? renZECControllerAddress
-                : contracts.ZeroController.address, // BadgerBridgeZeroController.address or RenZECController.address on mainnet/arbitrum
-            chainId: self.chainId, // any of the available chainIds
-            signature: "", // Currently not used
-          },
-          signer
-        );
+      req = new TransferRequest(
+        {
+          amount, // btcAmount
+          module, // Token Address
+          to, // Ethereum Address
+          underwriter: contracts.DelegateUnderwriter.address, // BadgerBridgeZeroController.address on mainnet/arbitrum
+          asset, // Either the address of renBTC or renZEC on the current chain
+          nonce: utils.getNonce(address, timestamp), // Deterministic recovery mechanism
+          pNonce: utils.getPNonce(address, timestamp), // Deterministic recovery mechanism
+          data, // minOut
+          contractAddress:
+            primaryToken == "ZEC"
+              ? renZECControllerAddress
+              : contracts.ZeroController.address, // BadgerBridgeZeroController.address or RenZECController.address on mainnet/arbitrum
+          chainId: self.chainId, // any of the available chainIds
+          signature: "", // Currently not used
+        },
+        signer
+      );
+      /*
       } else {
         req = new TransferRequestV2({
           module: determineModule(asset), // determines which module to use
@@ -129,6 +129,7 @@ export class sdkTransfer {
           underwriter: CONNECTIONS.KEEPER_ADDRESS,
         });
       }
+	    */
       req.dry = async () => [];
       return req;
     })();
