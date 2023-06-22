@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TransferRequest } from "@zerodao/sdk";
+import { TransferRequest, TransferRequestV2 } from "@zerodao/sdk";
 import { fallbackMint } from "../utils/fallback";
 import { getSigner } from "../hooks/submit";
 import { useRequestHelper } from "../hooks/helper";

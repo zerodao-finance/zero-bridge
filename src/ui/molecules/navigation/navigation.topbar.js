@@ -11,11 +11,11 @@ export const NavigationTopBar = () => {
   const { getBridgeChainProps } = useBridgePage();
 
   function truncateAddress(address) {
-    return address.slice(0, 6) + "..." + address.slice(-4);
+    return address.slice(0, 5) + "..." + address.slice(-3);
   }
 
   return (
-    <nav className="w-screen flex flex-row justify-between items-center bg-white dark:bg-badger-black-500 mb-8 sticky top-0 md:px-8 px-2 py-2">
+    <nav className="w-screen flex flex-row justify-between items-center bg-white dark:bg-badger-black-500 mb-4 md:mb-8 sticky top-0 md:px-8 px-2 py-2">
       <div id="logo">
         <img
           src="/ZDBeta_logo-02-Dark.svg"
@@ -33,11 +33,7 @@ export const NavigationTopBar = () => {
         <PrimaryRoundedButton
           className="w-fit"
           active={true}
-          label={
-            wallet.address
-              ? truncateAddress(wallet.address).toUpperCase()
-              : "CONNECT"
-          }
+          label={wallet.address ? truncateAddress(wallet.address) : "CONNECT"}
           action={wallet.address ? disconnect : connect}
         />
         <NetworkIndicator keeper={keeper} />

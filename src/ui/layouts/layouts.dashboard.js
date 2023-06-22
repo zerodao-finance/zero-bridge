@@ -29,7 +29,7 @@ export const DashboardLayout = () => {
             </LayoutSidebarNavigation>
           </div>
         </div>
-        <div className="flex flex-col w-fit min-w-[350px] md:min-w-[460px] md:max-w-full ml-auto mr-auto px-2 md:px-0">
+        <div className="flex flex-col w-fit ml-auto mr-auto px-2 md:px-0 mt-4 md:mt-0">
           {isLoading ? (
             <>Loading</>
           ) : (
@@ -54,11 +54,11 @@ export const DashboardLayout = () => {
 
         <div className="footer row-span-2 flex mt-8 flex-col-reverse text-[13px] md:text-md">
           <p className="text-gray-400 ml-2">
-            Powered By{" "}
+            Powered by{" "}
             <a href="https://zerodao.com" target="_blank" rel="noreferrer">
               zeroDAO
-            </a>
-            - Copyright &copy; 2022 Z DAO LLC
+            </a>{" "}
+            &copy; 2022 Z DAO LLC
           </p>
         </div>
       </div>

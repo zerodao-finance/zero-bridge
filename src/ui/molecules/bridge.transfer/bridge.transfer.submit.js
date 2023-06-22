@@ -6,6 +6,8 @@ import {
   getFeeBreakdown,
 } from "../../../api/hooks/transfer-fees";
 import { BridgeFeeInformation } from "./bridge.transfer.feeInformation";
+import { checkVaultAmount } from "../../../api/utils/sdk";
+import { formatUSDCPricedBTC } from "../../../api/utils/formatters";
 
 export const BridgeTransferSubmit = ({
   action,
@@ -15,6 +17,7 @@ export const BridgeTransferSubmit = ({
   renZEC_usd,
   chainId,
   primaryToken,
+  oneConfEnabled,
 }) => {
   const { keeper } = useZero();
   const [buttonLabel, setButtonLabel] = useState("Input Valid Amount");
@@ -41,20 +44,26 @@ export const BridgeTransferSubmit = ({
   }, [amount, token, chainId]);
 
   useEffect(async () => {
+    const vaultAmount = await checkVaultAmount();
     setActive(false);
     if (amount <= 0) {
       setButtonLabel("Input Valid Amount");
     } else if (keeper.length > 0) {
       if (transferOutput > 0) {
-        setButtonLabel("Transfer Funds");
-        setActive(true);
+        if (oneConfEnabled && amount > vaultAmount) {
+          setActive(false);
+          setButtonLabel("Insufficient Funds for 1 Confirmation.");
+        } else {
+          setButtonLabel("Transfer Funds");
+          setActive(true);
+        }
       } else {
         setButtonLabel("Result Must Be More Than Zero");
       }
     } else {
       setButtonLabel("Awaiting Keeper");
     }
-  }, [keeper, transferOutput, amount]);
+  }, [keeper, transferOutput, amount, oneConfEnabled]);
 
   return (
     <>

@@ -132,10 +132,22 @@ function ParseDetails(data, type, truncateAddress) {
             <a className="text-xs justify-self-end underline">
               {truncateAddress(data.hostTX.to)}
             </a>
-            <span className="justify-self-start"> view on Etherscan: </span>
+            <span className="justify-self-start"> view transaction: </span>
             <a
               className="text-xs justify-self-end underline text-zero-neon-green-500"
-              href={`https://etherscan.io/tx/${data.hostTX.transactionHash}`}
+              href={`
+                ${getExplorerRoot(
+                  getChainId(
+                    CONTROLLER_DEPLOYMENTS[
+                      safeEthersGetAddress(
+                        data?.underwriterRequest?.contractAddress
+                      )
+                    ]
+                  ),
+                  "tx"
+                )}
+                ${data.hostTX.transactionHash}
+              `}
             >
               {truncateAddress(data.hostTX.transactionHash)}
             </a>

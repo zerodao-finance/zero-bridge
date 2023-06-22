@@ -5,12 +5,9 @@
   "author": "zeroDAO",
   "license": "MIT",
   "scripts": {
-    "build": "cross-env REACT_APP_JSONRPC=https://arbitrum-mainnet.infura.io/v3/816df2901a454b18b7df259e61f92cd2 NODE_ENV=production NODE_OPTIONS=--max_old_space_size=4096 react-scripts build --profile",
     "start": "REACT_APP_JSONRPC=https://eth-mainnet.alchemyapi.io/v2/gMO3S4SBWM72d94XKR4Hy2pbviLjmLqk react-app-rewired start",
     "start:dev": "REACT_APP_TEST=true REACT_APP_JSONRPC=http://localhost:8545 react-app-rewired start",
-    "build:badger": "NODE_ENV=production REACT_APP_JSONRPC=https://mainnet.infura.io/v3/816df2901a454b18b7df259e61f92cd2 react-app-rewired build",
-    "start:badger:dev": "yarn start:dev",
-    "start:badger": "REACT_APP_JSONRPC=https://eth-mainnet.alchemyapi.io/v2/gMO3S4SBWM72d94XKR4Hy2pbviLjmLqk react-app-rewired start",
+    "build": "NODE_ENV=production REACT_APP_JSONRPC=https://mainnet.infura.io/v3/816df2901a454b18b7df259e61f92cd2 react-app-rewired build",
     "build:css": "tailwindcss -i ./src/index.css -o ./src/app.css",
     "build:css:watch": "tailwindcss -i ./src/index.css -o ./src/app.css --watch",
     "prepare": "husky install",

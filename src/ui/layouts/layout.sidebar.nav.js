@@ -3,6 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { FaRegWindowClose } from "react-icons/fa";
 import { AiOutlineMenu } from "react-icons/ai";
 import { DefaultNavigationSidebar } from "../molecules/navigation/navigation.sidebar.default";
+import { MdClose } from "react-icons/md";
 
 export function LayoutSidebarNavigation({ children, changeModule, module }) {
   const [open, setOpen] = useState(false);
@@ -15,12 +16,12 @@ export function LayoutSidebarNavigation({ children, changeModule, module }) {
   return (
     <>
       <div
-        className={`w-min dark:text-badger-white-400 right-0 absolute md:hidden items-center gap-2 capitalize font-light text-lg z-[50] ${
+        className={`w-min text-badger-white-400 right-0 px-2 absolute md:hidden items-center z-[50] ${
           open ? "hidden" : "flex"
         }`}
         onClick={() => setOpen(true)}
       >
-        <AiOutlineMenu />
+        <AiOutlineMenu size="20px" />
       </div>
       <DefaultNavigationSidebar changeModule={changeModule} />
       <Transition.Root show={open} as={Fragment}>
@@ -39,36 +40,36 @@ export function LayoutSidebarNavigation({ children, changeModule, module }) {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Dialog.Overlay className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+              <Dialog.Overlay className="absolute inset-0 bg-black bg-opacity-50 transition-opacity" />
             </Transition.Child>
 
             <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
               <Transition.Child
                 as={Fragment}
-                enter="transform transition ease-in-out duration-500 sm:duration-700"
+                enter="transform transition ease-in-out duration-500"
                 enterFrom="translate-x-full"
                 enterTo="translate-x-0"
-                leave="transform transition ease-in-out duration-500 sm:duration-700"
+                leave="transform transition ease-in-out duration-500"
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
-                <div className="pointer-events-auto w-screen max-w-md">
+                <div className="pointer-events-auto max-w-md">
                   <div className="flex h-full flex-col overflow-y-scroll py-6 shadow-xl rounded-l-lg bg-gradient-to-b from-zero-green-500 to-zero-green-800">
-                    <div className="px-4 sm:px-6">
+                    <div className="pr-4 pl-6">
                       <div className="flex items-start justify-between">
-                        <Dialog.Title className="text-lg font-medium text-gray-900">
+                        <Dialog.Title className="text-lg font-medium text-badger-white-400">
                           {" "}
                           Menu{" "}
                         </Dialog.Title>
-                        <div className="ml-3 flex h-7 items-center">
-                          <FaRegWindowClose
-                            className="cursor-pointer"
-                            onClick={() => setOpen(false)}
-                          />
-                        </div>
+                        <button
+                          className="text-badger-white-400 p-1"
+                          onClick={() => setOpen(false)}
+                        >
+                          <MdClose size="24px" />
+                        </button>
                       </div>
                     </div>
-                    <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                    <div className="relative mt-6 flex-1 pl-6 pr-8">
                       {/* Replace with your content */}
                       {children}
                       {/* /End replace */}
