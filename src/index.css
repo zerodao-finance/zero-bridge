@@ -11,6 +11,13 @@
   font-stretch: 25% 151%;
 }
 
+input:checked + div {
+  @apply border-zero-green;
+}
+input:checked + div svg {
+  @apply block;
+}
+
 .slider {
   -webkit-appearance: none;
   width: 50%;

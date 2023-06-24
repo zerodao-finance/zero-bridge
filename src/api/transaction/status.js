@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TransferRequest } from "@zerodao/sdk";
+import { TransferRequest, TransferRequestV2 } from "@zerodao/sdk";
 import { fallbackMint } from "../utils/fallback";
 import { getSigner } from "../hooks/submit";
 import { useRequestHelper } from "../hooks/helper";
@@ -10,11 +10,13 @@ export const getStatus = (data) => {
   const { wallet } = state;
 
   useEffect(async () => {
-    const req = new TransferRequest({
-      ...data._data,
-    });
-
     const signer = await getSigner(wallet);
+    const req = new TransferRequest(
+      {
+        ...data._data,
+      },
+      signer
+    );
     const mint = await req.submitToRenVM();
 
     mint.on("transaction", (transaction) => {

@@ -41,8 +41,14 @@ export const BridgeBurnInput = ({
   }, [token]);
 
   useEffect(() => {
-    setToken(primaryToken == "ZEC" ? "renZEC" : "renBTC");
+    setToken(primaryToken == "ZEC" ? "renZEC" : "ETH");
   }, [primaryToken]);
+
+  useEffect(() => {
+    console.log(chainId);
+    if (chainId === "1") setToken("ETH");
+    if (chainId !== "1") setPrimaryToken("BTC");
+  }, [chainId]);
 
   const formattedAmount = () => {
     try {
@@ -86,7 +92,7 @@ export const BridgeBurnInput = ({
   return (
     <>
       <div className="self-center px-0 py-0">
-        <div className=" xl:mr-5 tracking-wider pr-2 w-full flex justify-end text-xs text-zero-neon-green-500">
+        <div className=" xl:mr-5 tracking-wider pr-2 w-full flex justify-end text-xs text-zero-neon-green-500 mt-2">
           <span>Your Balance: {getBalance(token) + " " + token}</span>
         </div>
         <div className="w-fit grid items-center bg-badger-gray-500 px-2 py-1 rounded-2xl">
@@ -118,7 +124,7 @@ export const BridgeBurnInput = ({
             </div>
           </div>
         </div>
-        <div className=" xl:mr-5 tracking-wider w-full flex justify-end pr-2 text-xs text-zero-neon-green-500">
+        <div className="mt-1 tracking-wider w-full flex justify-end pr-2 text-xs text-zero-neon-green-500">
           <span className="italic">~ {formattedAmount()}</span>
         </div>
         {amount > 0 && (

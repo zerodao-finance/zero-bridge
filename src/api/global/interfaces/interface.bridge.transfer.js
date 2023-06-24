@@ -13,8 +13,15 @@ export const useBridgeInput = () => {
     state.priceFeeds.data;
   const { wallet } = state;
   const { ETH, renBTC } = state.transfer.display;
-  const { amount, isFast, token, quote, slippage, destinationAddress } =
-    state.transfer.input;
+  const {
+    amount,
+    isFast,
+    token,
+    quote,
+    slippage,
+    destinationAddress,
+    oneConfEnabled,
+  } = state.transfer.input;
   const { mode } = state.transfer.mode;
   const { primaryToken } = state.bridge.mode;
   const { sendTransferRequest } = useSDKTransactionSubmit("transfer");
@@ -39,6 +46,7 @@ export const useBridgeInput = () => {
     renZEC_usd,
     primaryToken,
     chainId: wallet.chainId,
+    oneConfEnabled,
   });
 
   const setDestinationAddress = (e) => {
@@ -100,6 +108,15 @@ export const useBridgeInput = () => {
     });
   };
 
+  const setOneConfEnabled = () => {
+    dispatch({
+      type: "UPDATE",
+      module: "transfer",
+      effect: "input",
+      data: { oneConfEnabled: !oneConfEnabled },
+    });
+  };
+
   const getTransferInputProps = () => ({
     amount: amount,
     token: token,
@@ -117,6 +134,8 @@ export const useBridgeInput = () => {
     quote,
     primaryToken,
     setPrimaryToken,
+    oneConfEnabled,
+    setOneConfEnabled,
   });
 
   const getGatewayData = () => ({

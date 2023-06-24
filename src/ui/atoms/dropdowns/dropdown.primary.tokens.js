@@ -23,12 +23,16 @@ function PrimaryTokenDropdown({
     },
   ];
 
+  const renderTokens = () => {
+    return items.filter((el) => !tokensRemoved.includes(el.text));
+  };
+
   useEffect(() => {}, [primaryToken]);
 
   return (
     <Menu as="div" className="relative inline-block text-left max-w-[100%]">
       <Menu.Button
-        className="inline-flex justify-center w-full rounded-md px-4 py-2 bg-transparent text-sm font-medium text-badger-white-400 items-center focus:outline-none justify-between"
+        className="inline-flex w-full rounded-md px-4 py-2 bg-transparent text-sm font-medium text-badger-white-400 items-center focus:outline-none justify-between"
         style={{ minWidth: "150px" }}
       >
         <span className="flex items-center max-w-[100%]">
@@ -37,25 +41,26 @@ function PrimaryTokenDropdown({
             {primaryToken}
           </p>
         </span>
-        <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+        {renderTokens().length > 1 && (
+          <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+        )}
       </Menu.Button>
 
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="transform opacity-0 scale-95"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
-        <Menu.Items
-          data-testid="token-dropdown"
-          className="z-50 origin-top-right py-1 absolute w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none"
+      {renderTokens().length > 1 && (
+        <Transition
+          as={Fragment}
+          enter="transition ease-out duration-100"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-75"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
         >
-          {items
-            .filter((el) => !tokensRemoved.includes(el.text))
-            .map((item, index) => (
+          <Menu.Items
+            data-testid="token-dropdown"
+            className="z-50 origin-top-right absolute w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none"
+          >
+            {renderTokens().map((item, index) => (
               <div
                 key={index}
                 onClick={(e) => {
@@ -69,17 +74,23 @@ function PrimaryTokenDropdown({
                     <div
                       className={classNames(
                         active && !tokensDisabled.includes(item.text)
-                          ? "bg-zero-green-500 text-black font-medium"
-                          : "text-gray-700",
+                          ? "bg-zero-green-500 text-white"
+                          : "text-neutral-700",
                         tokensDisabled.includes(item.text)
                           ? "opacity-50 cursor-not-allowed"
                           : "cursor-pointer",
-                        "flex items-center px-4 py-2 text-sm transition duration-300"
+                        `font-medium flex items-center px-4 py-2 text-sm transition duration-150 ${
+                          index === 0 ? "rounded-t-md" : ""
+                        } ${
+                          index === renderTokens().length - 1
+                            ? "rounded-b-md"
+                            : ""
+                        }`
                       )}
                     >
                       <item.icon
                         key={`${index}-${item.text}`}
-                        className="mr-3 h-6 w-6 group-hover:text-gray-500 text-gray-400"
+                        className="mr-3 h-6 w-6"
                         aria-hidden="true"
                       />
                       <span>{item.text}</span>
@@ -88,8 +99,9 @@ function PrimaryTokenDropdown({
                 </Menu.Item>
               </div>
             ))}
-        </Menu.Items>
-      </Transition>
+          </Menu.Items>
+        </Transition>
+      )}
     </Menu>
   );
 }

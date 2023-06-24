@@ -24,13 +24,14 @@ export const globalBridgeState = {
     transfer: {
       input: {
         amount: "0",
-        token: "renBTC",
+        token: "ETH",
         slippage: "2.0",
         isFast: false,
         isLoading: false,
         error: null,
         quote: "0",
         destinationAddress: "",
+        oneConfEnabled: false,
       },
       display: {
         ETH: 0,
@@ -48,7 +49,7 @@ export const globalBridgeState = {
       input: {
         amount: "0",
         destination: "",
-        token: "renBTC",
+        token: "ETH",
         isLoading: false,
         error: null,
         quote: "0",

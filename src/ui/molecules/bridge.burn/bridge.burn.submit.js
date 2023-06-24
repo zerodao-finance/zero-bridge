@@ -76,10 +76,10 @@ export const BridgeBurnSubmit = ({
     <>
       <div className="px-8 mt-4">
         <PrimaryRoundedButton
-          // active={active}
-          // label={buttonLabel}
-          active={false}
-          label="Temporarily Disabled"
+          active={active}
+          label={buttonLabel}
+          //active={false}
+          //label="Temporarily Disabled"
           action={action}
         />
       </div>

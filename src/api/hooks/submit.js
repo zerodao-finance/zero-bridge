@@ -35,7 +35,7 @@ export const useSDKTransactionSubmit = (module) => {
   const { wallet, zero } = state;
   const { chainId } = wallet;
   const { primaryToken } = state.bridge.mode;
-  const { slippage, destinationAddress } = state.transfer.input;
+  const { slippage, destinationAddress, oneConfEnabled } = state.transfer.input;
   const { input } = state[module];
 
   async function sendTransferRequest() {
@@ -44,7 +44,7 @@ export const useSDKTransactionSubmit = (module) => {
     var token = input.token;
     var signer = await getSigner(wallet);
     var to = destinationAddress;
-    var isFast = input.isFast;
+    var isFast = input.oneConfEnabled;
 
     var quote = input.quote;
     switch (token) {
@@ -85,9 +85,9 @@ export const useSDKTransactionSubmit = (module) => {
       token,
       signer,
       to,
-      isFast,
       data,
       primaryToken,
+      isFast,
     ];
 
     Helper.request("transfer", requestData);
