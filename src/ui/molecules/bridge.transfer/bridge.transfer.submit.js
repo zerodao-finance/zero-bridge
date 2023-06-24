@@ -69,11 +69,11 @@ export const BridgeTransferSubmit = ({
     <>
       <div className="px-8">
         <PrimaryRoundedButton
-          //active={false}
-          active={active}
-          label={buttonLabel}
+          active={false}
+          // active={active}
+          // label={buttonLabel}
           action={action}
-          //label="Temporarily Disabled"
+          label="Disabled"
         />
       </div>
 
