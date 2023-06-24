@@ -57,20 +57,20 @@ export default function NavigationChainDropdown({ chainId, setChainId }) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="inline-flex font-bold rounded-lg justify-center w-full bg-zero-green-500/90 hover:bg-zero-green-500/40 shadow-sm px-2 py-1 text-sm md:text-base text-badger-white-400 focus:outline-none ">
+        <Menu.Button className="inline-flex cursor-default font-bold rounded-lg justify-center w-full bg-zero-green-500/90 shadow-sm px-2 py-1 text-sm md:text-base text-badger-white-400 focus:outline-none ">
           {chainId
             ? width > 600
               ? getChainName(chainId)
               : chainToIcon(getChainName(chainId))
             : "Loading..."}
-          <ChevronDownIcon
+          {/* <ChevronDownIcon
             className="-mr-1 md:ml-2 md:mt-1 h-5 w-5"
             aria-hidden="true"
-          />
+          /> */}
         </Menu.Button>
       </div>
 
-      <Transition
+      {/* <Transition
         as={Fragment}
         enter="transition ease-out duration-100"
         enterFrom="transform opacity-0 scale-95"
@@ -104,7 +104,7 @@ export default function NavigationChainDropdown({ chainId, setChainId }) {
             })}
           </div>
         </Menu.Items>
-      </Transition>
+      </Transition> */}
     </Menu>
   );
 }
