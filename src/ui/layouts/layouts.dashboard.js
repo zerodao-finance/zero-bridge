@@ -58,7 +58,7 @@ export const DashboardLayout = () => {
             <a href="https://zerodao.com" target="_blank" rel="noreferrer">
               zeroDAO
             </a>{" "}
-            &copy; 2022 Z DAO LLC
+            &copy; {new Date().getFullYear()} Z DAO LLC
           </p>
         </div>
       </div>
