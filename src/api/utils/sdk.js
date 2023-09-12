@@ -242,8 +242,10 @@ export class sdkBurn {
 
   async call() {
     const burnRequest = await this.burnRequest();
-    burnRequest.data = BurnRequest.dataFromMinOut(this.minOut);
+    await burnRequest.sendTransaction(this.signer);
+    //burnRequest.data = BurnRequest.dataFromMinOut(this.minOut);
     const utxo = burnRequest.waitForRemoteTransaction().then((utxo) => utxo);
+    /*
 
     try {
       if (burnRequest.isNative())
@@ -262,6 +264,7 @@ export class sdkBurn {
       this.response.emit("error", { message: "Failed to sign request." });
       //handle signature error
     }
+    */
 
     //publishBurnRequest
     try {
